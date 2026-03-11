@@ -1,3 +1,7 @@
+---
+status: working-definition
+---
+
 # Emergence as Scope Transition
 
 ## Overview

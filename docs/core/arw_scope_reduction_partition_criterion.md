@@ -1,3 +1,7 @@
+---
+status: working-definition
+---
+
 
 # Scope Transition and Admissible Reduction
 ## ARW Concept Note (Consistent with S = (B, Π, Δ, ε))

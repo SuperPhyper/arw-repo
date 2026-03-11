@@ -1,3 +1,7 @@
+---
+status: working-definition
+---
+
 # Emergence and Latent Degrees of Freedom
 
 ## Overview

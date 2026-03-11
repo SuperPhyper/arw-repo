@@ -1,3 +1,7 @@
+---
+status: working-definition
+---
+
 # Basins as Partitions of a Higher-Level Scope
 
 ## Overview

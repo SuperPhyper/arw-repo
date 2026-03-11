@@ -1,3 +1,7 @@
+---
+status: working-definition
+---
+
 # Emergence Overview
 
 ## Overview
@@ -26,6 +30,43 @@ ordering dominance over the system.
 
 Emergence occurs when this loss of stability leads to a **reorganization of the effective
 state space** and the stabilization of a new descriptive regime.
+
+---
+
+## Formal Emergence Condition
+
+The ARW framework draws a precise distinction between two types of scope transition:
+
+**Admissible reduction** (not emergence):
+S → S' where R_S' is a compatible *coarsening* of R_S.
+
+```
+∀x: [x]_S ⊆ [x]_S'
+```
+
+Each old regime class is fully contained in a new class.
+No structural information is reorganized — only resolution is reduced.
+The new scope sees less, but what it sees is consistent with the old scope.
+
+**Emergence** (reorganization):
+S → S' where R_S' is *not* a coarsening of R_S.
+
+```
+∃x: [x]_S ⊄ [x]_S'
+```
+
+At least one old regime class straddles a boundary in the new partition.
+This means the new scope is not simply a lower-resolution version of the old one —
+it organizes the state space according to a structurally different principle.
+
+This is the formal ARW definition of emergence:
+a scope transition that is a reorganization, not a coarsening.
+
+**Consequence for measurement:**
+An emergent transition is detectable by computing the partition compatibility index
+PCI(S → S'). For admissible reductions, PCI ≈ 1. For emergence, PCI < 1 at the
+transition point, with the magnitude of the drop indicating how strongly the
+new partition reorganizes the old one.
 
 ---
 

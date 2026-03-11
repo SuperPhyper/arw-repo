@@ -1,3 +1,7 @@
+---
+status: draft
+---
+
 
 # Agent Architecture – Mode Ecology and Context Navigation
 

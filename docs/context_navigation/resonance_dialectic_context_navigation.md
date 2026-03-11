@@ -1,3 +1,7 @@
+---
+status: draft
+---
+
 
 # Resonance–Dialectic Context Navigation
 ## A Formal Perspective for Mode Selection and Mediation

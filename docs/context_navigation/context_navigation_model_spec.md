@@ -1,3 +1,7 @@
+---
+status: working-definition
+---
+
 # Context Navigation Architecture — Model Specification
 
 ## Status

@@ -1,3 +1,7 @@
+---
+status: draft
+---
+
 # Research Roadmap
 
 ## Phase 0 – Formal Backbone

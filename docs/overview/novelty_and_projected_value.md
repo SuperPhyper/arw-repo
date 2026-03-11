@@ -1,3 +1,7 @@
+---
+status: working-definition
+---
+
 # Novelty and Projected Value of the ARW/ART Framework
 
 ## Overview

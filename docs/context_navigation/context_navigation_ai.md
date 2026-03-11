@@ -1,3 +1,7 @@
+---
+status: draft
+---
+
 # Context Navigation AI Architecture
 
 This architecture interprets cognition as navigation between

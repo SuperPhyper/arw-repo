@@ -1,3 +1,7 @@
+---
+status: draft
+---
+
 
 # Context Navigation Architecture – Mode Optimization and Anchor Consolidation
 
