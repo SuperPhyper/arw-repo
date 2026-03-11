@@ -160,15 +160,17 @@ where further formalization would strengthen the framework.
 ### ε estimation procedure
 
 `epsilon_and_scope_resolution.md` § 4 introduces the admissible ε-interval
-I_ε = [ε_min, ε_max] and the ε-sweep protocol for determining it empirically.
-`pipeline/epsilon_sweep.py` implements this protocol and has been validated
-on CASE-20260311-0001 (Kuramoto), producing the first empirical plateau map
-(5 structurally distinct plateaus across [0.001, 1.0]).
+I_ε = [ε_min, ε_max] and the ε-sweep protocol. Three pipeline modules now
+implement this:
+
+- `pipeline/epsilon_sweep.py` — basic ε-sweep (validated on Kuramoto)
+- `pipeline/epsilon_kappa_map.py` — 2D (κ, ε) robustness map (validated on Kuramoto: w and |dr/dκ| anti-correlate with r = −0.77)
+- `pipeline/epsilon_multi_observable.py` — per-observable ε-sweep (validated on Pendulum: confirms independent εᵢ needed)
 
 **What remains open:**
-- Plateau stability under BC parameter variation (I_ε as a function of κ)
 - Adaptive step refinement near critical ε-values
-- State-dependent ε and the multi-observable case
+- State-dependent ε formalization
+- Observable normalization as a scope choice (new question from Pendulum results)
 
 ### Resonance ↔ coupling BC: formal relationship
 

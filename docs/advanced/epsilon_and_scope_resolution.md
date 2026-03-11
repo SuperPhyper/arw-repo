@@ -259,6 +259,80 @@ system under (B, Π, Δ) — not a modeling choice. The researcher selects
 *which plateau* to work in (i.e., what resolution level is appropriate
 for the question at hand), and any ε within that plateau is equivalent.
 
+### Plateau Stability Under BC Variation — I_ε(κ)
+
+A natural follow-up: does the admissible ε-interval change as the BC
+parameter κ varies? A 2D (κ, ε) scope robustness map on Kuramoto
+(80 κ-values in [0, 3.5], 60 ε-values) reveals a clear pattern:
+
+**The scope is least robust near the phase transition.**
+
+The local plateau width w(κ) — computed via sliding-window ε-sweeps —
+drops from w ≈ 5.7 in the deep incoherent regime (κ < 0.5) to
+w ≈ 1.6 in the transition region (κ ≈ 1.0–1.7), then recovers to
+w ≈ 5.0 in the deep synchronized regime (κ > 2.8).
+
+The correlation between w and the observable gradient |dr_ss/dκ|
+is r = −0.77 — strongly negative. Where the system changes fastest
+(|dr_ss/dκ| peaks at κ ≈ 1.48 with a value of 4.05), the scope is
+most fragile.
+
+**Interpretation:** This is not an artifact of sparse sampling. It reflects
+a structural property: near the phase transition, small changes in κ
+produce large observable shifts, which means the ε-threshold must be
+precisely tuned to avoid either merging distinct regimes or fragmenting
+a single regime. The admissible ε-interval narrows because the
+observable landscape is steep.
+
+This has a practical consequence: scope specifications near phase
+transitions need tighter ε calibration. The ε-sweep is most valuable
+precisely in the regions where the system is most interesting.
+
+### Multiple Observables — Pendulum (λ_proxy, Var_rel)
+
+The pendulum (CASE-20260311-0002) provides the first test of the
+multi-observable ε question. It has two observables with very different
+ranges:
+
+```
+lambda_proxy:  span = 0.037  (range [0.061, 0.098])
+var_rel:       span = 0.275  (range [0.038, 0.313])
+```
+
+Independent ε-sweeps per observable reveal fundamentally different
+plateau structures:
+
+```
+lambda_proxy:                          var_rel:
+  N=12  ε∈[0.0001, 0.0006]  w=1.58     N=13  ε∈[0.0001, 0.0117]  w=4.76
+  N=10  ε∈[0.0008, 0.0013]  w=0.58     N= 8  ε∈[0.0156, 0.0181]  w=0.14
+  N= 9  ε∈[0.0016, 0.0021]  w=0.29     N= 5  ε∈[0.0209, 0.0241]  w=0.14
+  N= 5  ε∈[0.0028, 0.0049]  w=0.58     N= 3  ε∈[0.0322, 0.0430]  w=0.29
+  N= 1  ε∈[0.0076, 0.5000]  w=4.19     N= 1  ε∈[0.0496, 0.5000]  w=2.31
+```
+
+The two observables agree on N for only 30% of ε-values. They operate on
+different ε-scales: lambda_proxy collapses to N=1 at ε ≈ 0.008, while
+var_rel still distinguishes 13 regimes at that resolution.
+
+**The joint partition** (same ε for both, regime = agreement on all
+observables) is dominated by whichever observable is more discriminating
+at that ε. In practice, this means the joint partition tracks var_rel
+at intermediate ε, because lambda_proxy has already collapsed.
+
+**Conclusion:** A single shared ε is insufficient for multi-observable
+scopes with observables of different dynamic ranges. The admissible
+ε-interval must be specified per observable:
+
+```
+I_ε = [ε₁_min, ε₁_max] × [ε₂_min, ε₂_max]
+```
+
+where each εᵢ is calibrated to the range and structure of πᵢ.
+Alternatively, observables can be normalized to a common scale
+before applying a single ε — but this normalization is itself a
+scope choice that affects the partition.
+
 ---
 
 ## 5 The ε–Δ Interaction (Critical)
@@ -350,20 +424,29 @@ The following aspects of ε require further formalization:
   state space? High-symmetry regions may require finer resolution than bulk regions.
   If ε is state-dependent, the admissible interval (§4) becomes an admissible
   *region* in a function space — the formalization of this is open.
+  The I_ε(κ) result (§4) suggests a related but distinct phenomenon: ε itself
+  is uniform, but the *admissible range* of ε varies with system state.
 - **ε-sweep implementation:** The ε-sweep protocol (§4) is implemented in
-  `pipeline/epsilon_sweep.py` and has been validated on CASE-20260311-0001
-  (Kuramoto). Remaining design questions: automatic plateau boundary detection
-  (currently visual), adaptive step refinement near critical ε-values,
-  and integration with `pipeline.sweep` for joint (κ, ε) sweeps.
-- **Plateau stability under BC variation:** Within a single BC parameter value,
-  the admissible ε-interval is well-defined. But as the BC parameter changes
-  (e.g., coupling strength κ), the interval may shift or narrow. Mapping
-  I_ε(κ) as a function of the BC parameter would reveal where the scope is
-  most and least robust — and whether transition boundaries θ* coincide with
-  ε-interval narrowing.
+  `pipeline/epsilon_sweep.py` and validated on CASE-20260311-0001 (Kuramoto).
+  The 2D map is implemented in `pipeline/epsilon_kappa_map.py`.
+  The multi-observable sweep is in `pipeline/epsilon_multi_observable.py` and
+  validated on CASE-20260311-0002 (Pendulum).
+  Remaining: adaptive step refinement near critical ε-values, automatic
+  plateau boundary detection.
+- **Plateau stability under BC variation:** Empirically confirmed (§4).
+  The admissible ε-interval narrows near phase transitions. Correlation
+  between plateau width and observable gradient: r = −0.77 on Kuramoto.
+  Open: does this hold for non-continuous transitions? For multi-stable systems?
 - **ε and information content:** Is there a relationship between ε and the
   information-theoretic mutual information between scope observables?
-- **Multiple ε for multiple observables:** When Π = {π₁, π₂, ...}, can
-  each observable have its own εᵢ? The admissible interval would then become
-  a box I_ε = [ε₁_min, ε₁_max] × [ε₂_min, ε₂_max] × ... in ε-space.
-  What is the joint admissibility condition?
+  The plateau width w might correlate with channel capacity — wide plateaus
+  indicate that the observable carries robust structural information.
+- **Multiple ε for multiple observables:** Empirically confirmed as necessary
+  (§4, Pendulum). Observables with different dynamic ranges require independent
+  εᵢ. The admissible region is a box in ε-space. Open: what is the joint
+  admissibility condition beyond component-wise? Does cross-observable
+  correlation introduce additional constraints?
+- **Observable normalization as scope choice:** The Pendulum result suggests
+  that normalizing observables to a common scale before applying a single ε
+  is itself a scope decision. Formalizing what "good" normalization means
+  (preserving regime structure vs. destroying it) is an open problem.

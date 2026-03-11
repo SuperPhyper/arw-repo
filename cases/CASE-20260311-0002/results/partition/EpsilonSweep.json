@@ -1,0 +1,2268 @@
+{
+  "case_id": "CASE-20260311-0002",
+  "system": "pendulum",
+  "working_epsilon": 0.05,
+  "sweep_param": "kappa",
+  "eps_range": [
+    0.0001,
+    0.5
+  ],
+  "eps_steps": 60,
+  "sigma_trace": [
+    {
+      "epsilon": 0.0001,
+      "regime_count": 13,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "adjacency_edge_count": 12,
+      "adjacency_edges": [
+        {
+          "from": 10,
+          "to": 11,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 11,
+          "to": 12,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 12,
+          "to": 9,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 9,
+          "to": 8,
+          "param_midpoint": 0.9
+        },
+        {
+          "from": 8,
+          "to": 7,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 7,
+          "to": 1,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 1.65
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "param_midpoint": 1.9
+        },
+        {
+          "from": 3,
+          "to": 4,
+          "param_midpoint": 2.25
+        },
+        {
+          "from": 4,
+          "to": 6,
+          "param_midpoint": 2.75
+        },
+        {
+          "from": 6,
+          "to": 0,
+          "param_midpoint": 3.5
+        },
+        {
+          "from": 0,
+          "to": 5,
+          "param_midpoint": 4.5
+        }
+      ]
+    },
+    {
+      "epsilon": 0.000116,
+      "regime_count": 12,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "adjacency_edge_count": 11,
+      "adjacency_edges": [
+        {
+          "from": 9,
+          "to": 10,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 10,
+          "to": 11,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 11,
+          "to": 8,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 8,
+          "to": 7,
+          "param_midpoint": 0.9
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 6,
+          "to": 1,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 1.65
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "param_midpoint": 1.9
+        },
+        {
+          "from": 3,
+          "to": 5,
+          "param_midpoint": 2.75
+        },
+        {
+          "from": 5,
+          "to": 0,
+          "param_midpoint": 3.5
+        },
+        {
+          "from": 0,
+          "to": 4,
+          "param_midpoint": 4.5
+        }
+      ]
+    },
+    {
+      "epsilon": 0.000133,
+      "regime_count": 12,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "adjacency_edge_count": 11,
+      "adjacency_edges": [
+        {
+          "from": 9,
+          "to": 10,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 10,
+          "to": 11,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 11,
+          "to": 8,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 8,
+          "to": 7,
+          "param_midpoint": 0.9
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 6,
+          "to": 1,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 1.65
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "param_midpoint": 1.9
+        },
+        {
+          "from": 3,
+          "to": 5,
+          "param_midpoint": 2.75
+        },
+        {
+          "from": 5,
+          "to": 0,
+          "param_midpoint": 3.5
+        },
+        {
+          "from": 0,
+          "to": 4,
+          "param_midpoint": 4.5
+        }
+      ]
+    },
+    {
+      "epsilon": 0.000154,
+      "regime_count": 12,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "adjacency_edge_count": 11,
+      "adjacency_edges": [
+        {
+          "from": 9,
+          "to": 10,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 10,
+          "to": 11,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 11,
+          "to": 8,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 8,
+          "to": 7,
+          "param_midpoint": 0.9
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 6,
+          "to": 1,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 1.65
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "param_midpoint": 1.9
+        },
+        {
+          "from": 3,
+          "to": 5,
+          "param_midpoint": 2.75
+        },
+        {
+          "from": 5,
+          "to": 0,
+          "param_midpoint": 3.5
+        },
+        {
+          "from": 0,
+          "to": 4,
+          "param_midpoint": 4.5
+        }
+      ]
+    },
+    {
+      "epsilon": 0.000178,
+      "regime_count": 12,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "adjacency_edge_count": 11,
+      "adjacency_edges": [
+        {
+          "from": 9,
+          "to": 10,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 10,
+          "to": 11,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 11,
+          "to": 8,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 8,
+          "to": 7,
+          "param_midpoint": 0.9
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 6,
+          "to": 1,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 1.65
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "param_midpoint": 1.9
+        },
+        {
+          "from": 3,
+          "to": 5,
+          "param_midpoint": 2.75
+        },
+        {
+          "from": 5,
+          "to": 0,
+          "param_midpoint": 3.5
+        },
+        {
+          "from": 0,
+          "to": 4,
+          "param_midpoint": 4.5
+        }
+      ]
+    },
+    {
+      "epsilon": 0.000206,
+      "regime_count": 12,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "adjacency_edge_count": 11,
+      "adjacency_edges": [
+        {
+          "from": 9,
+          "to": 10,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 10,
+          "to": 11,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 11,
+          "to": 8,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 8,
+          "to": 7,
+          "param_midpoint": 0.9
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 6,
+          "to": 1,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 1.65
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "param_midpoint": 1.9
+        },
+        {
+          "from": 3,
+          "to": 5,
+          "param_midpoint": 2.75
+        },
+        {
+          "from": 5,
+          "to": 0,
+          "param_midpoint": 3.5
+        },
+        {
+          "from": 0,
+          "to": 4,
+          "param_midpoint": 4.5
+        }
+      ]
+    },
+    {
+      "epsilon": 0.000238,
+      "regime_count": 12,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "adjacency_edge_count": 11,
+      "adjacency_edges": [
+        {
+          "from": 9,
+          "to": 10,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 10,
+          "to": 11,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 11,
+          "to": 8,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 8,
+          "to": 7,
+          "param_midpoint": 0.9
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 6,
+          "to": 1,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 1.65
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "param_midpoint": 1.9
+        },
+        {
+          "from": 3,
+          "to": 5,
+          "param_midpoint": 2.75
+        },
+        {
+          "from": 5,
+          "to": 0,
+          "param_midpoint": 3.5
+        },
+        {
+          "from": 0,
+          "to": 4,
+          "param_midpoint": 4.5
+        }
+      ]
+    },
+    {
+      "epsilon": 0.000275,
+      "regime_count": 12,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "adjacency_edge_count": 11,
+      "adjacency_edges": [
+        {
+          "from": 9,
+          "to": 10,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 10,
+          "to": 11,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 11,
+          "to": 8,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 8,
+          "to": 7,
+          "param_midpoint": 0.9
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 6,
+          "to": 1,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 1.65
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "param_midpoint": 1.9
+        },
+        {
+          "from": 3,
+          "to": 5,
+          "param_midpoint": 2.75
+        },
+        {
+          "from": 5,
+          "to": 0,
+          "param_midpoint": 3.5
+        },
+        {
+          "from": 0,
+          "to": 4,
+          "param_midpoint": 4.5
+        }
+      ]
+    },
+    {
+      "epsilon": 0.000317,
+      "regime_count": 12,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "adjacency_edge_count": 11,
+      "adjacency_edges": [
+        {
+          "from": 9,
+          "to": 10,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 10,
+          "to": 11,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 11,
+          "to": 8,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 8,
+          "to": 7,
+          "param_midpoint": 0.9
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 6,
+          "to": 1,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 1.65
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "param_midpoint": 1.9
+        },
+        {
+          "from": 3,
+          "to": 5,
+          "param_midpoint": 2.75
+        },
+        {
+          "from": 5,
+          "to": 0,
+          "param_midpoint": 3.5
+        },
+        {
+          "from": 0,
+          "to": 4,
+          "param_midpoint": 4.5
+        }
+      ]
+    },
+    {
+      "epsilon": 0.000367,
+      "regime_count": 12,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "adjacency_edge_count": 11,
+      "adjacency_edges": [
+        {
+          "from": 9,
+          "to": 10,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 10,
+          "to": 11,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 11,
+          "to": 8,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 8,
+          "to": 7,
+          "param_midpoint": 0.9
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 6,
+          "to": 1,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 1.65
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "param_midpoint": 1.9
+        },
+        {
+          "from": 3,
+          "to": 5,
+          "param_midpoint": 2.75
+        },
+        {
+          "from": 5,
+          "to": 0,
+          "param_midpoint": 3.5
+        },
+        {
+          "from": 0,
+          "to": 4,
+          "param_midpoint": 4.5
+        }
+      ]
+    },
+    {
+      "epsilon": 0.000424,
+      "regime_count": 12,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "adjacency_edge_count": 11,
+      "adjacency_edges": [
+        {
+          "from": 9,
+          "to": 10,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 10,
+          "to": 11,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 11,
+          "to": 8,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 8,
+          "to": 7,
+          "param_midpoint": 0.9
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 6,
+          "to": 1,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 1.65
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "param_midpoint": 1.9
+        },
+        {
+          "from": 3,
+          "to": 5,
+          "param_midpoint": 2.75
+        },
+        {
+          "from": 5,
+          "to": 0,
+          "param_midpoint": 3.5
+        },
+        {
+          "from": 0,
+          "to": 4,
+          "param_midpoint": 4.5
+        }
+      ]
+    },
+    {
+      "epsilon": 0.000489,
+      "regime_count": 12,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "adjacency_edge_count": 11,
+      "adjacency_edges": [
+        {
+          "from": 9,
+          "to": 10,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 10,
+          "to": 11,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 11,
+          "to": 8,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 8,
+          "to": 7,
+          "param_midpoint": 0.9
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 6,
+          "to": 1,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 1.65
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "param_midpoint": 1.9
+        },
+        {
+          "from": 3,
+          "to": 5,
+          "param_midpoint": 2.75
+        },
+        {
+          "from": 5,
+          "to": 0,
+          "param_midpoint": 3.5
+        },
+        {
+          "from": 0,
+          "to": 4,
+          "param_midpoint": 4.5
+        }
+      ]
+    },
+    {
+      "epsilon": 0.000565,
+      "regime_count": 12,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "adjacency_edge_count": 11,
+      "adjacency_edges": [
+        {
+          "from": 9,
+          "to": 10,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 10,
+          "to": 11,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 11,
+          "to": 8,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 8,
+          "to": 7,
+          "param_midpoint": 0.9
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 6,
+          "to": 1,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 1.65
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "param_midpoint": 1.9
+        },
+        {
+          "from": 3,
+          "to": 5,
+          "param_midpoint": 2.75
+        },
+        {
+          "from": 5,
+          "to": 0,
+          "param_midpoint": 3.5
+        },
+        {
+          "from": 0,
+          "to": 4,
+          "param_midpoint": 4.5
+        }
+      ]
+    },
+    {
+      "epsilon": 0.000653,
+      "regime_count": 11,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "adjacency_edge_count": 10,
+      "adjacency_edges": [
+        {
+          "from": 8,
+          "to": 9,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 9,
+          "to": 10,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 10,
+          "to": 7,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 6,
+          "to": 1,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 1.65
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "param_midpoint": 1.9
+        },
+        {
+          "from": 3,
+          "to": 5,
+          "param_midpoint": 2.75
+        },
+        {
+          "from": 5,
+          "to": 0,
+          "param_midpoint": 3.5
+        },
+        {
+          "from": 0,
+          "to": 4,
+          "param_midpoint": 4.5
+        }
+      ]
+    },
+    {
+      "epsilon": 0.000755,
+      "regime_count": 10,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "adjacency_edge_count": 9,
+      "adjacency_edges": [
+        {
+          "from": 7,
+          "to": 8,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 8,
+          "to": 9,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 9,
+          "to": 6,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 6,
+          "to": 5,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 5,
+          "to": 1,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 1.65
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "param_midpoint": 1.9
+        },
+        {
+          "from": 3,
+          "to": 4,
+          "param_midpoint": 2.75
+        },
+        {
+          "from": 4,
+          "to": 0,
+          "param_midpoint": 3.5
+        }
+      ]
+    },
+    {
+      "epsilon": 0.000872,
+      "regime_count": 10,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "adjacency_edge_count": 9,
+      "adjacency_edges": [
+        {
+          "from": 7,
+          "to": 8,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 8,
+          "to": 9,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 9,
+          "to": 6,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 6,
+          "to": 5,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 5,
+          "to": 1,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 1.65
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "param_midpoint": 1.9
+        },
+        {
+          "from": 3,
+          "to": 4,
+          "param_midpoint": 2.75
+        },
+        {
+          "from": 4,
+          "to": 0,
+          "param_midpoint": 3.5
+        }
+      ]
+    },
+    {
+      "epsilon": 0.001007,
+      "regime_count": 10,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "adjacency_edge_count": 9,
+      "adjacency_edges": [
+        {
+          "from": 7,
+          "to": 8,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 8,
+          "to": 9,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 9,
+          "to": 6,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 6,
+          "to": 5,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 5,
+          "to": 1,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 1.65
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "param_midpoint": 1.9
+        },
+        {
+          "from": 3,
+          "to": 4,
+          "param_midpoint": 2.75
+        },
+        {
+          "from": 4,
+          "to": 0,
+          "param_midpoint": 3.5
+        }
+      ]
+    },
+    {
+      "epsilon": 0.001164,
+      "regime_count": 10,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "adjacency_edge_count": 9,
+      "adjacency_edges": [
+        {
+          "from": 7,
+          "to": 8,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 8,
+          "to": 9,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 9,
+          "to": 6,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 6,
+          "to": 5,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 5,
+          "to": 1,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 1.65
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "param_midpoint": 1.9
+        },
+        {
+          "from": 3,
+          "to": 4,
+          "param_midpoint": 2.75
+        },
+        {
+          "from": 4,
+          "to": 0,
+          "param_midpoint": 3.5
+        }
+      ]
+    },
+    {
+      "epsilon": 0.001344,
+      "regime_count": 10,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "adjacency_edge_count": 9,
+      "adjacency_edges": [
+        {
+          "from": 7,
+          "to": 8,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 8,
+          "to": 9,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 9,
+          "to": 6,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 6,
+          "to": 5,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 5,
+          "to": 1,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 1.65
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "param_midpoint": 1.9
+        },
+        {
+          "from": 3,
+          "to": 4,
+          "param_midpoint": 2.75
+        },
+        {
+          "from": 4,
+          "to": 0,
+          "param_midpoint": 3.5
+        }
+      ]
+    },
+    {
+      "epsilon": 0.001553,
+      "regime_count": 9,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "adjacency_edge_count": 8,
+      "adjacency_edges": [
+        {
+          "from": 6,
+          "to": 7,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 7,
+          "to": 8,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 8,
+          "to": 5,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 5,
+          "to": 4,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 4,
+          "to": 1,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 1.65
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "param_midpoint": 1.9
+        },
+        {
+          "from": 3,
+          "to": 0,
+          "param_midpoint": 3.5
+        }
+      ]
+    },
+    {
+      "epsilon": 0.001794,
+      "regime_count": 9,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "adjacency_edge_count": 8,
+      "adjacency_edges": [
+        {
+          "from": 6,
+          "to": 7,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 7,
+          "to": 8,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 8,
+          "to": 5,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 5,
+          "to": 4,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 4,
+          "to": 1,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 1.65
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "param_midpoint": 1.9
+        },
+        {
+          "from": 3,
+          "to": 0,
+          "param_midpoint": 3.5
+        }
+      ]
+    },
+    {
+      "epsilon": 0.002073,
+      "regime_count": 9,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "adjacency_edge_count": 8,
+      "adjacency_edges": [
+        {
+          "from": 6,
+          "to": 7,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 7,
+          "to": 8,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 8,
+          "to": 5,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 5,
+          "to": 4,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 4,
+          "to": 1,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 1.65
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "param_midpoint": 1.9
+        },
+        {
+          "from": 3,
+          "to": 0,
+          "param_midpoint": 3.5
+        }
+      ]
+    },
+    {
+      "epsilon": 0.002395,
+      "regime_count": 7,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "adjacency_edge_count": 6,
+      "adjacency_edges": [
+        {
+          "from": 4,
+          "to": 5,
+          "param_midpoint": 0.1
+        },
+        {
+          "from": 5,
+          "to": 6,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 6,
+          "to": 3,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 3,
+          "to": 2,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 2,
+          "to": 0,
+          "param_midpoint": 1.35
+        },
+        {
+          "from": 0,
+          "to": 1,
+          "param_midpoint": 1.65
+        }
+      ]
+    },
+    {
+      "epsilon": 0.002767,
+      "regime_count": 5,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "adjacency_edge_count": 4,
+      "adjacency_edges": [
+        {
+          "from": 3,
+          "to": 4,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 4,
+          "to": 2,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 2,
+          "to": 1,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 1,
+          "to": 0,
+          "param_midpoint": 1.35
+        }
+      ]
+    },
+    {
+      "epsilon": 0.003196,
+      "regime_count": 5,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "adjacency_edge_count": 4,
+      "adjacency_edges": [
+        {
+          "from": 3,
+          "to": 4,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 4,
+          "to": 2,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 2,
+          "to": 1,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 1,
+          "to": 0,
+          "param_midpoint": 1.35
+        }
+      ]
+    },
+    {
+      "epsilon": 0.003693,
+      "regime_count": 5,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "adjacency_edge_count": 4,
+      "adjacency_edges": [
+        {
+          "from": 3,
+          "to": 4,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 4,
+          "to": 2,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 2,
+          "to": 1,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 1,
+          "to": 0,
+          "param_midpoint": 1.35
+        }
+      ]
+    },
+    {
+      "epsilon": 0.004266,
+      "regime_count": 5,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "adjacency_edge_count": 4,
+      "adjacency_edges": [
+        {
+          "from": 3,
+          "to": 4,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 4,
+          "to": 2,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 2,
+          "to": 1,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 1,
+          "to": 0,
+          "param_midpoint": 1.35
+        }
+      ]
+    },
+    {
+      "epsilon": 0.004929,
+      "regime_count": 5,
+      "regime_ids": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "adjacency_edge_count": 4,
+      "adjacency_edges": [
+        {
+          "from": 3,
+          "to": 4,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 4,
+          "to": 2,
+          "param_midpoint": 0.65
+        },
+        {
+          "from": 2,
+          "to": 1,
+          "param_midpoint": 1.1
+        },
+        {
+          "from": 1,
+          "to": 0,
+          "param_midpoint": 1.35
+        }
+      ]
+    },
+    {
+      "epsilon": 0.005694,
+      "regime_count": 3,
+      "regime_ids": [
+        0,
+        1,
+        2
+      ],
+      "adjacency_edge_count": 2,
+      "adjacency_edges": [
+        {
+          "from": 1,
+          "to": 2,
+          "param_midpoint": 0.35
+        },
+        {
+          "from": 1,
+          "to": 0,
+          "param_midpoint": 1.1
+        }
+      ]
+    },
+    {
+      "epsilon": 0.006579,
+      "regime_count": 2,
+      "regime_ids": [
+        0,
+        1
+      ],
+      "adjacency_edge_count": 1,
+      "adjacency_edges": [
+        {
+          "from": 1,
+          "to": 0,
+          "param_midpoint": 1.1
+        }
+      ]
+    },
+    {
+      "epsilon": 0.0076,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.008781,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.010144,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.01172,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.01354,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.015642,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.018072,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.020878,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.024121,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.027866,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.032194,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.037194,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.04297,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.049643,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.057353,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.06626,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.07655,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.088438,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.102172,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.118039,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.13637,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.157549,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.182016,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.210283,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.242939,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.280668,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.324255,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.374612,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.432788,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    },
+    {
+      "epsilon": 0.5,
+      "regime_count": 1,
+      "regime_ids": [
+        0
+      ],
+      "adjacency_edge_count": 0,
+      "adjacency_edges": []
+    }
+  ],
+  "plateaus": [
+    {
+      "regime_count": 13,
+      "edge_count": 12,
+      "eps_start": 0.0001,
+      "eps_end": 0.0001,
+      "n_points": 1,
+      "width_log": 0.0
+    },
+    {
+      "regime_count": 12,
+      "edge_count": 11,
+      "eps_start": 0.000116,
+      "eps_end": 0.000565,
+      "n_points": 12,
+      "width_log": 1.588
+    },
+    {
+      "regime_count": 11,
+      "edge_count": 10,
+      "eps_start": 0.000653,
+      "eps_end": 0.000653,
+      "n_points": 1,
+      "width_log": 0.0
+    },
+    {
+      "regime_count": 10,
+      "edge_count": 9,
+      "eps_start": 0.000755,
+      "eps_end": 0.001344,
+      "n_points": 5,
+      "width_log": 0.5774
+    },
+    {
+      "regime_count": 9,
+      "edge_count": 8,
+      "eps_start": 0.001553,
+      "eps_end": 0.002073,
+      "n_points": 3,
+      "width_log": 0.2887
+    },
+    {
+      "regime_count": 7,
+      "edge_count": 6,
+      "eps_start": 0.002395,
+      "eps_end": 0.002395,
+      "n_points": 1,
+      "width_log": 0.0
+    },
+    {
+      "regime_count": 5,
+      "edge_count": 4,
+      "eps_start": 0.002767,
+      "eps_end": 0.004929,
+      "n_points": 5,
+      "width_log": 0.5774
+    },
+    {
+      "regime_count": 3,
+      "edge_count": 2,
+      "eps_start": 0.005694,
+      "eps_end": 0.005694,
+      "n_points": 1,
+      "width_log": 0.0
+    },
+    {
+      "regime_count": 2,
+      "edge_count": 1,
+      "eps_start": 0.006579,
+      "eps_end": 0.006579,
+      "n_points": 1,
+      "width_log": 0.0
+    },
+    {
+      "regime_count": 1,
+      "edge_count": 0,
+      "eps_start": 0.0076,
+      "eps_end": 0.5,
+      "n_points": 30,
+      "width_log": 4.1864
+    }
+  ],
+  "critical_epsilon_values": [
+    {
+      "epsilon_before": 0.0001,
+      "epsilon_after": 0.000116,
+      "epsilon_midpoint": 0.000108,
+      "N_before": 13,
+      "N_after": 12,
+      "edges_before": 12,
+      "edges_after": 11
+    },
+    {
+      "epsilon_before": 0.000565,
+      "epsilon_after": 0.000653,
+      "epsilon_midpoint": 0.000609,
+      "N_before": 12,
+      "N_after": 11,
+      "edges_before": 11,
+      "edges_after": 10
+    },
+    {
+      "epsilon_before": 0.000653,
+      "epsilon_after": 0.000755,
+      "epsilon_midpoint": 0.000704,
+      "N_before": 11,
+      "N_after": 10,
+      "edges_before": 10,
+      "edges_after": 9
+    },
+    {
+      "epsilon_before": 0.001344,
+      "epsilon_after": 0.001553,
+      "epsilon_midpoint": 0.001449,
+      "N_before": 10,
+      "N_after": 9,
+      "edges_before": 9,
+      "edges_after": 8
+    },
+    {
+      "epsilon_before": 0.002073,
+      "epsilon_after": 0.002395,
+      "epsilon_midpoint": 0.002234,
+      "N_before": 9,
+      "N_after": 7,
+      "edges_before": 8,
+      "edges_after": 6
+    },
+    {
+      "epsilon_before": 0.002395,
+      "epsilon_after": 0.002767,
+      "epsilon_midpoint": 0.002581,
+      "N_before": 7,
+      "N_after": 5,
+      "edges_before": 6,
+      "edges_after": 4
+    },
+    {
+      "epsilon_before": 0.004929,
+      "epsilon_after": 0.005694,
+      "epsilon_midpoint": 0.005312,
+      "N_before": 5,
+      "N_after": 3,
+      "edges_before": 4,
+      "edges_after": 2
+    },
+    {
+      "epsilon_before": 0.005694,
+      "epsilon_after": 0.006579,
+      "epsilon_midpoint": 0.006137,
+      "N_before": 3,
+      "N_after": 2,
+      "edges_before": 2,
+      "edges_after": 1
+    },
+    {
+      "epsilon_before": 0.006579,
+      "epsilon_after": 0.0076,
+      "epsilon_midpoint": 0.007089,
+      "N_before": 2,
+      "N_after": 1,
+      "edges_before": 1,
+      "edges_after": 0
+    }
+  ],
+  "admissible_interval": {
+    "regime_count": 1,
+    "edge_count": 0,
+    "eps_start": 0.0076,
+    "eps_end": 0.5,
+    "n_points": 30,
+    "width_log": 4.1864
+  }
+}

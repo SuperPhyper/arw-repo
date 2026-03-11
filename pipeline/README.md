@@ -45,6 +45,8 @@ ScopeSpec.yaml + BCManifest.yaml
 | [sweep.py](sweep.py) | BC parameter sweep; simulation kernels (Kuramoto implemented, others stubbed) |
 | [extract_partition.py](extract_partition.py) | Observable extraction + ε-threshold regime assignment |
 | [epsilon_sweep.py](epsilon_sweep.py) | ε-sweep: find admissible ε-interval, plateaus, critical ε-values |
+| [epsilon_kappa_map.py](epsilon_kappa_map.py) | 2D (κ, ε) scope robustness map: where does the scope become fragile? |
+| [epsilon_multi_observable.py](epsilon_multi_observable.py) | Multi-observable ε-sweep: independent plateaus per observable |
 | [invariants.py](invariants.py) | Partition invariants: regime count, adjacency graph, persistence, hysteresis, θ* |
 | [transfer.py](transfer.py) | Cross-scope distortion metrics (RCD, TBS, PCI, SDI, Φ) |
 | [audit_helpers.py](audit_helpers.py) | A5 failure audit: scope leakage, ε robustness, partition match, falsification |
@@ -72,6 +74,12 @@ python -m pipeline.extract_partition --case cases/CASE-... --in results/raw --ou
 
 # ε-sweep (find admissible ε-interval)
 python -m pipeline.epsilon_sweep --case cases/CASE-... --eps-min 0.001 --eps-max 1.0 --eps-steps 80
+
+# 2D (κ, ε) robustness map
+python -m pipeline.epsilon_kappa_map --case cases/CASE-... --kappa-points 80 --eps-steps 60
+
+# Multi-observable ε-sweep (for systems with Π = {π₁, π₂, ...})
+python -m pipeline.epsilon_multi_observable --case cases/CASE-... --eps-min 0.0001 --eps-max 0.5
 
 # Compute invariants
 python -m pipeline.invariants --case cases/CASE-... --in results/partition --out results/partition
