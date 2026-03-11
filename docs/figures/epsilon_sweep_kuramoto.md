@@ -4,6 +4,8 @@ status: reference
 
 # ε-Sweep: Partition Invariant Signature — Kuramoto
 
+![ε-Sweep: Partition Invariant Signature — Kuramoto](../../figures/epsilon_sweep_kuramoto.png)
+
 **File:** `figures/epsilon_sweep_kuramoto.png`
 **Case:** CASE-20260311-0001 (Kuramoto, N=500, 15 κ-values)
 
