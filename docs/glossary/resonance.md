@@ -1,3 +1,7 @@
+---
+status: needs-formalization
+---
+
 # Resonance
 
 ## Definition

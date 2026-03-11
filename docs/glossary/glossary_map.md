@@ -1,3 +1,7 @@
+---
+status: working-definition
+---
+
 # Glossary Map
 
 This map provides a structural overview of how the main ARW/ART concepts relate.

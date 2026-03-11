@@ -1,3 +1,7 @@
+---
+status: working-definition
+---
+
 # Latent Degrees of Freedom
 
 ## Definition

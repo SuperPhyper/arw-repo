@@ -1,3 +1,7 @@
+---
+status: working-definition
+---
+
 # Observable
 
 ## Definition

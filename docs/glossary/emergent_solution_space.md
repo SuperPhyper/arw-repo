@@ -1,3 +1,7 @@
+---
+status: working-definition
+---
+
 # Emergent Solution Space
 
 ## Definition

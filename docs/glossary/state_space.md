@@ -1,3 +1,7 @@
+---
+status: working-definition
+---
+
 # State Space
 
 ## Definition
