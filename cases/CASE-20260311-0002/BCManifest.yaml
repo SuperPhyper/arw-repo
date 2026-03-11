@@ -1,0 +1,188 @@
+# BCManifest.yaml — Multi-Link Pendulum BC Program
+# Version: 0.2
+schema_version: "0.2"
+id: "BCM-20260311-0002"
+scope_id: "SCOPE-20260311-0002"
+title: "Pendulum coupling + dissipation BC sweep"
+status: "active"
+created_at: "2026-03-11"
+updated_at: "2026-03-11"
+
+bc_components:
+  - id: "bc_01"
+    class: "coupling"
+    name: "Joint stiffness kappa"
+    description: >
+      Passive elastic coupling between the two pendulum links.
+      kappa = 0: fully decoupled, independent chaotic links.
+      kappa -> inf: links move as single unit (Locked regime R_P4).
+      This is the primary sweep parameter, structurally homologous
+      to K in the Kuramoto scope (SCOPE-20260311-0001).
+    locus:
+      applies_to: "B"
+      location_description: "joint torque constraint tau_joint = kappa * (theta_1 - theta_2)"
+
+    parameterization:
+      - name: "kappa"
+        symbol: "κ"
+        domain: "[0.0, 5.0]"
+        meaning: "Joint stiffness (coupling strength between links)"
+        implementation_hook:
+          type: "code_param"
+          reference: "pipeline.sweep.run_pendulum:params['kappa']"
+
+    perturbation_program:
+      sweeps:
+        - param: "kappa"
+          values: [0.0, 0.2, 0.5, 0.8, 1.0, 1.2, 1.5, 1.8, 2.0, 2.5, 3.0, 4.0, 5.0]
+          sweep_type: "grid"
+          notes: "Dense near expected R_P2/R_P3 boundary (~1.0-2.0); sparse at extremes"
+      admissible_delta_links:
+        - "delta_01"
+
+    resolution_plan:
+      epsilons: [0.02, 0.05, 0.1]
+      stability_window_criterion: "partition invariants stable across >= 2 consecutive epsilon values"
+
+    predicted_partition_effects:
+      qualitative:
+        - "regime_count_4_at_moderate_kappa"
+        - "locked_regime_emerges_at_high_kappa"
+        - "chaos_at_low_kappa_or_high_driving"
+      partition_type_prediction: "clustered"
+      invariants_to_track:
+        - "regime_count"
+        - "adjacency_graph"
+        - "persistence_under_sweep"
+        - "hysteresis_width"
+        - "transition_boundary"
+
+    failure_signatures:
+      - "no_stable_window_for_any_epsilon"
+      - "regime_count_1_all_kappa"
+      - "locked_regime_absent_at_high_kappa"
+
+    falsification_criteria:
+      - id: "fals_01"
+        statement: "R_P4 (Locked) regime appears for kappa >= 2.0"
+        measurable_test: "Var_rel < 0.001 for at least one sweep point with kappa >= 2.0"
+        threshold: "Var_rel < 0.001"
+      - id: "fals_02"
+        statement: "Partition persists over non-trivial stability window"
+        measurable_test: "persistence >= 0.6 for at least one epsilon in [0.02, 0.05, 0.1]"
+        threshold: "persistence >= 0.6"
+
+  - id: "bc_02"
+    class: "dissipation"
+    name: "Damping coefficient gamma"
+    description: >
+      Linear damping removes energy from the system, stabilizing
+      attractors and preventing unbounded growth. Held fixed in
+      Phase 1 sweep; treated as background BC.
+    locus:
+      applies_to: "B"
+      location_description: "damping torque tau_damp = -gamma * dtheta_i per link"
+
+    parameterization:
+      - name: "gamma"
+        symbol: "γ"
+        domain: "[0.0, 1.0]"
+        meaning: "Damping coefficient (fixed at 0.1 in Phase 1 sweep)"
+        implementation_hook:
+          type: "code_param"
+          reference: "pipeline.sweep.run_pendulum:params['gamma']"
+
+    perturbation_program:
+      sweeps:
+        - param: "gamma"
+          values: [0.1]
+          sweep_type: "manual"
+          notes: "Fixed in Phase 1; swept in Phase 3 sensitivity analysis"
+      admissible_delta_links:
+        - "delta_01"
+
+    resolution_plan:
+      epsilons: [0.05]
+      stability_window_criterion: "not primary sweep parameter in Phase 1"
+
+    predicted_partition_effects:
+      qualitative:
+        - "dissipation_stabilizes_attractor_boundaries"
+        - "higher_gamma_suppresses_chaos_at_low_kappa"
+      partition_type_prediction: "clustered"
+      invariants_to_track:
+        - "regime_count"
+        - "persistence_under_sweep"
+
+    failure_signatures:
+      - "chaos_absent_even_at_gamma_0"
+
+    falsification_criteria:
+      - id: "fals_03"
+        statement: "Chaotic regime present when gamma = 0 and kappa = 0"
+        measurable_test: "lambda_proxy > 0.05 for at least one IC at kappa=0.0, gamma=0.0"
+        threshold: "lambda_proxy > 0.05"
+
+transfer_targets:
+  - target_scope_id: "SCOPE-20260311-0001"
+    target_bc_manifest_id: "BCM-20260311-0001"
+    direction: "SCOPE-20260311-0002 -> SCOPE-20260311-0001"
+
+    structural_homology_claim: >
+      Both scopes have a single dominant coupling BC (kappa / K) that drives
+      a transition from uncoupled/incoherent behavior to synchronized/locked
+      behavior. The regime graph topology is predicted to be isomorphic:
+      sequential transition with one primary boundary (theta*).
+
+    shared_bc_components:
+      - "bc_01 (coupling)"
+
+    expected_transfer: "partial"
+    expected_transfer_rationale: >
+      Kuramoto has a clean analytical K_c; Pendulum has a kappa-dependent
+      boundary that also depends on driving and initial conditions.
+      RCD = 0 expected (both 3-4 regimes), TBS may be non-zero due to
+      different boundary locations, PCI < 1 near transition boundary.
+
+    distortion_metrics_planned:
+      - name: "RCD"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md"
+        expected_value: "0 or 1 (small regime count difference)"
+      - name: "TBS"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md"
+        expected_value: "non-zero; reflects different K_c vs kappa_c"
+      - name: "PCI"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md"
+        expected_value: "0.6-0.9 (partial compatibility)"
+      - name: "SDI"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md"
+        expected_value: "0 or 1 (topologically similar adjacency graphs)"
+      - name: "Phi"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md"
+        expected_value: "> 0.5 (partial admissibility)"
+
+    transfer_falsification:
+      - id: "tf_01"
+        statement: "Phi > 0.5 indicating partial admissibility"
+        measurable_test: "Phi >= 0.5 after transfer computation"
+        threshold: "Phi >= 0.5"
+      - id: "tf_02"
+        statement: "Adjacency graphs are topologically isomorphic (SDI = 0)"
+        measurable_test: "SDI = 0 (same number of edges, same sequential structure)"
+        threshold: "SDI <= 1"
+
+provenance:
+  sources:
+    - type: "experiment_doc"
+      ref: "experiments/multi_link_pendulum.md"
+      pointer: "Sections 3-5 (regime partition, admissibility analysis)"
+    - type: "experiment_doc"
+      ref: "cases/CASE-20260311-0001/BCManifest.yaml"
+      pointer: "Transfer target reference"
+  owners:
+    - role: "BoundaryTaxonomist"
+      name: "Rico Felder"
+  links:
+    partition_pipeline_id: ""
+    case_record_id: "CASE-20260311-0002"
+    experiment_doc: "experiments/multi_link_pendulum.md"

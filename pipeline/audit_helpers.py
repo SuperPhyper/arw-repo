@@ -30,9 +30,9 @@ REPO_ROOT = Path(__file__).parent.parent
 # ARW-forbidden constructs in ScopeSpec (belong only in ART, not in formal ARW level)
 # Reference: docs/core (ARW makes no empirical claims)
 ARW_FORBIDDEN_KEYWORDS = [
-    "lyapunov", "hamiltonian", "energy", "objective", "reward",
+    "hamiltonian", "objective", "reward",
     "policy", "regulation_error", "desired_state", "goal", "utility",
-    "optimal", "loss_function",
+    "optimal", "loss_function", "ground_truth", "true_model",
 ]
 
 

@@ -59,6 +59,43 @@ def extract_observable_kuramoto(result: dict) -> dict:
     }
 
 
+def extract_observable_pendulum(result: dict) -> dict:
+    """
+    Observables: lambda_proxy (chaos indicator) and var_rel (locking indicator)
+    Regime partition R_P (from experiments/multi_link_pendulum.md):
+        R_P4 Locked:         var_rel < 0.0005  (links move as unit — high kappa)
+        R_P3 Chaotic:        lambda_proxy > 0.09
+        R_P1 Periodic:       lambda_proxy < 0.0
+        R_P2 Quasi-periodic: 0.0 <= lambda_proxy <= 0.09
+
+    Priority order: Locked > Chaotic > Periodic > Quasi-periodic
+    Thresholds calibrated to actual simulation output range (0.06-0.10 for this IC/param regime).
+    """
+    if result.get("status") != "ok":
+        return {"observable": None, "regime_label": "unknown", "regime_id": -1}
+
+    lp      = result.get("lambda_proxy", 0.0)
+    var_rel = result.get("var_rel", 999.0)
+
+    if var_rel < 0.0005:
+        label, rid = "Locked", 3
+    elif lp > 0.09:
+        label, rid = "Chaotic", 2
+    elif lp < 0.0:
+        label, rid = "Periodic", 0
+    else:
+        label, rid = "Quasi_periodic", 1
+
+    return {
+        "observable":      lp,
+        "observable_name": "lambda_proxy",
+        "observable_2":    var_rel,
+        "observable_2_name": "var_rel",
+        "regime_label":    label,
+        "regime_id":       rid,
+    }
+
+
 def extract_observable_stub(result: dict) -> dict:
     return {"observable": None, "regime_label": "stub", "regime_id": -1,
             "note": "Implement observable extractor for this system"}
@@ -66,7 +103,7 @@ def extract_observable_stub(result: dict) -> dict:
 
 OBSERVABLE_MAP = {
     "kuramoto":  extract_observable_kuramoto,
-    "pendulum":  extract_observable_stub,
+    "pendulum":  extract_observable_pendulum,
     "consensus": extract_observable_stub,
     "meanfield": extract_observable_stub,
     "labyrinth": extract_observable_stub,

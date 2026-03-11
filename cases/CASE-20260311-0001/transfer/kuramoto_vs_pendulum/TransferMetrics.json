@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "case_A": "CASE-20260311-0001",
+    "case_B": "CASE-20260311-0002",
+    "system_A": "kuramoto",
+    "system_B": "pendulum"
+  },
+  "metrics": {
+    "RCD": {
+      "value": 1,
+      "N_A": 3,
+      "N_B": 2,
+      "interpretation": "minor_mismatch"
+    },
+    "TBS": {
+      "value": 1.15,
+      "theta_star_A": 1.25,
+      "theta_star_B": 0.1,
+      "interpretation": "large_shift"
+    },
+    "PCI": {
+      "value": 0.6667,
+      "N_A": 3,
+      "N_B": 2,
+      "interpretation": "partial_compatibility",
+      "note": "Structural PCI approximation. Full PCI requires aligned annotated results."
+    },
+    "SDI": {
+      "value": 2,
+      "nodes_A": 3,
+      "nodes_B": 2,
+      "edges_A": 2,
+      "edges_B": 1,
+      "interpretation": "minor_distortion"
+    },
+    "Phi": {
+      "value": 0.6,
+      "components": {
+        "PCI": 0.6667,
+        "RCD_score": 0.6666666666666667,
+        "SDI_score": 0.6666666666666667,
+        "TBS_score": 0
+      },
+      "interpretation": "partially_admissible"
+    }
+  }
+}

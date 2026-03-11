@@ -80,9 +80,137 @@ def run_kuramoto(params: dict, sweep_point: dict, rng: np.random.Generator) -> d
 
 
 def run_pendulum(params: dict, sweep_point: dict, rng: np.random.Generator) -> dict:
-    """Stub — multi-link pendulum. Implement with scipy.integrate.solve_ivp."""
-    return {"status": "stub", "sweep_point": sweep_point,
-            "note": "Implement pendulum ODE in pipeline/kernels/pendulum.py"}
+    """
+    Two-link planar pendulum with passive joint coupling.
+    S_P = (B_P, Pi_P, Delta_P, epsilon_P)
+
+    State: x = (theta_1, theta_2, dtheta_1, dtheta_2)
+    Observables:
+        pi_01: lambda_proxy  — finite-time Lyapunov exponent proxy (chaos indicator)
+        pi_02: Var_rel       — variance of (theta_1 - theta_2) in steady state
+
+    Regime partition R_P:
+        R_P1 Periodic:       lambda_proxy < 0,    Var_rel >= 0.01
+        R_P2 Quasi-periodic: lambda_proxy in [-0.05, 0.05], Var_rel moderate
+        R_P3 Chaotic:        lambda_proxy > 0.05
+        R_P4 Locked:         Var_rel < 0.001  (links move as unit)
+
+    Primary sweep parameter: kappa (joint stiffness)
+    """
+    try:
+        from scipy.integrate import solve_ivp
+    except ImportError:
+        return {"status": "error", "note": "scipy not installed. Run: pip install scipy --break-system-packages"}
+
+    kappa  = float(sweep_point.get("kappa", 1.0))
+    gamma  = float(params.get("gamma", 0.1))    # damping
+    A      = float(params.get("A", 0.0))        # driving amplitude (0 = free)
+    Omega  = float(params.get("Omega", 0.67))   # driving frequency
+    m      = float(params.get("m", 1.0))        # link mass
+    L      = float(params.get("L", 1.0))        # link length
+    g      = 9.81
+    T_end  = float(params.get("T", 80.0))
+    T_trans = float(params.get("T_transient", 30.0))
+    seed   = int(sweep_point.get("seed", 42))
+    n_ic   = int(params.get("n_ic", 3))          # ICs for lambda_proxy averaging
+
+    def pendulum_ode(t, y):
+        th1, th2, dth1, dth2 = y
+        # Equations of motion (simplified equal-mass, equal-length, small-angle safe)
+        # Full nonlinear EOM for two-link pendulum
+        delta = th2 - th1
+
+        # Denominator terms
+        den = 2*m*L**2 * (2 - np.cos(delta)**2) + 1e-12
+
+        # Driving torque on link 1
+        tau_drive = A * np.cos(Omega * t) if A > 0 else 0.0
+
+        ddth1 = (
+            2*m*L**2 * (dth2**2 * np.sin(delta) - 2*g/L * np.sin(th1))
+            + m*L**2 * (dth1**2 * np.sin(delta) * np.cos(delta) - g/L * np.sin(th2) * np.cos(delta))
+            - kappa * (th1 - th2)
+            - gamma * dth1
+            + tau_drive
+        ) / den
+
+        ddth2 = (
+            m*L**2 * (-dth1**2 * np.sin(delta) + 2*g/L * (np.sin(th1)*np.cos(delta) - np.sin(th2)))
+            + kappa * (th1 - th2)
+            - gamma * dth2
+        ) / den
+
+        return [dth1, dth2, ddth1, ddth2]
+
+    rng_local = np.random.default_rng(seed)
+
+    # Small ICs: start near equilibrium so low-kappa regimes are accessible
+    # IC amplitude scales inversely with kappa: high kappa -> even smaller ICs (near locked)
+    ic_amp = min(0.25, max(0.05, 0.3 / (1.0 + kappa)))
+
+    # ── Steady-state trajectory for Var_rel ─────────────────────────────────
+    y0_base = rng_local.uniform([-ic_amp, -ic_amp, 0, 0], [ic_amp, ic_amp, 0, 0])
+    try:
+        sol = solve_ivp(pendulum_ode, [0, T_end], y0_base,
+                        method="RK45", max_step=0.02, dense_output=False,
+                        rtol=1e-8, atol=1e-10)
+        if not sol.success:
+            raise RuntimeError(sol.message)
+        i_trans = np.searchsorted(sol.t, T_trans)
+        th1_ss = sol.y[0, i_trans:]
+        th2_ss = sol.y[1, i_trans:]
+        var_rel = float(np.var(th1_ss - th2_ss))
+    except Exception as e:
+        return {"status": "error", "note": str(e), "sweep_point": sweep_point}
+
+    # ── Lambda proxy: finite-time divergence rate ────────────────────────────
+    # Use same small ICs for consistency with var_rel measurement
+    lambda_proxies = []
+    T_lyap = 30.0
+    delta_x0_mag = 1e-7
+    for i in range(n_ic):
+        y0 = rng_local.uniform([-ic_amp, -ic_amp, 0, 0], [ic_amp, ic_amp, 0, 0])
+        d0 = rng_local.standard_normal(4)
+        d0 = d0 / np.linalg.norm(d0) * delta_x0_mag
+        y0_pert = y0 + d0
+        try:
+            s1 = solve_ivp(pendulum_ode, [0, T_lyap], y0,
+                           method="RK45", max_step=0.02, rtol=1e-8, atol=1e-10)
+            s2 = solve_ivp(pendulum_ode, [0, T_lyap], y0_pert,
+                           method="RK45", max_step=0.02, rtol=1e-8, atol=1e-10)
+            if s1.success and s2.success:
+                dT = np.linalg.norm(s1.y[:, -1] - s2.y[:, -1])
+                lp = (1.0 / T_lyap) * np.log(max(dT, 1e-20) / delta_x0_mag)
+                lambda_proxies.append(lp)
+        except Exception:
+            pass
+
+    lambda_proxy = float(np.mean(lambda_proxies)) if lambda_proxies else 0.0
+
+    # ── Regime labeling ──────────────────────────────────────────────────────
+    # Var_rel < 0.0005: links tightly locked (R_P4)
+    # lambda_proxy > 0.08: clearly chaotic (R_P3)
+    # lambda_proxy < 0.0: negative divergence = periodic/stable (R_P1)
+    # otherwise: quasi-periodic / transition (R_P2)
+    if var_rel < 0.0005:
+        regime_label, regime_id = "Locked", 3
+    elif lambda_proxy > 0.08:
+        regime_label, regime_id = "Chaotic", 2
+    elif lambda_proxy < 0.0:
+        regime_label, regime_id = "Periodic", 0
+    else:
+        regime_label, regime_id = "Quasi_periodic", 1
+
+    return {
+        "status":        "ok",
+        "kappa":         kappa,
+        "gamma":         gamma,
+        "lambda_proxy":  round(lambda_proxy, 6),
+        "var_rel":       round(var_rel, 6),
+        "regime_label":  regime_label,
+        "regime_id":     regime_id,
+        "n_ic_used":     len(lambda_proxies),
+    }
 
 
 def run_consensus(params: dict, sweep_point: dict, rng: np.random.Generator) -> dict:
