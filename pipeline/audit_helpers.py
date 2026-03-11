@@ -136,8 +136,70 @@ def collect_failure_modes(bcm: dict) -> list:
     return modes
 
 
+def check_failure_modes_against_results(bcm: dict, inv: dict) -> list:
+    """
+    Actively check each declared failure signature against Invariants.json.
+    Returns list of (status, message) tuples: status = "triggered" | "not_triggered" | "unknown"
+    """
+    if inv is None:
+        return [("unknown", "Invariants.json not found — cannot evaluate failure modes")]
+
+    findings = []
+    rc   = inv.get("regime_count", None)
+    pers = inv.get("persistence", None)
+
+    for bc in bcm.get("bc_components", []):
+        bc_id = bc.get("id", "?")
+        for sig in (bc.get("failure_signatures") or []):
+            if not sig:
+                continue
+
+            if "no_stable_window" in sig:
+                if pers is not None and pers < 0.5:
+                    findings.append(("triggered",
+                        f"[{bc_id}] '{sig}' TRIGGERED: persistence={pers:.2f} < 0.5"))
+                elif pers is not None:
+                    findings.append(("not_triggered",
+                        f"[{bc_id}] '{sig}' not triggered: persistence={pers:.2f} >= 0.5"))
+                else:
+                    findings.append(("unknown", f"[{bc_id}] '{sig}' — persistence not computed"))
+
+            elif "regime_count_1" in sig:
+                if rc is not None and rc == 1:
+                    findings.append(("triggered",
+                        f"[{bc_id}] '{sig}' TRIGGERED: regime_count=1 (no partition)"))
+                elif rc is not None:
+                    findings.append(("not_triggered",
+                        f"[{bc_id}] '{sig}' not triggered: regime_count={rc}"))
+                else:
+                    findings.append(("unknown", f"[{bc_id}] '{sig}' — regime_count not computed"))
+
+            elif "locked_regime_absent" in sig:
+                # Check if regime label "Locked" appears anywhere in partition
+                labels = list(inv.get("regime_labels", {}).values()) if "regime_labels" in inv else []
+                locked_present = any("locked" in l.lower() for l in labels)
+                if not locked_present:
+                    findings.append(("triggered",
+                        f"[{bc_id}] '{sig}' TRIGGERED: no Locked regime found in partition "
+                        f"(regimes: {labels if labels else 'not in invariants'})"))
+                else:
+                    findings.append(("not_triggered",
+                        f"[{bc_id}] '{sig}' not triggered: Locked regime present"))
+
+            elif "observable_dependence" in sig:
+                # Heuristic: if regime_count changes dramatically across epsilon levels, flag it
+                findings.append(("unknown",
+                    f"[{bc_id}] '{sig}' — requires multi-epsilon sweep to evaluate"))
+
+            else:
+                findings.append(("unknown",
+                    f"[{bc_id}] '{sig}' — no automated check implemented; verify manually"))
+
+    return findings
+
+
 def write_audit(out_path: Path, case_id: str, phase: str,
-                issues: dict, failure_modes: list):
+                issues: dict, failure_modes: list, failure_mode_checks: list = None):
     today = date.today().isoformat()
     lines = [
         f"# Failure Audit: {case_id}",
@@ -171,12 +233,21 @@ def write_audit(out_path: Path, case_id: str, phase: str,
         lines.append("")
 
     lines += [
-        "## Declared Failure Modes (from BCManifest)",
+        "## Failure Mode Evaluation (BCManifest signatures vs. results)",
         "",
     ]
-    if failure_modes:
+    if failure_mode_checks:
+        for status, msg in failure_mode_checks:
+            if status == "triggered":
+                lines.append(f"- 🔴 TRIGGERED: {msg}")
+            elif status == "not_triggered":
+                lines.append(f"- ✓ Not triggered: {msg}")
+            else:
+                lines.append(f"- ⚠ Unknown: {msg}")
+    elif failure_modes:
+        lines.append("- (automatic evaluation not available — see declared modes below)")
         for m in failure_modes:
-            lines.append(f"- {m}")
+            lines.append(f"  - {m}")
     else:
         lines.append("- None declared.")
 
@@ -201,14 +272,17 @@ def run_audit(case_dir: Path, phase: str, out_subdir: str):
     scope_path    = case_dir / "ScopeSpec.yaml"
     bcm_path      = case_dir / "BCManifest.yaml"
     inv_path      = case_dir / "results" / "partition" / "Invariants.json"
-    transfer_path = case_dir / "transfer" / "TransferMetrics.json"
     record_path   = case_dir / "CaseRecord.yaml"
 
     scope    = yaml.safe_load(scope_path.read_text()) if scope_path.exists() else {}
     bcm      = yaml.safe_load(bcm_path.read_text())   if bcm_path.exists()   else {}
     record   = yaml.safe_load(record_path.read_text()) if record_path.exists() else {}
     inv      = json.loads(inv_path.read_text())         if inv_path.exists()   else None
-    transfer = json.loads(transfer_path.read_text())    if transfer_path.exists() else None
+
+    # Transfer metrics may be in any subdirectory under transfer/
+    transfer_dir = case_dir / "transfer"
+    transfer_files = sorted(transfer_dir.rglob("TransferMetrics.json")) if transfer_dir.exists() else []
+    transfer = json.loads(transfer_files[0].read_text()) if transfer_files else None
 
     case_id = record.get("id", case_dir.name)
     print(f"\nAudit: {case_id}  |  phase={phase}")
@@ -222,6 +296,7 @@ def run_audit(case_dir: Path, phase: str, out_subdir: str):
         "transfer":         check_transfer(transfer, bcm),
     }
     failure_modes = collect_failure_modes(bcm)
+    failure_mode_checks = check_failure_modes_against_results(bcm, inv)
 
     total = sum(len(v) for v in issues.values())
     for section, items in issues.items():
@@ -233,7 +308,7 @@ def run_audit(case_dir: Path, phase: str, out_subdir: str):
     out_dir = case_dir / out_subdir
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / f"FailureAudit_Phase{phase}.md"
-    write_audit(out_path, case_id, phase, issues, failure_modes)
+    write_audit(out_path, case_id, phase, issues, failure_modes, failure_mode_checks)
     print(f"  Report: {out_path}")
 
 
