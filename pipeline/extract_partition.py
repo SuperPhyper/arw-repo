@@ -4,10 +4,12 @@ pipeline/extract_partition.py — Partition Extractor
 Converts raw sweep output (sweep_results.json) into a regime partition
 using the robust indistinguishability relation ~_S.
 
-For each sweep point x, computes the observable value Π(x) and groups
+For each sweep point x, extracts the observable value Π(x) and groups
 points into equivalence classes under d_Π(x,y) ≤ ε.
 
-Currently implemented: Kuramoto order-parameter thresholding.
+Regime assignment is purely ε-based: no hardcoded thresholds. Observable
+extractors return raw values only. Labels are assigned post-hoc based on
+the observable range each cluster covers.
 
 Output: results/partition/PartitionResult.json
 
@@ -30,143 +32,202 @@ except ImportError as e:
 REPO_ROOT = Path(__file__).parent.parent
 
 
-# ── Observable extractors (one per system) ───────────────────────────────────
+# ── Observable extractors ────────────────────────────────────────────────────
+# Each extractor returns raw observable values — NO regime labels, NO IDs.
+# The partition is determined by ε-clustering, not by thresholds.
 
-def extract_observable_kuramoto(result: dict) -> dict:
-    """
-    Observable: r_ss (steady-state order parameter)
-    Regime partition R_K (from experiments/kuramoto_oscillators.md):
-        Incoherent:         r_ss < 0.1
-        Partially synced:   0.1 ≤ r_ss < 0.85
-        Fully synchronized: r_ss ≥ 0.85
-    """
+def extract_observables_kuramoto(result: dict) -> dict:
+    """Kuramoto: primary observable is r_ss (steady-state order parameter)."""
     r = result.get("r_ss", None)
     if r is None:
-        return {"observable": None, "regime_label": "unknown", "regime_id": -1}
-
-    if r < 0.1:
-        label, rid = "Incoherent", 0
-    elif r < 0.85:
-        label, rid = "Partially_synchronized", 1
-    else:
-        label, rid = "Fully_synchronized", 2
-
+        return {"observables": {}}
     return {
-        "observable":   r,
-        "observable_name": "r_ss",
-        "regime_label": label,
-        "regime_id":    rid,
+        "observables": {
+            "r_ss": r,
+        },
+        "primary_observable": "r_ss",
     }
 
 
-def extract_observable_pendulum(result: dict) -> dict:
-    """
-    Observables: lambda_proxy (chaos indicator) and var_rel (locking indicator)
-    Regime partition R_P (from experiments/multi_link_pendulum.md):
-        R_P4 Locked:         var_rel < 0.0005  (links move as unit — high kappa)
-        R_P3 Chaotic:        lambda_proxy > 0.09
-        R_P1 Periodic:       lambda_proxy < 0.0
-        R_P2 Quasi-periodic: 0.0 <= lambda_proxy <= 0.09
-
-    Priority order: Locked > Chaotic > Periodic > Quasi-periodic
-    Thresholds calibrated to actual simulation output range (0.06-0.10 for this IC/param regime).
-    """
+def extract_observables_pendulum(result: dict) -> dict:
+    """Old pendulum (with kappa): lambda_proxy and var_rel."""
     if result.get("status") != "ok":
-        return {"observable": None, "regime_label": "unknown", "regime_id": -1}
-
-    lp      = result.get("lambda_proxy", 0.0)
-    var_rel = result.get("var_rel", 999.0)
-
-    if var_rel < 0.0005:
-        label, rid = "Locked", 3
-    elif lp > 0.09:
-        label, rid = "Chaotic", 2
-    elif lp < 0.0:
-        label, rid = "Periodic", 0
-    else:
-        label, rid = "Quasi_periodic", 1
-
+        return {"observables": {}}
     return {
-        "observable":      lp,
-        "observable_name": "lambda_proxy",
-        "observable_2":    var_rel,
-        "observable_2_name": "var_rel",
-        "regime_label":    label,
-        "regime_id":       rid,
+        "observables": {
+            "lambda_proxy": result.get("lambda_proxy"),
+            "var_rel":      result.get("var_rel"),
+        },
+        "primary_observable": "lambda_proxy",
     }
 
 
-def extract_observable_stub(result: dict) -> dict:
-    return {"observable": None, "regime_label": "stub", "regime_id": -1,
+def extract_observables_double_pendulum(result: dict) -> dict:
+    """Classical double pendulum: lambda_proxy, var_rel, E_mean."""
+    if result.get("status") != "ok":
+        return {"observables": {}}
+    return {
+        "observables": {
+            "lambda_proxy": result.get("lambda_proxy"),
+            "var_rel":      result.get("var_rel"),
+            "E_mean":       result.get("E_mean"),
+        },
+        "primary_observable": "lambda_proxy",
+    }
+
+
+def extract_observables_stub(result: dict) -> dict:
+    return {"observables": {},
             "note": "Implement observable extractor for this system"}
 
 
-def extract_observable_double_pendulum(result: dict) -> dict:
-    """
-    Observable: lambda_proxy (Lyapunov proxy, chaos indicator).
-    Secondary: var_rel (relative angle variance), E_mean (mean energy).
-
-    Regime partition R_DP:
-        Periodic:       lambda_proxy < 0
-        Quasi-periodic: 0 ≤ lambda_proxy ≤ 0.1
-        Chaotic:        lambda_proxy > 0.1
-    """
-    if result.get("status") != "ok":
-        return {"observable": None, "regime_label": "unknown", "regime_id": -1}
-
-    lp = result.get("lambda_proxy", 0.0)
-
-    if lp < 0.0:
-        label, rid = "Periodic", 0
-    elif lp <= 0.1:
-        label, rid = "Quasi_periodic", 1
-    else:
-        label, rid = "Chaotic", 2
-
-    return {
-        "observable":        lp,
-        "observable_name":   "lambda_proxy",
-        "observable_2":      result.get("var_rel"),
-        "observable_2_name": "var_rel",
-        "observable_3":      result.get("E_mean"),
-        "observable_3_name": "E_mean",
-        "regime_label":      label,
-        "regime_id":         rid,
-    }
-
-
 OBSERVABLE_MAP = {
-    "kuramoto":        extract_observable_kuramoto,
-    "pendulum":        extract_observable_pendulum,
-    "double_pendulum": extract_observable_double_pendulum,
-    "consensus":       extract_observable_stub,
-    "meanfield":       extract_observable_stub,
-    "labyrinth":       extract_observable_stub,
+    "kuramoto":        extract_observables_kuramoto,
+    "pendulum":        extract_observables_pendulum,
+    "double_pendulum": extract_observables_double_pendulum,
+    "consensus":       extract_observables_stub,
+    "meanfield":       extract_observables_stub,
+    "labyrinth":       extract_observables_stub,
 }
 
 
-# ── Robust partition via ε-thresholding ─────────────────────────────────────
+# ── ε-clustering ─────────────────────────────────────────────────────────────
+
+def eps_cluster(values: list, epsilon: float) -> list:
+    """
+    ε-cluster a list of (index, value) pairs by the indistinguishability
+    relation: x ~_S y iff |Π(x) - Π(y)| ≤ ε.
+
+    Implementation: sort by value, assign same regime ID to consecutive
+    points with gap ≤ ε, increment ID at gaps > ε.
+
+    Returns list of (index, regime_id).
+    """
+    if not values:
+        return []
+    sorted_vals = sorted(values, key=lambda x: x[1])
+    regime_id = 0
+    result = [(sorted_vals[0][0], 0)]
+    prev_val = sorted_vals[0][1]
+    for idx, val in sorted_vals[1:]:
+        if val - prev_val > epsilon:
+            regime_id += 1
+        result.append((idx, regime_id))
+        prev_val = val
+    return result
+
+
+def label_clusters(assignments: list, obs_values: dict,
+                   primary_obs: str) -> dict:
+    """
+    Assign descriptive labels to clusters based on the observable range
+    they cover. Labels are post-hoc descriptions, not inputs to the
+    partitioning.
+
+    Returns {regime_id: {"label": str, "obs_range": (min, max), "count": int}}
+    """
+    # Group by regime_id
+    clusters = {}
+    for idx, rid in assignments:
+        if rid not in clusters:
+            clusters[rid] = []
+        clusters[rid].append(idx)
+
+    labels = {}
+    for rid in sorted(clusters.keys()):
+        indices = clusters[rid]
+        values = [obs_values[primary_obs][i] for i in indices
+                  if i in obs_values.get(primary_obs, {})]
+        if values:
+            obs_min = min(values)
+            obs_max = max(values)
+            obs_mean = sum(values) / len(values)
+        else:
+            obs_min = obs_max = obs_mean = None
+
+        labels[rid] = {
+            "label": f"R{rid}",
+            "count": len(indices),
+            "obs_mean": round(obs_mean, 6) if obs_mean is not None else None,
+            "obs_range": (round(obs_min, 6), round(obs_max, 6)) if obs_min is not None else None,
+        }
+
+    return labels
+
+
+# ── Main partition extraction ────────────────────────────────────────────────
 
 def assign_regimes(sweep_results: list, extractor, epsilon: float) -> list:
     """
-    Apply the extractor to each sweep point, assign regimes.
-    For systems with discrete regime labels (Kuramoto), the extractor
-    directly returns regime IDs.
-    For continuous observables, ε-clustering is applied.
+    Extract observables from each sweep point, then assign regimes via
+    ε-clustering on the primary observable.
+
+    Returns annotated results with regime_id and all observable values.
     """
-    annotated = []
+    # Phase 1: extract raw observables
+    extracted = []
     for r in sweep_results:
-        obs = extractor(r)
-        annotated.append({**r, **obs})
+        obs_data = extractor(r)
+        extracted.append({
+            "sweep_result": r,
+            "observables": obs_data.get("observables", {}),
+            "primary_observable": obs_data.get("primary_observable"),
+        })
+
+    # Phase 2: ε-clustering on primary observable
+    primary_obs = None
+    indexed_values = []
+    for i, e in enumerate(extracted):
+        obs = e["observables"]
+        prim = e["primary_observable"]
+        if prim and prim in obs and obs[prim] is not None:
+            primary_obs = prim
+            indexed_values.append((i, float(obs[prim])))
+
+    if not indexed_values:
+        # No valid observables — return unassigned
+        return [{**r, "regime_id": -1, "regime_label": "no_data",
+                 "observables": {}} for r in sweep_results]
+
+    assignments = eps_cluster(indexed_values, epsilon)
+    idx_to_regime = dict(assignments)
+
+    # Phase 3: build per-index observable lookup for labeling
+    obs_by_name = {}
+    for i, e in enumerate(extracted):
+        for name, val in e["observables"].items():
+            if name not in obs_by_name:
+                obs_by_name[name] = {}
+            if val is not None:
+                obs_by_name[name][i] = float(val)
+
+    # Phase 4: label clusters
+    cluster_labels = label_clusters(assignments, obs_by_name, primary_obs)
+
+    # Phase 5: annotate results
+    annotated = []
+    for i, r in enumerate(sweep_results):
+        rid = idx_to_regime.get(i, -1)
+        cl = cluster_labels.get(rid, {})
+        obs = extracted[i]["observables"]
+        annotated.append({
+            **r,
+            "regime_id":       rid,
+            "regime_label":    cl.get("label", "unassigned"),
+            "observable":      obs.get(primary_obs),
+            "observable_name": primary_obs,
+            # Include all observables for downstream analysis
+            "all_observables": {k: v for k, v in obs.items() if v is not None},
+        })
+
     return annotated
 
 
 def compute_transition_boundary(annotated: list, param: str) -> dict:
     """
-    Locate the transition boundary θ* in parameter space:
-    the smallest param value where regime changes from R_i to R_{i+1}.
+    Locate transition boundaries θ* in parameter space:
+    parameter values where the regime assignment changes.
     """
-    # Sort by parameter value
     pts = [(p.get("_sweep_point", {}).get(param), p.get("regime_id", -1))
            for p in annotated
            if p.get("_sweep_point", {}).get(param) is not None]
@@ -205,7 +266,7 @@ def extract_partition(case_dir: Path, in_subdir: str, out_subdir: str):
 
     system   = record.get("system", "custom")
     epsilon  = scope.get("epsilon", {}).get("value", 0.01)
-    extractor = OBSERVABLE_MAP.get(system, extract_observable_stub)
+    extractor = OBSERVABLE_MAP.get(system, extract_observables_stub)
 
     print(f"\nPartition Extraction: {case_dir.name}  |  system={system}  |  ε={epsilon}")
     print("─" * 50)
@@ -214,23 +275,31 @@ def extract_partition(case_dir: Path, in_subdir: str, out_subdir: str):
     annotated = assign_regimes(results, extractor, epsilon)
 
     # Count regimes
-    regime_ids    = [r.get("regime_id", -1) for r in annotated if r.get("regime_id", -1) >= 0]
+    regime_ids     = [r.get("regime_id", -1) for r in annotated if r.get("regime_id", -1) >= 0]
     unique_regimes = sorted(set(regime_ids))
     regime_counts  = {rid: regime_ids.count(rid) for rid in unique_regimes}
 
-    print(f"  Regime count N = {len(unique_regimes)}")
+    print(f"  Regime count N = {len(unique_regimes)}  (ε-clustered, no hardcoded thresholds)")
     for rid, cnt in regime_counts.items():
-        label = next((r["regime_label"] for r in annotated if r.get("regime_id") == rid), "?")
-        print(f"    R{rid}: {label}  ({cnt} sweep points)")
+        # Show observable range for each cluster
+        obs_vals = [r["observable"] for r in annotated
+                    if r.get("regime_id") == rid and r.get("observable") is not None]
+        if obs_vals:
+            obs_name = annotated[0].get("observable_name", "?")
+            print(f"    R{rid}:  {obs_name} ∈ [{min(obs_vals):.4f}, {max(obs_vals):.4f}]  ({cnt} points)")
+        else:
+            print(f"    R{rid}:  ({cnt} points)")
 
-    # Locate transition boundary (for first BC param)
+    # Locate transition boundary
     bc_components = yaml.safe_load((case_dir / "BCManifest.yaml").read_text()).get("bc_components", [])
     sweeps        = bc_components[0].get("perturbation_program", {}).get("sweeps", []) if bc_components else []
     param         = sweeps[0].get("param") if sweeps else None
     transition    = compute_transition_boundary(annotated, param) if param else {}
 
-    if transition.get("theta_star") is not None:
-        print(f"  Transition boundary θ* ≈ {transition['theta_star']:.4f}  (param: {param})")
+    if transition.get("transitions"):
+        for t in transition["transitions"]:
+            print(f"  Transition: R{t['from_regime']} → R{t['to_regime']}  "
+                  f"at {param} ≈ {t['theta_star']:.4f}")
     else:
         print(f"  No transition boundary detected for param: {param}")
 
@@ -243,20 +312,32 @@ def extract_partition(case_dir: Path, in_subdir: str, out_subdir: str):
         "case_id":       record.get("id", case_dir.name),
         "system":        system,
         "epsilon":       epsilon,
+        "method":        "eps_clustering",
         "regime_count":  len(unique_regimes),
-        "regime_labels": {str(rid): next((r["regime_label"] for r in annotated
-                                          if r.get("regime_id") == rid), "?")
-                          for rid in unique_regimes},
+        "regime_labels": {str(rid): f"R{rid}" for rid in unique_regimes},
         "regime_counts": {str(k): v for k, v in regime_counts.items()},
+        "regime_observable_ranges": {
+            str(rid): {
+                "min": round(min(v for r in annotated if r.get("regime_id") == rid
+                                 and r.get("observable") is not None
+                                 for v in [r["observable"]]), 6),
+                "max": round(max(v for r in annotated if r.get("regime_id") == rid
+                                 and r.get("observable") is not None
+                                 for v in [r["observable"]]), 6),
+            }
+            for rid in unique_regimes
+            if any(r.get("regime_id") == rid and r.get("observable") is not None for r in annotated)
+        },
         "transition_boundary": transition,
         "annotated_results": [
             {
-                "sweep_index":    r.get("_sweep_index"),
-                "sweep_point":    r.get("_sweep_point"),
-                "observable":     r.get("observable"),
+                "sweep_index":     r.get("_sweep_index"),
+                "sweep_point":     r.get("_sweep_point"),
+                "observable":      r.get("observable"),
                 "observable_name": r.get("observable_name"),
-                "regime_id":      r.get("regime_id"),
-                "regime_label":   r.get("regime_label"),
+                "all_observables": r.get("all_observables", {}),
+                "regime_id":       r.get("regime_id"),
+                "regime_label":    r.get("regime_label"),
             }
             for r in annotated
         ],

@@ -35,30 +35,29 @@ except ImportError as e:
 REPO_ROOT = Path(__file__).parent.parent
 
 # Import observable extractors from extract_partition
-from pipeline.extract_partition import OBSERVABLE_MAP, extract_observable_stub
+from pipeline.extract_partition import OBSERVABLE_MAP, extract_observables_stub
 
 
 # ── ε-dependent regime assignment ────────────────────────────────────────────
 
 def assign_regimes_at_epsilon(sweep_results: list, system: str, epsilon: float) -> list:
     """
-    Re-assign regimes for the given ε value.
-
-    For systems with analytically defined regime boundaries (Kuramoto, Pendulum),
-    the regime thresholds are functions of ε.
-    For ε-clustering systems (continuous observables), ε directly controls
-    the indistinguishability relation.
+    Re-assign regimes for the given ε value using pure ε-clustering
+    on the primary observable.
     """
-    extractor = OBSERVABLE_MAP.get(system, extract_observable_stub)
+    extractor = OBSERVABLE_MAP.get(system, extract_observables_stub)
     observables = []
 
     for r in sweep_results:
-        obs = extractor(r)
+        obs_data = extractor(r)
+        obs = obs_data.get("observables", {})
+        prim = obs_data.get("primary_observable")
+        prim_val = obs.get(prim) if prim else None
         observables.append({
             "sweep_point": r.get("_sweep_point", {}),
             "sweep_index": r.get("_sweep_index"),
-            "observable":  obs.get("observable"),
-            "observable_name": obs.get("observable_name"),
+            "observable":  prim_val,
+            "observable_name": prim,
         })
 
     # Extract raw observable values
