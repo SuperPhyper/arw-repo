@@ -161,13 +161,13 @@ where further formalization would strengthen the framework.
 
 `epsilon_and_scope_resolution.md` § 4 introduces the admissible ε-interval
 I_ε = [ε_min, ε_max] and the ε-sweep protocol for determining it empirically.
-This replaces the previous open question ("how is ε estimated?") with a
-concrete methodology: sweep ε, identify partition-invariant plateaus,
-use any ε within the plateau.
+`pipeline/epsilon_sweep.py` implements this protocol and has been validated
+on CASE-20260311-0001 (Kuramoto), producing the first empirical plateau map
+(5 structurally distinct plateaus across [0.001, 1.0]).
 
 **What remains open:**
-- ε-sweep not yet implemented in `pipeline.sweep` (see § 8, open question 2)
 - Plateau stability under BC parameter variation (I_ε as a function of κ)
+- Adaptive step refinement near critical ε-values
 - State-dependent ε and the multi-observable case
 
 ### Resonance ↔ coupling BC: formal relationship

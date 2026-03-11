@@ -29,6 +29,9 @@ pipeline.sweep             ← BC parameter sweep, writes results/raw/sweep_resu
 pipeline.extract_partition ← observable extraction + ε-regime assignment
         │                    writes results/partition/PartitionResult.json
         ▼
+pipeline.epsilon_sweep     ← ε-sweep: admissible ε-interval, plateaus, critical ε-values
+        │                    writes results/partition/EpsilonSweep.json
+        ▼
 pipeline.invariants        ← regime_count, adjacency_graph, persistence,
         │                    hysteresis_width, θ*
         │                    writes results/partition/Invariants.json
@@ -60,6 +63,9 @@ python -m pipeline.sweep --case cases/CASE-... --dry-run      # preview sweep po
 
 # 4. Extract partition
 python -m pipeline.extract_partition --case cases/CASE-... --in results/raw --out results/partition
+
+# 4b. ε-sweep (find admissible ε-interval)
+python -m pipeline.epsilon_sweep --case cases/CASE-... --eps-min 0.001 --eps-max 1.0 --eps-steps 80
 
 # 5. Compute invariants
 python -m pipeline.invariants --case cases/CASE-... --in results/partition --out results/partition
@@ -167,11 +173,20 @@ sweep         ✓  15 κ points, N=500, T=200s
 extract       ✓  3 regimes recovered (Incoherent / Partial / Synchronized)
 invariants    ✓  count=3 ✓ | adjacency: 2 edges | persistence=0.857
               ⚠  θ* = 1.25 (expected ~0.64 — sweep density too low near transition)
+epsilon_sweep ✓  80 ε values in [0.001, 1.0] — 5 structurally distinct plateaus
+              ⚠  Working ε=0.05 sits at plateau boundary (N=5→4 at ε*≈0.049)
+              ℹ  Most robust partition: N=5, I_ε=[0.009, 0.047], w=1.66
+              ℹ  Expected 3-regime partition: I_ε=[0.146, 0.294], w=0.70
 audit         ✓  4/5 checks clean | 1 pending: TransferMetrics (awaits pendulum case)
 ```
 
 **Note on θ\*:** The current sweep resolves the transition coarsely.
 Add denser kappa values in [0.5, 0.9] to recover K_c within 5% (go/no-go criterion).
+
+**Note on ε:** The ε-sweep reveals that the working ε=0.05 is at a critical
+boundary. Recommend updating to ε=0.03 (N=5 plateau) or ε=0.09 (N=4 plateau)
+depending on the desired resolution level. The expected 3-regime partition
+requires ε ≈ 0.15–0.29 — coarser than the current working value.
 
 ---
 

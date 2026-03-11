@@ -22,6 +22,9 @@ ScopeSpec.yaml + BCManifest.yaml
     extract_partition ← observable extraction + ε-regime assignment
         │               → results/partition/PartitionResult.json
         ▼
+    epsilon_sweep     ← ε-sweep: admissible interval, plateaus, critical ε-values
+        │               → results/partition/EpsilonSweep.json
+        ▼
     invariants        ← regime count, adjacency graph, persistence, θ*
         │               → results/partition/Invariants.json
         ▼
@@ -41,6 +44,7 @@ ScopeSpec.yaml + BCManifest.yaml
 | [validate.py](validate.py) | Structural completeness check on ScopeSpec + BCManifest |
 | [sweep.py](sweep.py) | BC parameter sweep; simulation kernels (Kuramoto implemented, others stubbed) |
 | [extract_partition.py](extract_partition.py) | Observable extraction + ε-threshold regime assignment |
+| [epsilon_sweep.py](epsilon_sweep.py) | ε-sweep: find admissible ε-interval, plateaus, critical ε-values |
 | [invariants.py](invariants.py) | Partition invariants: regime count, adjacency graph, persistence, hysteresis, θ* |
 | [transfer.py](transfer.py) | Cross-scope distortion metrics (RCD, TBS, PCI, SDI, Φ) |
 | [audit_helpers.py](audit_helpers.py) | A5 failure audit: scope leakage, ε robustness, partition match, falsification |
@@ -65,6 +69,9 @@ python -m pipeline.sweep --case cases/CASE-... --dry-run
 
 # Extract partition
 python -m pipeline.extract_partition --case cases/CASE-... --in results/raw --out results/partition
+
+# ε-sweep (find admissible ε-interval)
+python -m pipeline.epsilon_sweep --case cases/CASE-... --eps-min 0.001 --eps-max 1.0 --eps-steps 80
 
 # Compute invariants
 python -m pipeline.invariants --case cases/CASE-... --in results/partition --out results/partition

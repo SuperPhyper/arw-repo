@@ -113,6 +113,12 @@ Resolution therefore determines:
 - which observables remain admissible
 - how regime partitions are formed.
 
+For a fixed scope skeleton (B, Π, Δ), ε is not a single correct value
+but admits an **admissible ε-interval** I_ε = [ε_min, ε_max] — the range
+of resolution values under which the partition structure (regime count,
+adjacency graph) remains invariant. The width of this interval measures
+scope robustness. See [epsilon_and_scope_resolution.md](../advanced/epsilon_and_scope_resolution.md) § 4.
+
 ---
 
 # Role of Scope in ARW

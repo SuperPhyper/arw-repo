@@ -213,19 +213,51 @@ admissible interval; PCI drops when they are in different plateaus.
 
 ### Example — Kuramoto System
 
-For the Kuramoto oscillator with Π = {r_ss} (steady-state order parameter):
+Empirical ε-sweep on CASE-20260311-0001 (N=500 oscillators, 15 κ-values
+in [0, 3], Π = {r_ss}). The sweep varies ε across [0.001, 1.0]
+in 80 logarithmic steps and records σ(ε) = (N(ε), G_S(ε)) at each step.
 
-- ε < 0.01: partition fragments into ~10+ noise-driven classes (below ε_min)
-- ε ∈ [0.02, 0.15]: stable 3-regime partition (Incoherent / Partial / Synchronized)
-- ε ∈ (0.15, 0.4]: Partial and Synchronized merge → 2-regime partition
-- ε > 0.4: everything collapses to 1 class
+**Observable landscape:** The 15 sweep points produce r_ss values
+that cluster naturally: 10 points in the incoherent range (r_ss ∈ [0.039, 0.072])
+with small inter-point gaps (Δr < 0.01), then two large jumps at the
+synchronization transition (Δr ≈ 0.30 and 0.38), followed by the
+synchronized range (r_ss > 0.74).
 
-The admissible interval for the 3-regime scope is I_ε ≈ [0.02, 0.15],
-giving w ≈ log(0.15/0.02) ≈ 2.0 — a reasonably robust scope.
+**Plateau structure:**
 
-The current working ε = 0.05 sits comfortably within this interval.
-The ε-sweep would validate this choice and reveal that any ε between
-0.02 and 0.15 recovers the same partition structure.
+```
+ε ∈ [0.009, 0.047]  →  N=5, edges=4   w = 1.66  (most robust)
+ε ∈ [0.051, 0.134]  →  N=4, edges=3   w = 0.96
+ε ∈ [0.146, 0.294]  →  N=3, edges=2   w = 0.70
+ε ∈ [0.321, 0.350]  →  N=2, edges=1   w = 0.09
+ε ∈ [0.382, 1.000]  →  N=1, edges=0   (collapsed)
+```
+
+**Interpretation:**
+
+The *most robust* partition (widest plateau, w = 1.66) is the 5-regime
+partition, not the expected 3-regime partition. This is because the
+incoherent range contains fine structure: the 10 low-κ points have
+observable gaps on the order of 0.001–0.009, which are real distinctions
+at fine resolution. Only at ε > 0.05 do these sub-regimes merge.
+
+The theoretically expected 3-regime partition (Incoherent / Partial /
+Synchronized) appears at ε ∈ [0.146, 0.294] with w = 0.70 — a moderately
+robust scope. This confirms that the 3-regime description is a valid
+*coarsening* of the finer structure, but it requires a resolution that
+deliberately ignores intra-regime variation in the incoherent phase.
+
+The working ε = 0.05 from the original ScopeSpec sits at the boundary
+between the N=5 and N=4 plateaus (critical ε* ≈ 0.049). This is a
+fragile position — a small ε change flips the regime count. The ε-sweep
+reveals that either ε ≈ 0.03 (comfortably inside N=5) or ε ≈ 0.09
+(comfortably inside N=4) would be more robust choices.
+
+**Methodological lesson:** The ε-sweep resolves the estimation question
+without needing to "guess" ε. The plateau structure is a property of the
+system under (B, Π, Δ) — not a modeling choice. The researcher selects
+*which plateau* to work in (i.e., what resolution level is appropriate
+for the question at hand), and any ε within that plateau is equivalent.
 
 ---
 
@@ -318,10 +350,11 @@ The following aspects of ε require further formalization:
   state space? High-symmetry regions may require finer resolution than bulk regions.
   If ε is state-dependent, the admissible interval (§4) becomes an admissible
   *region* in a function space — the formalization of this is open.
-- **ε-sweep implementation:** The ε-sweep protocol (§4) needs to be implemented
-  in `pipeline.sweep` alongside the existing BC parameter sweep. Key design
-  questions: logarithmic or linear spacing? How to detect plateau boundaries
-  automatically? Should the ε-sweep be run per-case or once per system?
+- **ε-sweep implementation:** The ε-sweep protocol (§4) is implemented in
+  `pipeline/epsilon_sweep.py` and has been validated on CASE-20260311-0001
+  (Kuramoto). Remaining design questions: automatic plateau boundary detection
+  (currently visual), adaptive step refinement near critical ε-values,
+  and integration with `pipeline.sweep` for joint (κ, ε) sweeps.
 - **Plateau stability under BC variation:** Within a single BC parameter value,
   the admissible ε-interval is well-defined. But as the BC parameter changes
   (e.g., coupling strength κ), the interval may shift or narrow. Mapping
