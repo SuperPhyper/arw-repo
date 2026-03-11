@@ -158,7 +158,6 @@ ARW / ART Framework
 │   └── CASE-20260311-0002/         ← Pendulum Phase 1
 │
 ├── data/                           ← Data storage (blobs/)
-├── agents/                         ← Agent role definitions (placeholder)
 ├── analysis/                       ← Analysis outputs (placeholder)
 ├── papers/                         ← Paper drafts (placeholder)
 ├── simulations/                    ← Simulation code (placeholder)

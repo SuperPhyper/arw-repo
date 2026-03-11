@@ -1,5 +1,6 @@
 ---
-status: draft
+status: working-definition
+updated: 2026-03-11
 ---
 
 # Repository Weak Points — Systematic Assessment
@@ -9,273 +10,183 @@ and missing components across the repository.
 Entries are ordered by priority: how much analytical damage the gap causes
 and how tractable it is to fill.
 
----
-
-## Category 1 — Critical Placeholders (Stubs with No Content)
-
-These files are referenced from multiple other documents but contain
-almost nothing. They are the highest-priority gaps.
-
-### `docs/bc_taxonomy/boundary_condition_classes.md`
-
-Current state: 6-item list (restriction, coupling, symmetry breaking,
-dissipation, forcing, aggregation). No definitions, no examples,
-no regime consequences for any class.
-
-What is missing:
-- Formal definition of each BC class
-- The characteristic regime structure each class generates
-- Concrete instantiation in at least two systems per class
-  (e.g., coupling BC in Kuramoto and in opinion dynamics)
-- Relationship between BC classes: can they combine? Do some dominate?
-
-Why this matters: the entire research program's central hypothesis is
-"BC classes generate characteristic regime partition structures".
-Without defined classes, this hypothesis is untestable.
+Last full review: 2026-03-11.
 
 ---
 
-### `docs/bc_taxonomy/partition_types.md`
+## Resolved Items (Previously Critical)
 
-Current state: 3-item list. No definitions.
+The following items were identified as critical gaps in the initial assessment
+and have since been substantively developed. They are listed here for audit
+trail purposes and are no longer blocking.
 
-What is missing:
-- Formal typology: what distinguishes binary from multi-stable from clustered?
-- Mapping from BC classes to partition types (the core claim of the taxonomy)
-- Stability properties of each partition type
-- Whether partition types are universal or system-dependent
-
-Why this matters: the cross-experiment comparison (Kuramoto, pendulum,
-consensus models) depends on comparing partition types. Without a typology,
-there is nothing to compare.
-
----
-
-### `docs/bc_taxonomy/transfer_distortion_metrics.md`
-
-Current state: 4-item list. No definitions.
-
-What is missing: The metrics are already fully defined in
-`experiments/aggregation_meanfield.md` (TBS, RCD, PCI, SDI).
-This file should consolidate them formally, add the mathematical
-definitions, and specify how each metric behaves under different
-distortion regimes.
-
-Why this matters: this is the canonical reference for the metrics.
-Currently, the definitions live only in an experiment file.
+| File | Previous state | Current state |
+|---|---|---|
+| `docs/bc_taxonomy/boundary_condition_classes.md` | 6-item list, no definitions | 289 lines; all 6 classes with formal definitions, regime consequences, cross-system instantiations |
+| `docs/bc_taxonomy/partition_types.md` | 3-item list | 256 lines; 5 types formally defined with properties and scope-transition behavior |
+| `docs/bc_taxonomy/transfer_distortion_metrics.md` | 4-item list | 229 lines; RCD, TBS, PCI, SDI with mathematical definitions + composite Φ score |
+| `docs/bc_taxonomy/bc_class_to_regime_type_map.md` | Did not exist | 131 lines; mapping table, cross-system verification, failure cases, regime graph topology |
+| `docs/context_navigation/anchor_memory.md` | 1 sentence | 159 lines; definition, formation, retrieval, stability score, decay, cross-episode transfer |
+| `docs/context_navigation/modal_cognition.md` | 1 sentence | 121 lines; modes as reduced scopes, mode identity, mode ecology, switching as scope transition |
+| `docs/context_navigation/bc_taxonomy_cognitive_modes.md` | 1 sentence | 170 lines; BC class → mode mapping with detail per class |
+| `docs/context_navigation/context_navigation_ai.md` | 4-item list | 116 lines; system map with component → ARW mapping, scope transitions in operation |
+| `docs/notes/open_questions.md` | Empty | 105 lines; 14 questions across formalization, empirical, conceptual, methodological |
+| `docs/notes/research_journal.md` | Empty | 36 lines; current focus, pending decisions, notes on resonance |
+| `docs/notes/literature_links.md` | Empty | 36 lines; references across 6 fields |
+| Glossary entries (scope_transition, scope_dominance, regime_partition, admissible_reduction) | Missing | All present, 44–65 lines each, with status frontmatter |
+| All glossary entries: status tags | 12 entries untagged | All entries now have `status: working-definition` frontmatter |
+| `docs/advanced/epsilon_*.md` overlap | Two overlapping documents | Consolidated; `epsilon_and_scope_resolution.md` (180 lines, 7 sections) is the canonical document; `epsilon_resolution_window_arw.md` is a redirect stub |
+| `docs/core/basins_as_scope_partitions.md` | Stopped before key analytical move | 219 lines; formal relationship stated (§4), four divergence cases, admissibility connection |
+| `docs/advanced/emergence_overview.md` | No formal emergence condition | Formal condition now present: admissible reduction ([x]_S ⊆ [x]_S') vs. emergence (∃x: [x]_S ⊄ [x]_S') |
+| `docs/overview/roadmap.md` | High-level phase list without milestones | 159 lines; 5 phases with milestones, go/no-go decision points, OSV fellowship connection |
 
 ---
 
-### `docs/context_navigation/anchor_memory.md`
+## Category 1 — Active Gaps (Blocking or Distorting)
 
-Current state: 1 sentence.
+### Resonance: informal usage in context_navigation documents
 
-What is missing:
-- Formal definition: what is an anchor? (context_embedding, mode, outcome_statistics, stability_score)
-- Formation: when does an anchor form? (stability threshold after consolidation)
-- Retrieval: what triggers retrieval? (context similarity above threshold)
-- Decay: do anchors expire? Under what conditions?
-- Relationship to ARW partition: anchors are stored scope-partition associations —
-  this connection should be explicit
+**Status:** Partially addressed. The glossary entries (`resonance.md`: 125 lines,
+`resonance_field.md`: 99 lines) provide formal definitions.
+`boundary_conditions_as_resonance_filters.md` (176 lines) develops the concept
+in the architecture context.
 
----
+**What remains:** `resonance_dialectic_context_navigation.md` (216 lines) uses
+"resonance" 12 times but does not consistently distinguish between formal usage
+(coherent coupling under compatible BCs) and informal/metaphorical usage.
+The research journal notes this explicitly and proposes that resonance is the
+*mechanism* by which coupling BC generates regime structure. This tentative
+answer needs to be formalized and reflected back into the document.
 
-### `docs/context_navigation/modal_cognition.md`
-### `docs/context_navigation/bc_taxonomy_cognitive_modes.md`
+**Recommended action:** Add a short paragraph to `resonance_dialectic_context_navigation.md`
+that explicitly marks which uses of "resonance" are formal (as defined in the glossary)
+and which are informal, or formalize the informal uses by connecting them to the
+coupling BC class.
 
-Current state: 1 sentence each.
-
-These two files are closely related and could be merged or made
-complementary. Both gesture at the same claim: cognitive processing modes
-correspond to reduced scopes (different Π_B). Neither develops it.
-
-What is missing for `modal_cognition.md`:
-- How does a "mode" formally instantiate a scope S_mode = (B_mode, Π_mode, Δ_mode, ε_mode)?
-- What makes two behavioral trajectories belong to the same mode?
-- How is mode identity preserved across episodes?
-
-What is missing for `bc_taxonomy_cognitive_modes.md`:
-- The mapping from BC classes (restriction, coupling, etc.) to cognitive mode types
-- Concrete correspondence table: which BC class generates which mode?
-- Whether this mapping is unique or many-to-many
+**Priority:** 2 (does not block experiments but affects conceptual consistency)
 
 ---
 
-### `docs/context_navigation/context_navigation_ai.md`
+### `epsilon_resolution_window_arw.md` — dead redirect stub
 
-Current state: 4-item list.
+**Status:** 13 lines. Redirects to `epsilon_and_scope_resolution.md` (which is
+now the canonical ε document at 180 lines). The stub adds no content.
 
-What is missing: the architecture already exists in detail in
-`context_navigation_architecture_notes.md` and
-`agent_architecture_mode_ecology.md`.
-This file should be a concise integration document — not a new design,
-but a clear statement of how the architecture pieces connect to each other
-and to ARW concepts. A single-page map of the system.
+**Recommended action:** Delete the file. Remove the reference from
+`docs/advanced/README.md`. Any links pointing to it should be updated to
+point directly to `epsilon_and_scope_resolution.md`.
 
----
-
-### `docs/notes/open_questions.md`
-### `docs/notes/research_journal.md`
-### `docs/notes/literature_links.md`
-
-All three are empty. These signal scientific immaturity to external readers.
-
-`open_questions.md` in particular is important — a well-written list of
-genuinely open questions signals that the framework knows its own limits.
-The content already exists scattered across `limitations_and_open_questions.md`
-and the falsification sections of experiment files — it just needs to be
-extracted and sharpened.
+**Priority:** 3 (housekeeping, low analytical impact)
 
 ---
 
-## Category 2 — Underdeveloped Documents with Existing Content
+### ART instantiation catalog incomplete
 
-These files have a structure but are missing the analytical core.
+**Status:** `docs/art_instantiations/` contains only the geopolitical scope example
+(317 lines) and the blank template (132 lines). The physical systems (Kuramoto,
+pendulum) and the agent system (labyrinth) have their ART scope specifications
+embedded in their respective experiment files under `experiments/`, but not as
+standalone scope cards in `art_instantiations/`.
 
-### `docs/advanced/epsilon_and_scope_resolution.md` and `epsilon_resolution_window_arw.md`
+**Recommended action:** Either:
+(a) Extract condensed scope-tuple reference cards for Kuramoto, pendulum, and
+labyrinth from the experiment files and place them in `art_instantiations/`, or
+(b) Accept that `art_instantiations/` is an example collection (not a complete catalog)
+and document this explicitly in the folder's README.
 
-Current state: both documents circle the same question (what is ε?)
-without resolving it. There is significant conceptual overlap.
-
-Problem: ε is the least formally developed component of S = (B, Π, Δ, ε).
-In the experiment files, ε appears as a concrete number (0.05 rad, cosine distance < 0.1).
-In the theory files, it remains a "resolution threshold" without formal treatment.
-
-What is missing:
-- When is ε a scalar? When is it a function of state? When is it a metric?
-- How does ε interact with Δ? (A perturbation that is within Δ but crosses ε
-  produces a regime change — this is a critical interaction that is not documented)
-- How is ε estimated empirically? (For the labyrinth, it is a hyperparameter —
-  but how should it be chosen?)
-- The two files should be merged and resolved, not left as parallel fragments.
+**Priority:** 3 (does not block work; the scope specifications exist, they are
+just not centralized)
 
 ---
 
-### `docs/core/basins_as_scope_partitions.md`
+## Category 2 — Structural Housekeeping
 
-Current state: 64 lines, correct direction, but stops before making
-the key analytical move.
+### Empty top-level directories
 
-What is missing:
-- The formal statement: under what conditions is a dynamical basin
-  identical to an ARW regime class?
-- The condition under which they diverge: when does a basin
-  exist in the dynamics but not appear in the regime partition under S?
-  (Answer: when the basin-distinguishing observable is below ε, or
-  outside Π — this is the crucial ARW contribution to basin theory)
-- Connection to the Kuramoto experiment: the order parameter r
-  is not itself a basin indicator, but it induces a regime partition
-  that *correlates* with the basin structure. When does this correlation fail?
+Four directories contain zero files:
 
----
+| Directory | Intended purpose | Recommendation |
+|---|---|---|
+| `agents/` | Agent role definitions | Roles are documented in `pipeline/PartitionPipeline.md` § Agent Role Mapping. The directory should either be populated when agent configs are implemented, or removed until needed. |
+| `analysis/` | Cross-case analysis outputs | Will be needed in Phase 2+. Keep as placeholder. |
+| `papers/` | Paper drafts | Keep as placeholder; will be populated during Phase 4 (consolidation). |
+| `simulations/` | Standalone simulation code | Simulation kernels currently live in `pipeline/sweep.py`. Factor out when systems mature beyond the sweep interface. |
 
-### `docs/overview/roadmap.md`
+**Recommended action:** Keep `analysis/`, `papers/`, `simulations/` as placeholders
+(they align with roadmap phases). Consider removing `agents/` until agent
+configurations become artifacts rather than just documentation — the role
+descriptions already live in `PartitionPipeline.md`.
 
-Current state: high-level phase list without timelines, milestones,
-or decision points.
-
-What is missing:
-- What constitutes "done" for each phase? (Phase 1 is done when what?)
-- What are the go/no-go decisions between phases?
-- How do the calibration results (Kuramoto, pendulum) gate Phase 2?
-- The OSV fellowship timeline exists in the 1-pager but is not connected here.
+**Priority:** 4 (cosmetic; no analytical impact)
 
 ---
 
-## Category 3 — Structural Gaps (Missing Files That Are Referenced)
+### `cases/.templates/` is empty
 
-These are documents that other files link to or logically require,
-but that do not yet exist.
+`pipeline.new_case` references templates, but the `.templates/` directory
+contains no files. Either the templates are generated programmatically
+(in which case the directory is unnecessary), or template files were
+planned but not created.
 
-### `docs/bc_taxonomy/bc_class_to_regime_type_map.md` (does not exist)
+**Recommended action:** Verify whether `new_case.py` uses this directory.
+If not, remove it. If yes, populate it with the schema stubs that `new_case`
+would stamp.
 
-`bc_classes_and_regime_generation.md` in `docs/core/` describes the relationship
-between BC classes and regime structures in prose.
-The bc_taxonomy folder should contain a formal mapping table:
-
-```
-BC class       →   characteristic partition type   →   example systems
-coupling       →   synchronization regimes          →   Kuramoto, pendulum R_P4
-restriction    →   bounded-state regimes            →   opinion dynamics, BC-constrained agents
-symmetry-break →   bifurcated partitions            →   polarization in R_Op2
-dissipation    →   contracted state space           →   damped oscillators, energy-bounded systems
-forcing        →   driven multi-stability           →   pendulum with driving Ω
-aggregation    →   mean-field collapse              →   S_MF in all mean-field scopes
-```
+**Priority:** 4
 
 ---
 
-### `docs/glossary/scope_transition.md` (does not exist as glossary entry)
+### `docs/pipelines/` contains minimal stubs
 
-`scope_transition.md` exists in `docs/core/` as a full document.
-There is no glossary-level atomic definition — a 10-line entry
-with the formal definition and links to the core document.
-This breaks the glossary's role as the canonical first reference.
+`PartitionPipeline.md` (5 lines) and `RegimeGraphPipeline.md` (5 lines) are
+conceptual stubs. The actual implemented pipeline documentation lives in
+`pipeline/PartitionPipeline.md` (full design document, ~170 lines).
 
-Same issue for: `scope_dominance`, `regime_partition`, `admissible_reduction`.
-These are central ARW terms with full core documents but no glossary entries.
+**Recommended action:** Either:
+(a) Expand the stubs in `docs/pipelines/` to be the conceptual design documents
+and keep `pipeline/PartitionPipeline.md` as the implementation reference, or
+(b) Redirect the stubs to the implementation document and note the distinction.
 
----
-
-### `docs/art_instantiations/art_labyrinth_scope.md` (does not exist)
-
-The labyrinth has a full ART instantiation in `experiments/`.
-The `docs/art_instantiations/` folder should contain a condensed
-scope-tuple summary for each ART instantiation — not the full experiment
-design, but the formal S = (B, Π, Δ, ε) specification as a reference card.
-
-Currently only the geopolitical scope has a file in `art_instantiations/`.
-The physical and agent scopes are only in `experiments/`.
+**Priority:** 4 (the information exists, it is just split awkwardly)
 
 ---
 
-## Category 4 — Content That Exists But Lacks Formal Sharpness
+## Category 3 — Content Depth (Not Blocking, But Worth Tracking)
 
-These documents have good content but contain passages that should
-be made more precise.
+These items are not gaps in the sense of missing content — the relevant
+documents exist and have substance. They are tracked here as directions
+where further formalization would strengthen the framework.
 
-### `docs/context_navigation/resonance_dialectic_context_navigation.md`
+### ε estimation procedure
 
-216 lines, but uses "resonance" in a largely informal sense without
-connecting it to the formal definition in `docs/glossary/resonance.md`.
-The document would gain significantly from making explicit when
-"resonance" is used informally (as a metaphor) versus formally
-(as coherent coupling under compatible BCs).
+`epsilon_and_scope_resolution.md` § 7 lists open questions including
+"How is ε estimated empirically?" The Kuramoto case uses ε = 0.05 as a
+concrete number; the labyrinth uses cosine distance < 0.1. There is no
+general procedure for choosing ε. This matters for reproducibility
+as soon as new systems are added.
 
-### `docs/advanced/emergence_overview.md`
+### Resonance ↔ coupling BC: formal relationship
 
-206 lines, good coverage. Missing: a formal statement of the ARW
-emergence condition. Currently: "emergence occurs when a scope loses
-admissibility." This should be stated as: "emergence is a scope transition
-S → S' such that R_S' ⊄ R_S — the new partition is not a coarsening
-of the old one, but a reorganization." This distinction between
-coarsening (admissible reduction) and reorganization (emergence) is
-analytically important and currently blurred.
+The research journal tentatively proposes that resonance is the mechanism
+by which coupling BC generates regime structure. This is an interesting
+analytical claim that could sharpen the BC taxonomy if formalized.
 
-### `docs/glossary/` — untagged entries
+### ART scope cards for physical/agent systems
 
-Twelve glossary entries have no status frontmatter. They appear to be
-working definitions but are formally unverified. Adding `status: working-definition`
-or `status: needs-formalization` would clarify which entries are stable
-and which are provisional.
+See Category 1. The scope specifications exist in experiment files
+but are not available as quick-reference cards.
 
 ---
 
 ## Summary Table
 
-| File / Gap | Type | Priority |
-|---|---|---|
-| `bc_taxonomy/boundary_condition_classes.md` | Critical placeholder | 1 |
-| `bc_taxonomy/transfer_distortion_metrics.md` | Critical placeholder (content exists in experiments/) | 1 |
-| `bc_taxonomy/partition_types.md` | Critical placeholder | 2 |
-| `context_navigation/anchor_memory.md` | Critical placeholder | 2 |
-| Missing glossary entries (scope_transition, scope_dominance, regime_partition) | Structural gap | 2 |
-| `bc_taxonomy/bc_class_to_regime_type_map.md` (missing file) | Structural gap | 2 |
-| `notes/open_questions.md` | Empty file | 3 |
-| `advanced/epsilon_*.md` — merge and resolve | Underdeveloped + overlap | 3 |
-| `core/basins_as_scope_partitions.md` | Stops before key move | 3 |
-| `context_navigation/modal_cognition.md` + `bc_taxonomy_cognitive_modes.md` | Critical placeholders | 3 |
-| `art_instantiations/` — missing scope cards for physical/agent systems | Structural gap | 3 |
-| `overview/roadmap.md` | Underdeveloped | 4 |
-| `advanced/emergence_overview.md` — formal emergence condition | Sharpness gap | 4 |
-| Untagged glossary entries | Housekeeping | 5 |
+| Gap | Type | Priority | Status |
+|---|---|---|---|
+| Resonance formalization in context_navigation | Conceptual consistency | 2 | Partially addressed; glossary entries exist, bridge to architecture usage missing |
+| `epsilon_resolution_window_arw.md` dead stub | Housekeeping | 3 | Delete file, update links |
+| ART instantiation catalog incomplete | Structural | 3 | Scope specs exist in experiments/, not centralized |
+| Empty dirs (agents/) | Housekeeping | 4 | Consider removing until populated |
+| `cases/.templates/` empty | Housekeeping | 4 | Verify if used by new_case.py |
+| `docs/pipelines/` minimal stubs | Structural | 4 | Redirect or expand |
+| ε estimation procedure | Depth | — | Tracked, not blocking |
+| Resonance ↔ coupling formalization | Depth | — | Tracked, not blocking |
