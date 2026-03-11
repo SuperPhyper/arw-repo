@@ -21,6 +21,7 @@ Deep treatment of how ε shapes partition structure and observable admissibility
 | Document | Purpose |
 |---|---|
 | [epsilon_and_scope_resolution.md](epsilon_and_scope_resolution.md) | Complete treatment: ε as resolution threshold, window interpretation, ε–Δ interaction |
+| [epsilon_resolution_window_arw.md](epsilon_resolution_window_arw.md) | ε as resolution window — complementary perspective on ε structure |
 
 ## Engineering Applications
 

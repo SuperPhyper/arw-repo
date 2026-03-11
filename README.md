@@ -84,8 +84,9 @@ Different scopes produce different regime structures. The framework develops too
 | Folder | Domain |
 |---|---|
 | [docs/context_navigation/](docs/context_navigation/README.md) | Cognitive architecture: modes as reduced scopes |
+| [docs/cognitive_architecture/](docs/cognitive_architecture/README.md) | ARW/ART instantiation for context-dependent cognition |
 | [docs/bc_taxonomy/](docs/bc_taxonomy/README.md) | BC classes, partition types, BC→partition mapping, distortion metrics |
-| [docs/art_instantiations/](docs/art_instantiations/) | Scope template + geopolitical instantiation (Persian Gulf system) |
+| [docs/art_instantiations/](docs/art_instantiations/README.md) | Scope template + geopolitical instantiation (Persian Gulf system) |
 
 ### Level 4 — Experiments
 
@@ -105,12 +106,12 @@ Different scopes produce different regime structures. The framework develops too
 | [docs/glossary/canonical_vocabulary.md](docs/glossary/canonical_vocabulary.md) | Term definitions with adjacent-field distinctions |
 | [docs/glossary/](docs/glossary/README.md) | All atomic concept definitions |
 | [docs/glossary/glossary_map.md](docs/glossary/glossary_map.md) | Visual map of concept relationships |
-| [docs/related_fields/related_fields_and_methodological_connections.md](docs/related_fields/related_fields_and_methodological_connections.md) | Connections to dynamical systems, RL, philosophy, cognitive science |
+| [docs/related_fields/](docs/related_fields/README.md) | Connections to dynamical systems, RL, philosophy, cognitive science |
 | [docs/overview/novelty_and_projected_value.md](docs/overview/novelty_and_projected_value.md) | What makes ARW distinctive |
 | [docs/overview/limitations_and_open_questions.md](docs/overview/limitations_and_open_questions.md) | Honest assessment of open problems |
 | [docs/overview/roadmap.md](docs/overview/roadmap.md) | Research phases and planned development |
 | [docs/notes/open_questions.md](docs/notes/open_questions.md) | 14 open research questions across formalization, empirics, method |
-| [docs/notes/](docs/notes/) | Research journal and literature links |
+| [docs/notes/](docs/notes/README.md) | Research journal and literature links |
 
 ---
 
@@ -119,21 +120,64 @@ Different scopes produce different regime structures. The framework develops too
 ```
 ARW / ART Framework
 │
-├── docs/
-│   ├── overview/               ← Start here (15-min intro + operator)
-│   ├── glossary/               ← Canonical vocabulary + atomic definitions
-│   ├── core/                   ← Extended framework documents (Level 1–2)
-│   ├── advanced/               ← Emergence, ε, engineering (Level 2+)
-│   ├── context_navigation/     ← Cognitive architecture application (Level 3)
-│   ├── bc_taxonomy/            ← Boundary condition classification (Level 3)
-│   ├── art_instantiations/     ← Concrete ART scope examples (Level 3)
-│   ├── related_fields/         ← Connections to existing literature
-│   └── notes/                  ← Research journal, open questions
+├── docs/                           ← Framework documentation
+│   ├── overview/                   ← Start here (15-min intro + operator)
+│   ├── glossary/                   ← Canonical vocabulary + atomic definitions
+│   ├── core/                       ← Extended framework documents (Level 1–2)
+│   ├── advanced/                   ← Emergence, ε, engineering (Level 2+)
+│   ├── context_navigation/         ← Cognitive architecture application (Level 3)
+│   ├── cognitive_architecture/     ← ARW/ART instantiation for cognition (Level 3)
+│   ├── bc_taxonomy/                ← Boundary condition classification (Level 3)
+│   ├── art_instantiations/         ← Concrete ART scope examples (Level 3)
+│   ├── related_fields/             ← Connections to existing literature
+│   ├── notes/                      ← Research journal, open questions
+│   ├── pipelines/                  ← Pipeline design stubs (PartitionPipeline, RegimeGraphPipeline)
+│   └── figures/                    ← Figure description files (linking to figures/)
 │
-├── experiments/                ← ART experimental designs (Level 4)
-├── figures/                    ← Diagrams and visualizations
-└── README.md                   ← This file
+├── experiments/                    ← ART experimental designs (Level 4)
+├── figures/                        ← Diagrams and visualizations (PNG + Mermaid/description sources)
+│
+├── pipeline/                       ← Python implementation of the partition extraction pipeline
+│   ├── validate.py                 ← Structural completeness check
+│   ├── sweep.py                    ← BC parameter sweep (Kuramoto kernel implemented)
+│   ├── extract_partition.py        ← Observable extraction + ε-regime assignment
+│   ├── invariants.py               ← Regime count, adjacency graph, persistence, θ*
+│   ├── transfer.py                 ← Cross-scope distortion metrics (RCD, TBS, PCI, SDI)
+│   ├── audit_helpers.py            ← A5 failure audit
+│   └── new_case.py                 ← Case scaffolding generator
+│
+├── schemas/                        ← YAML/JSON schemas for pipeline artifacts
+│   ├── ScopeSpec.yaml              ← ART scope instantiation schema
+│   ├── BCManifest.yaml             ← BC classification + sweep program schema
+│   ├── CaseRecord.yaml             ← Case envelope schema
+│   ├── RegimeGraph.schema.json     ← Regime transition graph schema
+│   └── TransitionTrials.schema.json
+│
+├── cases/                          ← One directory per experiment instance
+│   ├── CASE-20260311-0001/         ← Kuramoto Phase 1 (end-to-end complete)
+│   └── CASE-20260311-0002/         ← Pendulum Phase 1
+│
+├── data/                           ← Data storage (blobs/)
+├── agents/                         ← Agent role definitions (placeholder)
+├── analysis/                       ← Analysis outputs (placeholder)
+├── papers/                         ← Paper drafts (placeholder)
+├── simulations/                    ← Simulation code (placeholder)
+│
+├── LICENSE                         ← MIT License
+└── README.md                       ← This file
 ```
+
+---
+
+## Pipeline
+
+The partition extraction pipeline is the computational backbone of the framework.
+It implements the full workflow from scope specification to cross-scope transfer analysis.
+
+See [pipeline/README.md](pipeline/README.md) for architecture, CLI reference, and implementation status.
+
+Current state: end-to-end validated on Kuramoto Phase 1 (`CASE-20260311-0001`).
+Pendulum kernel is stubbed; consensus, mean-field, and labyrinth are planned.
 
 ---
 
@@ -149,6 +193,7 @@ ARW / ART Framework
 
 Active research workspace — concepts, experiments, and documentation evolve over time.
 See [docs/overview/limitations_and_open_questions.md](docs/overview/limitations_and_open_questions.md) for current open problems.
+See [docs/notes/repo_weakpoints.md](docs/notes/repo_weakpoints.md) for a systematic gap assessment.
 
 ---
 
