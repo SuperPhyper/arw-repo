@@ -85,7 +85,151 @@ the resolution dimension.
 
 ---
 
-## 4 The ε–Δ Interaction (Critical)
+## 4 The Admissible ε-Interval
+
+Section 3 shows that changing ε shifts the partition. But not every ε-change
+produces a *structural* change — across a range of ε values, the partition
+retains the same regime count, adjacency graph, and qualitative structure.
+Only at critical ε values does the partition jump (regimes merge or split).
+
+This motivates replacing the question "what is the right ε?" with a
+more robust formulation: **what is the interval of ε values under which
+a given scope remains structurally valid?**
+
+### Definition
+
+For a fixed scope skeleton (B, Π, Δ), the **admissible ε-interval** is:
+
+```
+I_ε = [ε_min, ε_max]
+```
+
+where:
+
+- **ε_min** is the smallest ε above which the partition is stable against
+  observational noise. Below ε_min, the partition fragments: small fluctuations
+  create spurious regime classes. Formally: for ε < ε_min, the partition is
+  not Δ-consistent (see §5 below) — admissible perturbations generate
+  observable differences above ε, producing noise-sensitive class assignments
+  across the bulk of state space (not just at boundaries).
+
+- **ε_max** is the largest ε below which the partition preserves the
+  structurally relevant distinctions. Above ε_max, regimes that are
+  qualitatively different (different stability properties, different
+  dynamical behavior) collapse into the same class.
+
+Within I_ε, the **partition invariants** (regime count N, adjacency graph G_S,
+transition boundary locations θ*) are stable under small ε-perturbations.
+At the interval boundaries, at least one invariant jumps.
+
+### Formal Characterization
+
+Define the partition invariant signature as:
+
+```
+σ(ε) = (N(ε), G_S(ε))
+```
+
+Then I_ε is the maximal connected interval containing the working ε
+such that σ(ε) is constant:
+
+```
+I_ε = { ε' > 0 : σ(ε') = σ(ε₀) }   (connected component containing ε₀)
+```
+
+The interval boundaries are the **critical ε-values** — resolution-driven
+analogs of the transition boundaries θ* that appear along BC parameters.
+
+### The ε-Sweep
+
+The admissible interval is determined empirically by an **ε-sweep**:
+fix B, Π, Δ and the BC parameter values, then vary ε and record the
+partition invariants at each step.
+
+```
+ε-sweep protocol:
+1. Choose ε range [ε_low, ε_high] spanning several orders of magnitude
+2. For each ε value, compute A(S(ε)) = R_S(ε)
+3. Record σ(ε) = (N(ε), G_S(ε))
+4. Identify plateaus where σ is constant → these are admissible intervals
+5. Identify jumps → these are critical ε-values
+```
+
+This is the resolution-dimension analog of the BC parameter sweep
+already implemented in `pipeline.sweep`. The plateau structure directly
+answers the ε-estimation question: any ε within the plateau is valid,
+and the plateau width measures how robust the scope is against
+resolution misspecification.
+
+### Plateau Width as Robustness Measure
+
+The width of I_ε has direct interpretive value:
+
+```
+w(I_ε) = log(ε_max / ε_min)
+```
+
+(Log-ratio because ε spans orders of magnitude.)
+
+- **Wide plateau** (large w): the scope is robust. The partition structure
+  is not sensitive to the precise choice of ε. The regime distinctions are
+  "real" in the sense that they persist across a broad resolution range.
+
+- **Narrow plateau** (small w): the scope is fragile. A small change in
+  resolution destroys or creates regime distinctions. This signals that the
+  partition may be an artifact of a particular ε choice rather than a
+  structural feature of the system under B and Π.
+
+- **No plateau** (σ changes continuously): the system has no stable regime
+  structure at this scope. The observables in Π may not be the right ones,
+  or the BC class does not generate discrete regimes.
+
+### Connection to Existing Framework Concepts
+
+The ε-interval connects to several existing constructs:
+
+**Admissible reduction (§6):** If S' is an admissible coarsening of S,
+then ε' > ε but both lie within adjacent or overlapping plateaus.
+The reduction is admissible precisely because the partition structure
+is preserved across the ε-change. When ε' crosses a critical value
+(exits the plateau), the coarsening is no longer admissible — it is
+a scope transition.
+
+**ε–Δ consistency (§5):** The lower bound ε_min is determined by Δ.
+Specifically, ε_min is the smallest ε satisfying the consistency condition
+for bulk states:
+
+```
+ε_min ≈ max_{x ∈ bulk} max_{δ ∈ Δ} |Π(x+δ) - Π(x)|
+```
+
+Below this, admissible perturbations cross the resolution threshold
+everywhere, not just at boundaries.
+
+**Distortion metrics:** The PCI (Partition Compatibility Index) between
+two scopes can be reinterpreted as measuring whether their ε-values
+fall in the same plateau. PCI ≈ 1 when both scopes are in the same
+admissible interval; PCI drops when they are in different plateaus.
+
+### Example — Kuramoto System
+
+For the Kuramoto oscillator with Π = {r_ss} (steady-state order parameter):
+
+- ε < 0.01: partition fragments into ~10+ noise-driven classes (below ε_min)
+- ε ∈ [0.02, 0.15]: stable 3-regime partition (Incoherent / Partial / Synchronized)
+- ε ∈ (0.15, 0.4]: Partial and Synchronized merge → 2-regime partition
+- ε > 0.4: everything collapses to 1 class
+
+The admissible interval for the 3-regime scope is I_ε ≈ [0.02, 0.15],
+giving w ≈ log(0.15/0.02) ≈ 2.0 — a reasonably robust scope.
+
+The current working ε = 0.05 sits comfortably within this interval.
+The ε-sweep would validate this choice and reveal that any ε between
+0.02 and 0.15 recovers the same partition structure.
+
+---
+
+## 5 The ε–Δ Interaction (Critical)
 
 The interaction between ε and Δ is the most important and least
 documented aspect of ε in the framework.
@@ -127,7 +271,7 @@ Wide boundaries → diffuse partition → high distortion under aggregation.
 
 ---
 
-## 5 ε and Admissibility
+## 6 ε and Admissibility
 
 An observable π ∈ Π becomes **inadmissible** when its effects
 on the observable space fall below ε:
@@ -148,7 +292,7 @@ This is the ε-mechanism behind emergence.
 
 ---
 
-## 6 ε in the Experimental Systems
+## 7 ε in the Experimental Systems
 
 | System | ε specification | Interpretation |
 |---|---|---|
@@ -166,15 +310,27 @@ In each system, ε must be calibrated so that:
 
 ---
 
-## 7 Open Questions on ε
+## 8 Open Questions on ε
 
 The following aspects of ε require further formalization:
 
 - **ε as a function of state:** Should ε be uniform or can it vary across
   state space? High-symmetry regions may require finer resolution than bulk regions.
-- **ε estimation procedure:** Given a system and a candidate Δ, how is the
-  consistent ε determined empirically?
+  If ε is state-dependent, the admissible interval (§4) becomes an admissible
+  *region* in a function space — the formalization of this is open.
+- **ε-sweep implementation:** The ε-sweep protocol (§4) needs to be implemented
+  in `pipeline.sweep` alongside the existing BC parameter sweep. Key design
+  questions: logarithmic or linear spacing? How to detect plateau boundaries
+  automatically? Should the ε-sweep be run per-case or once per system?
+- **Plateau stability under BC variation:** Within a single BC parameter value,
+  the admissible ε-interval is well-defined. But as the BC parameter changes
+  (e.g., coupling strength κ), the interval may shift or narrow. Mapping
+  I_ε(κ) as a function of the BC parameter would reveal where the scope is
+  most and least robust — and whether transition boundaries θ* coincide with
+  ε-interval narrowing.
 - **ε and information content:** Is there a relationship between ε and the
   information-theoretic mutual information between scope observables?
 - **Multiple ε for multiple observables:** When Π = {π₁, π₂, ...}, can
-  each observable have its own εᵢ? What is the joint admissibility condition?
+  each observable have its own εᵢ? The admissible interval would then become
+  a box I_ε = [ε₁_min, ε₁_max] × [ε₂_min, ε₂_max] × ... in ε-space.
+  What is the joint admissibility condition?

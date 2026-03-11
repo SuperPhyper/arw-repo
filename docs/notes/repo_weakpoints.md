@@ -159,11 +159,16 @@ where further formalization would strengthen the framework.
 
 ### ε estimation procedure
 
-`epsilon_and_scope_resolution.md` § 7 lists open questions including
-"How is ε estimated empirically?" The Kuramoto case uses ε = 0.05 as a
-concrete number; the labyrinth uses cosine distance < 0.1. There is no
-general procedure for choosing ε. This matters for reproducibility
-as soon as new systems are added.
+`epsilon_and_scope_resolution.md` § 4 introduces the admissible ε-interval
+I_ε = [ε_min, ε_max] and the ε-sweep protocol for determining it empirically.
+This replaces the previous open question ("how is ε estimated?") with a
+concrete methodology: sweep ε, identify partition-invariant plateaus,
+use any ε within the plateau.
+
+**What remains open:**
+- ε-sweep not yet implemented in `pipeline.sweep` (see § 8, open question 2)
+- Plateau stability under BC parameter variation (I_ε as a function of κ)
+- State-dependent ε and the multi-observable case
 
 ### Resonance ↔ coupling BC: formal relationship
 
