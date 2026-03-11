@@ -1,0 +1,623 @@
+{
+  "case_id": "CASE-20260311-0003",
+  "system": "double_pendulum",
+  "observables": [
+    "lambda_proxy",
+    "var_rel"
+  ],
+  "observable_ranges": {
+    "lambda_proxy": {
+      "min": 0.042521,
+      "max": 0.111344,
+      "span": 0.068823
+    },
+    "var_rel": {
+      "min": 0.005332,
+      "max": 0.30273,
+      "span": 0.297398
+    }
+  },
+  "eps_range": [
+    0.001,
+    0.5
+  ],
+  "eps_steps": 60,
+  "per_observable": {
+    "lambda_proxy": {
+      "plateaus": [
+        {
+          "N": 10,
+          "eps_start": 0.001,
+          "eps_end": 0.00209,
+          "n_points": 8,
+          "width_log": 0.7372
+        },
+        {
+          "N": 9,
+          "eps_start": 0.002323,
+          "eps_end": 0.003186,
+          "n_points": 4,
+          "width_log": 0.3159
+        },
+        {
+          "N": 6,
+          "eps_start": 0.00354,
+          "eps_end": 0.003933,
+          "n_points": 2,
+          "width_log": 0.1053
+        },
+        {
+          "N": 5,
+          "eps_start": 0.00437,
+          "eps_end": 0.005993,
+          "n_points": 4,
+          "width_log": 0.3158
+        },
+        {
+          "N": 4,
+          "eps_start": 0.006659,
+          "eps_end": 0.009134,
+          "n_points": 4,
+          "width_log": 0.316
+        },
+        {
+          "N": 2,
+          "eps_start": 0.010148,
+          "eps_end": 0.026188,
+          "n_points": 10,
+          "width_log": 0.948
+        },
+        {
+          "N": 1,
+          "eps_start": 0.029097,
+          "eps_end": 0.5,
+          "n_points": 28,
+          "width_log": 2.844
+        }
+      ]
+    },
+    "var_rel": {
+      "plateaus": [
+        {
+          "N": 12,
+          "eps_start": 0.001,
+          "eps_end": 0.004855,
+          "n_points": 16,
+          "width_log": 1.58
+        },
+        {
+          "N": 11,
+          "eps_start": 0.005394,
+          "eps_end": 0.010148,
+          "n_points": 7,
+          "width_log": 0.632
+        },
+        {
+          "N": 9,
+          "eps_start": 0.011276,
+          "eps_end": 0.019093,
+          "n_points": 6,
+          "width_log": 0.5266
+        },
+        {
+          "N": 7,
+          "eps_start": 0.021214,
+          "eps_end": 0.026188,
+          "n_points": 3,
+          "width_log": 0.2106
+        },
+        {
+          "N": 5,
+          "eps_start": 0.029097,
+          "eps_end": 0.029097,
+          "n_points": 1,
+          "width_log": 0.0
+        },
+        {
+          "N": 4,
+          "eps_start": 0.032329,
+          "eps_end": 0.03991,
+          "n_points": 3,
+          "width_log": 0.2107
+        },
+        {
+          "N": 3,
+          "eps_start": 0.044343,
+          "eps_end": 0.049269,
+          "n_points": 2,
+          "width_log": 0.1053
+        },
+        {
+          "N": 1,
+          "eps_start": 0.054742,
+          "eps_end": 0.5,
+          "n_points": 22,
+          "width_log": 2.212
+        }
+      ]
+    }
+  },
+  "joint": {
+    "plateaus": [
+      {
+        "N": 12,
+        "eps_start": 0.001,
+        "eps_end": 0.009134,
+        "n_points": 22,
+        "width_log": 2.212
+      },
+      {
+        "N": 11,
+        "eps_start": 0.010148,
+        "eps_end": 0.010148,
+        "n_points": 1,
+        "width_log": 0.0
+      },
+      {
+        "N": 9,
+        "eps_start": 0.011276,
+        "eps_end": 0.019093,
+        "n_points": 6,
+        "width_log": 0.5266
+      },
+      {
+        "N": 8,
+        "eps_start": 0.021214,
+        "eps_end": 0.026188,
+        "n_points": 3,
+        "width_log": 0.2106
+      },
+      {
+        "N": 5,
+        "eps_start": 0.029097,
+        "eps_end": 0.029097,
+        "n_points": 1,
+        "width_log": 0.0
+      },
+      {
+        "N": 4,
+        "eps_start": 0.032329,
+        "eps_end": 0.03991,
+        "n_points": 3,
+        "width_log": 0.2107
+      },
+      {
+        "N": 3,
+        "eps_start": 0.044343,
+        "eps_end": 0.049269,
+        "n_points": 2,
+        "width_log": 0.1053
+      },
+      {
+        "N": 1,
+        "eps_start": 0.054742,
+        "eps_end": 0.5,
+        "n_points": 22,
+        "width_log": 2.212
+      }
+    ]
+  },
+  "comparison": [
+    {
+      "epsilon": 0.001,
+      "N_lambda_proxy": 10,
+      "N_var_rel": 12,
+      "N_joint": 12,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.001111,
+      "N_lambda_proxy": 10,
+      "N_var_rel": 12,
+      "N_joint": 12,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.001234,
+      "N_lambda_proxy": 10,
+      "N_var_rel": 12,
+      "N_joint": 12,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.001372,
+      "N_lambda_proxy": 10,
+      "N_var_rel": 12,
+      "N_joint": 12,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.001524,
+      "N_lambda_proxy": 10,
+      "N_var_rel": 12,
+      "N_joint": 12,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.001693,
+      "N_lambda_proxy": 10,
+      "N_var_rel": 12,
+      "N_joint": 12,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.001881,
+      "N_lambda_proxy": 10,
+      "N_var_rel": 12,
+      "N_joint": 12,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.00209,
+      "N_lambda_proxy": 10,
+      "N_var_rel": 12,
+      "N_joint": 12,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.002323,
+      "N_lambda_proxy": 9,
+      "N_var_rel": 12,
+      "N_joint": 12,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.002581,
+      "N_lambda_proxy": 9,
+      "N_var_rel": 12,
+      "N_joint": 12,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.002867,
+      "N_lambda_proxy": 9,
+      "N_var_rel": 12,
+      "N_joint": 12,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.003186,
+      "N_lambda_proxy": 9,
+      "N_var_rel": 12,
+      "N_joint": 12,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.00354,
+      "N_lambda_proxy": 6,
+      "N_var_rel": 12,
+      "N_joint": 12,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.003933,
+      "N_lambda_proxy": 6,
+      "N_var_rel": 12,
+      "N_joint": 12,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.00437,
+      "N_lambda_proxy": 5,
+      "N_var_rel": 12,
+      "N_joint": 12,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.004855,
+      "N_lambda_proxy": 5,
+      "N_var_rel": 12,
+      "N_joint": 12,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.005394,
+      "N_lambda_proxy": 5,
+      "N_var_rel": 11,
+      "N_joint": 12,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.005993,
+      "N_lambda_proxy": 5,
+      "N_var_rel": 11,
+      "N_joint": 12,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.006659,
+      "N_lambda_proxy": 4,
+      "N_var_rel": 11,
+      "N_joint": 12,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.007399,
+      "N_lambda_proxy": 4,
+      "N_var_rel": 11,
+      "N_joint": 12,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.008221,
+      "N_lambda_proxy": 4,
+      "N_var_rel": 11,
+      "N_joint": 12,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.009134,
+      "N_lambda_proxy": 4,
+      "N_var_rel": 11,
+      "N_joint": 12,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.010148,
+      "N_lambda_proxy": 2,
+      "N_var_rel": 11,
+      "N_joint": 11,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.011276,
+      "N_lambda_proxy": 2,
+      "N_var_rel": 9,
+      "N_joint": 9,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.012528,
+      "N_lambda_proxy": 2,
+      "N_var_rel": 9,
+      "N_joint": 9,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.01392,
+      "N_lambda_proxy": 2,
+      "N_var_rel": 9,
+      "N_joint": 9,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.015466,
+      "N_lambda_proxy": 2,
+      "N_var_rel": 9,
+      "N_joint": 9,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.017184,
+      "N_lambda_proxy": 2,
+      "N_var_rel": 9,
+      "N_joint": 9,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.019093,
+      "N_lambda_proxy": 2,
+      "N_var_rel": 9,
+      "N_joint": 9,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.021214,
+      "N_lambda_proxy": 2,
+      "N_var_rel": 7,
+      "N_joint": 8,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.02357,
+      "N_lambda_proxy": 2,
+      "N_var_rel": 7,
+      "N_joint": 8,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.026188,
+      "N_lambda_proxy": 2,
+      "N_var_rel": 7,
+      "N_joint": 8,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.029097,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 5,
+      "N_joint": 5,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.032329,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 4,
+      "N_joint": 4,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.03592,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 4,
+      "N_joint": 4,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.03991,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 4,
+      "N_joint": 4,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.044343,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 3,
+      "N_joint": 3,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.049269,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 3,
+      "N_joint": 3,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.054742,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.060823,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.067579,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.075085,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.083426,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.092693,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.102989,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.114429,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.12714,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.141263,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.156954,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.174388,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.193759,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.215282,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.239196,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.265765,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.295287,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.328087,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.364531,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.405023,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.450013,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.5,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    }
+  ],
+  "agreement_rate": 0.367
+}

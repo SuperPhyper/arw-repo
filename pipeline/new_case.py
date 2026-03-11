@@ -35,6 +35,13 @@ SYSTEM_REGISTRY = {
         "bc_classes": ["coupling", "dissipation"],
         "partition_type_prediction": "clustered",
     },
+    "double_pendulum": {
+        "experiment_doc": "experiments/multi_link_pendulum.md",
+        "default_phase": "1",
+        "description": "Classical double pendulum — multi-BC-class regime analysis",
+        "bc_classes": ["restriction", "coupling", "dissipation", "forcing"],
+        "partition_type_prediction": "sequential",
+    },
     "consensus": {
         "experiment_doc": "experiments/agent_consensus_models.md",
         "default_phase": "2a",

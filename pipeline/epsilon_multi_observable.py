@@ -120,7 +120,7 @@ def run_multi_observable_sweep(case_dir: Path, eps_min: float, eps_max: float,
     sweep_param = sweeps_spec[0].get("param", "kappa") if sweeps_spec else "kappa"
 
     # Extract observables per system
-    if system == "pendulum":
+    if system in ("pendulum", "double_pendulum"):
         observables = {
             "lambda_proxy": [],
             "var_rel": [],
