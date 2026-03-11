@@ -101,12 +101,47 @@ def extract_observable_stub(result: dict) -> dict:
             "note": "Implement observable extractor for this system"}
 
 
+def extract_observable_double_pendulum(result: dict) -> dict:
+    """
+    Observable: lambda_proxy (Lyapunov proxy, chaos indicator).
+    Secondary: var_rel (relative angle variance), E_mean (mean energy).
+
+    Regime partition R_DP:
+        Periodic:       lambda_proxy < 0
+        Quasi-periodic: 0 ≤ lambda_proxy ≤ 0.1
+        Chaotic:        lambda_proxy > 0.1
+    """
+    if result.get("status") != "ok":
+        return {"observable": None, "regime_label": "unknown", "regime_id": -1}
+
+    lp = result.get("lambda_proxy", 0.0)
+
+    if lp < 0.0:
+        label, rid = "Periodic", 0
+    elif lp <= 0.1:
+        label, rid = "Quasi_periodic", 1
+    else:
+        label, rid = "Chaotic", 2
+
+    return {
+        "observable":        lp,
+        "observable_name":   "lambda_proxy",
+        "observable_2":      result.get("var_rel"),
+        "observable_2_name": "var_rel",
+        "observable_3":      result.get("E_mean"),
+        "observable_3_name": "E_mean",
+        "regime_label":      label,
+        "regime_id":         rid,
+    }
+
+
 OBSERVABLE_MAP = {
-    "kuramoto":  extract_observable_kuramoto,
-    "pendulum":  extract_observable_pendulum,
-    "consensus": extract_observable_stub,
-    "meanfield": extract_observable_stub,
-    "labyrinth": extract_observable_stub,
+    "kuramoto":        extract_observable_kuramoto,
+    "pendulum":        extract_observable_pendulum,
+    "double_pendulum": extract_observable_double_pendulum,
+    "consensus":       extract_observable_stub,
+    "meanfield":       extract_observable_stub,
+    "labyrinth":       extract_observable_stub,
 }
 
 

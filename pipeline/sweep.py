@@ -231,12 +231,183 @@ def run_labyrinth(params: dict, sweep_point: dict, rng: np.random.Generator) -> 
             "note": "Implement labyrinth environment in pipeline/kernels/labyrinth.py"}
 
 
+def run_double_pendulum(params: dict, sweep_point: dict, rng: np.random.Generator) -> dict:
+    """
+    Classical double pendulum — two rigid links connected by a free
+    rotational joint, suspended from a fixed pivot.
+
+    State: x = (θ₁, θ₂, dθ₁, dθ₂)
+      θ₁: angle of upper link from vertical
+      θ₂: angle of lower link from vertical
+
+    Physical parameters (from params or sweep_point):
+      m1, m2:    link masses [kg]
+      L1, L2:    link lengths [m]
+      gamma:     damping coefficient [1/s] (0 = conservative)
+      A, Omega:  external driving amplitude [N·m] and frequency [rad/s]
+
+    Sweep parameters (any of the above, plus):
+      E_target:  target total energy — sets IC amplitude
+
+    Observables:
+      lambda_proxy:  finite-time Lyapunov exponent proxy (chaos indicator)
+      var_rel:       Var(θ₁ - θ₂) in steady state (relative motion)
+      E_mean:        mean total energy in steady state
+
+    Regime partition R_DP:
+      Periodic:       lambda_proxy < 0
+      Quasi-periodic: 0 ≤ lambda_proxy ≤ 0.1
+      Chaotic:        lambda_proxy > 0.1
+    """
+    try:
+        from scipy.integrate import solve_ivp
+    except ImportError:
+        return {"status": "error",
+                "note": "scipy not installed. Run: pip install scipy --break-system-packages"}
+
+    # ── Parameters: sweep_point overrides params ─────────────────────────
+    def p(name, default):
+        return float(sweep_point.get(name, params.get(name, default)))
+
+    m1    = p("m1", 1.0)
+    m2    = p("m2", 1.0)
+    L1    = p("L1", 1.0)
+    L2    = p("L2", 1.0)
+    gamma = p("gamma", 0.0)       # 0 = no damping (classical)
+    A     = p("A", 0.0)           # 0 = no driving (free)
+    Omega = p("Omega", 2.0/3.0)   # driving frequency
+    g_acc = 9.81
+
+    T_end   = p("T", 60.0)
+    T_trans = p("T_transient", 20.0)
+    seed    = int(sweep_point.get("seed", 42))
+    n_ic    = int(params.get("n_ic", 5))
+
+    # Energy target for IC generation
+    E_target = sweep_point.get("E_target", params.get("E_target", None))
+
+    # ── Equations of motion ──────────────────────────────────────────────
+    # Full nonlinear EOM for a planar double pendulum
+    # (angles measured from vertical, standard Lagrangian derivation)
+    def eom(t, y):
+        th1, th2, w1, w2 = y
+        delta = th2 - th1
+        cos_d = np.cos(delta)
+        sin_d = np.sin(delta)
+
+        M = m1 + m2
+        den = M * L1 - m2 * L1 * cos_d**2
+
+        # Driving torque on upper link
+        tau = A * np.cos(Omega * t) if A > 0 else 0.0
+
+        dw1 = (m2 * L1 * w1**2 * sin_d * cos_d
+               + m2 * g_acc * np.sin(th2) * cos_d
+               + m2 * L2 * w2**2 * sin_d
+               - M * g_acc * np.sin(th1)
+               - gamma * w1 + tau) / den
+
+        dw2 = (-m2 * L2 * w2**2 * sin_d * cos_d
+               - M * g_acc * np.sin(th2)
+               + M * L1 * w1**2 * sin_d
+               + M * g_acc * np.sin(th1) * cos_d
+               - gamma * w2) / (M * L2 / m2 - L2 * cos_d**2 + 1e-12)
+
+        return [w1, w2, dw1, dw2]
+
+    # ── Total energy ─────────────────────────────────────────────────────
+    def total_energy(th1, th2, w1, w2):
+        # Kinetic energy
+        T_kin = (0.5 * (m1 + m2) * L1**2 * w1**2
+                 + 0.5 * m2 * L2**2 * w2**2
+                 + m2 * L1 * L2 * w1 * w2 * np.cos(th1 - th2))
+        # Potential energy (zero at both links hanging down)
+        V = (-(m1 + m2) * g_acc * L1 * np.cos(th1)
+             - m2 * g_acc * L2 * np.cos(th2))
+        return T_kin + V
+
+    # ── Initial conditions ───────────────────────────────────────────────
+    rng_local = np.random.default_rng(seed)
+
+    if E_target is not None:
+        E_target = float(E_target)
+        # Set IC amplitude to approximately match target energy
+        # For small angles: E ≈ (m1+m2)*g*L1*θ₁² + m2*g*L2*θ₂²
+        # Scale angle amplitude to hit E_target
+        E_ref = (m1 + m2) * g_acc * L1 + m2 * g_acc * L2
+        if E_ref > 0:
+            amp = min(np.pi * 0.95, np.sqrt(abs(E_target) / E_ref))
+        else:
+            amp = 0.5
+    else:
+        amp = 0.5  # default: moderate amplitude
+
+    # ── Steady-state trajectory for Var_rel and E_mean ───────────────────
+    y0 = rng_local.uniform([-amp, -amp, 0, 0], [amp, amp, 0, 0])
+    try:
+        sol = solve_ivp(eom, [0, T_end], y0, method="RK45",
+                        max_step=0.02, rtol=1e-8, atol=1e-10)
+        if not sol.success:
+            raise RuntimeError(sol.message)
+
+        i_trans = np.searchsorted(sol.t, T_trans)
+        th1_ss = sol.y[0, i_trans:]
+        th2_ss = sol.y[1, i_trans:]
+        w1_ss  = sol.y[2, i_trans:]
+        w2_ss  = sol.y[3, i_trans:]
+
+        var_rel = float(np.var(th1_ss - th2_ss))
+        E_series = total_energy(th1_ss, th2_ss, w1_ss, w2_ss)
+        E_mean = float(np.mean(E_series))
+        E_std  = float(np.std(E_series))
+    except Exception as e:
+        return {"status": "error", "note": str(e), "sweep_point": sweep_point}
+
+    # ── Lyapunov proxy ───────────────────────────────────────────────────
+    lambda_proxies = []
+    T_lyap = 30.0
+    delta_x0_mag = 1e-7
+
+    for i in range(n_ic):
+        y0_i = rng_local.uniform([-amp, -amp, 0, 0], [amp, amp, 0, 0])
+        d0 = rng_local.standard_normal(4)
+        d0 = d0 / np.linalg.norm(d0) * delta_x0_mag
+        y0_pert = y0_i + d0
+        try:
+            s1 = solve_ivp(eom, [0, T_lyap], y0_i,
+                           method="RK45", max_step=0.02, rtol=1e-8, atol=1e-10)
+            s2 = solve_ivp(eom, [0, T_lyap], y0_pert,
+                           method="RK45", max_step=0.02, rtol=1e-8, atol=1e-10)
+            if s1.success and s2.success:
+                dT = np.linalg.norm(s1.y[:, -1] - s2.y[:, -1])
+                lp = (1.0 / T_lyap) * np.log(max(dT, 1e-20) / delta_x0_mag)
+                lambda_proxies.append(lp)
+        except Exception:
+            pass
+
+    lambda_proxy = float(np.mean(lambda_proxies)) if lambda_proxies else 0.0
+
+    return {
+        "status":        "ok",
+        "m1": m1, "m2": m2, "L1": L1, "L2": L2,
+        "gamma": gamma, "A": A, "Omega": Omega,
+        "E_target":      E_target,
+        "E_mean":        round(E_mean, 6),
+        "E_std":         round(E_std, 6),
+        "lambda_proxy":  round(lambda_proxy, 6),
+        "var_rel":       round(var_rel, 6),
+        "ic_amplitude":  round(amp, 6),
+        "n_ic_used":     len(lambda_proxies),
+    }
+
+
 KERNEL_MAP = {
-    "kuramoto":  run_kuramoto,
-    "pendulum":  run_pendulum,
-    "consensus": run_consensus,
-    "meanfield": run_meanfield,
-    "labyrinth": run_labyrinth,
+    "kuramoto":        run_kuramoto,
+    "pendulum":        run_pendulum,
+    "double_pendulum": run_double_pendulum,
+    "consensus":       run_consensus,
+    "meanfield":       run_meanfield,
+    "labyrinth":       run_labyrinth,
 }
 
 
