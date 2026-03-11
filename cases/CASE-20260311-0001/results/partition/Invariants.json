@@ -1,0 +1,31 @@
+{
+  "case_id": "CASE-20260311-0001",
+  "system": "kuramoto",
+  "sweep_param": "kappa",
+  "regime_count": 3,
+  "adjacency_graph": {
+    "nodes": [
+      0,
+      1,
+      2
+    ],
+    "edges": [
+      {
+        "from": 0,
+        "to": 1,
+        "param_midpoint": 1.25
+      },
+      {
+        "from": 1,
+        "to": 2,
+        "param_midpoint": 2.25
+      }
+    ]
+  },
+  "persistence": 0.8571,
+  "hysteresis_width": null,
+  "theta_star": 1.25,
+  "predicted_count": 3,
+  "predicted_type": "sequential",
+  "count_match": true
+}

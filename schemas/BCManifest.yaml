@@ -1,0 +1,133 @@
+# BCManifest.yaml — Boundary-Condition Classification + Perturbation Program
+# Version: 0.2 (aligned with docs/bc_taxonomy/*)
+#
+# This manifest makes boundary choices explicit and testable.
+# It links a ScopeSpec to: concrete BC parameters, sweep programs,
+# predicted partition effects, and transfer targets with distortion metrics.
+#
+# Metrics defined in docs/bc_taxonomy/transfer_distortion_metrics.md:
+#   RCD  = |N - M|  (Regime Count Discrepancy)
+#   TBS  = |θ*(S) - θ*(S')|  (Transition Boundary Shift)
+#   PCI  = (1/N) Σ pᵢ  (Partition Compatibility Index)
+#   SDI  = graph_edit_distance(G_S, G_S')  (Structural Distortion Index)
+
+schema_version: "0.2"
+id: "BCM-YYYYMMDD-####"
+scope_id: "SCOPE-YYYYMMDD-####"
+title: ""
+status: "draft"                     # draft | active | frozen
+created_at: "YYYY-MM-DD"
+updated_at: "YYYY-MM-DD"
+
+# ── BC Components ────────────────────────────────────────────────────────────
+bc_components:
+  - id: "bc_01"
+    class: ""                       # restriction | coupling | symmetry_breaking |
+    #                               # dissipation | forcing | aggregation
+    name: ""
+    description: ""
+
+    # Where in the scope tuple does this BC manifest?
+    locus:
+      applies_to: ""                # B | Pi | Delta | epsilon | X_structure | d_pi
+      location_description: ""      # e.g., "coupling constraint in B_K"
+
+    # Concrete parameterization for sweep
+    parameterization:
+      - name: ""                    # e.g., "kappa" (coupling strength)
+        symbol: ""                  # e.g., "κ"
+        domain: ""                  # e.g., "[0, 5]"
+        meaning: ""
+        implementation_hook:
+          type: ""                  # code_param | config_field | operator_choice
+          reference: ""             # path.to.parameter or function name
+
+    # Sweep program
+    perturbation_program:
+      sweeps:
+        - param: ""
+          values: []                # e.g., [0.0, 0.5, 1.0, 2.0, 5.0]
+          sweep_type: ""            # grid | log_grid | adaptive | manual
+      admissible_delta_links:
+        - ""                        # delta_id from ScopeSpec
+
+    # Resolution plan
+    resolution_plan:
+      epsilons: []                  # e.g., [0.005, 0.01, 0.02]
+      stability_window_criterion: ""  # e.g., "partition invariant over >= 3 consecutive ε"
+
+    # Predicted effects on partition
+    predicted_partition_effects:
+      qualitative:
+        - ""                        # e.g., "regime_count_increase_with_coupling"
+      partition_type_prediction: "" # binary | sequential | clustered | multi_stable | hierarchical
+      #                             # (from docs/bc_taxonomy/bc_class_to_regime_type_map.md)
+      invariants_to_track:
+        - "regime_count"            # |R_S|
+        - "adjacency_graph"         # which regimes are adjacent in parameter space
+        - "persistence_under_sweep" # fraction of sweep interval with stable partition
+        - "hysteresis_width"        # if applicable
+        - "transition_boundary"     # θ* value(s)
+
+    # Failure signatures (from docs/bc_taxonomy/boundary_condition_classes.md)
+    failure_signatures:
+      - ""                          # e.g., "no_stable_window_for_any_epsilon"
+      - ""                          # e.g., "observable_dependence_dominates"
+
+    # Falsification criteria
+    falsification_criteria:
+      - id: "fals_01"
+        statement: ""
+        measurable_test: ""         # e.g., "PCI >= 0.8 over sweep interval I"
+        threshold: ""
+
+# ── Transfer Targets ─────────────────────────────────────────────────────────
+# Cross-scope comparison program using metrics: RCD, TBS, PCI, SDI, Φ
+transfer_targets:
+  - target_scope_id: ""            # SCOPE-YYYYMMDD-#### of the other scope
+    target_bc_manifest_id: ""      # BCM-... of target (if exists)
+    direction: ""                  # "source -> target" (coarsening) or "target -> source"
+
+    structural_homology_claim: ""  # what makes these scopes comparable
+    shared_bc_components:
+      - ""                         # bc_id(s) that are structurally shared
+
+    expected_transfer: ""          # admissible | partial | inadmissible | unknown
+    expected_transfer_rationale: ""
+
+    distortion_metrics_planned:
+      - name: "RCD"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md#rcd"
+        expected_value: ""         # e.g., "0 for large N, > 0 near transition"
+      - name: "TBS"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md#tbs"
+        expected_value: ""
+      - name: "PCI"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md#pci"
+        expected_value: ""         # e.g., "< 1 near transition boundary"
+      - name: "SDI"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md#sdi"
+        expected_value: ""
+      - name: "Phi"                # composite admissibility score
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md#phi"
+        expected_value: ""
+
+    transfer_falsification:
+      - id: "tf_01"
+        statement: ""
+        measurable_test: ""
+        threshold: ""
+
+# ── Provenance ───────────────────────────────────────────────────────────────
+provenance:
+  sources:
+    - type: ""
+      ref: ""
+      pointer: ""
+  owners:
+    - role: "BoundaryTaxonomist"
+      name: ""
+  links:
+    partition_pipeline_id: ""      # PIPE-YYYYMMDD-#### (output of pipeline.extract_partition)
+    case_record_id: ""             # CASE-YYYYMMDD-####
+    experiment_doc: ""             # e.g., experiments/kuramoto_oscillators.md
