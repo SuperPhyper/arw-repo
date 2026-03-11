@@ -20,8 +20,13 @@ Deep treatment of how ε shapes partition structure and observable admissibility
 
 | Document | Purpose |
 |---|---|
-| [epsilon_and_scope_resolution.md](epsilon_and_scope_resolution.md) | Complete treatment: ε as resolution threshold, window interpretation, ε–Δ interaction |
-| [epsilon_resolution_window_arw.md](epsilon_resolution_window_arw.md) | ε as resolution window — complementary perspective on ε structure |
+| [epsilon_and_scope_resolution.md](epsilon_and_scope_resolution.md) | Complete treatment: ε as resolution threshold, admissible ε-interval, ε–Δ interaction, multi-observable results |
+
+## Scope Completeness
+
+| Document | Purpose |
+|---|---|
+| [scope_completeness.md](scope_completeness.md) | Observable agreement as a diagnostic for scope completeness; connection to latent degrees of freedom |
 
 ## Engineering Applications
 
