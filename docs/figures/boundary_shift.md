@@ -1,3 +1,7 @@
+---
+status: reference
+---
+
 # Boundary Shift under Model Reduction
 
 ![Boundary Shift](../../figures/boundary_shift.png)

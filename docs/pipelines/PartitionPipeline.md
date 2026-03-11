@@ -1,9 +1,11 @@
+---
+status: redirect
+---
 
 # Partition Pipeline
 
 ## Purpose
-Extract a regime partition from an ART scope instantiation.
+Extract a regime partition from an ART scope instantiation: A(S) = R_S.
 
-A(S) = R_S
-
-where R_S is the set of regimes under admissible description and resolution.
+For the full design document with architecture, CLI reference, and
+implementation status, see [pipeline/PartitionPipeline.md](../../pipeline/PartitionPipeline.md).

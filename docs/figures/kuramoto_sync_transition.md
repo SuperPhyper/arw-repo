@@ -1,3 +1,7 @@
+---
+status: reference
+---
+
 # Kuramoto Synchronization Transition
 
 ![Kuramoto Synchronization Transition](../../figures/kuramoto_sync_transition.png)

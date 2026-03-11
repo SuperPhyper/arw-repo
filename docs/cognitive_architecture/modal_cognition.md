@@ -1,4 +1,8 @@
+---
+status: redirect
+---
+
 # Modal Cognition
 
-Different cognitive modes correspond to different projection
-families used to interpret contextual states.
+This document has been consolidated into
+[docs/context_navigation/modal_cognition.md](../context_navigation/modal_cognition.md).

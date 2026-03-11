@@ -1,3 +1,7 @@
+---
+status: reference
+---
+
 # PCI Scaling with System Size
 
 ![PCI Scaling](../../figures/pci_scaling.png)

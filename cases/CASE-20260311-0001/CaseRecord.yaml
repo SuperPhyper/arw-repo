@@ -13,7 +13,7 @@ title: ""
 phase: "1"                           # 0 | 1 | 2a | 2b | 2c | 3 | 4
 system: "kuramoto"                          # kuramoto | pendulum | consensus | meanfield |
 #                                   # labyrinth | custom
-status: "open"                      # open | in_progress | complete | failed | archived
+status: "complete"                      # open | in_progress | complete | failed | archived
 created_at: "2026-03-11"
 updated_at: "2026-03-11"
 

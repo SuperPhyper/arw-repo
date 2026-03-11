@@ -1,3 +1,7 @@
+---
+status: reference
+---
+
 # ε-Sweep: Partition Invariant Signature — Kuramoto
 
 **File:** `figures/epsilon_sweep_kuramoto.png`

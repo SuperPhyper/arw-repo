@@ -1,11 +1,8 @@
-# Context Navigation AI Architecture
+---
+status: redirect
+---
 
-This architecture interprets cognition as navigation between
-context partitions.
+# Context Navigation AI — System Map
 
-Core elements:
-
-- modal cognition
-- anchor-based memory
-- context recognition
-- consolidation
+This document has been consolidated into
+[docs/context_navigation/context_navigation_ai.md](../context_navigation/context_navigation_ai.md).

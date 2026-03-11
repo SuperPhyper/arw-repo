@@ -1,3 +1,7 @@
+---
+status: working-definition
+---
+
 # Research Journal
 
 Ongoing notes on theoretical developments, experimental decisions, and open threads.

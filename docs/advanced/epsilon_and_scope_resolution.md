@@ -259,6 +259,9 @@ system under (B, Π, Δ) — not a modeling choice. The researcher selects
 *which plateau* to work in (i.e., what resolution level is appropriate
 for the question at hand), and any ε within that plateau is equivalent.
 
+See [figures/epsilon_sweep_kuramoto.png](../../figures/epsilon_sweep_kuramoto.png)
+for the visualization of σ(ε) and plateau widths.
+
 ### Plateau Stability Under BC Variation — I_ε(κ)
 
 A natural follow-up: does the admissible ε-interval change as the BC
@@ -287,6 +290,9 @@ observable landscape is steep.
 This has a practical consequence: scope specifications near phase
 transitions need tighter ε calibration. The ε-sweep is most valuable
 precisely in the regions where the system is most interesting.
+
+See [figures/epsilon_kappa_robustness.png](../../figures/epsilon_kappa_robustness.png)
+for the visualization of w(κ) vs |dr/dκ|.
 
 ### Multiple Observables — Pendulum (λ_proxy, Var_rel)
 

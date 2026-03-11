@@ -1,3 +1,7 @@
+---
+status: working-definition
+---
+
 # Literature Links
 
 References relevant to the ARW/ART framework.

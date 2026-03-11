@@ -77,7 +77,9 @@ Different scopes produce different regime structures. The framework develops too
 | [docs/core/regime_stability_regions.md](docs/core/regime_stability_regions.md) | Regimes as robust stability regions |
 | [docs/core/basins_as_scope_partitions.md](docs/core/basins_as_scope_partitions.md) | Basins reinterpreted as scope partitions |
 | [docs/core/arw_scope_reduction_partition_criterion.md](docs/core/arw_scope_reduction_partition_criterion.md) | Admissible reduction as partition coarsening |
-| [docs/advanced/](docs/advanced/README.md) | Emergence, ε in depth, engineering applications |
+| [docs/advanced/epsilon_and_scope_resolution.md](docs/advanced/epsilon_and_scope_resolution.md) | ε in depth: admissible ε-interval, ε-sweep, multi-observable ε, I_ε(κ) robustness |
+| [docs/advanced/scope_completeness.md](docs/advanced/scope_completeness.md) | Observable agreement as scope completeness diagnostic; latent degrees of freedom |
+| [docs/advanced/](docs/advanced/README.md) | Emergence, engineering applications |
 
 ### Level 3 — Application Domains
 
@@ -175,8 +177,20 @@ It implements the full workflow from scope specification to cross-scope transfer
 
 See [pipeline/README.md](pipeline/README.md) for architecture, CLI reference, and implementation status.
 
-Current state: end-to-end validated on Kuramoto Phase 1 (`CASE-20260311-0001`).
-Pendulum kernel is stubbed; consensus, mean-field, and labyrinth are planned.
+Current state: end-to-end validated on Kuramoto (`CASE-20260311-0001`) and
+classical double pendulum (`CASE-20260311-0003`). Includes ε-sweep,
+2D (κ, ε) robustness mapping, and multi-observable ε-analysis.
+
+---
+
+## Empirical Results
+
+Key findings from the ε-analysis (see [docs/advanced/epsilon_and_scope_resolution.md](docs/advanced/epsilon_and_scope_resolution.md)):
+
+- **Admissible ε-interval:** The partition structure is stable across a range of ε values (plateaus). The ε-sweep identifies these plateaus empirically, replacing the need to "guess" ε.
+- **Scope fragility at phase transitions:** The admissible ε-interval narrows where the system changes fastest (Kuramoto: r = −0.77 correlation between plateau width and observable gradient). See [figures/epsilon_kappa_robustness.png](figures/epsilon_kappa_robustness.png).
+- **Multi-observable scopes need per-observable ε:** On the double pendulum, λ_proxy and Var_rel agree on the regime count at only 28% of ε-values. A single shared ε is insufficient. See [figures/multi_observable_agreement.png](figures/multi_observable_agreement.png).
+- **Observable agreement as scope completeness diagnostic:** Where observables disagree, latent degrees of freedom are active. See [docs/advanced/scope_completeness.md](docs/advanced/scope_completeness.md) and [figures/scope_completeness.png](figures/scope_completeness.png).
 
 ---
 
@@ -185,6 +199,8 @@ Pendulum kernel is stubbed; consensus, mean-field, and labyrinth are planned.
 - Do boundary-condition classes generate characteristic regime partition types?
 - Are these partition types transferable across modeling levels (e.g., agent ↔ mean-field)?
 - Can transfer failure be quantified using structural distortion metrics?
+- How does the admissible ε-interval behave under BC parameter variation?
+- Can observable agreement rate serve as a diagnostic for scope completeness?
 
 ---
 

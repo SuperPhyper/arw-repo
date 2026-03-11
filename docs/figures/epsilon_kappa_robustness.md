@@ -1,3 +1,7 @@
+---
+status: reference
+---
+
 # Scope Robustness I_ε(κ) vs Observable Gradient — Kuramoto
 
 **File:** `figures/epsilon_kappa_robustness.png`

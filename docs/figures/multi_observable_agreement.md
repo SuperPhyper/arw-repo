@@ -1,3 +1,7 @@
+---
+status: reference
+---
+
 # Multi-Observable Agreement — Double Pendulum
 
 **File:** `figures/multi_observable_agreement.png`

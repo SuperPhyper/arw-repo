@@ -1,3 +1,7 @@
+---
+status: reference
+---
+
 # Scope Completeness: Observable Agreement Rate — Double Pendulum
 
 **File:** `figures/scope_completeness.png`
