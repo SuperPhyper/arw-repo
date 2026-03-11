@@ -4,6 +4,8 @@ status: reference
 
 # Scope Robustness I_ε(κ) vs Observable Gradient — Kuramoto
 
+![Scope Robustness I_ε(κ) vs Observable Gradient — Kuramoto](../../figures/epsilon_kappa_robustness.png)
+
 **File:** `figures/epsilon_kappa_robustness.png`
 **Case:** CASE-20260311-0001 (Kuramoto, dense 50-point κ-sweep)
 
