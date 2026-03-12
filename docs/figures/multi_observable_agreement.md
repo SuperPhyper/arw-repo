@@ -4,6 +4,8 @@ status: reference
 
 # Multi-Observable Agreement — Double Pendulum
 
+![Multi-Observable Agreement — Double Pendulum](../../figures/multi_observable_agreement.png)
+
 **File:** `figures/multi_observable_agreement.png`
 **Case:** CASE-20260311-0003 (Double pendulum, energy sweep, 12 points)
 
