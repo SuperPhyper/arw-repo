@@ -75,32 +75,42 @@ Must be used alongside PCI.
 
 **Definition:**
 
+For scopes over the *same* control parameter axis:
+
 ```
-TBS = |θ*(S) - θ*(S')|
+TBS_raw = |θ*(S) - θ*(S')|
 ```
 
-where θ*(S) is the value of the control parameter θ at which
-the primary regime transition occurs under scope S,
-and θ*(S') is the corresponding value under S'.
+For *cross-system-type* transfers where θ is measured on incommensurable axes
+(e.g. κ dimensionless vs. E in Joules), use the normalised form:
+
+```
+TBS_norm = |θ*(S) / range(S)  −  θ*(S') / range(S')|
+```
+
+where `range(S) = max(θ) − min(θ)` is the sweep range stored in `Invariants.json`.
+TBS_norm ∈ [0, 1] expresses θ* as a fraction of the explored BC space.
+
+`pipeline.transfer` uses TBS_norm automatically when `sweep_range` is present in
+both Invariants files; it falls back to TBS_raw otherwise (logged as `method: raw_only`).
 
 **Interpretation:**
-How much does the regime boundary move when the scope changes?
-A large TBS means the two scopes disagree substantially about
-when the transition happens.
+How far into its respective BC space does each scope place the primary transition?
+TBS_norm ≈ 0 means both scopes transition at the same relative position.
+TBS_norm ≈ 0.5 means one scope transitions at 25% and the other at 75% of its range.
 
 **Expected behavior:**
-- TBS(N) → 0 as N → ∞ for mean-field comparisons
-- TBS is finite for small N (finite-size effects shift boundaries)
-- Functional form TBS(N) ~ N^{-α} provides a scaling exponent
-  that characterizes the convergence rate
+- TBS_norm → 0 for same-class transfers with matched BC parameterisation
+- TBS_norm > 0 for cross-BC-class transfers (different classes place transitions differently)
+- TBS_raw(N) ~ N^{-α} for mean-field comparisons within the same system type
 
 **Experimental targets:**
 
 | System | Control parameter θ | Expected TBS |
 |---|---|---|
-| Kuramoto | Coupling K | → 0 as N → ∞; ~ N^{-1/2} |
-| Consensus models | Confidence ε_bc | > 0 for N < 500; scaling to be determined |
-| Labyrinth (zone → episode) | Zone boundary position | Not applicable (discrete) |
+| Kuramoto S_K → S_MF (same axis) | Coupling K | TBS_raw → 0 as N → ∞ |
+| Kuramoto (CASE-0001) → Pendulum (CASE-0002) | κ [0,3] vs κ [0,10] | TBS_norm ≈ 0.167 (moderate_shift) |
+| Kuramoto (CASE-0001) → Doppelpendel (CASE-0003) | κ vs E (J) | TBS_norm ≈ 0.356 (moderate_shift) |
 
 ---
 
@@ -193,10 +203,11 @@ For the experimental systems (3–6 regime classes), exact computation is feasib
 For a compact summary, define:
 
 ```
-Φ(S → S') = w₁ · (1 - RCD/N) + w₂ · (1 - TBS/θ_range) + w₃ · PCI + w₄ · (1 - SDI/SDI_max)
+Φ(S → S') = w₁ · (1 - RCD/N) + w₂ · (1 - TBS_norm/0.5) + w₃ · PCI + w₄ · (1 - SDI/SDI_max)
 ```
 
-with weights w₁ + w₂ + w₃ + w₄ = 1.
+with weights w₁ + w₂ + w₃ + w₄ = 1, and TBS_norm as defined above.
+For same-axis transfers TBS_norm = TBS_raw / max_range is used automatically.
 
 This produces a single admissibility score in [0, 1]:
 - Φ = 1: perfectly admissible reduction

@@ -51,6 +51,10 @@ B:
 Pi:
   - id: "pi_01"
     name: ""
+    observable_key: ""              # machine-readable key matching extract_partition output
+    #                               # e.g. "r_ss" | "var_rel" | "lambda_proxy"
+    primary: true                   # true for the observable used by pipeline.extract_partition
+    #                               # exactly one Pi entry must have primary: true
     map:
       domain: "X_B"
       codomain: ""
@@ -83,9 +87,20 @@ epsilon:
   value: null                       # numeric value
   interpretation: ""                # "d_Π(x,y) ≤ ε means x ~_S y"
   tie_to_perturbations: ""          # e.g., "ε ~ sup_{δ∈Δ} E[d_Π(δ(x), x)]"
+  epsilon_choice_note: ""           # document ε fragility; e.g. "ε sits on plateau boundary
+                                    # N=k→k-1; alternatives: ε=X (N=k) or ε=Y (N=k-1)"
   stability_window_plan:
     vary_epsilon: []                # e.g., [0.005, 0.01, 0.02]
     vary_delta_strength: []         # e.g., ["sigma=0.1", "sigma=0.2"]
+
+# ── Observable sufficiency ───────────────────────────────────────────────────
+# Checked per-observable before any BC-level falsification.
+# Insufficient observables are replaced (not scope-rejected).
+observable_sufficiency:
+  - observable_key: ""             # must match Pi[*].observable_key
+    sufficient: true               # true | false
+    reason: ""                     # e.g. "span=0.274 >> 2*epsilon=0.046"
+    #       if false: "span=0.037 < 2*epsilon — observable_insufficiency, replace pi"
 
 # ── Expected regime partition ────────────────────────────────────────────────
 # (predicted before running; updated after extraction)
@@ -111,11 +126,16 @@ comparability:
       expected_admissibility: ""   # admissible | partial | inadmissible | unknown
 
 # ── Falsification conditions ─────────────────────────────────────────────────
+# Operate at BC level (not observable level — observable insufficiency is handled
+# separately in observable_sufficiency above).
+# severity: scope_rejection — the BC cannot generate a valid partition
+#           sweep_refinement — the sweep range/density needs extension (not a failure)
 falsification:
   - id: "F1"
     condition: ""                   # what empirical finding would weaken this instantiation
     measurable_test: ""
     threshold: ""
+    severity: "scope_rejection"    # scope_rejection | sweep_refinement
 
 # ── Provenance ───────────────────────────────────────────────────────────────
 provenance:

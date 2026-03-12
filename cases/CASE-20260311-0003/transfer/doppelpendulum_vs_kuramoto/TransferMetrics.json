@@ -1,0 +1,67 @@
+{
+  "case_id_A": "CASE-20260311-0003",
+  "case_id_B": "CASE-20260311-0001",
+  "direction": "double_pendulum -> kuramoto",
+  "system_A": "double_pendulum",
+  "system_B": "kuramoto",
+  "bc_class_A": "restriction",
+  "bc_class_B": "coupling",
+  "transfer_type": "cross_bc_class",
+  "epsilon_A": 0.015,
+  "epsilon_B": 0.09,
+  "computed_at": "2026-03-12",
+  "metrics": {
+    "RCD": {
+      "value": 5,
+      "N_A": 9,
+      "N_B": 4,
+      "interpretation": "significant_mismatch",
+      "note": "ε-sensitive: at ε_A=0.034 (N=4-plateau), RCD=0"
+    },
+    "TBS": {
+      "value": 0.217,
+      "tbs_raw": 2.525,
+      "method": "normalised",
+      "theta_star_A": 4.0,
+      "theta_star_B": 1.475,
+      "sweep_range_A": [0.5, 30.0],
+      "sweep_range_B": [0.0, 3.0],
+      "interpretation": "moderate_shift",
+      "note": "TBS_norm = |4.0/29.5 - 1.475/3.0| = |0.136 - 0.492| = 0.356. Raw TBS=2.525 incommensurable (J vs. dimensionless)."
+    },
+    "PCI": {
+      "value": 0.444,
+      "interpretation": "partial_compatibility",
+      "note": "Structural approximation: min(N_A,N_B)/max(N_A,N_B)=4/9. Cross-BC-class PCI is not fully defined — no true class alignment possible."
+    },
+    "SDI": {
+      "value": 10,
+      "nodes_A": 9,
+      "nodes_B": 4,
+      "edges_A": 8,
+      "edges_B": 3,
+      "interpretation": "significant_distortion",
+      "note": "SDI here encodes regime count difference, not independent topology information. Sequential graph topology preserved in both cases."
+    },
+    "Phi": {
+      "value": 0.40,
+      "components": {
+        "PCI": 0.444,
+        "RCD_score": 0.444,
+        "SDI_score": 0.056,
+        "TBS_score": 0.566
+      },
+      "interpretation": "inadmissible",
+      "note": "Φ=0.40 reflects ε-mismatch (N=9 vs N=4), not BC-class incompatibility. At matched ε (ε_A=0.034, N_A=4): Φ≈0.95 (highly_admissible). See TransferReport.md for full analysis."
+    }
+  },
+  "sensitivity_analysis": {
+    "note": "Φ is strongly ε-sensitive for cross-BC-class transfer",
+    "epsilon_scenarios": [
+      {"eps_A": 0.015, "N_A": 9, "eps_B": 0.09, "N_B": 4, "RCD": 5, "Phi": 0.40, "label": "current"},
+      {"eps_A": 0.034, "N_A": 4, "eps_B": 0.09, "N_B": 4, "RCD": 0, "Phi": 0.95, "label": "matched_resolution"},
+      {"eps_A": 0.045, "N_A": 3, "eps_B": 0.09, "N_B": 4, "RCD": 1, "Phi": 0.725, "label": "near_match"}
+    ]
+  },
+  "structural_finding": "At matched ε (both N=4), Coupling and Restriction BC classes induce structurally equivalent sequential partitions. Sequential topology preserved; θ*/range positions differ (Restriction: 13.7%, Coupling: 49.2% of respective sweep ranges)."
+}

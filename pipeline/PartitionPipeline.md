@@ -114,7 +114,7 @@ Computed by `pipeline.transfer`. Reference: `docs/bc_taxonomy/transfer_distortio
 | Metric | Formula | Interpretation |
 |---|---|---|
 | RCD | \|N_A − N_B\| | Regime count discrepancy |
-| TBS | \|θ\*_A − θ\*_B\| | Transition boundary shift |
+| TBS | \|θ\*_A/range_A − θ\*_B/range_B\| | Normalised transition boundary shift (incommensurable axes safe) |
 | PCI | (1/N) Σ pᵢ | Partition compatibility (0=inadmissible, 1=fully compatible) |
 | SDI | graph\_edit\_distance(G_A, G_B) | Structural distortion of adjacency graph |
 | Φ | weighted composite | Overall admissibility score ∈ [0,1] |
@@ -163,36 +163,82 @@ from the artifact state alone.
 
 ---
 
-## Phase 1 Status (Kuramoto)
+## Phase 1 Status
 
-Case `CASE-20260311-0001` completed end-to-end:
+### CASE-0001 — Kuramoto (κ-Sweep, Coupling BC)
 
 ```
 validate      ✓  0 errors, 0 warnings
-sweep         ✓  15 κ points, N=500, T=200s
-extract       ✓  3 regimes recovered (Incoherent / Partial / Synchronized)
-invariants    ✓  count=3 ✓ | adjacency: 2 edges | persistence=0.857
-              ⚠  θ* = 1.25 (expected ~0.64 — sweep density too low near transition)
-epsilon_sweep ✓  80 ε values in [0.001, 1.0] — 5 structurally distinct plateaus
-              ⚠  Working ε=0.05 sits at plateau boundary (N=5→4 at ε*≈0.049)
+sweep         ✓  36 κ points in [0, 3], N=500, T=200s
+extract       ✓  4 regimes recovered (Incoherent / Onset / Partial / Synchronized)
+invariants    ✓  count=4 | adjacency: 3 edges | persistence=0.914 | θ*=1.475
+epsilon_sweep ✓  80 ε values in [0.001, 1.0] — working ε=0.09 (N=4 plateau, w=0.700)
               ℹ  Most robust partition: N=5, I_ε=[0.009, 0.047], w=1.66
               ℹ  Expected 3-regime partition: I_ε=[0.146, 0.294], w=0.70
-audit         ✓  4/5 checks clean | 1 pending: TransferMetrics (awaits pendulum case)
+epsilon_kappa ✓  2D (κ,ε) robustness map — scope fragile near κ≈K_c
+transfer      ✓  CASE-0001 ↔ CASE-0002: Φ=0.675 (partially_admissible)
+              ✓  CASE-0001 ↔ CASE-0003: Φ=0.40 (inadmissible at ε-mismatch)
+audit         ✓  all checks clean
 ```
 
-**Note on θ\*:** The current sweep resolves the transition coarsely.
-Add denser kappa values in [0.5, 0.9] to recover K_c within 5% (go/no-go criterion).
+**Note on θ\*:** θ\*=1.475 is above K_c≈0.64 (go/no-go criterion not yet met).
+Denser κ sweep in [0.5, 0.9] needed to recover K_c within 5%. This is
+`severity: sweep_refinement` (F1 in ScopeSpec), not a scope_rejection.
 
-**Note on ε:** The ε-sweep reveals that the working ε=0.05 is at a critical
-boundary. Recommend updating to ε=0.03 (N=5 plateau) or ε=0.09 (N=4 plateau)
-depending on the desired resolution level. The expected 3-regime partition
-requires ε ≈ 0.15–0.29 — coarser than the current working value.
+### CASE-0002 — Multi-Link-Pendel (κ-Sweep, Coupling BC)
+
+```
+validate      ✓  0 errors, 0 warnings
+sweep         ✓  25 κ points in [0, 10], fixed γ=0.1
+extract       ✓  3 regimes (Decoupled/Chaotic / Transitional / Low-var/Locked)
+invariants    ✓  count=3 | adjacency: 2 edges | persistence=0.917 | θ*=3.25
+epsilon_sweep ✓  N=3 at ε=0.023 (single-point plateau — fragil, dokumentiert)
+              ℹ  Robusterer N=2-Plateau: I_ε=[0.025, 0.044], w=0.551
+              ⚠  ε=0.023 liegt auf Plateau-Grenze; epsilon_choice_note in ScopeSpec
+transfer      ✓  CASE-0002 ↔ CASE-0001: Φ=0.675 (partially_admissible), RCD=1
+audit         ✓  1 verbleibende Warning (ε-Fragilität, akzeptiert)
+```
+
+**Primary observable:** var_rel (span=0.274, Faktor 7× gegenüber lambda_proxy=0.037).
+**γ-Fix:** bc_02 nutzt `sweeps: []` + `fixed_params: {gamma: 0.1}` — kein γ-Kontaminant mehr.
+
+### CASE-0003 — Doppelpendel (E-Sweep, Restriction BC)
+
+```
+validate      ✓  0 errors, 0 warnings
+sweep         ✓  12 E_target points in [0.5, 30 J]
+extract       ✓  9 regimes at ε=0.015 (primary: var_rel)
+invariants    ✓  count=9 | adjacency: 8 edges | persistence=0.727 | θ*=8.5 J
+              ⚠  persistence=0.727 — sweep zu dünn (12 Punkte). Kein Blocker.
+epsilon_sweep ✓  ε=0.015 interior of N=9 plateau
+transfer      ✓  CASE-0003 ↔ CASE-0001: Φ=0.40 (inadmissible at ε-mismatch)
+              ℹ  At matched ε (ε_A=0.034, N=4): Φ≈0.95 (highly_admissible)
+audit         pending
+```
+
+**Multi-Observable:** lambda_proxy (span=0.069) vs. var_rel (span=0.297 — 4.3×).
+var_rel ist primary. Nur 37% ε-Übereinstimmung zwischen Observablen — Q3 empirisch untermauert.
 
 ---
 
-## Next Steps
+## BC-coupled Clustering — Observable-Auswahl
 
-1. Add dense sweep near κ ∈ [0.5, 0.9] to recover K_c within 5%
-2. Create `CASE-20260311-0002` (pendulum) and run Phase 1
-3. Run `pipeline.transfer --caseA CASE-0001 --caseB CASE-0002`
-4. Implement pendulum kernel in `pipeline/sweep.py`
+`pipeline.extract_partition` löst das primäre Observable in dieser Reihenfolge auf:
+
+1. ScopeSpec `Pi[*].observable_key` wo `primary: true` — maschinenlesbarer Vorrang
+2. `extract_observables_<system>()` `default_primary` — systemspezifischer Fallback
+3. Laufzeit-Parameter `--primary-observable` — optionaler Override
+
+Jedes Observable braucht ein eigenes εᵢ kalibriert auf seinen Wertebereich (Q3).
+Observable-Insuffizienz (`span < 2ε`) ist keine Scope-Rejection — das Observable wird
+ersetzt, nicht der Scope. Scope-Rejection (`severity: scope_rejection` in ScopeSpec)
+gilt nur wenn *alle* Observablen unzureichend sind.
+
+---
+
+## Nächste Schritte
+
+1. CASE-0001: Dichterer Sweep κ ∈ [0.5, 0.9] um K_c-go/no-go zu erfüllen
+2. CASE-0002: Dichterer Sweep κ ∈ [3.0, 5.5] für breiteres N=3-Plateau
+3. CASE-0003: Sweep-Verdichtung E ∈ [2, 8 J]; Transfer mit ε_A=0.034 (matched N=4)
+4. CASE-0004: Dissipation-BC (fehlt noch — dritte BC-Klasse für Taxonomie)

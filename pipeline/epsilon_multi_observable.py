@@ -108,11 +108,19 @@ def run_multi_observable_sweep(case_dir: Path, eps_min: float, eps_max: float,
             sys.exit(1)
 
     sweep_data = json.loads(sweep_path.read_text())
+    scope = yaml.safe_load(scope_path.read_text()) if scope_path.exists() else {}
     record = yaml.safe_load(record_path.read_text()) if record_path.exists() else {}
     bcm = yaml.safe_load(bcm_path.read_text()) if bcm_path.exists() else {}
 
     system = record.get("system", "custom")
     results = sweep_data.get("results", [])
+
+    # Resolve primary observable from ScopeSpec Pi block (observable_key + primary: true).
+    scope_pi_entries = scope.get("Pi", [])
+    scope_pi = next(
+        (p.get("observable_key") for p in scope_pi_entries if p.get("primary") is True),
+        None
+    )
 
     # Determine sweep parameter
     bc_components = bcm.get("bc_components", [])
@@ -268,6 +276,7 @@ def run_multi_observable_sweep(case_dir: Path, eps_min: float, eps_max: float,
     output = {
         "case_id": record.get("id", case_dir.name),
         "system": system,
+        "scope_pi": scope_pi,
         "observables": list(observables.keys()),
         "observable_ranges": {
             obs: {"min": min(v for _, v in vals), "max": max(v for _, v in vals),

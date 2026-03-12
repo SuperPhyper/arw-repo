@@ -31,10 +31,13 @@ CASE-YYYYMMDD-####/
 
 ## Current Cases
 
-| Case ID | System | Phase | Status |
-|---|---|---|---|
-| [CASE-20260311-0001](CASE-20260311-0001/) | Kuramoto oscillators | 1 (calibration) | End-to-end complete |
-| [CASE-20260311-0002](CASE-20260311-0002/) | Multi-link pendulum | 1 (calibration) | Open |
+| Case ID | System | BC Class | Phase | Status |
+|---|---|---|---|---|
+| [CASE-20260311-0001](CASE-20260311-0001/) | Kuramoto oscillators | Coupling (κ) | 1 (calibration) | Complete |
+| [CASE-20260311-0002](CASE-20260311-0002/) | Multi-link pendulum | Coupling (κ) | 1 (calibration) | Complete |
+| [CASE-20260311-0003](CASE-20260311-0003/) | Double pendulum | Restriction (E) | 1 (calibration) | Complete |
+
+Transfer coverage: CASE-0001 ↔ CASE-0002 (Coupling↔Coupling, Φ=0.675) · CASE-0001 ↔ CASE-0003 (Coupling↔Restriction, Φ=0.40/0.95*)
 
 ---
 

@@ -7,7 +7,7 @@
 #
 # Metrics defined in docs/bc_taxonomy/transfer_distortion_metrics.md:
 #   RCD  = |N - M|  (Regime Count Discrepancy)
-#   TBS  = |θ*(S) - θ*(S')|  (Transition Boundary Shift)
+#   TBS  = |θ*(S)/range_S - θ*(S')/range_S'|  (Transition Boundary Shift, normalised)
 #   PCI  = (1/N) Σ pᵢ  (Partition Compatibility Index)
 #   SDI  = graph_edit_distance(G_S, G_S')  (Structural Distortion Index)
 
@@ -48,6 +48,11 @@ bc_components:
         - param: ""
           values: []                # e.g., [0.0, 0.5, 1.0, 2.0, 5.0]
           sweep_type: ""            # grid | log_grid | adaptive | manual
+      # fixed_params: parameters held constant in this phase (not swept).
+      # Use when a BC parameter exists but is fixed for Phase 1 and swept later.
+      # Set sweeps: [] and list constants here.
+      # Example: fixed_params: {gamma: 0.1}
+      fixed_params: {}
       admissible_delta_links:
         - ""                        # delta_id from ScopeSpec
 

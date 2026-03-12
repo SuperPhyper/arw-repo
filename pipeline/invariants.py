@@ -128,6 +128,19 @@ def compute_invariants(case_dir: Path, in_subdir: str, out_subdir: str):
     sweeps        = bc_components[0].get("perturbation_program", {}).get("sweeps", []) if bc_components else []
     param         = sweeps[0].get("param") if sweeps else None
 
+    # Compute sweep_range = [min, max] of the primary sweep parameter.
+    # Required by pipeline.transfer for TBS_norm = |θ*/range_A − θ*/range_B|,
+    # which is the normalised Transition Boundary Shift across incommensurable axes.
+    param_values = [
+        r.get("_sweep_point", {}).get(param)
+        for r in annotated
+        if param and r.get("_sweep_point", {}).get(param) is not None
+    ]
+    if param_values:
+        sweep_range = [round(float(min(param_values)), 6), round(float(max(param_values)), 6)]
+    else:
+        sweep_range = None
+
     print(f"\nInvariants: {case_dir.name}  |  param={param}")
     print("─" * 50)
 
@@ -177,6 +190,7 @@ def compute_invariants(case_dir: Path, in_subdir: str, out_subdir: str):
         "case_id":           record.get("id", case_dir.name),
         "system":            record.get("system", ""),
         "sweep_param":       param,
+        "sweep_range":       sweep_range,
         "regime_count":      regime_count,
         "adjacency_graph":   adj,
         "persistence":       persistence,

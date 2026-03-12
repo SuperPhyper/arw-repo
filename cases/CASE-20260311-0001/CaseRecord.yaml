@@ -9,15 +9,15 @@
 
 schema_version: "0.2"
 id: "CASE-20260311-0001"
-title: ""
+title: "Kuramoto Oscillators — Phase 1 Calibration"
 phase: "1"                           # 0 | 1 | 2a | 2b | 2c | 3 | 4
 system: "kuramoto"                          # kuramoto | pendulum | consensus | meanfield |
 #                                   # labyrinth | custom
 status: "complete"                      # open | in_progress | complete | failed | archived
 created_at: "2026-03-11"
-updated_at: "2026-03-11"
+updated_at: "2026-03-12"
 
-description: "Kuramoto oscillator synchronization — Phase 1 calibration system"                     # 2-3 sentence plain-language summary
+description: "Kuramoto N=500, κ∈[0,3], 36 sweep points. N=4 regimes at ε=0.09. Transfer with CASE-0002 (Coupling↔Coupling, Φ=0.675) and CASE-0003 (Coupling↔Restriction, Φ=0.40/0.95*)."                     # 2-3 sentence plain-language summary
 
 # ── Artifact Registry ────────────────────────────────────────────────────────
 # All artifacts for this case. Status: pending | draft | complete | failed
@@ -39,36 +39,36 @@ artifacts:
     produced_by: "pipeline.extract_partition"
 
   invariants:
-    path: "results/Invariants.json"
-    status: "pending"
+    path: "results/partition/Invariants.json"
+    status: "complete"
     produced_by: "pipeline.invariants"
 
   transfer_report:
-    path: "transfer/TransferReport.md"
-    status: "pending"
+    path: "transfer/kuramoto_vs_pendulum/TransferReport.md"
+    status: "complete"
     produced_by: "pipeline.transfer"
-    counterpart_case_id: ""         # CASE-... of the other scope
+    counterpart_case_id: "CASE-20260311-0002"         # CASE-... of the other scope
 
   failure_audit:
-    path: "audits/FailureAudit.md"
-    status: "pending"
+    path: "audits/FailureAudit_Phase1.md"
+    status: "complete"
     produced_by: "pipeline.audit_helpers"
 
 # ── Go/No-Go Criteria ────────────────────────────────────────────────────────
 # From docs/overview/roadmap.md — copy the relevant criterion for this phase
 go_nogo:
-  criterion: ""                     # e.g., "Pipeline recovers K_c within 5%"
-  measurable_test: ""
-  threshold: ""
-  decision: ""                      # pending | go | nogo
+  criterion: "Pipeline recovers K_c within 5% of analytical value 0.6366"
+  measurable_test: "theta_star in [0.605, 0.668]"
+  threshold: "5% of K_c_analytical = 0.6366"
+  decision: "pending"
   decision_date: ""
-  decision_notes: ""
+  decision_notes: "theta_star=1.475 — denser sweep in kappa=[0.5,0.9] needed (F1: sweep_refinement)"
 
 # ── Links ────────────────────────────────────────────────────────────────────
 links:
   experiment_doc: "experiments/kuramoto_oscillators.md"                # e.g., experiments/kuramoto_oscillators.md
-  bc_doc: ""                        # e.g., docs/bc_taxonomy/boundary_condition_classes.md
-  related_cases: []                 # CASE-... ids of paired/transfer cases
+  bc_doc: "docs/bc_taxonomy/boundary_condition_classes.md"                        # e.g., docs/bc_taxonomy/boundary_condition_classes.md
+  related_cases: ["CASE-20260311-0002", "CASE-20260311-0003"]                 # CASE-... ids of paired/transfer cases
 
 # ── Agent Assignments ────────────────────────────────────────────────────────
 # Which agent role is responsible for each artifact

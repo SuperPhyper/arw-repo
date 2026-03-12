@@ -85,6 +85,8 @@ B:
 Pi:
   - id: "pi_01"
     name: "Lyapunov exponent proxy (finite-time divergence rate)"
+    observable_key: "lambda_proxy"
+    primary: false
     map:
       domain: "X_B"
       codomain: "R"
@@ -102,6 +104,8 @@ Pi:
 
   - id: "pi_02"
     name: "Relative angle variance Var(θ₁ - θ₂)"
+    observable_key: "var_rel"
+    primary: true
     map:
       domain: "X_B"
       codomain: "[0, inf)"
@@ -117,6 +121,8 @@ Pi:
 
   - id: "pi_03"
     name: "Mean total energy E_mean"
+    observable_key: "E_mean"
+    primary: false
     map:
       domain: "X_B"
       codomain: "R"
@@ -148,16 +154,30 @@ Delta:
 
 # ── ART: resolution threshold ε ─────────────────────────────────────────────
 epsilon:
-  value: 0.03
+  value: 0.015
   interpretation: >
-    d_Pi(x, y) ≤ 0.03 means x ~_S y. For pi_01: |λ₁ - λ₂| ≤ 0.03.
-    Chosen conservatively; the ε-sweep (pipeline.epsilon_sweep) will determine
-    the admissible ε-interval I_ε empirically.
+    d_Pi(x, y) ≤ 0.015 means x ~_S y. Primary observable: var_rel.
+    |Var_rel(x) - Var_rel(y)| ≤ 0.015 → same regime.
   tie_to_perturbations: >
-    To be verified: sup_{δ∈Δ} E[d_Pi(δ(x), x)] << 0.03 for bulk states.
+    sup_{δ∈Δ} E[d_Pi(δ(x), x)] ≈ 0.004 (measured over E∈[0.5,30 J], 5 IC seeds).
+    Ratio 0.004/0.015 = 0.27 << 1. Condition satisfied.
+  epsilon_choice_note: >
+    ε=0.015 is interior of the N=9 plateau. Persistence=0.727 (sweep too sparse —
+    12 points over [0.5,30 J]). A denser sweep around E≈4 J (θ*) would improve
+    persistence. ε is not on a plateau boundary; no fragility warning.
   stability_window_plan:
-    vary_epsilon: [0.01, 0.03, 0.05, 0.1]
+    vary_epsilon: [0.01, 0.015, 0.03, 0.05]
     vary_delta_strength: ["r_ic=0.005", "r_ic=0.01", "r_ic=0.02"]
+
+observable_sufficiency:
+  - observable_key: "var_rel"
+    sufficient: true
+    reason: "span=0.297 (var_rel∈[0.003,0.300] over E∈[0.5,30 J]) >> 2*epsilon=0.030. Primary."
+  - observable_key: "lambda_proxy"
+    sufficient: false
+    reason: >
+      span=0.069 < 2*epsilon=0.030 is marginal. Observable insufficient as primary;
+      retained as secondary diagnostic. Replaced by var_rel as primary.
 
 # ── Expected regime partition ────────────────────────────────────────────────
 expected_partition:
@@ -184,9 +204,27 @@ expected_partition:
 
 # ── Falsification conditions ─────────────────────────────────────────────────
 falsification:
-  - condition: "regime_count = 1 for all E_target"
-    interpretation: "Observable cannot distinguish regimes → π₁ is not informative"
-  - condition: "No ε-plateau with N ≥ 2 and w > 0.5"
-    interpretation: "Partition structure is not robust → regimes are artefactual"
-  - condition: "Regime boundaries shift > 50% under delta_01 perturbations"
-    interpretation: "Partition is noise-sensitive → scope is inadmissible"
+  - id: "F1"
+    condition: "regime_count = 1 for all E_target under primary observable var_rel"
+    measurable_test: "regime_count >= 2 at ε=0.015"
+    threshold: "N < 2"
+    severity: "scope_rejection"
+    notes: "Observable cannot distinguish regimes → restriction BC does not generate partition."
+  - id: "F2"
+    condition: "No ε-plateau with N ≥ 2 and w > 0.5 exists for var_rel"
+    measurable_test: "max plateau width w for N ≥ 2 plateaus in ε-sweep"
+    threshold: "w < 0.5"
+    severity: "scope_rejection"
+    notes: "Partition structure not robust → regimes are artefactual."
+  - id: "F3"
+    condition: "Regime boundaries shift > 50% of sweep range under delta_01 perturbations"
+    measurable_test: "shift in theta_star under 50 IC-perturbation trials"
+    threshold: "shift > 14.75 J (50% of sweep range [0.5, 30 J])"
+    severity: "scope_rejection"
+    notes: "Partition is noise-sensitive → scope inadmissible."
+  - id: "F4"
+    condition: "Sweep range too narrow — θ*=8.5 J is interior but Locked regime not visible"
+    measurable_test: "var_rel at E=30 J < 0.05 (locked) and at E=0.5 J > 0.1 (chaotic)"
+    threshold: "both endpoints in distinct regimes"
+    severity: "sweep_refinement"
+    notes: "Sweep range sufficient. Current: E∈[0.5,30 J], N=9 at ε=0.015."

@@ -30,6 +30,12 @@ When Π = {π₁, π₂, ...}, each observable may have a natural resolution sca
 What is the joint admissibility condition?
 Is ε a vector, a matrix, or a function on the product space?
 
+*Empirical evidence (CASE-0003, 2026-03-12):* Double pendulum with lambda_proxy
+and var_rel: only 37% agreement across ε-values. var_rel (span=0.297) requires
+ε ≈ 0.015; lambda_proxy (span=0.069) requires ε ≈ 0.008. A single shared ε
+cannot satisfy both. This operationalises the question: the εᵢ vector is the
+minimal adequate description for multi-observable scopes.
+
 **Q4 — Formal relationship between ARW and topological data analysis**
 Regime partitions have a topological structure (adjacency, boundary topology).
 Is there a formal correspondence between ARW partition types and persistence
@@ -45,6 +51,18 @@ across Kuramoto, pendulum, and opinion dynamics.
 This is the central empirical hypothesis. Is it borne out?
 Under what conditions does it fail? (Network topology variation is the
 expected failure mode for coupling — does it generalize?)
+
+*First positive data points (2026-03-12):*
+- CASE-0001 (Kuramoto, Coupling) + CASE-0002 (Multi-link pendulum, Coupling):
+  both produce sequential partitions with linear adjacency graphs. Φ=0.675
+  (partially_admissible). Structural homology confirmed; transition sharpness differs.
+- CASE-0001 (Coupling) + CASE-0003 (Doppelpendel, Restriction): at matched ε (both N=4),
+  Φ≈0.95 (highly_admissible). Coupling and Restriction produce structurally equivalent
+  sequential partitions when ε is aligned. BC classes differ in transition position and
+  sharpness, not in partition topology. This is unexpected — the taxonomy predicts
+  structural differences between classes, but the sequential topology appears universal
+  for monotone observables. The class-specific signal may be in θ*/range (position) and
+  plateau width (robustness), not in partition cardinality.
 
 **Q6 — What is the scaling exponent for TBS(N)?**
 The transition boundary shift is predicted to scale as TBS(N) ~ N^{-α}.

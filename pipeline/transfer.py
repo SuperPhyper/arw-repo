@@ -49,19 +49,47 @@ def compute_rcd(inv_a: dict, inv_b: dict) -> dict:
 
 
 def compute_tbs(inv_a: dict, inv_b: dict) -> dict:
-    """TBS = |θ*_A - θ*_B|"""
+    """
+    TBS_norm = |θ*_A / range_A  −  θ*_B / range_B|
+
+    Normalises θ* by each case's sweep range before comparing, making the
+    metric meaningful for cross-system-type transfers where control parameter
+    axes are incommensurable (e.g. κ ∈ [0,3] vs. E ∈ [0.5,30 J]).
+
+    Falls back to raw TBS = |θ*_A − θ*_B| and labels method as 'raw_only'
+    when sweep_range is unavailable in one or both Invariants.json files.
+    """
     t_a = inv_a.get("theta_star")
     t_b = inv_b.get("theta_star")
     if t_a is None or t_b is None:
         return {"value": None, "theta_star_A": t_a, "theta_star_B": t_b,
                 "note": "TBS undefined: one or both scopes lack a transition boundary"}
-    tbs = abs(t_a - t_b)
+
+    r_a = inv_a.get("sweep_range")
+    r_b = inv_b.get("sweep_range")
+    tbs_raw = abs(t_a - t_b)
+
+    if r_a and r_b and (r_a[1] - r_a[0]) > 0 and (r_b[1] - r_b[0]) > 0:
+        range_a = r_a[1] - r_a[0]
+        range_b = r_b[1] - r_b[0]
+        tbs_norm = abs(t_a / range_a - t_b / range_b)
+        method = "normalised"
+    else:
+        tbs_norm = tbs_raw
+        method = "raw_only"
+
+    interp = ("boundary_preserved" if tbs_norm < 0.05 else
+              "moderate_shift"     if tbs_norm < 0.2  else "large_shift")
+
     return {
-        "value":         round(tbs, 6),
+        "value":         round(tbs_norm, 6),
+        "tbs_raw":       round(tbs_raw, 6),
+        "method":        method,
         "theta_star_A":  t_a,
         "theta_star_B":  t_b,
-        "interpretation": "boundary_preserved" if tbs < 0.05 else (
-                          "moderate_shift" if tbs < 0.2 else "large_shift"),
+        "sweep_range_A": r_a,
+        "sweep_range_B": r_b,
+        "interpretation": interp,
     }
 
 
@@ -154,7 +182,13 @@ def compute_phi(rcd: dict, tbs: dict, pci: dict, sdi: dict) -> dict:
     max_regime_count = max(rcd.get("N_A", 1), rcd.get("N_B", 1), 1)
     rcd_score = max(0, 1 - rcd_val / max_regime_count)
     sdi_score = max(0, 1 - sdi_val / (max_regime_count * 2))
-    tbs_score = max(0, 1 - (tbs_val / 0.5)) if tbs_val is not None else 0.5  # 0.5 if unknown
+    # tbs_val is already TBS_norm (normalised to [0,1] range); cap at 0.5 for scoring.
+    # method="raw_only" means sweep_range was missing — treat as moderate penalty.
+    tbs_method = tbs.get("method", "raw_only")
+    if tbs_val is not None:
+        tbs_score = max(0, 1 - (tbs_val / 0.5))
+    else:
+        tbs_score = 0.5  # undefined boundary: neutral score
 
     phi = round(0.4 * pci_val + 0.3 * rcd_score + 0.2 * sdi_score + 0.1 * tbs_score, 4)
     interpretation = (

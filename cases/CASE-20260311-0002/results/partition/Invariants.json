@@ -27,5 +27,9 @@
   "theta_star": 3.25,
   "predicted_count": 3,
   "predicted_type": "sequential",
-  "count_match": true
+  "count_match": true,
+  "sweep_range": [
+    0.0,
+    10.0
+  ]
 }

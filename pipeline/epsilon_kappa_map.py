@@ -162,6 +162,15 @@ def run_epsilon_kappa_map(case_dir: Path, kappa_points: int,
         print(f"ERROR: epsilon_kappa_map currently only supports kuramoto, got '{system}'")
         sys.exit(1)
 
+    # Resolve primary observable from ScopeSpec Pi block (observable_key + primary: true).
+    # Falls back to r_ss for kuramoto if not specified.
+    scope_pi_entries = scope.get("Pi", [])
+    scope_pi = next(
+        (p.get("observable_key") for p in scope_pi_entries if p.get("primary") is True),
+        "r_ss"
+    )
+    print(f"  scope_pi (primary observable): {scope_pi}")
+
     sim_params = scope.get("simulation_parameters", {})
     N_osc = sim_params.get("N", 500)
     T_sim = sim_params.get("T", 200)
@@ -286,12 +295,13 @@ def run_epsilon_kappa_map(case_dir: Path, kappa_points: int,
     output = {
         "case_id": record.get("id", case_dir.name),
         "system": system,
+        "scope_pi": scope_pi,
         "kappa_points": kappa_points,
         "kappa_range": [round(kappa_values[0], 4), round(kappa_values[-1], 4)],
         "eps_range": [eps_min, eps_max],
         "eps_steps": eps_steps,
         "simulation_time_s": round(t_sim, 1),
-        "r_values": [{"kappa": round(k, 4), "r_ss": round(r, 6)} for k, r in r_values],
+        "r_values": [{"kappa": round(k, 4), "r_ss": round(r, 6), "observable_key": scope_pi} for k, r in r_values],
         "global_map": global_map,
         "local_analysis": local_analysis,
         "observable_gradient": gradients,
