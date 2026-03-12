@@ -27,7 +27,7 @@ Prefer explicit reasoning over stylistic rewrites.
 
 The repository distinguishes between:
 
-### ARW — Allgemeine Resonanzwissenschaft
+### ARW — Allgemeine Regime-Wissenschaft
 
 The formal meta-framework that defines:
 
@@ -39,7 +39,7 @@ The formal meta-framework that defines:
 
 ARW statements should remain **domain-neutral and formal**.
 
-### ART — Applied Resonance Theory
+### ART — Allgemeine Regime-Theorie
 
 ART describes **domain-specific instantiations** of ARW.
 
@@ -64,10 +64,13 @@ S = (B, Π, Δ, ε)
 
 Where:
 
-- **B** — boundary conditions
-- **Π** — partition structure
-- **Δ** — admissibility rules
-- **ε** — resolution / tolerance
+- **B** — boundary constraints selecting admissible states (X_B ⊆ X)
+- **Π** — admissible descriptions or projections (observables); each π ∈ Π maps states to a descriptive space
+- **Δ** — admissible perturbations; defines the robustness conditions under which regime distinctions must remain stable
+- **ε** — resolution threshold; d_Π(x, y) ≤ ε means x and y are indistinguishable under scope S
+
+These definitions are canonical. Do not reinterpret them.
+The authoritative source is `docs/glossary/scope.md`.
 
 LLM contributions should express structural claims in relation to these elements whenever possible.
 
@@ -79,36 +82,37 @@ The repository uses layered documentation.
 
 LLMs should place contributions into the correct layer.
 
-Typical layers include:
+Layers and their purposes:
 
-```text
-docs/overview
-docs/glossary
-docs/core
-docs/advanced
-docs/art_instantiations
-docs/notes
-experiments
-cases
-```
-
-Guideline:
-
-| Layer | Purpose |
-|------|--------|
-| overview | entry points and conceptual overview |
-| glossary | atomic definitions |
-| core | core ARW structure |
-| advanced | deeper theoretical work |
-| art_instantiations | domain-specific applications |
-| notes | exploratory or interpretative work |
-| experiments / cases | empirical implementations |
+| Layer | Path | Purpose |
+|---|---|---|
+| overview | `docs/overview/` | Entry points, conceptual orientation, operator definition |
+| glossary | `docs/glossary/` | Atomic definitions — one concept per file |
+| core | `docs/core/` | Central ARW formalism: scope reduction, regime stability, transitions |
+| advanced | `docs/advanced/` | Deeper theoretical elaboration: ε, emergence, engineering |
+| art_instantiations | `docs/art_instantiations/` | Domain-specific ARW/ART realizations |
+| bc_taxonomy | `docs/bc_taxonomy/` | Boundary condition classification, partition types, transfer metrics |
+| context_navigation | `docs/context_navigation/` | Cognitive architecture application of ARW |
+| cognitive_architecture | `docs/cognitive_architecture/` | ARW/ART instantiation for cognition |
+| related_fields | `docs/related_fields/` | Connections to existing literature |
+| pipelines | `docs/pipelines/` | Pipeline design documentation |
+| figures | `docs/figures/` | Figure descriptions and visual support |
+| notes | `docs/notes/` | Exploratory, provisional, or reflective material |
+| experiments | `experiments/` | Executable workflows and simulation designs |
+| cases | `cases/` | Pipeline outputs, datasets, experiment cases |
+| meta | `docs/meta/` | LLM contribution rules, navigation aids, repo design |
 
 ---
 
 ## 5. Use explicit status markers
 
-Every contribution should signal its epistemic status.
+Every contribution should signal its epistemic status using a YAML front-matter block:
+
+```yaml
+---
+status: working-definition
+---
+```
 
 Recommended labels:
 
@@ -120,6 +124,7 @@ hypothesis
 experiment-proposal
 interpretation
 open-question
+note
 ```
 
 This allows readers to distinguish:
@@ -159,11 +164,14 @@ If a definition changes:
 - explain the motivation
 - reference the previous definition
 
+This rule applies to the scope tuple components in particular.
+The canonical definitions of B, Π, Δ, ε are stable and must not be reinterpreted without explicit revision of `docs/glossary/scope.md`.
+
 ---
 
 # Suggested Contribution Format
 
-When proposing new material, use the following structure.
+When proposing new material, use the following structure:
 
 ```md
 # Title
@@ -177,7 +185,7 @@ Why this concept or document exists.
 ## Relation to ARW
 How it relates to:
 
-- scope structure
+- scope structure (B, Π, Δ, ε)
 - regime partitions
 - transfer conditions
 - observables
