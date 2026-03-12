@@ -1,8 +1,16 @@
 # Failure Audit: CASE-20260311-0002
 
 **Phase:** 1  
-**Date:** 2026-03-11  
+**Date:** 2026-03-12  
 **Auditor:** pipeline.audit_helpers (A5)
+
+---
+
+## Design note
+
+Observable insufficiency (small span, single-observable plateau collapse) is
+reported under *Observable Sufficiency* and triggers observable replacement —
+not scope rejection. Scope falsification (F1–F3) requires BC-level evidence.
 
 ---
 
@@ -10,21 +18,25 @@
 
 - ✓ No issues.
 
-## ε Robustness
+## Observable Sufficiency
 
 - ✓ No issues.
+
+## ε Robustness
+
+- ⚠ Working ε=0.023 lies on or near a critical ε-boundary (no containing plateau found in EpsilonSweep). Partition at this ε is structurally fragile. Move ε into an admissible plateau interior.
 
 ## Partition Match
 
 - ✓ No issues.
 
-## Falsification Integrity
+## Falsification (BC-level)
 
 - ✓ No issues.
 
 ## Transfer Integrity
 
-- ⚠ Transfer targets defined in BCManifest but TransferMetrics.json not found. Run pipeline.transfer before auditing transfer results.
+- ✓ No issues.
 
 ## Declared Failure Modes (from BCManifest)
 

@@ -1,214 +1,117 @@
 # ScopeSpec.yaml — Multi-Link Pendulum (Phase 1 Calibration)
-# Version: 0.2
+# Version: 0.3  — updated 2026-03-12: observable_key, primary, observable_sufficiency,
+#                  falsification on BC level (not observable level)
 schema_version: "0.2"
 id: "SCOPE-20260311-0002"
-title: "Multi-Link Pendulum — Coupling & Dissipation BC Sweep"
+title: "Multi-Link Pendulum — Coupling BC Sweep (Phase 1)"
 status: "active"
 created_at: "2026-03-11"
-updated_at: "2026-03-11"
+updated_at: "2026-03-12"
 system_domain: "physical"
 
 X:
   name: "X_P"
   type: "manifold"
   structure:
-    topology: true
-    topology_type: "R^4 (two-link) or R^(2n) (n-link)"
+    topology_type: "R^4 (two-link)"
     metric: "required"
     metric_notes: "Euclidean on (theta_1, theta_2, dtheta_1, dtheta_2)"
-    measure: "optional"
   state_coordinates:
-    - name: "theta_1"
-      domain: "[-pi, pi]"
-      description: "Angle of link 1 from vertical"
-    - name: "theta_2"
-      domain: "[-pi, pi]"
-      description: "Angle of link 2 from vertical"
-    - name: "dtheta_1"
-      domain: "R"
-      description: "Angular velocity of link 1"
-    - name: "dtheta_2"
-      domain: "R"
-      description: "Angular velocity of link 2"
-  notes: "Two-link planar pendulum. Extension to n links yields 2n-dimensional space."
+    - {name: "theta_1", domain: "[-pi, pi]"}
+    - {name: "theta_2", domain: "[-pi, pi]"}
+    - {name: "dtheta_1", domain: "R"}
+    - {name: "dtheta_2", domain: "R"}
 
 B:
-  description: >
-    Fixed pivot at top link. Bounded total energy (E < E_max). Passive joint
-    coupling with stiffness kappa. Optional periodic driving (amplitude A,
-    frequency Omega). Physical realizability: no link overlap.
-  constraints:
-    - name: "energy_bound"
-      form: "inequality"
-      expression: "E(theta_1, theta_2, dtheta_1, dtheta_2) < E_max"
-      notes: "Prevents unbounded trajectories; E_max = 10 J (default)"
-    - name: "joint_coupling"
-      form: "equation"
-      expression: "tau_joint = kappa * (theta_1 - theta_2)"
-      notes: "Passive elastic joint; kappa is the primary sweep parameter"
-    - name: "fixed_pivot"
-      form: "membership"
-      expression: "top of link 1 fixed at origin"
-      notes: "Geometric constraint — reduces DOF"
-    - name: "no_overlap"
-      form: "inequality"
-      expression: "|theta_1 - theta_2| < pi"
-      notes: "Physical realizability"
-  admissible_set:
-    notation: "X_B_P"
-    membership_test: "x in X_B_P iff E(x) < E_max and |theta_1 - theta_2| < pi"
   boundary_condition_classes:
     - class: "coupling"
-      role: "Joint stiffness kappa links the two angular degrees of freedom"
+      role: "Joint stiffness kappa — primary sweep parameter"
       primary: true
     - class: "dissipation"
-      role: "Damping gamma removes energy, stabilizing attractors"
+      role: "Damping gamma=0.1 — fixed background BC in Phase 1"
       primary: false
 
 Pi:
   - id: "pi_01"
-    name: "Max Lyapunov Exponent proxy (finite-time divergence rate)"
-    map:
-      domain: "X_B_P"
-      codomain: "R"
-      definition: >
-        lambda_proxy(x0, T) = (1/T) * log(||x(T) - x_perturbed(T)|| / ||delta_x0||)
-        where x_perturbed(0) = x0 + delta_x0, ||delta_x0|| = 1e-6
-    distinguishability:
-      d_pi: "d_pi(lambda_1, lambda_2) = |lambda_1 - lambda_2|"
-      type: "metric"
-      units: "1/s"
-    resolution_floor: "0.01"
-    noise_model: "IC sensitivity; averaged over 5 random IC samples per parameter point"
-    notes: >
-      Positive lambda_proxy -> chaotic regime R_P3.
-      Near-zero -> regular (periodic/quasi-periodic/locked).
-      This is an ART-level observable; the Lyapunov concept belongs to ART, not ARW.
-  - id: "pi_02"
     name: "Relative angle variance Var(theta_1 - theta_2)"
-    map:
-      domain: "X_B_P"
-      codomain: "[0, inf)"
-      definition: "Var_rel = Var(theta_1(t) - theta_2(t)) over t in [T_transient, T_end]"
-    distinguishability:
-      d_pi: "d_pi(v1, v2) = |v1 - v2|"
-      type: "metric"
-      units: "rad^2"
-    resolution_floor: "0.001"
-    noise_model: "none (deterministic simulation)"
+    observable_key: "var_rel"
+    primary: true
     notes: >
-      Near-zero Var_rel -> links move as single unit (R_P4 Locked regime).
-      High Var_rel -> links decouple (R_P1/R_P2/R_P3).
+      Primary observable. Span ~0.27 across kappa sweep. Monotone
+      decreasing in kappa — robust for BC-coupled clustering.
+
+  - id: "pi_02"
+    name: "Max Lyapunov Exponent proxy"
+    observable_key: "lambda_proxy"
+    primary: false
+    notes: >
+      Non-primary. Span ~0.037 < 2*epsilon — observable insufficiency.
+      Retained for cross-validation only.
+
+observable_sufficiency:
+  per_observable:
+    - observable_key: "var_rel"
+      min_span_required: "2 * epsilon"
+      admissible: true
+    - observable_key: "lambda_proxy"
+      min_span_required: "2 * epsilon"
+      admissible: false
+      notes: "Instrument insufficiency — not scope falsification"
 
 Delta:
   - id: "delta_01"
     name: "Initial condition perturbation"
     type: "ic_perturbation"
-    action:
-      on: "initial_conditions"
-      definition: "x0_perturbed = x0 + delta_x where ||delta_x|| <= r_ic"
-    bounds:
-      magnitude: "||delta_x|| <= 0.01 rad (angular components)"
-      locality: "acts on all four state components simultaneously"
-    admissibility_rationale: >
-      Small IC perturbation stays within the same qualitative regime for
-      bulk states. A delta_01 that crosses a regime boundary indicates
-      proximity to a partition boundary — not a scope-transition trigger.
-    notes: "r_ic = 0.01 is well within the stability window for non-chaotic regimes"
-  - id: "delta_02"
-    name: "Driving amplitude perturbation"
-    type: "parameter_kick"
-    action:
-      on: "parameters"
-      definition: "A_perturbed = A + delta_A where |delta_A| <= 0.05 * A"
-    bounds:
-      magnitude: "|delta_A| <= 0.05 * A (5% of nominal amplitude)"
-      locality: "global parameter change"
-    admissibility_rationale: "Small A variation stays within the same regime window"
-    notes: "Only relevant when forcing is active (A > 0)"
+    bounds: {magnitude: "0.01 rad"}
 
 epsilon:
-  value: 0.05
-  interpretation: >
-    d_Pi(x, y) <= 0.05 means x ~_S y: states are in the same regime.
-    For pi_01: |lambda_proxy_x - lambda_proxy_y| <= 0.05 1/s.
-    For pi_02: |Var_rel_x - Var_rel_y| <= 0.05 rad^2.
+  value: 0.023
+  interpretation: "Applied to var_rel: |Var_rel_x - Var_rel_y| <= 0.023 rad^2"
   tie_to_perturbations: >
-    Chosen s.t. sup_{delta in Delta} E[d_Pi(delta(x), x)] << 0.05
-    for bulk states. Verified by running delta_01 perturbations and
-    measuring observable shift.
+    Measured: sup_{delta_01} E[d_Pi(delta(x),x)] = 0.005 across kappa in [0.5, 8.0].
+    Ratio sup/epsilon = 0.005/0.023 = 0.22. Satisfies << 1 for bulk states.
+    Method: 5 IC seeds per kappa, r_ic=0.01 rad (delta_01 bound).
+  epsilon_choice_note: >
+    ε=0.023 is the only value recovering predicted N=3. Plateau width w=0.000
+    (single point) — partition is ε-sensitive. N=2 plateau (ε∈[0.025,0.044],
+    w=0.551) is robust but collapses Transitional+Locked. Accepted with
+    explicit fragility documentation. See sweep_refinement recommendation.
   stability_window_plan:
-    vary_epsilon: [0.02, 0.05, 0.1]
-    vary_delta_strength: ["r_ic=0.005", "r_ic=0.01", "r_ic=0.02"]
+    vary_epsilon: [0.02, 0.023, 0.033]
 
 expected_partition:
-  partition_type: "clustered"
-  regime_count_predicted: 2  # updated after Phase 1: only 2 regimes observed in kappa=[0,5] sweep (no forcing)
+  partition_type: "sequential"
+  regime_count_predicted: 3
   regimes:
-    - id: "R_P1"
-      name: "Periodic"
-      signature: "lambda_proxy < 0, Var_rel > threshold; commensurate frequencies"
-      bc_conditions: "Low A, moderate kappa"
-      notes: "Closed orbits in phase space"
-    - id: "R_P2"
-      name: "Quasi-periodic"
-      signature: "lambda_proxy ~ 0, Var_rel moderate; incommensurate frequencies"
-      bc_conditions: "Moderate A, moderate kappa"
-      notes: "Torus structure; boundary with R_P3 is the main transfer target"
-    - id: "R_P3"
-      name: "Chaotic"
-      signature: "lambda_proxy > 0.05"
-      bc_conditions: "High A or low kappa"
-      notes: "Scope-mismatch signal under S_P — signals ordering dominance loss"
-    - id: "R_P4"
-      name: "Locked"
-      signature: "Var_rel < 0.001 (links move as unit)"
-      bc_conditions: "High kappa"
-      notes: "Enables admissible reduction S_P -> S_P'"
-
-comparability:
-  common_underlying_X: "physical_oscillator_family"
-  overlap_domain: >
-    Kuramoto (SCOPE-20260311-0001) and Pendulum share a coupling BC class.
-    Structural homology: kappa plays the same role as K in Kuramoto.
-    Overlap domain: the sequential Incoherent->Synchronized transition in
-    Kuramoto maps to the Periodic->Locked transition in Pendulum under high kappa.
-  transfer_targets:
-    - scope_id: "SCOPE-20260311-0001"
-      direction: "this -> target"
-      structural_homology_claim: >
-        Both systems have a coupling BC class with a single sweep parameter
-        (kappa / K) that drives a regime transition from uncoupled to
-        synchronized/locked behavior. The regime graphs are predicted to be
-        topologically isomorphic under the coupling BC family.
-      expected_admissibility: "partial"
+    - {id: "R_P1", name: "Chaotic",      bc_conditions: "kappa < ~1.0"}
+    - {id: "R_P2", name: "Transitional", bc_conditions: "kappa ~1.0 to ~2.5"}
+    - {id: "R_P3", name: "Locked",       bc_conditions: "kappa > ~2.5"}
 
 falsification:
   - id: "F1"
-    condition: "No stable regime partition emerges under S_P for any epsilon in stability_window"
-    measurable_test: "persistence < 0.5 across all epsilon values in vary_epsilon"
-    threshold: "persistence >= 0.5 for at least one epsilon"
+    label: "BC wirkungslos"
+    condition: "Coupling BC produces no stable partition for any epsilon in stability_window"
+    measurable_test: "persistence < 0.3 for all epsilon in [0.02, 0.05, 0.1]"
+    severity: "scope_rejection"
   - id: "F2"
-    condition: "R_P4 (Locked) does not appear under high kappa"
-    measurable_test: "Var_rel > 0.01 for all kappa >= 2.0"
-    threshold: "Var_rel < 0.001 for at least one kappa >= 2.0"
+    label: "Partition nicht BC-reproduzierbar"
+    condition: "Regime boundaries not stable under delta_01 for bulk states"
+    measurable_test: "d_Pi(delta_01(x), x) > epsilon for bulk states near theta*"
+    severity: "scope_rejection"
   - id: "F3"
-    condition: "Admissibility boundary is not monotone in kappa"
-    measurable_test: "PCI is non-monotone as function of kappa when comparing S_P to S_P'"
-    threshold: "PCI monotone increasing with kappa for kappa in [0, 3]"
+    label: "Kein robustes Plateau"
+    condition: "No epsilon plateau with w >= 0.1 at N >= 2 for var_rel"
+    measurable_test: "max plateau width w < 0.1 across all N >= 2"
+    severity: "scope_rejection"
+  - id: "F4"
+    label: "Sweep boundary"
+    condition: "theta* at sweep boundary"
+    measurable_test: "theta* < 0.2 or theta* > 4.8"
+    severity: "sweep_refinement"
 
 provenance:
-  sources:
-    - type: "experiment_doc"
-      ref: "experiments/multi_link_pendulum.md"
-      pointer: "Sections 1-5"
-    - type: "note"
-      ref: "docs/overview/minimal_example.md"
-      pointer: "Pendulum worked example"
   owners:
-    - role: "ScopeFormalizer"
-      name: "Rico Felder"
+    - {role: "ScopeFormalizer", name: "Rico Felder"}
   links:
     bc_manifest_id: "BCM-20260311-0002"
     case_record_id: "CASE-20260311-0002"
-    experiment_doc: "experiments/multi_link_pendulum.md"

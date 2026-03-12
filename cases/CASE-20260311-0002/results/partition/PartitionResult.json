@@ -1,35 +1,53 @@
 {
   "case_id": "CASE-20260311-0002",
   "system": "pendulum",
-  "epsilon": 0.05,
-  "regime_count": 2,
+  "epsilon": 0.023,
+  "method": "eps_clustering_bc_coupled",
+  "sweep_param": "kappa",
+  "regime_count": 3,
   "regime_labels": {
-    "1": "Quasi_periodic",
-    "2": "Chaotic"
+    "0": "R0",
+    "1": "R1",
+    "2": "R2"
   },
   "regime_counts": {
-    "1": 12,
-    "2": 2
+    "0": 14,
+    "1": 2,
+    "2": 9
+  },
+  "regime_observable_ranges": {
+    "0": {
+      "min": 0.130373,
+      "max": 0.312792
+    },
+    "1": {
+      "min": 0.084152,
+      "max": 0.107101
+    },
+    "2": {
+      "min": 0.000243,
+      "max": 0.038115
+    }
   },
   "transition_boundary": {
     "param": "kappa",
     "transitions": [
       {
-        "from_regime": 1,
-        "to_regime": 2,
-        "param_before": 0.0,
-        "param_after": 0.2,
-        "theta_star": 0.1
+        "from_regime": 0,
+        "to_regime": 1,
+        "param_before": 3.0,
+        "param_after": 3.5,
+        "theta_star": 3.25
       },
       {
-        "from_regime": 2,
-        "to_regime": 1,
-        "param_before": 0.5,
-        "param_after": 0.8,
-        "theta_star": 0.65
+        "from_regime": 1,
+        "to_regime": 2,
+        "param_before": 4.0,
+        "param_after": 5.0,
+        "theta_star": 4.5
       }
     ],
-    "theta_star": 0.1
+    "theta_star": 3.25
   },
   "annotated_results": [
     {
@@ -39,10 +57,14 @@
         "_bc_id": "bc_01",
         "_bc_class": "coupling"
       },
-      "observable": 0.088805,
-      "observable_name": "lambda_proxy",
-      "regime_id": 1,
-      "regime_label": "Quasi_periodic"
+      "observable": 0.312792,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.088805,
+        "var_rel": 0.312792
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
     },
     {
       "sweep_index": 1,
@@ -51,10 +73,14 @@
         "_bc_id": "bc_01",
         "_bc_class": "coupling"
       },
-      "observable": 0.091265,
-      "observable_name": "lambda_proxy",
-      "regime_id": 2,
-      "regime_label": "Chaotic"
+      "observable": 0.298626,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.091265,
+        "var_rel": 0.298626
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
     },
     {
       "sweep_index": 2,
@@ -63,10 +89,14 @@
         "_bc_id": "bc_01",
         "_bc_class": "coupling"
       },
-      "observable": 0.097608,
-      "observable_name": "lambda_proxy",
-      "regime_id": 2,
-      "regime_label": "Chaotic"
+      "observable": 0.284671,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.097608,
+        "var_rel": 0.284671
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
     },
     {
       "sweep_index": 3,
@@ -75,10 +105,14 @@
         "_bc_id": "bc_01",
         "_bc_class": "coupling"
       },
-      "observable": 0.083594,
-      "observable_name": "lambda_proxy",
-      "regime_id": 1,
-      "regime_label": "Quasi_periodic"
+      "observable": 0.264431,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.083594,
+        "var_rel": 0.264431
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
     },
     {
       "sweep_index": 4,
@@ -87,10 +121,14 @@
         "_bc_id": "bc_01",
         "_bc_class": "coupling"
       },
-      "observable": 0.082943,
-      "observable_name": "lambda_proxy",
-      "regime_id": 1,
-      "regime_label": "Quasi_periodic"
+      "observable": 0.252239,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.082943,
+        "var_rel": 0.252239
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
     },
     {
       "sweep_index": 5,
@@ -99,106 +137,318 @@
         "_bc_id": "bc_01",
         "_bc_class": "coupling"
       },
-      "observable": 0.075825,
-      "observable_name": "lambda_proxy",
-      "regime_id": 1,
-      "regime_label": "Quasi_periodic"
+      "observable": 0.238441,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.075825,
+        "var_rel": 0.238441
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
     },
     {
       "sweep_index": 6,
       "sweep_point": {
-        "kappa": 1.5,
+        "kappa": 1.4,
         "_bc_id": "bc_01",
         "_bc_class": "coupling"
       },
-      "observable": 0.063443,
-      "observable_name": "lambda_proxy",
-      "regime_id": 1,
-      "regime_label": "Quasi_periodic"
+      "observable": 0.226265,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.061942,
+        "var_rel": 0.226265
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
     },
     {
       "sweep_index": 7,
+      "sweep_point": {
+        "kappa": 1.6,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.214217,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.056821,
+        "var_rel": 0.214217
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 8,
       "sweep_point": {
         "kappa": 1.8,
         "_bc_id": "bc_01",
         "_bc_class": "coupling"
       },
-      "observable": 0.065967,
-      "observable_name": "lambda_proxy",
-      "regime_id": 1,
-      "regime_label": "Quasi_periodic"
+      "observable": 0.200177,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.065967,
+        "var_rel": 0.200177
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
     },
     {
-      "sweep_index": 8,
+      "sweep_index": 9,
       "sweep_point": {
         "kappa": 2.0,
         "_bc_id": "bc_01",
         "_bc_class": "coupling"
       },
-      "observable": 0.068068,
-      "observable_name": "lambda_proxy",
-      "regime_id": 1,
-      "regime_label": "Quasi_periodic"
+      "observable": 0.187998,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.068068,
+        "var_rel": 0.187998
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
     },
     {
-      "sweep_index": 9,
+      "sweep_index": 10,
+      "sweep_point": {
+        "kappa": 2.2,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.17531,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.055472,
+        "var_rel": 0.17531
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 11,
       "sweep_point": {
         "kappa": 2.5,
         "_bc_id": "bc_01",
         "_bc_class": "coupling"
       },
-      "observable": 0.068174,
-      "observable_name": "lambda_proxy",
-      "regime_id": 1,
-      "regime_label": "Quasi_periodic"
+      "observable": 0.157515,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.068174,
+        "var_rel": 0.157515
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
     },
     {
-      "sweep_index": 10,
+      "sweep_index": 12,
+      "sweep_point": {
+        "kappa": 2.8,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.141118,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.084906,
+        "var_rel": 0.141118
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 13,
       "sweep_point": {
         "kappa": 3.0,
         "_bc_id": "bc_01",
         "_bc_class": "coupling"
       },
-      "observable": 0.07034,
-      "observable_name": "lambda_proxy",
-      "regime_id": 1,
-      "regime_label": "Quasi_periodic"
+      "observable": 0.130373,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.07034,
+        "var_rel": 0.130373
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
     },
     {
-      "sweep_index": 11,
+      "sweep_index": 14,
+      "sweep_point": {
+        "kappa": 3.5,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.107101,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.089758,
+        "var_rel": 0.107101
+      },
+      "regime_id": 1,
+      "regime_label": "R1"
+    },
+    {
+      "sweep_index": 15,
       "sweep_point": {
         "kappa": 4.0,
         "_bc_id": "bc_01",
         "_bc_class": "coupling"
       },
-      "observable": 0.061053,
-      "observable_name": "lambda_proxy",
+      "observable": 0.084152,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.061053,
+        "var_rel": 0.084152
+      },
       "regime_id": 1,
-      "regime_label": "Quasi_periodic"
+      "regime_label": "R1"
     },
     {
-      "sweep_index": 12,
+      "sweep_index": 16,
       "sweep_point": {
         "kappa": 5.0,
         "_bc_id": "bc_01",
         "_bc_class": "coupling"
       },
-      "observable": 0.069684,
-      "observable_name": "lambda_proxy",
-      "regime_id": 1,
-      "regime_label": "Quasi_periodic"
+      "observable": 0.038115,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.069684,
+        "var_rel": 0.038115
+      },
+      "regime_id": 2,
+      "regime_label": "R2"
     },
     {
-      "sweep_index": 13,
+      "sweep_index": 17,
       "sweep_point": {
-        "gamma": 0.1,
-        "_bc_id": "bc_02",
-        "_bc_class": "dissipation"
+        "kappa": 5.5,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
       },
-      "observable": 0.082943,
-      "observable_name": "lambda_proxy",
-      "regime_id": 1,
-      "regime_label": "Quasi_periodic"
+      "observable": 0.019699,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.098659,
+        "var_rel": 0.019699
+      },
+      "regime_id": 2,
+      "regime_label": "R2"
+    },
+    {
+      "sweep_index": 18,
+      "sweep_point": {
+        "kappa": 6.0,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.003079,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.0233,
+        "var_rel": 0.003079
+      },
+      "regime_id": 2,
+      "regime_label": "R2"
+    },
+    {
+      "sweep_index": 19,
+      "sweep_point": {
+        "kappa": 6.4,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.001711,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.059897,
+        "var_rel": 0.001711
+      },
+      "regime_id": 2,
+      "regime_label": "R2"
+    },
+    {
+      "sweep_index": 20,
+      "sweep_point": {
+        "kappa": 6.8,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.000905,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.022003,
+        "var_rel": 0.000905
+      },
+      "regime_id": 2,
+      "regime_label": "R2"
+    },
+    {
+      "sweep_index": 21,
+      "sweep_point": {
+        "kappa": 7.0,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.000716,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": -0.011775,
+        "var_rel": 0.000716
+      },
+      "regime_id": 2,
+      "regime_label": "R2"
+    },
+    {
+      "sweep_index": 22,
+      "sweep_point": {
+        "kappa": 7.5,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.000584,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.031533,
+        "var_rel": 0.000584
+      },
+      "regime_id": 2,
+      "regime_label": "R2"
+    },
+    {
+      "sweep_index": 23,
+      "sweep_point": {
+        "kappa": 8.0,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.00041,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": -0.010122,
+        "var_rel": 0.00041
+      },
+      "regime_id": 2,
+      "regime_label": "R2"
+    },
+    {
+      "sweep_index": 24,
+      "sweep_point": {
+        "kappa": 10.0,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.000243,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "lambda_proxy": 0.016458,
+        "var_rel": 0.000243
+      },
+      "regime_id": 2,
+      "regime_label": "R2"
     }
   ]
 }

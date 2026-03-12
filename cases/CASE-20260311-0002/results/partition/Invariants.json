@@ -2,24 +2,30 @@
   "case_id": "CASE-20260311-0002",
   "system": "pendulum",
   "sweep_param": "kappa",
-  "regime_count": 2,
+  "regime_count": 3,
   "adjacency_graph": {
     "nodes": [
+      0,
       1,
       2
     ],
     "edges": [
       {
+        "from": 0,
+        "to": 1,
+        "param_midpoint": 3.25
+      },
+      {
         "from": 1,
         "to": 2,
-        "param_midpoint": 0.1
+        "param_midpoint": 4.5
       }
     ]
   },
-  "persistence": 0.8333,
-  "hysteresis_width": 0.55,
-  "theta_star": 0.1,
-  "predicted_count": 4,
-  "predicted_type": "clustered",
-  "count_match": false
+  "persistence": 0.9167,
+  "hysteresis_width": null,
+  "theta_star": 3.25,
+  "predicted_count": 3,
+  "predicted_type": "sequential",
+  "count_match": true
 }

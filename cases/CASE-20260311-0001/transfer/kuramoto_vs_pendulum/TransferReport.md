@@ -1,6 +1,6 @@
 # Transfer Report: CASE-20260311-0001 → CASE-20260311-0002
 
-**Date:** 2026-03-11  
+**Date:** 2026-03-12  
 **System A:** kuramoto  
 **System B:** pendulum  
 **Direction:** A → B
@@ -12,10 +12,10 @@
 | Metric | Value | Interpretation |
 |--------|-------|----------------|
 | RCD    | 1 | minor_mismatch |
-| TBS    | 1.15 | large_shift |
-| PCI    | 0.6667 | partial_compatibility |
+| TBS    | 1.775 | large_shift |
+| PCI    | 0.75 | partial_compatibility |
 | SDI    | 2 | minor_distortion |
-| **Φ**  | **0.6** | **partially_admissible** |
+| **Φ**  | **0.675** | **partially_admissible** |
 
 ---
 
@@ -23,15 +23,15 @@
 
 | | Scope A (kuramoto) | Scope B (pendulum) |
 |---|---|---|
-| Regime count | 3 | 2 |
-| Adjacency edges | 2 | 1 |
-| θ* (transition) | 1.25 | 0.1 |
+| Regime count | 4 | 3 |
+| Adjacency edges | 3 | 2 |
+| θ* (transition) | 1.475 | 3.25 |
 
 ---
 
 ## Admissibility Assessment
 
-Φ = 0.6 → **partially_admissible**
+Φ = 0.675 → **partially_admissible**
 
 The scope transition A → B is partially admissible. Some equivalence classes straddle partition boundaries — distortion is present but localized. See RCD and SDI for locus.
 

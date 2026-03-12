@@ -25,7 +25,7 @@ bc_components:
     parameterization:
       - name: "kappa"
         symbol: "κ"
-        domain: "[0.0, 5.0]"
+        domain: "[0.0, 10.0]"
         meaning: "Joint stiffness (coupling strength between links)"
         implementation_hook:
           type: "code_param"
@@ -34,7 +34,7 @@ bc_components:
     perturbation_program:
       sweeps:
         - param: "kappa"
-          values: [0.0, 0.2, 0.5, 0.8, 1.0, 1.2, 1.5, 1.8, 2.0, 2.5, 3.0, 4.0, 5.0]
+          values: [0.0, 0.2, 0.5, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0, 2.2, 2.5, 2.8, 3.0, 3.5, 4.0, 5.0, 5.5, 6.0, 6.4, 6.8, 7.0, 7.5, 8.0, 10.0]
           sweep_type: "grid"
           notes: "Dense near expected R_P2/R_P3 boundary (~1.0-2.0); sparse at extremes"
       admissible_delta_links:
@@ -93,11 +93,10 @@ bc_components:
           reference: "pipeline.sweep.run_pendulum:params['gamma']"
 
     perturbation_program:
-      sweeps:
-        - param: "gamma"
-          values: [0.1]
-          sweep_type: "manual"
-          notes: "Fixed in Phase 1; swept in Phase 3 sensitivity analysis"
+      sweeps: []
+      fixed_params:
+        gamma: 0.1
+      notes: "Fixed at gamma=0.1 in Phase 1 — not swept. Phase 3: gamma sweep planned."
       admissible_delta_links:
         - "delta_01"
 

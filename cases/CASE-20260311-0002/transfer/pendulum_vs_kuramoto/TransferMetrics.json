@@ -8,37 +8,37 @@
   "metrics": {
     "RCD": {
       "value": 1,
-      "N_A": 3,
-      "N_B": 2,
+      "N_A": 4,
+      "N_B": 3,
       "interpretation": "minor_mismatch"
     },
     "TBS": {
-      "value": 1.15,
-      "theta_star_A": 1.25,
-      "theta_star_B": 0.1,
+      "value": 1.775,
+      "theta_star_A": 1.475,
+      "theta_star_B": 3.25,
       "interpretation": "large_shift"
     },
     "PCI": {
-      "value": 0.6667,
-      "N_A": 3,
-      "N_B": 2,
+      "value": 0.75,
+      "N_A": 4,
+      "N_B": 3,
       "interpretation": "partial_compatibility",
       "note": "Structural PCI approximation. Full PCI requires aligned annotated results."
     },
     "SDI": {
       "value": 2,
-      "nodes_A": 3,
-      "nodes_B": 2,
-      "edges_A": 2,
-      "edges_B": 1,
+      "nodes_A": 4,
+      "nodes_B": 3,
+      "edges_A": 3,
+      "edges_B": 2,
       "interpretation": "minor_distortion"
     },
     "Phi": {
-      "value": 0.6,
+      "value": 0.675,
       "components": {
-        "PCI": 0.6667,
-        "RCD_score": 0.6666666666666667,
-        "SDI_score": 0.6666666666666667,
+        "PCI": 0.75,
+        "RCD_score": 0.75,
+        "SDI_score": 0.75,
         "TBS_score": 0
       },
       "interpretation": "partially_admissible"
