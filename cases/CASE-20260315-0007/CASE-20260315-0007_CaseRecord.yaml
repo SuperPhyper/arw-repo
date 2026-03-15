@@ -1,0 +1,67 @@
+# CaseRecord — CASE-20260315-0007
+# System: SIR epidemic model
+# Status: open
+
+case_id: CASE-20260315-0007
+system: "SIR epidemic model (β-sweep)"
+domain: EPI
+bc_class: Aggregation
+created: 2026-03-15
+status: open
+
+go_nogo:
+  verdict: pending
+  date: null
+  reason: "Pipeline not yet run. All prerequisites satisfied."
+
+related_cases:
+  - case_id: CASE-20260311-0003
+    system: Doppelpendel (Restriction)
+    bc_class: Restriction
+    transfer_status: not_yet_computed
+    rationale: >
+      Both use S1 — but different sub-signatures: Restriction (selection)
+      vs Aggregation (quotient). First intra-S1 cross-sub-signature transfer.
+      Expected partially_admissible: same signature family, different semantics.
+
+  - case_id: CASE-20260315-0008
+    system: Pitchfork (Symmetry Breaking)
+    bc_class: Symmetry_Breaking
+    transfer_status: not_yet_computed
+    rationale: >
+      Both have analytically known θ*. Different BC classes, different domains.
+      Tests whether analytical exactness of θ* produces high transfer scores
+      independent of BC class.
+
+  - case_id: CASE-20260315-SOC1
+    system: Shame interaction regime
+    bc_class: Restriction
+    transfer_status: not_yet_computed
+    rationale: >
+      Both are social/population systems. SIR provides a pipeline-admissible
+      reference for the blocked SOC case — if SOC transfer to SIR is
+      admissible, it validates the SOC BC hypothesis.
+
+artifact_registry:
+  - path: cases/CASE-20260315-0007/ScopeSpec.yaml
+    status: complete
+  - path: cases/CASE-20260315-0007/BCManifest.yaml
+    status: complete
+  - path: cases/CASE-20260315-0007/CaseRecord.yaml
+    status: complete
+  - path: cases/CASE-20260315-0007/ScopeSpec_signature_first.md
+    status: complete
+  - path: cases/CASE-20260315-0007/results/partition/PartitionResult.json
+    status: pending
+  - path: cases/CASE-20260315-0007/results/partition/Invariants.json
+    status: pending
+
+scientific_value:
+  primary: >
+    First Aggregation-BC case. First EPI-domain case.
+    Closes the Aggregation gap in the BC catalog.
+  secondary: >
+    Provides pipeline-admissible anchor for SOC-domain cases (blocked).
+    First cross-domain transfer: DS ↔ EPI.
+    Three sufficient observables (I_peak, R_final, lambda_proxy) — first
+    case with multi-observable agreement built in from the start.

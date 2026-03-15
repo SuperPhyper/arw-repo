@@ -1,0 +1,78 @@
+
+# BCManifest — CASE-20260315-0004
+# System: Stuart-Landau oscillator
+# Primary BC: Dissipation
+
+case_id: CASE-20260315-0004
+system: Stuart-Landau oscillator (supercritical Hopf normal form)
+domain: DS  # Dynamical Systems / Physics
+
+bc_class:
+  primary: Dissipation
+  justification: >
+    The Stuart-Landau equation dz/dt = (μ + iω)z − |z|²z contains an explicit
+    nonlinear dissipation term −|z|²z. This term is a metric contraction on the
+    complex amplitude: for any two trajectories z₁(t), z₂(t), the nonlinear
+    term drives convergence toward the attractor (fixed point at z=0 for μ<0,
+    limit cycle |z|=sqrt(μ) for μ>0). The dissipation rate scales as |z|²,
+    making this a state-dependent contraction — the canonical S4 signature.
+
+  secondary:
+    - bc: Symmetry Breaking
+      justification: >
+        The Hopf bifurcation at μ=0 breaks rotational symmetry (U(1)) of the
+        fixed-point solution. Below μ=0: unique attractor z=0 (symmetric).
+        Above μ=0: limit cycle (phase freedom — continuous symmetry breaking).
+    - bc: Restriction
+      note: >
+        Asymptotic only — as t→∞ the dissipation confines trajectories to
+        the attractor. Not a finite-time projection (Q-DISS-01 applies).
+
+operator_signature:
+  primary: S4
+  form: "F(z) = (μ + iω)z − |z|²z; contraction via −|z|²z term"
+  sub_signature: "state-dependent metric contraction"
+  contraction_rate: "c(|z|) = exp(−|z|²·Δt) approximately; state-dependent"
+  attractor:
+    mu_negative: "z* = 0 (stable fixed point)"
+    mu_positive: "|z*| = sqrt(μ) (stable limit cycle)"
+  bifurcation_type: supercritical Hopf
+  theoretical_theta_star: "μ_c = 0 (analytically exact)"
+
+  secondary_signatures:
+    - S1: "asymptotic projection onto attractor (limit only)"
+    - S3: "not present — autonomous system, no explicit time forcing"
+    - S2: "not present — single oscillator, no coupling"
+    - S5: "not present — deterministic system"
+
+sweep_program:
+  parameter: μ
+  range: [-2.0, 2.0]
+  n_points: 41
+  spacing: linear
+  values_note: "μ ∈ {-2.0, -1.9, ..., 0.0, ..., 1.9, 2.0}"
+
+integration:
+  method: RK45
+  t_span: [0, 300]
+  t_transient: 200
+  t_measure: 100
+  dt_max: 0.01
+  ic_default: "z(0) = 0.1 + 0.0i"
+
+expected_regimes:
+  N: 2
+  R1:
+    label: "dissipative fixed point"
+    condition: "μ < 0"
+    r_ss: 0.0
+    description: "All trajectories converge to z=0; full dissipation"
+  R2:
+    label: "limit cycle"
+    condition: "μ > 0"
+    r_ss: "sqrt(μ)"
+    description: "Trajectories converge to stable limit cycle; dissipation balanced by growth"
+  transition:
+    theta_star: 0.0
+    type: supercritical Hopf bifurcation
+    note: "Analytically exact; r_ss = sqrt(max(μ,0)) — smooth onset"

@@ -1,0 +1,187 @@
+{
+  "case_id": "CASE-20260311-0003",
+  "system": "double_pendulum",
+  "epsilon": 0.03,
+  "regime_count": 2,
+  "regime_labels": {
+    "1": "Quasi_periodic",
+    "2": "Chaotic"
+  },
+  "regime_counts": {
+    "1": 8,
+    "2": 4
+  },
+  "transition_boundary": {
+    "param": "E_target",
+    "transitions": [
+      {
+        "from_regime": 1,
+        "to_regime": 2,
+        "param_before": 7.0,
+        "param_after": 10.0,
+        "theta_star": 8.5
+      },
+      {
+        "from_regime": 2,
+        "to_regime": 1,
+        "param_before": 13.0,
+        "param_after": 16.0,
+        "theta_star": 14.5
+      },
+      {
+        "from_regime": 1,
+        "to_regime": 2,
+        "param_before": 20.0,
+        "param_after": 25.0,
+        "theta_star": 22.5
+      }
+    ],
+    "theta_star": 8.5
+  },
+  "annotated_results": [
+    {
+      "sweep_index": 0,
+      "sweep_point": {
+        "E_target": 0.5,
+        "_bc_id": "bc_01",
+        "_bc_class": "restriction"
+      },
+      "observable": 0.042521,
+      "observable_name": "lambda_proxy",
+      "regime_id": 1,
+      "regime_label": "Quasi_periodic"
+    },
+    {
+      "sweep_index": 1,
+      "sweep_point": {
+        "E_target": 1.0,
+        "_bc_id": "bc_01",
+        "_bc_class": "restriction"
+      },
+      "observable": 0.05246,
+      "observable_name": "lambda_proxy",
+      "regime_id": 1,
+      "regime_label": "Quasi_periodic"
+    },
+    {
+      "sweep_index": 2,
+      "sweep_point": {
+        "E_target": 2.0,
+        "_bc_id": "bc_01",
+        "_bc_class": "restriction"
+      },
+      "observable": 0.058499,
+      "observable_name": "lambda_proxy",
+      "regime_id": 1,
+      "regime_label": "Quasi_periodic"
+    },
+    {
+      "sweep_index": 3,
+      "sweep_point": {
+        "E_target": 3.0,
+        "_bc_id": "bc_01",
+        "_bc_class": "restriction"
+      },
+      "observable": 0.062022,
+      "observable_name": "lambda_proxy",
+      "regime_id": 1,
+      "regime_label": "Quasi_periodic"
+    },
+    {
+      "sweep_index": 4,
+      "sweep_point": {
+        "E_target": 5.0,
+        "_bc_id": "bc_01",
+        "_bc_class": "restriction"
+      },
+      "observable": 0.071606,
+      "observable_name": "lambda_proxy",
+      "regime_id": 1,
+      "regime_label": "Quasi_periodic"
+    },
+    {
+      "sweep_index": 5,
+      "sweep_point": {
+        "E_target": 7.0,
+        "_bc_id": "bc_01",
+        "_bc_class": "restriction"
+      },
+      "observable": 0.09819,
+      "observable_name": "lambda_proxy",
+      "regime_id": 1,
+      "regime_label": "Quasi_periodic"
+    },
+    {
+      "sweep_index": 6,
+      "sweep_point": {
+        "E_target": 10.0,
+        "_bc_id": "bc_01",
+        "_bc_class": "restriction"
+      },
+      "observable": 0.101606,
+      "observable_name": "lambda_proxy",
+      "regime_id": 2,
+      "regime_label": "Chaotic"
+    },
+    {
+      "sweep_index": 7,
+      "sweep_point": {
+        "E_target": 13.0,
+        "_bc_id": "bc_01",
+        "_bc_class": "restriction"
+      },
+      "observable": 0.105077,
+      "observable_name": "lambda_proxy",
+      "regime_id": 2,
+      "regime_label": "Chaotic"
+    },
+    {
+      "sweep_index": 8,
+      "sweep_point": {
+        "E_target": 16.0,
+        "_bc_id": "bc_01",
+        "_bc_class": "restriction"
+      },
+      "observable": 0.098337,
+      "observable_name": "lambda_proxy",
+      "regime_id": 1,
+      "regime_label": "Quasi_periodic"
+    },
+    {
+      "sweep_index": 9,
+      "sweep_point": {
+        "E_target": 20.0,
+        "_bc_id": "bc_01",
+        "_bc_class": "restriction"
+      },
+      "observable": 0.09804,
+      "observable_name": "lambda_proxy",
+      "regime_id": 1,
+      "regime_label": "Quasi_periodic"
+    },
+    {
+      "sweep_index": 10,
+      "sweep_point": {
+        "E_target": 25.0,
+        "_bc_id": "bc_01",
+        "_bc_class": "restriction"
+      },
+      "observable": 0.111344,
+      "observable_name": "lambda_proxy",
+      "regime_id": 2,
+      "regime_label": "Chaotic"
+    },
+    {
+      "sweep_index": 11,
+      "sweep_point": {
+        "E_target": 30.0,
+        "_bc_id": "bc_01",
+        "_bc_class": "restriction"
+      },
+      "observable": 0.10737,
+      "observable_name": "lambda_proxy",
+      "regime_id": 2,
+      "regime_label": "Chaotic"
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+# CaseRecord — CASE-20260315-0006
+# System: Multi-Link-Pendel with periodic forcing
+# Status: open
+
+case_id: CASE-20260315-0006
+system: "Multi-Link-Pendel with periodic base excitation (Ω-sweep)"
+domain: DS
+bc_class: Forcing
+created: 2026-03-15
+status: open
+
+go_nogo:
+  verdict: pending
+  date: null
+  reason: "Pipeline not yet run. All prerequisites satisfied."
+
+related_cases:
+  - case_id: CASE-20260311-0002
+    system: Multi-Link-Pendel (κ-sweep)
+    bc_class: Coupling
+    transfer_status: not_yet_computed
+    rationale: >
+      Same physical system — Coupling baseline. κ=1.0 in this case
+      corresponds to the incoherent regime of CASE-0002.
+      Transfer expected partially_admissible (same system, different
+      BC class and different N structure).
+
+  - case_id: CASE-20260315-0005
+    system: Multi-Link-Pendel with damping (γ-sweep)
+    bc_class: Dissipation
+    transfer_status: not_yet_computed
+    rationale: >
+      Coordinated pair: CASE-0005 (Dissipation axis) + CASE-0006 (Forcing axis)
+      on the same system. Together with CASE-0002 (Coupling axis):
+      first complete 3-BC coverage of a single physical system.
+      Cross-transfer between all three will test BC orthogonality.
+
+  - case_id: CASE-20260315-0004
+    system: Stuart-Landau oscillator
+    bc_class: Dissipation
+    transfer_status: not_yet_computed
+    rationale: >
+      Stuart-Landau with forcing (S3 added to S4) would be the natural
+      next step — but that is a future case. Current transfer will be
+      cross-BC (Forcing vs Dissipation).
+
+artifact_registry:
+  - path: cases/CASE-20260315-0006/ScopeSpec.yaml
+    status: complete
+  - path: cases/CASE-20260315-0006/BCManifest.yaml
+    status: complete
+  - path: cases/CASE-20260315-0006/CaseRecord.yaml
+    status: complete
+  - path: cases/CASE-20260315-0006/ScopeSpec_signature_first.md
+    status: complete
+  - path: cases/CASE-20260315-0006/results/partition/PartitionResult.json
+    status: pending
+  - path: cases/CASE-20260315-0006/results/partition/Invariants.json
+    status: pending
+
+scientific_value:
+  primary: >
+    First Forcing-BC case in the repo. Closes the Forcing gap.
+    First non-monotone regime partition (resonance structure) — tests
+    whether the pipeline handles N > 2 with non-monotone observable.
+  secondary: >
+    Completes the 3-BC coverage of the Multi-Pendel system together
+    with CASE-0002 (Coupling) and CASE-0005 (Dissipation).
+    Enables first cross-BC transfer matrix for a single physical system.
+
+open_questions:
+  - id: Q-FORC-01
+    question: >
+      Does the resonance structure (multiple peaks in var_rel) produce
+      a stable N > 2 partition, or does ε-sensitivity collapse it to N = 2?
+    status: open
+    note: >
+      If resonance peaks are narrow (small plateau width w), the Forcing case
+      may have fundamentally worse ε-robustness than Coupling or Dissipation
+      cases. This would be a structural finding about S3 cases in general.

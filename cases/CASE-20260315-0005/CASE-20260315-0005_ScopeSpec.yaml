@@ -1,0 +1,97 @@
+# ScopeSpec — CASE-20260315-0005
+# System: Multi-Link-Pendel with joint damping (γ-sweep)
+# BC Class: Dissipation
+# Derived from: CASE-20260311-0002 (Coupling baseline)
+
+scope_tuple:
+  B:
+    description: >
+      Multi-link pendulum (same geometry as CASE-20260311-0002) with
+      added uniform joint damping γ at all joints.
+      Equations of motion: τ̈ = f(τ, τ̇; κ) − γ · τ̇
+      where τ = vector of joint angles, κ = coupling strength fixed at κ = 3.25
+      (above the Coupling transition threshold from CASE-0002).
+      Admissible states: all joint-angle configurations in [-π, π]^n.
+    state_space: "τ ∈ [-π,π]^n × ℝ^n  (joint angles + angular velocities)"
+    fixed_params:
+      kappa: 3.25
+      n_links: "same as CASE-20260311-0002"
+      omega_distribution: "same as CASE-20260311-0002"
+    sweep_param: "γ (joint damping coefficient)"
+    sweep_range: [0.0, 5.0]
+    sweep_note: >
+      γ = 0: undamped system (baseline, same as CASE-0002 at κ=3.25).
+      γ → ∞: overdamped, all motion suppressed.
+      Transition expected at intermediate γ* where cooperative motion collapses.
+
+  Pi:
+    - observable_key: var_rel
+      description: >
+        Relative angular variance across joints, normalized by maximum
+        possible variance. Same definition as CASE-20260311-0002.
+        var_rel = Var(τ_i) / Var_max.
+        Expected: high in undamped cooperative regime (low γ),
+        low in overdamped incoherent regime (high γ).
+      primary: true
+      observable_sufficiency: sufficient
+      span_estimate: "0 to ~1.0 across γ sweep — to be confirmed"
+
+    - observable_key: lambda_proxy
+      description: >
+        Local Lyapunov proxy — same definition as CASE-20260311-0002.
+        Expected insufficient as in original case.
+      primary: false
+      observable_sufficiency: insufficient
+      note: "Carry-over from CASE-0002; expected insufficient"
+
+    - observable_key: energy_ss
+      description: >
+        Steady-state kinetic energy: E_kin = 0.5 · sum(τ̇_i²).
+        Expected to decay monotonically with γ.
+        Candidate secondary observable — span TBD.
+      primary: false
+      observable_sufficiency: pending
+
+  Delta:
+    description: >
+      Initial condition variation: τ(0) drawn uniformly from [-0.1, 0.1]^n,
+      τ̇(0) = 0. Ten independent runs per γ-value.
+      Same perturbation protocol as CASE-20260311-0002 for comparability.
+    perturbation_type: initial_condition_noise
+    n_runs: 10
+
+  epsilon:
+    working_epsilon: 0.05
+    choice_note: >
+      Conservative pre-estimate based on CASE-0002 ε_working = 0.023.
+      Damping sweep expected to produce wider span than κ-sweep.
+      To be confirmed by epsilon_sweep pipeline.
+    plateau_status: pending
+
+falsification:
+  - id: F1
+    condition: "span(var_rel) < ε for all γ — damping BC has no observable effect"
+    severity: scope_rejection
+    action: "Check κ fixed value; at κ=3.25 coupling should produce nonzero var_rel baseline"
+
+  - id: F2
+    condition: "γ* unstable across initial condition runs"
+    severity: scope_rejection
+    action: "Increase n_runs or narrow IC spread"
+
+  - id: F3
+    condition: "No robust ε plateau for var_rel"
+    severity: scope_rejection
+    action: "Reassess integration time; check for limit cycle vs fixed point confusion"
+
+  - id: F4
+    condition: "γ* at sweep boundary (γ=0 or γ=5)"
+    severity: sweep_refinement
+    action: >
+      If γ* near 0: system may not need damping sweep — Coupling already dominates.
+      If γ* near 5: extend sweep range.
+
+observable_sufficiency:
+  var_rel: sufficient
+  lambda_proxy: insufficient
+  energy_ss: pending

@@ -1,0 +1,96 @@
+schema_version: "0.2"
+id: "BCM-20260311-0001"
+scope_id: "SCOPE-20260311-0001"
+title: "Kuramoto coupling sweep — Phase 1 calibration"
+status: "active"
+created_at: "2026-03-11"
+updated_at: "2026-03-11"
+
+bc_components:
+  - id: "bc_01"
+    class: "coupling"
+    name: "Mean-field coupling strength"
+    description: "kappa controls the synchronization pressure between oscillators via mean-field"
+    locus:
+      applies_to: "B"
+      location_description: "coupling constraint in Kuramoto ODE dtheta_i/dt = omega_i + kappa*r*sin(psi - theta_i)"
+    parameterization:
+      - name: "kappa"
+        symbol: "κ"
+        domain: "[0.0, 3.0]"
+        meaning: "coupling strength; K_c_analytical = 2/(pi*g(0)) ~ 0.6366 for g=N(0,1)"
+        implementation_hook:
+          type: "code_param"
+          reference: "pipeline.sweep.run_kuramoto:kappa"
+    perturbation_program:
+      sweeps:
+        - param: "kappa"
+          values: [0.0, 0.2, 0.4, 0.5, 0.55, 0.60, 0.63, 0.65, 0.70, 0.80, 1.0, 1.5, 2.0, 2.5, 3.0]
+          sweep_type: "grid"
+      admissible_delta_links:
+        - "delta_01"
+    resolution_plan:
+      epsilons: [0.02, 0.05, 0.10]
+      stability_window_criterion: "r_ss assignment stable for >= 3 consecutive kappa values"
+    predicted_partition_effects:
+      qualitative:
+        - "sequential partition along kappa axis"
+        - "sharp transition at kappa ~ 0.64"
+      partition_type_prediction: "sequential"
+      invariants_to_track:
+        - "regime_count"
+        - "adjacency_graph"
+        - "persistence_under_sweep"
+        - "hysteresis_width"
+        - "transition_boundary"
+    failure_signatures:
+      - "no_stable_window_for_any_epsilon"
+      - "observable_dependence_dominates"
+    falsification_criteria:
+      - id: "fals_01"
+        statement: "theta_star (observed K_c) within 5% of analytical K_c = 0.6366"
+        measurable_test: "theta_star in [0.605, 0.668]"
+        threshold: "5% of 0.6366"
+
+transfer_targets:
+  - target_scope_id: "SCOPE-20260311-0002"
+    target_bc_manifest_id: ""
+    direction: "source -> target"
+    structural_homology_claim: "Both Kuramoto and pendulum have coupling BC; sequential partition predicted for both"
+    shared_bc_components:
+      - "bc_01"
+    expected_transfer: "partial"
+    expected_transfer_rationale: "Coupling class shared; but pendulum has additional dissipation BC which may shift partition"
+    distortion_metrics_planned:
+      - name: "RCD"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md"
+        expected_value: "0 or 1"
+      - name: "TBS"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md"
+        expected_value: "< 0.2"
+      - name: "PCI"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md"
+        expected_value: ">= 0.7"
+      - name: "SDI"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md"
+        expected_value: "<= 2"
+      - name: "Phi"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md"
+        expected_value: ">= 0.6"
+    transfer_falsification:
+      - id: "tf_01"
+        statement: "Phi >= 0.6 for Kuramoto -> pendulum transfer"
+        measurable_test: "Phi value from pipeline.transfer"
+        threshold: "0.6"
+
+provenance:
+  sources:
+    - type: "experiment_doc"
+      ref: "experiments/kuramoto_oscillators.md"
+      pointer: "S_K, R_K, K_c"
+  owners:
+    - role: "BoundaryTaxonomist"
+      name: ""
+  links:
+    case_record_id: "CASE-20260311-0001"
+    experiment_doc: "experiments/kuramoto_oscillators.md"

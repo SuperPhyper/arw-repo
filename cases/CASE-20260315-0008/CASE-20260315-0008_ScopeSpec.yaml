@@ -1,0 +1,105 @@
+# ScopeSpec — CASE-20260315-0008
+# System: Pitchfork normal form (μ-sweep)
+# BC Class: Symmetry Breaking
+
+scope_tuple:
+  B:
+    description: >
+      Supercritical pitchfork bifurcation in normal form.
+      Scalar real-valued system: x ∈ ℝ.
+      Equation of motion: dx/dt = μ·x − x³
+      The system has Z₂ symmetry (x → −x) for all μ.
+      Below μ=0: unique stable fixed point x*=0 (symmetric).
+      Above μ=0: x*=0 becomes unstable; two symmetric stable fixed points
+      x* = ±sqrt(μ) emerge — spontaneous symmetry breaking.
+      Fixed parameters: none.
+      Control parameter: μ ∈ [−2.0, 2.0].
+    state_space: "x ∈ ℝ"
+    fixed_params: {}
+    sweep_param: "μ (bifurcation parameter)"
+    sweep_range: [-2.0, 2.0]
+
+  Pi:
+    - observable_key: x_ss_abs
+      description: >
+        Absolute value of steady-state position: |x(t→∞)|.
+        Below μ=0: x_ss_abs = 0 (symmetric fixed point).
+        Above μ=0: x_ss_abs = sqrt(μ) (symmetry-broken fixed point).
+        Analytically: x_ss_abs = sqrt(max(μ,0)).
+        Averaged over positive and negative initial conditions to
+        capture both branches symmetrically.
+      primary: true
+      observable_sufficiency: sufficient
+      span_estimate: "0 to sqrt(2) ≈ 1.414 — same as Stuart-Landau r_ss"
+
+    - observable_key: x_ss_signed
+      description: >
+        Signed steady-state position x(t→∞): captures which branch
+        the system lands on given x(0) > 0 or x(0) < 0.
+        Used to verify Z₂ symmetry breaking — should be ±sqrt(μ).
+      primary: false
+      observable_sufficiency: sufficient
+      note: >
+        x_ss_signed is NOT averaged — it records branch selection.
+        Required for symmetry-breaking analysis but not for regime partition.
+
+    - observable_key: lambda_proxy
+      description: "Linearization: dF/dx|_{x*} = μ − 3x*²."
+      primary: false
+      observable_sufficiency: sufficient
+      note: >
+        At x*=0: λ = μ (positive above threshold → unstable).
+        At x*=±sqrt(μ): λ = −2μ (negative → stable).
+        Useful secondary observable.
+
+  Delta:
+    description: >
+      Initial condition variation: x(0) drawn from
+      {−1.0, −0.5, −0.1, +0.1, +0.5, +1.0} — symmetric set covering
+      both basins of attraction.
+      Partition must be stable for all x(0) ≠ 0.
+      Special case: x(0) = 0 exactly lands on unstable manifold above μ=0
+      and must be excluded from perturbation set.
+    perturbation_type: initial_condition_symmetric
+    ic_values: [-1.0, -0.5, -0.1, 0.1, 0.5, 1.0]
+    n_runs: 6
+
+  epsilon:
+    working_epsilon: 0.08
+    choice_note: >
+      x_ss_abs span ≈ 1.414. ε = 0.08 → span/ε ≈ 18. Conservative.
+      Same span structure as Stuart-Landau — cross-case ε comparison possible.
+    plateau_status: pending
+
+falsification:
+  - id: F1
+    condition: "span(x_ss_abs) < ε — symmetry breaking BC has no effect"
+    severity: scope_rejection
+    action: "Verify equation; μ³ term must be present for pitchfork"
+
+  - id: F2
+    condition: "μ* shifts under IC variation"
+    severity: scope_rejection
+    action: "Check symmetry of IC set; exclude x(0)=0 from perturbation"
+
+  - id: F3
+    condition: "No robust ε plateau"
+    severity: scope_rejection
+    action: "Extend integration time; √μ onset is smooth — may need more points near μ*=0"
+
+  - id: F4
+    condition: "μ* at sweep boundary"
+    severity: sweep_refinement
+    action: "Theoretical μ*=0 is exactly center of sweep — cannot be at boundary"
+
+  - id: F-SYM
+    condition: "x_ss_signed shows asymmetric branch selection (not ±sqrt(μ) equally)"
+    severity: open_question
+    action: >
+      Documents broken ergodicity — system preferentially selects one branch.
+      Not a scope rejection; record as symmetry-breaking finding.
+
+observable_sufficiency:
+  x_ss_abs: sufficient
+  x_ss_signed: sufficient
+  lambda_proxy: sufficient

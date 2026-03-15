@@ -1,0 +1,124 @@
+# ScopeSpec — CASE-20260315-0009
+# System: Stochastic Kuramoto model (σ-sweep)
+# BC Class: Stochastic BC (S5)
+
+scope_tuple:
+  B:
+    description: >
+      Kuramoto model with additive white noise (Langevin form).
+      N = 100 oscillators, natural frequencies ω_i ~ N(0,1).
+      Equations of motion (Itô SDE):
+        dθ_i = [ω_i + κ/N · Σⱼ sin(θⱼ−θᵢ)] dt + σ dW_i
+      where W_i are independent standard Wiener processes.
+      Fixed parameters: κ = 2.0 (above deterministic sync threshold κ_c ≈ 1.6),
+      N = 100, ω_i ~ N(0,1) frozen across runs.
+      Control parameter: σ ∈ [0.0, 3.0] (noise intensity).
+      At σ=0: deterministic Kuramoto above threshold → synchronized.
+      At σ→∞: noise destroys synchronization → incoherent.
+    state_space: "θ ∈ [0,2π)^N × Ω  (phases × noise realizations)"
+    fixed_params:
+      kappa: 2.0
+      N: 100
+      omega_distribution: "N(0,1) frozen per run"
+    sweep_param: "σ (noise intensity)"
+    sweep_range: [0.0, 3.0]
+    sweep_note: >
+      σ = 0: deterministic limit (same as CASE-0001 at κ=2.0 → synchronized).
+      σ_c: noise-induced desynchronization threshold — unknown a priori.
+      σ >> σ_c: phases fully randomized by noise.
+
+  Pi:
+    - observable_key: r_mean
+      description: >
+        Ensemble-averaged order parameter:
+        r_mean = E[|1/N · Σⱼ exp(iθⱼ)|]
+        averaged over M=100 noise realizations and time window.
+        This is the S5 observable: E[r | σ] — conditional expectation
+        of the order parameter given noise level σ.
+        At σ=0: r_mean ≈ r_ss from CASE-0001.
+        At large σ: r_mean → 0.
+      primary: true
+      observable_sufficiency: sufficient
+      span_estimate: "~0.7 to ~0.0 across sweep (decreasing with σ)"
+      note: >
+        r_mean IS the S5 operator applied to the order parameter:
+        r_mean(σ) = E[r(θ(t)) | σ] — orthogonal projection onto
+        the σ-conditioned expectation. This is the first case where
+        the primary observable is itself an expectation operator.
+
+    - observable_key: r_variance
+      description: >
+        Variance of order parameter across noise realizations:
+        r_var = Var_realizations[|1/N · Σⱼ exp(iθⱼ)|]
+        High near σ_c (susceptibility peak); low in both limits.
+      primary: false
+      observable_sufficiency: pending
+      note: "r_var peaks at the transition — useful for locating σ*"
+
+    - observable_key: r_ss_det
+      description: >
+        Deterministic order parameter r_ss at σ=0, carried over from
+        CASE-0001 for validation anchor.
+      primary: false
+      observable_sufficiency: sufficient
+      note: "Validation: r_mean(σ=0) must match r_ss from CASE-0001 at κ=2.0"
+
+  Delta:
+    description: >
+      Two perturbation types:
+      (1) Noise realization: M=100 independent realizations of {W_i(t)}
+          per σ-value. r_mean averaged over all realizations.
+      (2) Frequency disorder: ω_i resampled 5 times from N(0,1).
+          Regime boundaries must be stable across ω realizations.
+    perturbation_type: noise_realization + frequency_disorder
+    n_noise_realizations: 100
+    n_omega_resamples: 5
+
+  epsilon:
+    working_epsilon: 0.08
+    choice_note: >
+      r_mean span ≈ 0.7 (from r≈0.7 at σ=0 to r≈0 at large σ).
+      ε = 0.08 → span/ε ≈ 9. Smaller span than other cases — noise
+      smears the transition. May need smaller ε. To be confirmed.
+    plateau_status: pending
+
+falsification:
+  - id: F1
+    condition: "span(r_mean) < ε — noise BC has no observable effect"
+    severity: scope_rejection
+    action: "Verify κ=2.0 produces synchronized state at σ=0"
+
+  - id: F2
+    condition: "σ* shifts across ω resamples"
+    severity: scope_rejection
+    action: >
+      Increase N or number of ω resamples; finite-size effects may
+      blur the noise threshold in small networks.
+
+  - id: F3
+    condition: "No robust ε plateau — noise smears transition completely"
+    severity: scope_rejection
+    action: >
+      Increase M (noise realizations). If no plateau at M=100,
+      try M=500. If still no plateau: noise-induced transition may
+      not produce a sharp regime boundary — fundamental S5 finding.
+
+  - id: F4
+    condition: "σ* at sweep boundary"
+    severity: sweep_refinement
+    action: "Extend sweep; σ* expected interior"
+
+  - id: F-STOCH
+    condition: >
+      r_variance peaks at σ* but r_mean transition is too gradual
+      for stable N=2 partition — only N=1 plateau found
+    severity: open_question
+    action: >
+      Use r_variance as primary observable instead of r_mean.
+      Documents that S5 cases may require susceptibility observables
+      rather than order parameter means.
+
+observable_sufficiency:
+  r_mean: sufficient
+  r_variance: pending
+  r_ss_det: sufficient

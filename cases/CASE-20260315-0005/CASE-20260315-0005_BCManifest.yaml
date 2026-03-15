@@ -1,0 +1,98 @@
+# BCManifest — CASE-20260315-0005
+# System: Multi-Link-Pendel with joint damping
+# Primary BC: Dissipation
+
+case_id: CASE-20260315-0005
+system: "Multi-Link-Pendel with joint damping (γ-sweep)"
+domain: DS
+bc_class: Dissipation
+
+bc_class:
+  primary: Dissipation
+  justification: >
+    Joint damping term −γ·τ̇ is an explicit S4 operator: it scales the
+    velocity state by a contraction factor, driving all joint velocities
+    toward zero. For any two trajectories τ₁(t), τ₂(t):
+      d/dt‖τ̇₁ − τ̇₂‖ ≤ (λ_max(coupling) − γ) · ‖τ̇₁ − τ̇₂‖
+    At γ > λ_max(coupling), the damping dominates and all motion contracts
+    to the attractor. This is metric contraction — the canonical S4 signature.
+
+  secondary:
+    - bc: Coupling
+      justification: >
+        Coupling (κ = 3.25, fixed above transition) remains structurally
+        present — the S2 cross terms in the equations of motion are unchanged.
+        The γ-sweep reveals how Dissipation interacts with and eventually
+        dominates Coupling. This case directly probes the Dissipation ↔
+        Coupling co-existence regime.
+      note: >
+        CASE-20260311-0002 established Coupling as primary at γ=0.
+        This case establishes Dissipation as primary when γ > γ*.
+        Together they bracket the transition between two BC-dominant regimes.
+
+operator_signature:
+  primary: S4
+  form: "Damping term: −γ · τ̇  (linear velocity contraction)"
+  sub_signature: "exponential decay / linear contraction"
+  contraction_rate: "c = exp(−γ·Δt) per joint per timestep"
+  attractor:
+    low_gamma: "cooperative motion sustained by Coupling (from CASE-0002)"
+    high_gamma: "overdamped fixed point τ̇ = 0; all motion suppressed"
+  bifurcation_type: >
+    Dissipation-dominated collapse: no sharp bifurcation expected,
+    but continuous var_rel decay with increasing γ.
+    Transition γ* = point where Dissipation dominates Coupling energy injection.
+
+  secondary_signatures:
+    - S2: "Coupling cross terms present (κ=3.25 fixed); S4 competes with S2"
+    - S1: "asymptotic projection onto attractor in limit γ→∞"
+    - S3: "not present — autonomous, no external forcing"
+    - S5: "not present — deterministic"
+
+sweep_program:
+  parameter: γ
+  range: [0.0, 5.0]
+  n_points: 26
+  spacing: linear
+  values_note: "γ ∈ {0.0, 0.2, 0.4, ..., 5.0}"
+  anchor_point:
+    gamma: 0.0
+    note: "γ=0 must reproduce CASE-0002 result at κ=3.25 — validation checkpoint"
+
+integration:
+  method: RK45
+  t_span: [0, 500]
+  t_transient: 300
+  t_measure: 200
+  dt_max: 0.01
+  note: "Longer integration than CASE-0002 — damped systems may have slow transients"
+
+expected_regimes:
+  N: 2
+  R1:
+    label: "coupling-dominated cooperative motion"
+    condition: "γ < γ*"
+    var_rel: "high (sustained by κ=3.25 coupling)"
+    description: "Damping present but weak; coupling sustains cooperative dynamics"
+  R2:
+    label: "dissipation-dominated suppression"
+    condition: "γ > γ*"
+    var_rel: "low (approaching zero)"
+    description: "Damping dominates; all joint motion suppressed toward fixed point"
+  transition:
+    theta_star: "γ* — unknown a priori; to be determined by sweep"
+    type: "continuous crossover (no sharp bifurcation expected)"
+    note: >
+      Unlike Stuart-Landau (CASE-0004) where θ* = 0 is analytically exact,
+      γ* here depends on the balance between damping rate and coupling-induced
+      energy injection — must be determined numerically.
+
+relation_to_original:
+  original_case: CASE-20260311-0002
+  original_bc: Coupling
+  relation: >
+    CASE-0002 established the Coupling regime partition at γ=0.
+    CASE-0005 sweeps γ at fixed κ=3.25, revealing how Dissipation
+    progressively dominates and collapses the Coupling-sustained dynamics.
+    Together: CASE-0002 (κ-axis) + CASE-0005 (γ-axis) span a 2D
+    parameter space of Coupling × Dissipation co-existence.

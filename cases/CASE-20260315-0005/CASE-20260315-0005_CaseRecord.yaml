@@ -1,0 +1,67 @@
+# CaseRecord — CASE-20260315-0005
+# System: Multi-Link-Pendel with joint damping
+# Status: open
+
+case_id: CASE-20260315-0005
+system: "Multi-Link-Pendel with joint damping (γ-sweep)"
+domain: DS
+bc_class: Dissipation
+created: 2026-03-15
+status: open
+
+go_nogo:
+  verdict: pending
+  date: null
+  reason: "Pipeline not yet run. All prerequisites satisfied."
+
+related_cases:
+  - case_id: CASE-20260311-0002
+    system: Multi-Link-Pendel (κ-sweep)
+    bc_class: Coupling
+    transfer_status: not_yet_computed
+    rationale: >
+      Same physical system, different sweep axis. γ=0 in this case must
+      reproduce the κ=3.25 regime from CASE-0002 — serves as validation
+      anchor. Transfer at matched ε expected to be highly_admissible
+      (same system, same observable var_rel).
+
+  - case_id: CASE-20260315-0004
+    system: Stuart-Landau oscillator
+    bc_class: Dissipation
+    transfer_status: not_yet_computed
+    rationale: >
+      Both are Dissipation-BC cases in DS domain. First same-BC
+      cross-system transfer test. Expected partially_admissible —
+      different observables (var_rel vs r_ss) and different N.
+
+  - case_id: CASE-20260315-0006
+    system: Multi-Link-Pendel with periodic forcing
+    bc_class: Forcing
+    transfer_status: not_yet_computed
+    rationale: >
+      Same physical system, Forcing sweep. Together CASE-0005 (Dissipation)
+      and CASE-0006 (Forcing) probe the full γ × Ω parameter space of the
+      Multi-Pendel — intended as a coordinated case pair.
+
+artifact_registry:
+  - path: cases/CASE-20260315-0005/ScopeSpec.yaml
+    status: complete
+  - path: cases/CASE-20260315-0005/BCManifest.yaml
+    status: complete
+  - path: cases/CASE-20260315-0005/CaseRecord.yaml
+    status: complete
+  - path: cases/CASE-20260315-0005/ScopeSpec_signature_first.md
+    status: complete
+  - path: cases/CASE-20260315-0005/results/partition/PartitionResult.json
+    status: pending
+  - path: cases/CASE-20260315-0005/results/partition/Invariants.json
+    status: pending
+
+scientific_value:
+  primary: >
+    First Multi-Pendel Dissipation case. Closes the Dissipation gap for
+    an already-established physical system (no new infrastructure needed).
+  secondary: >
+    Together with CASE-0002: spans κ × γ parameter space.
+    First empirical test of Coupling ↔ Dissipation co-existence and dominance
+    crossover in a concrete physical system.

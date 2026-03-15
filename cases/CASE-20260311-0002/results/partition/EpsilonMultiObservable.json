@@ -1,0 +1,630 @@
+{
+  "case_id": "CASE-20260311-0002",
+  "system": "pendulum",
+  "observables": [
+    "lambda_proxy",
+    "var_rel"
+  ],
+  "observable_ranges": {
+    "lambda_proxy": {
+      "min": 0.061053,
+      "max": 0.097608,
+      "span": 0.036555
+    },
+    "var_rel": {
+      "min": 0.038115,
+      "max": 0.312792,
+      "span": 0.274677
+    }
+  },
+  "eps_range": [
+    0.0001,
+    0.5
+  ],
+  "eps_steps": 60,
+  "per_observable": {
+    "lambda_proxy": {
+      "plateaus": [
+        {
+          "N": 13,
+          "eps_start": 0.0001,
+          "eps_end": 0.0001,
+          "n_points": 1,
+          "width_log": 0.0
+        },
+        {
+          "N": 12,
+          "eps_start": 0.000116,
+          "eps_end": 0.000565,
+          "n_points": 12,
+          "width_log": 1.5832
+        },
+        {
+          "N": 11,
+          "eps_start": 0.000653,
+          "eps_end": 0.000653,
+          "n_points": 1,
+          "width_log": 0.0
+        },
+        {
+          "N": 10,
+          "eps_start": 0.000755,
+          "eps_end": 0.001344,
+          "n_points": 5,
+          "width_log": 0.5767
+        },
+        {
+          "N": 9,
+          "eps_start": 0.001553,
+          "eps_end": 0.002073,
+          "n_points": 3,
+          "width_log": 0.2888
+        },
+        {
+          "N": 7,
+          "eps_start": 0.002395,
+          "eps_end": 0.002395,
+          "n_points": 1,
+          "width_log": 0.0
+        },
+        {
+          "N": 5,
+          "eps_start": 0.002767,
+          "eps_end": 0.004929,
+          "n_points": 5,
+          "width_log": 0.5774
+        },
+        {
+          "N": 3,
+          "eps_start": 0.005694,
+          "eps_end": 0.005694,
+          "n_points": 1,
+          "width_log": 0.0
+        },
+        {
+          "N": 2,
+          "eps_start": 0.006579,
+          "eps_end": 0.006579,
+          "n_points": 1,
+          "width_log": 0.0
+        },
+        {
+          "N": 1,
+          "eps_start": 0.0076,
+          "eps_end": 0.5,
+          "n_points": 30,
+          "width_log": 4.1865
+        }
+      ]
+    },
+    "var_rel": {
+      "plateaus": [
+        {
+          "N": 13,
+          "eps_start": 0.0001,
+          "eps_end": 0.01172,
+          "n_points": 34,
+          "width_log": 4.7639
+        },
+        {
+          "N": 11,
+          "eps_start": 0.01354,
+          "eps_end": 0.01354,
+          "n_points": 1,
+          "width_log": 0.0
+        },
+        {
+          "N": 8,
+          "eps_start": 0.015642,
+          "eps_end": 0.018072,
+          "n_points": 2,
+          "width_log": 0.1444
+        },
+        {
+          "N": 5,
+          "eps_start": 0.020878,
+          "eps_end": 0.024121,
+          "n_points": 2,
+          "width_log": 0.1444
+        },
+        {
+          "N": 4,
+          "eps_start": 0.027866,
+          "eps_end": 0.027866,
+          "n_points": 1,
+          "width_log": 0.0
+        },
+        {
+          "N": 3,
+          "eps_start": 0.032194,
+          "eps_end": 0.04297,
+          "n_points": 3,
+          "width_log": 0.2887
+        },
+        {
+          "N": 1,
+          "eps_start": 0.049643,
+          "eps_end": 0.5,
+          "n_points": 17,
+          "width_log": 2.3098
+        }
+      ]
+    }
+  },
+  "joint": {
+    "plateaus": [
+      {
+        "N": 13,
+        "eps_start": 0.0001,
+        "eps_end": 0.01172,
+        "n_points": 34,
+        "width_log": 4.7639
+      },
+      {
+        "N": 11,
+        "eps_start": 0.01354,
+        "eps_end": 0.01354,
+        "n_points": 1,
+        "width_log": 0.0
+      },
+      {
+        "N": 8,
+        "eps_start": 0.015642,
+        "eps_end": 0.018072,
+        "n_points": 2,
+        "width_log": 0.1444
+      },
+      {
+        "N": 5,
+        "eps_start": 0.020878,
+        "eps_end": 0.024121,
+        "n_points": 2,
+        "width_log": 0.1444
+      },
+      {
+        "N": 4,
+        "eps_start": 0.027866,
+        "eps_end": 0.027866,
+        "n_points": 1,
+        "width_log": 0.0
+      },
+      {
+        "N": 3,
+        "eps_start": 0.032194,
+        "eps_end": 0.04297,
+        "n_points": 3,
+        "width_log": 0.2887
+      },
+      {
+        "N": 1,
+        "eps_start": 0.049643,
+        "eps_end": 0.5,
+        "n_points": 17,
+        "width_log": 2.3098
+      }
+    ]
+  },
+  "comparison": [
+    {
+      "epsilon": 0.0001,
+      "N_lambda_proxy": 13,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.000116,
+      "N_lambda_proxy": 12,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.000133,
+      "N_lambda_proxy": 12,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.000154,
+      "N_lambda_proxy": 12,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.000178,
+      "N_lambda_proxy": 12,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.000206,
+      "N_lambda_proxy": 12,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.000238,
+      "N_lambda_proxy": 12,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.000275,
+      "N_lambda_proxy": 12,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.000317,
+      "N_lambda_proxy": 12,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.000367,
+      "N_lambda_proxy": 12,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.000424,
+      "N_lambda_proxy": 12,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.000489,
+      "N_lambda_proxy": 12,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.000565,
+      "N_lambda_proxy": 12,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.000653,
+      "N_lambda_proxy": 11,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.000755,
+      "N_lambda_proxy": 10,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.000872,
+      "N_lambda_proxy": 10,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.001007,
+      "N_lambda_proxy": 10,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.001164,
+      "N_lambda_proxy": 10,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.001344,
+      "N_lambda_proxy": 10,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.001553,
+      "N_lambda_proxy": 9,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.001794,
+      "N_lambda_proxy": 9,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.002073,
+      "N_lambda_proxy": 9,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.002395,
+      "N_lambda_proxy": 7,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.002767,
+      "N_lambda_proxy": 5,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.003196,
+      "N_lambda_proxy": 5,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.003693,
+      "N_lambda_proxy": 5,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.004266,
+      "N_lambda_proxy": 5,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.004929,
+      "N_lambda_proxy": 5,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.005694,
+      "N_lambda_proxy": 3,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.006579,
+      "N_lambda_proxy": 2,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.0076,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.008781,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.010144,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.01172,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 13,
+      "N_joint": 13,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.01354,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 11,
+      "N_joint": 11,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.015642,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 8,
+      "N_joint": 8,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.018072,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 8,
+      "N_joint": 8,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.020878,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 5,
+      "N_joint": 5,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.024121,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 5,
+      "N_joint": 5,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.027866,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 4,
+      "N_joint": 4,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.032194,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 3,
+      "N_joint": 3,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.037194,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 3,
+      "N_joint": 3,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.04297,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 3,
+      "N_joint": 3,
+      "observables_agree": false
+    },
+    {
+      "epsilon": 0.049643,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.057353,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.06626,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.07655,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.088438,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.102172,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.118039,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.13637,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.157549,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.182016,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.210283,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.242939,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.280668,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.324255,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.374612,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.432788,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    },
+    {
+      "epsilon": 0.5,
+      "N_lambda_proxy": 1,
+      "N_var_rel": 1,
+      "N_joint": 1,
+      "observables_agree": true
+    }
+  ],
+  "agreement_rate": 0.3
+}

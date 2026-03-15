@@ -1,0 +1,117 @@
+# ScopeSpec.yaml — Multi-Link Pendulum (Phase 1 Calibration)
+# Version: 0.3  — updated 2026-03-12: observable_key, primary, observable_sufficiency,
+#                  falsification on BC level (not observable level)
+schema_version: "0.2"
+id: "SCOPE-20260311-0002"
+title: "Multi-Link Pendulum — Coupling BC Sweep (Phase 1)"
+status: "active"
+created_at: "2026-03-11"
+updated_at: "2026-03-12"
+system_domain: "physical"
+
+X:
+  name: "X_P"
+  type: "manifold"
+  structure:
+    topology_type: "R^4 (two-link)"
+    metric: "required"
+    metric_notes: "Euclidean on (theta_1, theta_2, dtheta_1, dtheta_2)"
+  state_coordinates:
+    - {name: "theta_1", domain: "[-pi, pi]"}
+    - {name: "theta_2", domain: "[-pi, pi]"}
+    - {name: "dtheta_1", domain: "R"}
+    - {name: "dtheta_2", domain: "R"}
+
+B:
+  boundary_condition_classes:
+    - class: "coupling"
+      role: "Joint stiffness kappa — primary sweep parameter"
+      primary: true
+    - class: "dissipation"
+      role: "Damping gamma=0.1 — fixed background BC in Phase 1"
+      primary: false
+
+Pi:
+  - id: "pi_01"
+    name: "Relative angle variance Var(theta_1 - theta_2)"
+    observable_key: "var_rel"
+    primary: true
+    notes: >
+      Primary observable. Span ~0.27 across kappa sweep. Monotone
+      decreasing in kappa — robust for BC-coupled clustering.
+
+  - id: "pi_02"
+    name: "Max Lyapunov Exponent proxy"
+    observable_key: "lambda_proxy"
+    primary: false
+    notes: >
+      Non-primary. Span ~0.037 < 2*epsilon — observable insufficiency.
+      Retained for cross-validation only.
+
+observable_sufficiency:
+  per_observable:
+    - observable_key: "var_rel"
+      min_span_required: "2 * epsilon"
+      admissible: true
+    - observable_key: "lambda_proxy"
+      min_span_required: "2 * epsilon"
+      admissible: false
+      notes: "Instrument insufficiency — not scope falsification"
+
+Delta:
+  - id: "delta_01"
+    name: "Initial condition perturbation"
+    type: "ic_perturbation"
+    bounds: {magnitude: "0.01 rad"}
+
+epsilon:
+  value: 0.023
+  interpretation: "Applied to var_rel: |Var_rel_x - Var_rel_y| <= 0.023 rad^2"
+  tie_to_perturbations: >
+    Measured: sup_{delta_01} E[d_Pi(delta(x),x)] = 0.005 across kappa in [0.5, 8.0].
+    Ratio sup/epsilon = 0.005/0.023 = 0.22. Satisfies << 1 for bulk states.
+    Method: 5 IC seeds per kappa, r_ic=0.01 rad (delta_01 bound).
+  epsilon_choice_note: >
+    ε=0.023 is the only value recovering predicted N=3. Plateau width w=0.000
+    (single point) — partition is ε-sensitive. N=2 plateau (ε∈[0.025,0.044],
+    w=0.551) is robust but collapses Transitional+Locked. Accepted with
+    explicit fragility documentation. See sweep_refinement recommendation.
+  stability_window_plan:
+    vary_epsilon: [0.02, 0.023, 0.033]
+
+expected_partition:
+  partition_type: "sequential"
+  regime_count_predicted: 3
+  regimes:
+    - {id: "R_P1", name: "Chaotic",      bc_conditions: "kappa < ~1.0"}
+    - {id: "R_P2", name: "Transitional", bc_conditions: "kappa ~1.0 to ~2.5"}
+    - {id: "R_P3", name: "Locked",       bc_conditions: "kappa > ~2.5"}
+
+falsification:
+  - id: "F1"
+    label: "BC wirkungslos"
+    condition: "Coupling BC produces no stable partition for any epsilon in stability_window"
+    measurable_test: "persistence < 0.3 for all epsilon in [0.02, 0.05, 0.1]"
+    severity: "scope_rejection"
+  - id: "F2"
+    label: "Partition nicht BC-reproduzierbar"
+    condition: "Regime boundaries not stable under delta_01 for bulk states"
+    measurable_test: "d_Pi(delta_01(x), x) > epsilon for bulk states near theta*"
+    severity: "scope_rejection"
+  - id: "F3"
+    label: "Kein robustes Plateau"
+    condition: "No epsilon plateau with w >= 0.1 at N >= 2 for var_rel"
+    measurable_test: "max plateau width w < 0.1 across all N >= 2"
+    severity: "scope_rejection"
+  - id: "F4"
+    label: "Sweep boundary"
+    condition: "theta* at sweep boundary"
+    measurable_test: "theta* < 0.2 or theta* > 4.8"
+    severity: "sweep_refinement"
+
+provenance:
+  owners:
+    - {role: "ScopeFormalizer", name: "Rico Felder"}
+  links:
+    bc_manifest_id: "BCM-20260311-0002"
+    case_record_id: "CASE-20260311-0002"

@@ -1,0 +1,29 @@
+{
+  "case_id": "CASE-20260311-0003",
+  "system": "double_pendulum",
+  "sweep_param": "E_target",
+  "regime_count": 2,
+  "adjacency_graph": {
+    "nodes": [
+      1,
+      2
+    ],
+    "edges": [
+      {
+        "from": 1,
+        "to": 2,
+        "param_midpoint": 8.5
+      }
+    ]
+  },
+  "persistence": 0.7273,
+  "hysteresis_width": 14.0,
+  "theta_star": 8.5,
+  "predicted_count": 3,
+  "predicted_type": "sequential",
+  "count_match": false,
+  "sweep_range": [
+    0.5,
+    30.0
+  ]
+}

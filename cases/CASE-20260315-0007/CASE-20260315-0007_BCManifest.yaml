@@ -1,0 +1,92 @@
+# BCManifest — CASE-20260315-0007
+# System: SIR epidemic model
+# Primary BC: Aggregation
+
+case_id: CASE-20260315-0007
+system: "SIR epidemic model (β-sweep)"
+domain: EPI
+bc_class: Aggregation
+
+bc_class:
+  primary: Aggregation
+  justification: >
+    The SIR model is a canonical Aggregation-BC system: the state space
+    (S, I, R) is a quotient projection of the full N-individual micro-state
+    space {susceptible, infected, recovered}^N onto three macro-compartments.
+    Formally:
+      π_SIR : {0,1,2}^N → [0,1]³
+      π_SIR(x₁,...,x_N) = (|{i: xᵢ=0}|/N, |{i: xᵢ=1}|/N, |{i: xᵢ=2}|/N)
+    This is an idempotent projection onto equivalence classes — the defining
+    S1 (quotient) operator. The Aggregation BC is not something added to the
+    SIR model; it IS the SIR model. The compartment structure defines the
+    admissible state space.
+
+  secondary:
+    - bc: Forcing
+      justification: >
+        β is an externally imposed transmission rate — it can be interpreted
+        as an S3 forcing when β = β(t) (seasonal epidemics). In this case
+        β is fixed per sweep point, so Forcing is latent, not active.
+    - bc: Restriction
+      justification: >
+        The constraint S+I+R = 1 restricts the state space to a 2-simplex.
+        This is an S1 admissibility restriction — a secondary structural BC.
+
+operator_signature:
+  primary: S1_quotient
+  form: "π_SIR : {0,1,2}^N → [0,1]³  (quotient projection onto macro-compartments)"
+  sub_signature: "quotient / coarse-graining projection"
+  idempotent: true
+  note: >
+    This is the first case in the repo where S1 appears in its quotient
+    sub-signature form (Aggregation), not its selection sub-signature
+    form (Restriction). The distinction: Restriction selects a subset of
+    existing states; Aggregation identifies distinct states as equivalent
+    and maps them to a single macro-state.
+
+  secondary_signatures:
+    - S1_selection: "S+I+R=1 constraint as admissibility restriction"
+    - S3: "latent — β(t) would activate Forcing; here β is constant"
+    - S2: "not present — homogeneous mixing; no agent-level coupling"
+    - S4: "not present — no explicit dissipation term"
+    - S5: "not present — deterministic ODE"
+
+sweep_program:
+  parameter: β
+  range: [0.0, 0.5]
+  n_points: 51
+  spacing: linear
+  anchor:
+    beta: 0.101
+    note: "Analytical threshold β* = γ_r/S₀ ≈ 0.101; must appear as interior transition"
+
+integration:
+  method: RK45
+  t_span: [0, 500]
+  t_transient: 0
+  t_measure: 500
+  note: >
+    No transient exclusion — I_peak is the global maximum over full
+    integration, not a steady-state value. Record full trajectory.
+
+expected_regimes:
+  N: 2
+  R1:
+    label: "sub-threshold — no epidemic"
+    condition: "β < β*  (R₀ < 1)"
+    I_peak: "≈ I(0) = 0.01"
+    description: "Infection dies out; no epidemic wave"
+  R2:
+    label: "super-threshold — epidemic"
+    condition: "β > β*  (R₀ > 1)"
+    I_peak: "increases with β; ≈ 0.8 at β = 0.5"
+    description: "Epidemic wave; I_peak grows with β"
+  transition:
+    theta_star: 0.101
+    type: "transcritical bifurcation (R₀ = 1 threshold)"
+    note: "Analytically exact: β* = γ_r / S(0) = 0.1 / 0.99 ≈ 0.1010"
+
+domain_note: >
+  SIR is the first EPI-domain case in the repo. It provides a cross-domain
+  transfer target for the DS-domain Aggregation cases (e.g. Poincaré sections
+  in CASE-0006) and for the SOC-domain cases (CASE-20260315-SOC1).

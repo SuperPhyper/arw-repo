@@ -1,0 +1,62 @@
+
+# CaseRecord — CASE-20260315-0004
+# System: Stuart-Landau oscillator
+# Status: open
+
+case_id: CASE-20260315-0004
+system: "Stuart-Landau oscillator (supercritical Hopf normal form)"
+domain: DS
+bc_class: Dissipation
+created: 2026-03-15
+status: open
+
+go_nogo:
+  verdict: pending
+  date: null
+  reason: >
+    Pipeline not yet run. ScopeSpec, BCManifest complete.
+    Awaiting: epsilon_sweep, extract_partition, invariants.
+
+related_cases:
+  - case_id: CASE-20260311-0001
+    system: Kuramoto
+    bc_class: Coupling
+    transfer_status: not_yet_computed
+    rationale: >
+      Both are DS-domain oscillator systems. Different BC class (Dissipation
+      vs Coupling). Transfer expected inadmissible (Φ > 0.6) due to BC mismatch,
+      but cross-BC transfer test is scientifically motivated: first test of
+      Dissipation ↔ Coupling transfer in repo.
+
+  - case_id: CASE-20260311-0003
+    system: Doppelpendel
+    bc_class: Restriction
+    transfer_status: not_yet_computed
+    rationale: >
+      Both have r_ss-like amplitude observable. Q-DISS-01: does Dissipation
+      asymptotically approximate Restriction? Transfer comparison at matched ε
+      would be first empirical test of this open question.
+
+artifact_registry:
+  - path: cases/CASE-20260315-0004/ScopeSpec.yaml
+    status: complete
+  - path: cases/CASE-20260315-0004/BCManifest.yaml
+    status: complete
+  - path: cases/CASE-20260315-0004/CaseRecord.yaml
+    status: complete
+  - path: cases/CASE-20260315-0004/ScopeSpec_signature_first.md
+    status: complete
+  - path: cases/CASE-20260315-0004/results/partition/PartitionResult.json
+    status: pending
+  - path: cases/CASE-20260315-0004/results/partition/Invariants.json
+    status: pending
+  - path: cases/CASE-20260315-0004/audits/
+    status: pending
+
+open_questions:
+  - id: Q-DISS-01
+    ref: docs/notes/open_questions.md
+    relevance: >
+      This case is the first empirical test: does the Dissipation BC (S4)
+      produce a Restriction-like partition (S1) at high μ values?
+      The Doppelpendel transfer (CASE-0003) will probe this directly.

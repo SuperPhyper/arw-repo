@@ -1,0 +1,107 @@
+# BCManifest — CASE-20260315-0009
+# System: Stochastic Kuramoto model
+# Primary BC: Stochastic BC (S5)
+
+case_id: CASE-20260315-0009
+system: "Stochastic Kuramoto model (σ-sweep)"
+domain: DS
+bc_class: Stochastic_BC
+
+bc_class:
+  primary: Stochastic_BC
+  justification: >
+    The noise term σ dW_i extends the state space X to X × Ω (probability
+    space) — the S5a structure. The primary observable r_mean is then:
+      r_mean(σ) = E[r(θ(t)) | σ] = Proj_{L²(σ)} (r(θ))
+    This is exactly the S5b operator: the conditional expectation of the
+    order parameter r given the noise level σ, which is the orthogonal
+    projection onto the σ-indexed L²(Ω) subspace.
+    The regime partition is determined by how this conditional expectation
+    changes with σ — high r_mean (synchronized regime) vs low r_mean
+    (noise-dominated incoherent regime). The BC is not coupling or forcing
+    but the stochastic structure itself: the noise floor σ determines which
+    regime the conditional expectation projects onto.
+
+  secondary:
+    - bc: Coupling
+      justification: >
+        κ = 2.0 is fixed above deterministic threshold. Coupling (S2) is
+        structurally present throughout — the σ-sweep reveals how noise
+        competes with and eventually destroys coupling-induced synchronization.
+      note: >
+        CASE-0001 established Coupling as primary at σ=0.
+        CASE-0009 establishes Stochastic BC as primary: the σ-axis
+        reveals the noise-sensitivity of the Coupling regime.
+        Together: CASE-0001 (κ-axis) + CASE-0009 (σ-axis) span the
+        κ × σ parameter space of the Kuramoto model.
+
+operator_signature:
+  primary: S5
+  form: >
+    State space extension: X ↦ X × Ω
+    Primary observable: r_mean(σ) = E[|1/N·Σexp(iθ_j)| | σ]
+    = Proj_{L²(Ω,σ)}(r(θ))
+  sub_signature: "discrete conditional expectation (ensemble average over M realizations)"
+  projection_space: "L²(Ω) conditioned on noise level σ"
+  idempotent: true
+  note: >
+    r_mean(σ) = E[E[r|σ]|σ] = E[r|σ] — tower law confirms idempotence.
+    The ensemble average over M realizations is the sample approximation
+    to this conditional expectation.
+
+  secondary_signatures:
+    - S2: "Coupling cross terms κ/N·sin(θⱼ−θᵢ) present (κ=2.0 fixed)"
+    - S4: "Noise acts as effective temperature → dissipation analogy; not primary"
+    - S1: "not present as primary"
+    - S3: "not present — W_i is white noise, not periodic forcing"
+
+sweep_program:
+  parameter: σ
+  range: [0.0, 3.0]
+  n_points: 31
+  spacing: linear
+  anchor:
+    sigma: 0.0
+    note: >
+      σ=0 must reproduce CASE-0001 result at κ=2.0 (r_ss ≈ 0.73).
+      Validation anchor: r_mean(σ=0) = r_ss(κ=2.0) from CASE-0001.
+
+integration:
+  method: Euler-Maruyama  # SDE integration
+  dt: 0.01
+  t_span: [0, 500]
+  t_transient: 200
+  t_measure: 300
+  n_realizations: 100
+  note: >
+    Euler-Maruyama required for SDE (not RK45 — stochastic forcing is
+    not differentiable). dt = 0.01 sufficient for σ ≤ 3.0.
+
+expected_regimes:
+  N: 2
+  R1:
+    label: "noise-tolerant synchronized"
+    condition: "σ < σ_c"
+    r_mean: "high (≈ r_ss from CASE-0001 at low σ, decaying)"
+    description: "Coupling dominates noise; conditional expectation projects onto synchronized state"
+  R2:
+    label: "noise-dominated incoherent"
+    condition: "σ > σ_c"
+    r_mean: "low (≈ 0)"
+    description: "Noise destroys synchronization; conditional expectation → 0"
+  transition:
+    theta_star: "σ_c — unknown a priori; estimated σ_c ≈ κ/2 ≈ 1.0 from mean-field theory"
+    type: "noise-induced desynchronization — continuous crossover expected"
+    note: >
+      Unlike deterministic cases (sharp bifurcation), stochastic transitions
+      are typically continuous crossovers. σ_c may be identifiable via
+      peak in r_variance (susceptibility) rather than inflection in r_mean.
+
+relation_to_original:
+  original_case: CASE-20260311-0001
+  original_bc: Coupling
+  relation: >
+    CASE-0001 established the Coupling regime partition via κ-sweep at σ=0.
+    CASE-0009 adds noise at fixed κ=2.0, revealing the noise-sensitivity
+    of the synchronized Coupling regime.
+    Together: first 2D (κ,σ) parameter map for the Kuramoto model in the repo.

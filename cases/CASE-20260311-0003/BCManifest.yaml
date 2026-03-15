@@ -1,0 +1,153 @@
+# BCManifest.yaml — BC Classification and Sweep Program
+# Case: CASE-20260311-0003
+# System: Classical double pendulum
+# Phase 1: Energy sweep (Restriction BC)
+
+schema_version: "0.2"
+manifest_id: "BCM-20260311-0003"
+case_id: "CASE-20260311-0003"
+
+# ── BC Components ────────────────────────────────────────────────────────────
+# Phase 1 sweeps energy only. Other BC classes are defined for future phases.
+
+bc_components:
+
+  # ── Primary: Energy (Restriction BC) ─────────────────────────────────────
+  - id: "bc_01"
+    name: "Total energy bound"
+    class: "restriction"
+    formal_definition: >
+      E(θ₁, θ₂, dθ₁, dθ₂) ≤ E_target. The energy bound restricts the
+      admissible region of phase space. Low E_target → small oscillations
+      near equilibrium (regular). High E_target → large phase space
+      accessible → chaotic mixing.
+    sweep_role: "primary"
+
+    perturbation_program:
+      sweeps:
+        - param: "E_target"
+          values: [0.5, 1.0, 2.0, 3.0, 5.0, 7.0, 10.0, 13.0, 16.0, 20.0, 25.0, 30.0, 35.0, 40.0, 50.0]
+          sweep_type: "grid"
+          notes: >
+            15 values spanning three orders of magnitude. Dense near the
+            expected periodic→chaotic transition (~5-15 J). Sparse at
+            extremes. E_target controls IC amplitude, not a dynamical parameter.
+
+    parameterization:
+      - name: "E_target"
+        symbol: "E"
+        domain: "[0.5, 50.0]"
+        units: "J"
+
+    falsification_criteria:
+      - id: "fals_01"
+        statement: "At least 2 distinct regimes detected across the energy sweep"
+        measurable_test: "regime_count >= 2"
+      - id: "fals_02"
+        statement: "Admissible ε-interval exists with plateau width w > 0.5"
+        measurable_test: "max(plateau.width_log) > 0.5"
+
+    resolution_plan:
+      epsilons: [0.01, 0.03, 0.05, 0.1]
+      stability_window_criterion: "partition invariants stable across >= 2 consecutive epsilon values"
+
+    predicted_partition_effects:
+      qualitative:
+        - "regime_count_3_periodic_quasiperiodic_chaotic"
+        - "sequential_partition_type"
+        - "KAM_tori_breakup_drives_transition"
+      partition_type_prediction: "sequential"
+      invariants_to_track:
+        - "regime_count"
+        - "adjacency_graph"
+        - "persistence_under_sweep"
+        - "transition_boundary"
+
+    failure_signatures:
+      - "no_stable_window_for_any_epsilon"
+      - "regime_count_1_all_E"
+      - "lambda_proxy_always_positive"
+
+  # ── Future Phase: Mass ratio (Coupling BC) ───────────────────────────────
+  - id: "bc_02"
+    name: "Mass ratio m2/m1"
+    class: "coupling"
+    formal_definition: >
+      m2/m1 controls the inertial coupling between links. Symmetric case
+      (m2/m1 = 1) is expected to be most chaotic; asymmetric cases may
+      shift or suppress chaos.
+    sweep_role: "future"
+
+    perturbation_program:
+      sweeps:
+        - param: "m2"
+          values: [0.1, 0.2, 0.5, 1.0, 2.0, 5.0, 10.0]
+          sweep_type: "grid"
+          notes: "m1 fixed at 1.0. Sweep m2 to vary mass ratio."
+
+    predicted_partition_effects:
+      qualitative:
+        - "symmetric_case_most_chaotic"
+        - "extreme_ratios_may_suppress_chaos"
+      partition_type_prediction: "clustered"
+
+  # ── Future Phase: Damping (Dissipation BC) ───────────────────────────────
+  - id: "bc_03"
+    name: "Damping coefficient gamma"
+    class: "dissipation"
+    formal_definition: >
+      Viscous damping γ dissipates energy, contracting the accessible phase
+      space over time. Above a critical γ, chaotic regimes are suppressed
+      entirely — regime annihilation through dissipation.
+    sweep_role: "future"
+
+    perturbation_program:
+      sweeps:
+        - param: "gamma"
+          values: [0.0, 0.01, 0.02, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5, 1.0]
+          sweep_type: "grid"
+          notes: "At fixed E_target=20. Expect chaotic→periodic transition at γ ≈ 0.2"
+
+    predicted_partition_effects:
+      qualitative:
+        - "chaos_suppressed_above_critical_gamma"
+        - "regime_count_decreases_with_damping"
+        - "state_space_contraction"
+      partition_type_prediction: "sequential"
+
+  # ── Future Phase: Driving amplitude (Forcing BC) ─────────────────────────
+  - id: "bc_04"
+    name: "Driving amplitude A"
+    class: "forcing"
+    formal_definition: >
+      Periodic external torque A·cos(Ωt) on the upper link. Pumps energy
+      into the system, can create resonances and force transitions to chaos.
+      Requires γ > 0 to prevent energy divergence.
+    sweep_role: "future"
+
+    perturbation_program:
+      sweeps:
+        - param: "A"
+          values: [0.0, 0.1, 0.5, 1.0, 2.0, 3.0, 5.0, 7.0, 10.0]
+          sweep_type: "grid"
+          notes: "At fixed E_target=5, gamma=0.05. Expect periodic→chaotic transition."
+
+    predicted_partition_effects:
+      qualitative:
+        - "low_A_periodic_or_quasiperiodic"
+        - "high_A_chaotic"
+        - "possible_resonance_islands"
+      partition_type_prediction: "multi-stable"
+
+# ── Distortion Metrics Plan ──────────────────────────────────────────────────
+distortion_plan:
+  metrics: ["RCD", "TBS", "PCI", "SDI"]
+  comparison_pairs:
+    - ["bc_01", "bc_02"]   # restriction vs coupling
+    - ["bc_01", "bc_03"]   # restriction vs dissipation
+    - ["bc_01", "bc_04"]   # restriction vs forcing
+  notes: >
+    Phase 1 produces the energy-sweep baseline partition.
+    Future phases compare each BC class against this baseline
+    using the distortion metrics to test whether different BC classes
+    produce structurally different partition types.

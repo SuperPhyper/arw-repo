@@ -1,0 +1,535 @@
+{
+  "case_id": "CASE-20260311-0001",
+  "system": "kuramoto",
+  "epsilon": 0.09,
+  "method": "eps_clustering_bc_coupled",
+  "sweep_param": "kappa",
+  "regime_count": 4,
+  "regime_labels": {
+    "0": "R0",
+    "1": "R1",
+    "2": "R2",
+    "3": "R3"
+  },
+  "regime_counts": {
+    "0": 30,
+    "1": 3,
+    "2": 1,
+    "3": 2
+  },
+  "regime_observable_ranges": {
+    "0": {
+      "min": 0.039024,
+      "max": 0.222415
+    },
+    "1": {
+      "min": 0.369156,
+      "max": 0.45604
+    },
+    "2": {
+      "min": 0.74628,
+      "max": 0.74628
+    },
+    "3": {
+      "min": 0.884772,
+      "max": 0.933205
+    }
+  },
+  "transition_boundary": {
+    "param": "kappa",
+    "transitions": [
+      {
+        "from_regime": 0,
+        "to_regime": 1,
+        "param_before": 1.45,
+        "param_after": 1.5,
+        "theta_star": 1.475
+      },
+      {
+        "from_regime": 1,
+        "to_regime": 2,
+        "param_before": 1.6,
+        "param_after": 2.0,
+        "theta_star": 1.8
+      },
+      {
+        "from_regime": 2,
+        "to_regime": 3,
+        "param_before": 2.0,
+        "param_after": 2.5,
+        "theta_star": 2.25
+      }
+    ],
+    "theta_star": 1.475
+  },
+  "annotated_results": [
+    {
+      "sweep_index": 0,
+      "sweep_point": {
+        "kappa": 0.0
+      },
+      "observable": 0.039024,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.039024
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 1,
+      "sweep_point": {
+        "kappa": 0.2
+      },
+      "observable": 0.042987,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.042987
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 2,
+      "sweep_point": {
+        "kappa": 0.4
+      },
+      "observable": 0.048838,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.048838
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 3,
+      "sweep_point": {
+        "kappa": 0.5
+      },
+      "observable": 0.051883,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.051883
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 4,
+      "sweep_point": {
+        "kappa": 0.525
+      },
+      "observable": 0.052494,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.052494
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 5,
+      "sweep_point": {
+        "kappa": 0.55
+      },
+      "observable": 0.053068,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.053068
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 6,
+      "sweep_point": {
+        "kappa": 0.575
+      },
+      "observable": 0.053664,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.053664
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 7,
+      "sweep_point": {
+        "kappa": 0.6
+      },
+      "observable": 0.054354,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.054354
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 8,
+      "sweep_point": {
+        "kappa": 0.625
+      },
+      "observable": 0.055159,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.055159
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 9,
+      "sweep_point": {
+        "kappa": 0.65
+      },
+      "observable": 0.056025,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.056025
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 10,
+      "sweep_point": {
+        "kappa": 0.675
+      },
+      "observable": 0.0569,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.0569
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 11,
+      "sweep_point": {
+        "kappa": 0.7
+      },
+      "observable": 0.058006,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.058006
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 12,
+      "sweep_point": {
+        "kappa": 0.725
+      },
+      "observable": 0.059674,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.059674
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 13,
+      "sweep_point": {
+        "kappa": 0.75
+      },
+      "observable": 0.061459,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.061459
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 14,
+      "sweep_point": {
+        "kappa": 0.775
+      },
+      "observable": 0.06285,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.06285
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 15,
+      "sweep_point": {
+        "kappa": 0.8
+      },
+      "observable": 0.063648,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.063648
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 16,
+      "sweep_point": {
+        "kappa": 0.825
+      },
+      "observable": 0.06303,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.06303
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 17,
+      "sweep_point": {
+        "kappa": 0.85
+      },
+      "observable": 0.060689,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.060689
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 18,
+      "sweep_point": {
+        "kappa": 0.875
+      },
+      "observable": 0.064179,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.064179
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 19,
+      "sweep_point": {
+        "kappa": 0.9
+      },
+      "observable": 0.065861,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.065861
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 20,
+      "sweep_point": {
+        "kappa": 1.0
+      },
+      "observable": 0.072051,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.072051
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 21,
+      "sweep_point": {
+        "kappa": 1.05
+      },
+      "observable": 0.085848,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.085848
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 22,
+      "sweep_point": {
+        "kappa": 1.1
+      },
+      "observable": 0.083954,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.083954
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 23,
+      "sweep_point": {
+        "kappa": 1.15
+      },
+      "observable": 0.089351,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.089351
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 24,
+      "sweep_point": {
+        "kappa": 1.2
+      },
+      "observable": 0.096005,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.096005
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 25,
+      "sweep_point": {
+        "kappa": 1.25
+      },
+      "observable": 0.116519,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.116519
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 26,
+      "sweep_point": {
+        "kappa": 1.3
+      },
+      "observable": 0.141786,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.141786
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 27,
+      "sweep_point": {
+        "kappa": 1.35
+      },
+      "observable": 0.132559,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.132559
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 28,
+      "sweep_point": {
+        "kappa": 1.4
+      },
+      "observable": 0.161321,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.161321
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 29,
+      "sweep_point": {
+        "kappa": 1.45
+      },
+      "observable": 0.222415,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.222415
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 30,
+      "sweep_point": {
+        "kappa": 1.5
+      },
+      "observable": 0.369156,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.369156
+      },
+      "regime_id": 1,
+      "regime_label": "R1"
+    },
+    {
+      "sweep_index": 31,
+      "sweep_point": {
+        "kappa": 1.55
+      },
+      "observable": 0.404672,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.404672
+      },
+      "regime_id": 1,
+      "regime_label": "R1"
+    },
+    {
+      "sweep_index": 32,
+      "sweep_point": {
+        "kappa": 1.6
+      },
+      "observable": 0.45604,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.45604
+      },
+      "regime_id": 1,
+      "regime_label": "R1"
+    },
+    {
+      "sweep_index": 33,
+      "sweep_point": {
+        "kappa": 2.0
+      },
+      "observable": 0.74628,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.74628
+      },
+      "regime_id": 2,
+      "regime_label": "R2"
+    },
+    {
+      "sweep_index": 34,
+      "sweep_point": {
+        "kappa": 2.5
+      },
+      "observable": 0.884772,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.884772
+      },
+      "regime_id": 3,
+      "regime_label": "R3"
+    },
+    {
+      "sweep_index": 35,
+      "sweep_point": {
+        "kappa": 3.0
+      },
+      "observable": 0.933205,
+      "observable_name": "r_ss",
+      "all_observables": {
+        "r_ss": 0.933205
+      },
+      "regime_id": 3,
+      "regime_label": "R3"
+    }
+  ]
+}

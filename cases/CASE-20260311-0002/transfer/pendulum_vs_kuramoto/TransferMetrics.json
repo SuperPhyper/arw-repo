@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "case_A": "CASE-20260311-0001",
+    "case_B": "CASE-20260311-0002",
+    "system_A": "kuramoto",
+    "system_B": "pendulum"
+  },
+  "metrics": {
+    "RCD": {
+      "value": 1,
+      "N_A": 4,
+      "N_B": 3,
+      "interpretation": "minor_mismatch"
+    },
+    "TBS": {
+      "value": 1.775,
+      "theta_star_A": 1.475,
+      "theta_star_B": 3.25,
+      "interpretation": "large_shift",
+      "_note_TBS_norm": "TBS_norm = |\u03b8*_A/range_A \u2212 \u03b8*_B/range_B|; raw TBS value stored here; compute TBS_norm after pipeline adds sweep_range to Invariants"
+    },
+    "PCI": {
+      "value": 0.75,
+      "N_A": 4,
+      "N_B": 3,
+      "interpretation": "partial_compatibility",
+      "note": "Structural PCI approximation. Full PCI requires aligned annotated results."
+    },
+    "SDI": {
+      "value": 2,
+      "nodes_A": 4,
+      "nodes_B": 3,
+      "edges_A": 3,
+      "edges_B": 2,
+      "interpretation": "minor_distortion"
+    },
+    "Phi": {
+      "value": 0.675,
+      "components": {
+        "PCI": 0.75,
+        "RCD_score": 0.75,
+        "SDI_score": 0.75,
+        "TBS_score": 0
+      },
+      "interpretation": "partially_admissible",
+      "phi_matched_epsilon": null,
+      "phi_matched_epsilon_note": "\u03b5-mismatch detected (N_A\u2260N_B). phi_matched_epsilon must be computed after re-running partition at shared \u03b5. Set to null until then."
+    }
+  }
+}

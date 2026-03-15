@@ -1,0 +1,113 @@
+# ScopeSpec — CASE-20260315-0006
+# System: Multi-Link-Pendel with periodic base excitation (Ω-sweep)
+# BC Class: Forcing
+# Derived from: CASE-20260311-0002 (Coupling baseline)
+
+scope_tuple:
+  B:
+    description: >
+      Multi-link pendulum (same geometry as CASE-20260311-0002) with
+      added periodic base excitation A·sin(Ω·t) applied to all joints.
+      Equations of motion: τ̈ = f(τ, τ̇; κ) + A·sin(Ω·t)
+      where κ = 1.0 (below Coupling transition — incoherent baseline),
+      A = 0.5 (fixed excitation amplitude), Ω = sweep parameter.
+      Admissible states: all joint-angle configurations in [-π, π]^n.
+    state_space: "τ ∈ [-π,π]^n × ℝ^n × T  (joint state + time index)"
+    fixed_params:
+      kappa: 1.0
+      amplitude_A: 0.5
+      n_links: "same as CASE-20260311-0002"
+      omega_distribution: "same as CASE-20260311-0002"
+    sweep_param: "Ω (excitation frequency)"
+    sweep_range: [0.1, 10.0]
+    sweep_note: >
+      Ω = 0 limit: static offset (degenerate; excluded).
+      Resonance expected near natural frequencies of the pendulum chain.
+      Ω >> natural freq: high-frequency averaging — joints decouple.
+      Sweep covers subharmonic, resonant, and superharmonic regimes.
+
+  Pi:
+    - observable_key: var_rel
+      description: >
+        Time-averaged relative angular variance across joints.
+        Same definition as CASE-20260311-0002 and CASE-20260315-0005.
+        var_rel = <Var(τ_i)>_t / Var_max.
+        Expected: low far from resonance, high near resonance (forced
+        synchronization or large-amplitude response).
+      primary: true
+      observable_sufficiency: sufficient
+      span_estimate: "0 to ~1.0 — resonance peaks expected; span TBD"
+      note: >
+        Time-averaging window must cover multiple forcing periods.
+        Measure window: t ∈ [t_transient, t_transient + 50·(2π/Ω)]
+
+    - observable_key: response_amplitude
+      description: >
+        Mean joint response amplitude: <max_t(|τ_i(t)|)>_i
+        averaged across joints and over measurement window.
+        Expected: peaked at resonance frequencies.
+      primary: false
+      observable_sufficiency: pending
+
+    - observable_key: lambda_proxy
+      description: "Same as other cases; expected insufficient."
+      primary: false
+      observable_sufficiency: insufficient
+
+  Delta:
+    description: >
+      Initial condition variation: τ(0) drawn from [-0.1, 0.1]^n, τ̇(0) = 0.
+      Ten independent runs per Ω-value.
+      Additionally: phase perturbation of forcing: φ ∈ {0, π/4, π/2, π}
+      to test robustness against forcing phase.
+    perturbation_type: initial_condition_noise + forcing_phase
+    n_runs: 10
+    forcing_phases: [0, 0.785, 1.571, 3.14]
+
+  epsilon:
+    working_epsilon: 0.08
+    choice_note: >
+      Larger than CASE-0002/0005 — forcing sweep may produce sharper
+      resonance peaks with large local span. Conservative pre-estimate.
+      To be confirmed by epsilon_sweep.
+    plateau_status: pending
+
+falsification:
+  - id: F1
+    condition: "span(var_rel) < ε for all Ω — forcing has no observable effect"
+    severity: scope_rejection
+    action: >
+      Check amplitude A; if A=0.5 insufficient, increase.
+      At κ=1.0 (below Coupling transition), system should respond to forcing.
+
+  - id: F2
+    condition: "Regime boundaries shift under forcing phase perturbation"
+    severity: scope_rejection
+    action: "Increase averaging window; phase-average over forcing cycle"
+
+  - id: F3
+    condition: "No robust ε plateau — resonance peaks too narrow"
+    severity: scope_rejection
+    action: >
+      Increase sweep density near resonance peaks.
+      Consider log-spacing of Ω values.
+
+  - id: F4
+    condition: "Ω* at sweep boundary (Ω=0.1 or Ω=10.0)"
+    severity: sweep_refinement
+    action: "Extend sweep range; resonances should be interior"
+
+  - id: F-RES
+    condition: >
+      Multiple resonance peaks produce N > 3 regimes with narrow plateaus —
+      no single dominant transition
+    severity: sweep_refinement
+    action: >
+      Restrict sweep to single resonance window.
+      Alternatively: accept N > 2 partition and document as Forcing
+      multi-resonance structure.
+
+observable_sufficiency:
+  var_rel: sufficient
+  response_amplitude: pending
+  lambda_proxy: insufficient

@@ -1,0 +1,90 @@
+# BCManifest — CASE-20260315-0008
+# System: Pitchfork normal form
+# Primary BC: Symmetry Breaking
+
+case_id: CASE-20260315-0008
+system: "Pitchfork bifurcation normal form (μ-sweep)"
+domain: DS
+bc_class: Symmetry_Breaking
+
+bc_class:
+  primary: Symmetry_Breaking
+  justification: >
+    The pitchfork bifurcation is the canonical Symmetry Breaking system.
+    Below μ=0: the system has a unique stable fixed point x*=0, which is
+    invariant under Z₂ (x→−x). This state is symmetric.
+    Above μ=0: x*=0 becomes unstable and two new fixed points x*=±√μ emerge.
+    Each individual trajectory selects ONE branch — breaking the Z₂ symmetry.
+    The symmetry breaking is spontaneous: the equation remains symmetric, but
+    the state does not.
+    Operator form: S1 (selection under parameter variation) — the bifurcation
+    selects one branch of the two-valued solution set at each μ > 0.
+
+  secondary:
+    - bc: Dissipation
+      justification: >
+        The term −x³ is dissipative (S4): it provides state-dependent
+        contraction toward the attractor. Without −x³, the system would
+        be purely linear and unstable above μ=0. Dissipation stabilizes
+        the symmetry-broken fixed points.
+      note: >
+        Structurally similar to Stuart-Landau (CASE-0004): both have
+        a nonlinear S4 term that creates the attractor. The difference:
+        Stuart-Landau breaks U(1) (continuous), Pitchfork breaks Z₂ (discrete).
+    - bc: Restriction
+      justification: >
+        Above μ=0, each trajectory is restricted to one basin of attraction
+        (x>0 or x<0). The basin boundary x=0 acts as a Restriction BC
+        separating the two symmetry-broken regimes.
+
+operator_signature:
+  primary: S1_selection_parametric
+  form: >
+    Selection under parameter variation:
+    μ < 0: unique solution x* = {0}
+    μ > 0: solution set {−√μ, 0, +√μ}; x*=0 unstable; trajectory selects ±√μ
+  sub_signature: "symmetry breaking via parameter-dependent solution multiplicity"
+  symmetry_group: "Z₂ (discrete: x → −x)"
+  breaking_type: "spontaneous — equation symmetric, state asymmetric"
+  theoretical_theta_star: "μ_c = 0 (analytically exact)"
+
+  secondary_signatures:
+    - S4: "−x³ nonlinear dissipation; stabilizes symmetry-broken fixed points"
+    - S1_selection: "basin restriction above μ=0"
+    - S2: "not present — scalar system"
+    - S3: "not present — autonomous"
+    - S5: "not present — deterministic"
+
+sweep_program:
+  parameter: μ
+  range: [-2.0, 2.0]
+  n_points: 41
+  spacing: linear
+  note: "Denser sampling near μ=0 recommended for smooth onset of √μ branch"
+
+integration:
+  method: RK45
+  t_span: [0, 200]
+  t_transient: 150
+  t_measure: 50
+  ic_protocol: >
+    Two runs per μ-value: x(0) = +0.1 and x(0) = −0.1.
+    x_ss_abs = mean(|x_+_ss|, |x_-_ss|).
+    x_ss_signed recorded separately per run.
+
+expected_regimes:
+  N: 2
+  R1:
+    label: "symmetric — unique fixed point"
+    condition: "μ < 0"
+    x_ss_abs: 0.0
+    description: "Z₂ symmetry preserved; x* = 0 globally stable"
+  R2:
+    label: "symmetry broken — two fixed points"
+    condition: "μ > 0"
+    x_ss_abs: "sqrt(μ)"
+    description: "Z₂ broken; x* = ±sqrt(μ); trajectory selects one branch"
+  transition:
+    theta_star: 0.0
+    type: "supercritical pitchfork bifurcation"
+    note: "x_ss_abs = sqrt(max(μ,0)) — same functional form as Stuart-Landau r_ss"

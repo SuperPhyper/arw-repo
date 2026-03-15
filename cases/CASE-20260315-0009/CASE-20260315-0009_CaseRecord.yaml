@@ -1,0 +1,78 @@
+# CaseRecord — CASE-20260315-0009
+# System: Stochastic Kuramoto model
+# Status: open
+
+case_id: CASE-20260315-0009
+system: "Stochastic Kuramoto model (σ-sweep)"
+domain: DS
+bc_class: Stochastic_BC
+created: 2026-03-15
+status: open
+
+go_nogo:
+  verdict: pending
+  date: null
+  reason: "Pipeline not yet run. SDE integration required (Euler-Maruyama)."
+
+related_cases:
+  - case_id: CASE-20260311-0001
+    system: Kuramoto (deterministic, κ-sweep)
+    bc_class: Coupling
+    transfer_status: not_yet_computed
+    rationale: >
+      Same system, deterministic limit. σ=0 must reproduce CASE-0001
+      at κ=2.0 — validation anchor. Transfer at σ=0 should be
+      highly_admissible (identical system). Transfer at σ=σ_c tests
+      whether noise-induced transition is structurally similar to
+      coupling-induced transition.
+
+  - case_id: CASE-20260315-0009
+    system: self
+    bc_class: Stochastic_BC
+    note: "First and only Stochastic BC case. No same-BC transfer possible yet."
+
+artifact_registry:
+  - path: cases/CASE-20260315-0009/ScopeSpec.yaml
+    status: complete
+  - path: cases/CASE-20260315-0009/BCManifest.yaml
+    status: complete
+  - path: cases/CASE-20260315-0009/CaseRecord.yaml
+    status: complete
+  - path: cases/CASE-20260315-0009/ScopeSpec_signature_first.md
+    status: complete
+  - path: cases/CASE-20260315-0009/results/partition/PartitionResult.json
+    status: pending
+  - path: cases/CASE-20260315-0009/results/partition/Invariants.json
+    status: pending
+
+pipeline_note: >
+  Requires SDE integration (Euler-Maruyama) — standard RK45 pipeline
+  must be extended or wrapped for stochastic forcing.
+  sweep.py adaptation needed: run M=100 realizations per σ-value,
+  compute r_mean and r_variance as observables.
+
+scientific_value:
+  primary: >
+    First Stochastic BC case. Closes the final gap in the BC catalog.
+    First case where the primary observable IS an expectation operator (S5).
+  secondary: >
+    Completes the κ × σ parameter map for Kuramoto.
+    First test of whether the ARW pipeline can handle stochastic systems
+    where observables are ensemble averages rather than trajectory values.
+
+open_questions:
+  - id: Q-STOCH-01
+    question: >
+      Does the stochastic transition produce a stable N=2 partition,
+      or does the noise-smearing prevent a robust plateau?
+      If no plateau: this is a fundamental finding about S5 cases —
+      stochastic BCs may require susceptibility observables (r_variance)
+      rather than order parameter means (r_mean).
+    status: open
+
+  - id: Q-STOCH-02
+    question: >
+      Is the Euler-Maruyama SDE integration compatible with the
+      existing epsilon_sweep and extract_partition pipeline modules,
+      or does stochastic integration require a dedicated pipeline branch?
+    status: open

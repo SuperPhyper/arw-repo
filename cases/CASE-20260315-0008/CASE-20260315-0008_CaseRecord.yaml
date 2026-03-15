@@ -1,0 +1,76 @@
+# CaseRecord — CASE-20260315-0008
+# System: Pitchfork normal form
+# Status: open
+
+case_id: CASE-20260315-0008
+system: "Pitchfork bifurcation normal form (μ-sweep)"
+domain: DS
+bc_class: Symmetry_Breaking
+created: 2026-03-15
+status: open
+
+go_nogo:
+  verdict: pending
+  date: null
+  reason: "Pipeline not yet run. All prerequisites satisfied."
+
+related_cases:
+  - case_id: CASE-20260315-0004
+    system: Stuart-Landau (Dissipation)
+    bc_class: Dissipation
+    transfer_status: not_yet_computed
+    rationale: >
+      Both have μ* = 0, x_ss ∝ sqrt(max(μ,0)), and nonlinear −|z|² / −x³
+      stabilization term. Different BC class (Sym.Breaking vs Dissipation).
+      Most structurally similar case pair in the repo — expected high
+      transfer score despite different primary BC. Tests whether
+      observable similarity dominates over BC-class difference in Φ.
+
+  - case_id: CASE-20260315-0007
+    system: SIR (Aggregation)
+    bc_class: Aggregation
+    transfer_status: not_yet_computed
+    rationale: >
+      Both N=2, both analytically known θ*. Different BC, different domain.
+      Tests portability of analytical θ* across domains.
+
+  - case_id: CASE-20260311-0001
+    system: Kuramoto (Coupling)
+    bc_class: Coupling
+    transfer_status: not_yet_computed
+    rationale: >
+      Kuramoto transition at κ_c is also a symmetry-breaking event
+      (incoherent → synchronized breaks rotational symmetry of phase
+      distribution). Tests whether the Pitchfork captures the Kuramoto
+      transition structure at the ARW level.
+
+artifact_registry:
+  - path: cases/CASE-20260315-0008/ScopeSpec.yaml
+    status: complete
+  - path: cases/CASE-20260315-0008/BCManifest.yaml
+    status: complete
+  - path: cases/CASE-20260315-0008/CaseRecord.yaml
+    status: complete
+  - path: cases/CASE-20260315-0008/ScopeSpec_signature_first.md
+    status: complete
+  - path: cases/CASE-20260315-0008/results/partition/PartitionResult.json
+    status: pending
+  - path: cases/CASE-20260315-0008/results/partition/Invariants.json
+    status: pending
+
+scientific_value:
+  primary: >
+    First Symmetry Breaking BC case. Closes the Symmetry Breaking gap.
+  secondary: >
+    Structural twin of Stuart-Landau (same observable form, different BC)
+    — first test of whether Φ is sensitive to BC class vs observable form.
+    Kuramoto connection: tests ARW-level equivalence of Coupling transition
+    and Symmetry Breaking transition.
+
+open_questions:
+  - id: Q-SYM-01
+    question: >
+      Does the Pitchfork transfer highly to Stuart-Landau (same observable,
+      different BC) or lowly (different BC dominates Φ)?
+      This directly tests whether Φ is BC-sensitive or observable-sensitive.
+    status: open

@@ -1,0 +1,153 @@
+schema_version: "0.2"
+id: "SCOPE-20260311-0001"
+title: "Kuramoto Oscillator Synchronization — Phase 1 Calibration"
+status: "active"
+created_at: "2026-03-11"
+updated_at: "2026-03-11"
+system_domain: "physical"
+
+X:
+  name: "N-oscillator phase space"
+  type: "product"
+  structure:
+    topology: true
+    metric: "required"
+    measure: "optional"
+  state_coordinates:
+    - name: "theta_i"
+      domain: "[0, 2*pi]^N"
+      description: "Phase of oscillator i"
+    - name: "omega_i"
+      domain: "R"
+      description: "Natural frequency of oscillator i, drawn from g=N(0,1)"
+  notes: "N=500 in baseline; N varied in TBS scaling experiments"
+
+B:
+  description: "Mean-field Kuramoto coupling with bounded coupling strength kappa"
+  constraints:
+    - name: "phase_domain"
+      form: "membership"
+      expression: "theta_i in [0, 2*pi] for all i"
+      notes: "Periodic boundary; theta_i = theta_i mod 2*pi"
+    - name: "coupling_bound"
+      form: "inequality"
+      expression: "kappa in [0, 5]"
+      notes: "Coupling is the primary BC sweep parameter"
+  admissible_set:
+    notation: "X_B"
+    membership_test: "x in X_B iff all theta_i in [0, 2*pi] and kappa in [0, 5]"
+  boundary_condition_classes:
+    - class: "coupling"
+      role: "Mean-field coupling kappa controls inter-oscillator synchronization pressure"
+      primary: true
+
+Pi:
+  - id: "pi_01"
+    name: "Order parameter r"
+    observable_key: "r_ss"
+    primary: true
+    map:
+      domain: "X_B"
+      codomain: "[0, 1]"
+      definition: "r(t) = |1/N * sum_j exp(i*theta_j(t))|"
+    distinguishability:
+      d_pi: "d_pi(r1, r2) = |r1 - r2|"
+      type: "metric"
+      units: "dimensionless"
+    resolution_floor: "0.01"
+    noise_model: "finite-N fluctuations ~ 1/sqrt(N)"
+    notes: "Steady-state r_ss = mean of r(t) over last 20% of trajectory"
+
+Delta:
+  - id: "delta_01"
+    name: "Initial phase perturbation"
+    type: "ic_perturbation"
+    action:
+      on: "initial_conditions"
+      definition: "theta_i(0) -> theta_i(0) + U(-delta, delta)"
+    bounds:
+      magnitude: "delta = 0.1 rad"
+      locality: "applied independently to all oscillators"
+    admissibility_rationale: "Small IC perturbation; does not cross regime boundary for bulk states"
+    notes: "Used to test robustness of r_ss assignment"
+
+epsilon:
+  value: 0.09
+  interpretation: "|r_ss(x) - r_ss(y)| <= 0.09 means x ~_S y"
+  tie_to_perturbations: "E[|r_ss(x+delta_01) - r_ss(x)|] < 0.02 in bulk; epsilon=0.09 conservative"
+  epsilon_choice_note: >
+    Revised from 0.05 to 0.09 after dense sweep (36 points). ε=0.05 sat on plateau boundary
+    N=5→4 (ε*≈0.049). ε=0.09 is interior of the N=4 plateau (I_ε=[0.066, 0.134], w=0.700).
+    For higher resolution: ε=0.03 (N=5 plateau, I_ε=[0.009, 0.047], w=1.66).
+  stability_window_plan:
+    vary_epsilon: [0.03, 0.09, 0.13]
+    vary_delta_strength: ["delta=0.05", "delta=0.10", "delta=0.20"]
+
+observable_sufficiency:
+  - observable_key: "r_ss"
+    sufficient: true
+    reason: "span=0.683 (r_ss∈[0.039,0.722] over κ∈[0,3]) >> 2*epsilon=0.18"
+
+expected_partition:
+  partition_type: "sequential"
+  regime_count_predicted: 3
+  regimes:
+    - id: "R0"
+      name: "Incoherent"
+      signature: "r_ss < 0.1"
+      bc_conditions: "kappa < K_c (approx 0.64)"
+      notes: "Analytically predicted for g=N(0,1)"
+    - id: "R1"
+      name: "Partially_synchronized"
+      signature: "0.1 <= r_ss < 0.85"
+      bc_conditions: "K_c < kappa < ~2.0"
+      notes: "Transition regime"
+    - id: "R2"
+      name: "Fully_synchronized"
+      signature: "r_ss >= 0.85"
+      bc_conditions: "kappa >= ~2.0"
+      notes: "Near-complete phase locking"
+
+comparability:
+  common_underlying_X: "N-agent system with coupling parameter"
+  overlap_domain: "Shared coupling BC structure with consensus model"
+  transfer_targets:
+    - scope_id: "SCOPE-20260311-0002"
+      direction: "this -> target"
+      structural_homology_claim: "Both systems have coupling BC inducing sequential partition"
+      expected_admissibility: "partial"
+
+falsification:
+  - id: "F1"
+    condition: "Pipeline fails to recover K_c within 5% of analytical value 0.6366"
+    measurable_test: "theta_star in [0.605, 0.668]"
+    threshold: "5% of K_c_analytical = 0.6366"
+    severity: "sweep_refinement"
+    notes: >
+      θ*=1.475 currently (36-point dense sweep). Go/no-go criterion not yet met.
+      Denser sweep in κ∈[0.5,0.9] required. This is a sweep resolution issue,
+      not a BC falsification.
+  - id: "F2"
+    condition: "No ε-plateau with N ≥ 2 and w > 0.3 exists for any ε ∈ [0.001, 1.0]"
+    measurable_test: "max plateau width w over all N ≥ 2 plateaus"
+    threshold: "w < 0.3"
+    severity: "scope_rejection"
+    notes: "Current best plateau: N=4, w=0.700. Condition not triggered."
+  - id: "F3"
+    condition: "Regime boundaries shift > 50% of sweep range under delta_01 perturbations"
+    measurable_test: "sup shift in theta_star under 50 IC-perturbation trials"
+    threshold: "shift > 1.5 (50% of sweep range [0,3])"
+    severity: "scope_rejection"
+
+provenance:
+  sources:
+    - type: "experiment_doc"
+      ref: "experiments/kuramoto_oscillators.md"
+      pointer: "S_K definition, R_K partition"
+  owners:
+    - role: "ScopeFormalizer"
+      name: ""
+  links:
+    bc_manifest_id: "BCM-20260311-0001"
+    case_record_id: "CASE-20260311-0001"
+    experiment_doc: "experiments/kuramoto_oscillators.md"

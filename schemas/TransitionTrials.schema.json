@@ -1,0 +1,26 @@
+{
+  "title": "TransitionTrials",
+  "type": "object",
+  "properties": {
+    "source_regime": {
+      "type": "string"
+    },
+    "target_regime": {
+      "type": "string"
+    },
+    "delta_id": {
+      "type": "string"
+    },
+    "delta_strength": {
+      "type": "number"
+    },
+    "trial_id": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "source_regime",
+    "target_regime",
+    "delta_id"
+  ]
+}

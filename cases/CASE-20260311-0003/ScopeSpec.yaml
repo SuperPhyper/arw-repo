@@ -1,0 +1,230 @@
+# ScopeSpec.yaml — ART Scope Instantiation
+# Case: CASE-20260311-0003
+# System: Classical double pendulum (two rigid links, free rotational joint)
+# Phase 1: Energy sweep — Restriction BC class
+
+schema_version: "0.2"
+scope_id: "SCOPE-20260311-0003"
+case_id: "CASE-20260311-0003"
+
+# ── System ───────────────────────────────────────────────────────────────────
+system:
+  name: "Classical double pendulum"
+  description: >
+    Two rigid links of masses m1, m2 and lengths L1, L2, connected by a free
+    rotational joint, suspended from a fixed pivot. No springs, no artificial
+    coupling terms. Optional damping (gamma) and external periodic driving (A, Omega).
+    Standard Lagrangian derivation, full nonlinear EOM.
+  state_space:
+    dimension: 4
+    coordinates: ["theta_1", "theta_2", "dtheta_1", "dtheta_2"]
+    description: "theta_i: angle of link i from vertical; dtheta_i: angular velocity"
+  notes: >
+    This is the textbook double pendulum. The regime transition periodic →
+    chaotic is energy-driven, not parameter-driven. The natural BC sweep
+    parameter is total energy (via initial condition amplitude).
+
+X:
+  name: "4D phase space (θ₁, θ₂, dθ₁, dθ₂)"
+  type: "product"
+  structure:
+    topology: true
+    metric: "required"
+  state_coordinates:
+    - {name: "theta_1", domain: "[-pi, pi]", unit: "rad"}
+    - {name: "theta_2", domain: "[-pi, pi]", unit: "rad"}
+    - {name: "dtheta_1", domain: "R", unit: "rad/s"}
+    - {name: "dtheta_2", domain: "R", unit: "rad/s"}
+
+# ── Physical parameters (fixed for this case) ───────────────────────────────
+simulation_parameters:
+  m1: 1.0          # kg — upper link mass
+  m2: 1.0          # kg — lower link mass
+  L1: 1.0          # m  — upper link length
+  L2: 1.0          # m  — lower link length
+  gamma: 0.0       # 1/s — damping (0 = conservative)
+  A: 0.0           # N·m — driving amplitude (0 = free)
+  Omega: 0.667     # rad/s — driving frequency (unused when A=0)
+  T: 60            # s — simulation time
+  T_transient: 20  # s — transient to discard
+  n_ic: 5          # number of initial conditions for Lyapunov averaging
+
+# ── ART: boundary constraints B ──────────────────────────────────────────────
+B:
+  description: >
+    Fixed pivot, equal masses, equal lengths, conservative (no damping, no driving).
+    The primary boundary constraint is the total energy E, controlled via initial
+    condition amplitude. Higher E → larger accessible phase space → transition
+    from regular to chaotic motion.
+  admissible_set:
+    notation: "X_B"
+    membership_test: "x in X_B iff E(x) <= E_target and theta_i in [-pi, pi]"
+  boundary_condition_classes:
+    - class: "restriction"
+      role: "Energy bound E_target restricts accessible phase space volume"
+      primary: true
+  constraints:
+    - name: "energy_bound"
+      form: "inequality"
+      expression: "E(θ₁, θ₂, dθ₁, dθ₂) ≤ E_target"
+      notes: "E_target is the sweep parameter — sets IC amplitude"
+    - name: "equal_masses"
+      form: "equation"
+      expression: "m1 = m2 = 1.0"
+    - name: "equal_lengths"
+      form: "equation"
+      expression: "L1 = L2 = 1.0"
+    - name: "conservative"
+      form: "equation"
+      expression: "gamma = 0, A = 0"
+    - name: "fixed_pivot"
+      form: "membership"
+      expression: "upper link attached to fixed point"
+
+# ── ART: observables Π ──────────────────────────────────────────────────────
+Pi:
+  - id: "pi_01"
+    name: "Lyapunov exponent proxy (finite-time divergence rate)"
+    observable_key: "lambda_proxy"
+    primary: false
+    map:
+      domain: "X_B"
+      codomain: "R"
+      definition: >
+        lambda_proxy(x0, T) = (1/T) * log(||x(T) - x_pert(T)|| / ||δx0||)
+        where x_pert(0) = x0 + δx0, ||δx0|| = 1e-7, averaged over n_ic ICs.
+    distinguishability:
+      d_pi: "d(λ₁, λ₂) = |λ₁ - λ₂|"
+      type: "metric"
+      units: "1/s"
+    notes: >
+      Primary chaos indicator. Positive → chaotic, negative → periodic,
+      near zero → quasi-periodic or weakly chaotic.
+    primary: true
+
+  - id: "pi_02"
+    name: "Relative angle variance Var(θ₁ - θ₂)"
+    observable_key: "var_rel"
+    primary: true
+    map:
+      domain: "X_B"
+      codomain: "[0, inf)"
+      definition: "Var_rel = Var(θ₁(t) - θ₂(t)) over t in [T_transient, T_end]"
+    distinguishability:
+      d_pi: "d(v₁, v₂) = |v₁ - v₂|"
+      type: "metric"
+      units: "rad²"
+    notes: >
+      Measures how differently the two links move. Near zero → links move
+      together (low energy, nearly rigid). Large → decoupled motion.
+    primary: false
+
+  - id: "pi_03"
+    name: "Mean total energy E_mean"
+    observable_key: "E_mean"
+    primary: false
+    map:
+      domain: "X_B"
+      codomain: "R"
+      definition: "E_mean = mean(E(t)) over t in [T_transient, T_end]"
+    distinguishability:
+      d_pi: "d(E₁, E₂) = |E₁ - E₂|"
+      type: "metric"
+      units: "J"
+    notes: >
+      For the conservative system (gamma=0), E is constant. This observable
+      becomes informative when damping or driving is added in later sweeps.
+    primary: false
+
+# ── ART: admissible perturbations Δ ──────────────────────────────────────────
+Delta:
+  - id: "delta_01"
+    name: "Initial condition perturbation"
+    type: "ic_perturbation"
+    action:
+      description: "Uniform random perturbation of IC angles within ±r_ic"
+      r_ic: 0.01   # rad
+    bounds:
+      magnitude: "delta = 0.01 rad"
+      locality: "applied to initial angles theta_1, theta_2"
+    admissibility_rationale: "Small IC perturbation; does not cross regime boundary for bulk states"
+    notes: >
+      Tests whether regime assignment is stable under small IC changes.
+      The n_ic averaging in lambda_proxy already provides IC robustness.
+
+# ── ART: resolution threshold ε ─────────────────────────────────────────────
+epsilon:
+  value: 0.015
+  interpretation: >
+    d_Pi(x, y) ≤ 0.015 means x ~_S y. Primary observable: var_rel.
+    |Var_rel(x) - Var_rel(y)| ≤ 0.015 → same regime.
+  tie_to_perturbations: >
+    sup_{δ∈Δ} E[d_Pi(δ(x), x)] ≈ 0.004 (measured over E∈[0.5,30 J], 5 IC seeds).
+    Ratio 0.004/0.015 = 0.27 << 1. Condition satisfied.
+  epsilon_choice_note: >
+    ε=0.015 is interior of the N=9 plateau. Persistence=0.727 (sweep too sparse —
+    12 points over [0.5,30 J]). A denser sweep around E≈4 J (θ*) would improve
+    persistence. ε is not on a plateau boundary; no fragility warning.
+  stability_window_plan:
+    vary_epsilon: [0.01, 0.015, 0.03, 0.05]
+    vary_delta_strength: ["r_ic=0.005", "r_ic=0.01", "r_ic=0.02"]
+
+observable_sufficiency:
+  - observable_key: "var_rel"
+    sufficient: true
+    reason: "span=0.297 (var_rel∈[0.003,0.300] over E∈[0.5,30 J]) >> 2*epsilon=0.030. Primary."
+  - observable_key: "lambda_proxy"
+    sufficient: false
+    reason: >
+      span=0.069 < 2*epsilon=0.030 is marginal. Observable insufficient as primary;
+      retained as secondary diagnostic. Replaced by var_rel as primary.
+
+# ── Expected regime partition ────────────────────────────────────────────────
+expected_partition:
+  partition_type: "sequential"
+  regime_count_predicted: 3
+  regimes:
+    - id: "R0"
+      name: "Periodic"
+      signature: "lambda_proxy < 0"
+      bc_conditions: "E_target < E_c1 (low energy, small oscillations)"
+    - id: "R1"
+      name: "Quasi-periodic"
+      signature: "0 ≤ lambda_proxy ≤ 0.1"
+      bc_conditions: "E_c1 ≤ E_target ≤ E_c2 (moderate energy)"
+    - id: "R2"
+      name: "Chaotic"
+      signature: "lambda_proxy > 0.1"
+      bc_conditions: "E_target > E_c2 (high energy, large oscillations)"
+  notes: >
+    The critical energy values E_c1, E_c2 are not known analytically for
+    the double pendulum. They will be determined empirically by the sweep.
+    The transition is expected to be gradual (KAM tori break up progressively),
+    so the quasi-periodic regime may be narrow or absent depending on ε.
+
+# ── Falsification conditions ─────────────────────────────────────────────────
+falsification:
+  - id: "F1"
+    condition: "regime_count = 1 for all E_target under primary observable var_rel"
+    measurable_test: "regime_count >= 2 at ε=0.015"
+    threshold: "N < 2"
+    severity: "scope_rejection"
+    notes: "Observable cannot distinguish regimes → restriction BC does not generate partition."
+  - id: "F2"
+    condition: "No ε-plateau with N ≥ 2 and w > 0.5 exists for var_rel"
+    measurable_test: "max plateau width w for N ≥ 2 plateaus in ε-sweep"
+    threshold: "w < 0.5"
+    severity: "scope_rejection"
+    notes: "Partition structure not robust → regimes are artefactual."
+  - id: "F3"
+    condition: "Regime boundaries shift > 50% of sweep range under delta_01 perturbations"
+    measurable_test: "shift in theta_star under 50 IC-perturbation trials"
+    threshold: "shift > 14.75 J (50% of sweep range [0.5, 30 J])"
+    severity: "scope_rejection"
+    notes: "Partition is noise-sensitive → scope inadmissible."
+  - id: "F4"
+    condition: "Sweep range too narrow — θ*=8.5 J is interior but Locked regime not visible"
+    measurable_test: "var_rel at E=30 J < 0.05 (locked) and at E=0.5 J > 0.1 (chaotic)"
+    threshold: "both endpoints in distinct regimes"
+    severity: "sweep_refinement"
+    notes: "Sweep range sufficient. Current: E∈[0.5,30 J], N=9 at ε=0.015."

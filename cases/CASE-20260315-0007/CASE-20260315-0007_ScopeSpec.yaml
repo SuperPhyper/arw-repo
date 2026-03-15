@@ -1,0 +1,100 @@
+# ScopeSpec — CASE-20260315-0007
+# System: SIR epidemic model (β-sweep)
+# BC Class: Aggregation
+
+scope_tuple:
+  B:
+    description: >
+      SIR compartment model on a homogeneous population of N individuals.
+      State space: (S, I, R) ∈ [0,1]³ with S + I + R = 1 (fractions).
+      Equations of motion:
+        dS/dt = −β · S · I
+        dI/dt =  β · S · I − γ_r · I
+        dR/dt =  γ_r · I
+      Fixed parameters: γ_r = 0.1 (recovery rate), S(0) = 0.99, I(0) = 0.01, R(0) = 0.
+      Control parameter: β ∈ [0.0, 0.5] (transmission rate).
+      The Aggregation BC is constitutive: the SIR formulation itself is the
+      projection from N individual micro-states to 3 macro-compartments.
+    state_space: "(S, I, R) ∈ [0,1]³,  S+I+R = 1"
+    fixed_params:
+      gamma_r: 0.1
+      S0: 0.99
+      I0: 0.01
+      R0: 0.0
+      population_N: 10000
+    sweep_param: "β (transmission rate)"
+    sweep_range: [0.0, 0.5]
+    sweep_note: >
+      Epidemic threshold at β* = γ_r / S(0) ≈ 0.101 (basic reproduction number R₀ = 1).
+      Below β*: infection dies out (I → 0). Above β*: epidemic peak then decay to endemic
+      equilibrium. This is the primary regime transition.
+
+  Pi:
+    - observable_key: I_peak
+      description: >
+        Peak infected fraction: max_{t} I(t).
+        Below β*: I_peak ≈ I(0) = 0.01 (no epidemic).
+        Above β*: I_peak grows with β — direct measure of epidemic severity.
+        Analytically: I_peak = 1 − (1 + ln(β·S₀/γ_r)) / (β/γ_r) approximately.
+      primary: true
+      observable_sufficiency: sufficient
+      span_estimate: "~0.01 to ~0.8 across sweep — large span expected"
+
+    - observable_key: R_final
+      description: >
+        Final recovered fraction: lim_{t→∞} R(t) = 1 − S_∞.
+        Measures total epidemic size. Zero below threshold, positive above.
+      primary: false
+      observable_sufficiency: sufficient
+      note: "Complementary to I_peak; both cross the threshold at same β*"
+
+    - observable_key: lambda_proxy
+      description: "Growth rate proxy dI/dt|_{t=0} = (β·S₀ − γ_r)·I₀."
+      primary: false
+      observable_sufficiency: sufficient
+      note: >
+        Unusually: lambda_proxy IS sufficient here — it is analytically
+        equivalent to (R₀ − 1)·γ_r·I₀, crossing zero at β*. Include as
+        secondary to test multi-observable agreement.
+
+  Delta:
+    description: >
+      Initial condition variation: I(0) ∈ [0.005, 0.02], S(0) = 1 − I(0), R(0) = 0.
+      Ten independent runs per β-value with different I(0) draws.
+      Partition must be stable: same regime assignment regardless of I(0).
+    perturbation_type: initial_condition_noise
+    n_runs: 10
+    ic_range_I: [0.005, 0.02]
+
+  epsilon:
+    working_epsilon: 0.05
+    choice_note: >
+      I_peak span ≈ 0.79 across sweep. ε = 0.05 → span/ε ≈ 16. Conservative.
+      Transition at β* = 0.101 is analytically sharp — plateau should be wide.
+    plateau_status: pending
+
+falsification:
+  - id: F1
+    condition: "span(I_peak) < ε — Aggregation BC has no observable effect"
+    severity: scope_rejection
+    action: "Verify γ_r and initial conditions; threshold should produce clear span"
+
+  - id: F2
+    condition: "β* shifts under I(0) perturbation"
+    severity: scope_rejection
+    action: "Check population size N; finite-size effects may blur threshold"
+
+  - id: F3
+    condition: "No robust ε plateau"
+    severity: scope_rejection
+    action: "Increase integration time; ensure I(t) reaches steady state"
+
+  - id: F4
+    condition: "β* at sweep boundary (β=0 or β=0.5)"
+    severity: sweep_refinement
+    action: "Extend range; theoretical β* = 0.101 should be well interior"
+
+observable_sufficiency:
+  I_peak: sufficient
+  R_final: sufficient
+  lambda_proxy: sufficient

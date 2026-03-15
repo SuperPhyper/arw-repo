@@ -1,0 +1,111 @@
+# BCManifest — CASE-20260315-0006
+# System: Multi-Link-Pendel with periodic forcing
+# Primary BC: Forcing
+
+case_id: CASE-20260315-0006
+system: "Multi-Link-Pendel with periodic base excitation (Ω-sweep)"
+domain: DS
+bc_class: Forcing
+
+bc_class:
+  primary: Forcing
+  justification: >
+    The term A·sin(Ω·t) is a time-indexed external input — the canonical S3
+    operator: X ↦ X × T where T = [0,∞) with periodic structure T_eff = S¹.
+    The forcing is:
+      (1) exogenous: Ω and A are not determined by the system state τ
+      (2) time-dependent: explicitly couples X to the time axis T
+      (3) periodic: T_eff = S¹ (period 2π/Ω)
+    This is the cleanest possible S3 instance in a physical system: a
+    mechanical oscillator driven by an external periodic input.
+
+  secondary:
+    - bc: Coupling
+      justification: >
+        Coupling (κ = 1.0, below transition) remains structurally present.
+        At κ = 1.0 the system is in the incoherent Coupling regime from
+        CASE-0002. The Forcing sweep reveals what happens when an external
+        periodic drive is applied to an already-incoherent coupled system.
+      note: >
+        Choice of κ = 1.0 (below Coupling transition) is deliberate:
+        it isolates the Forcing effect. At κ >> κ* the Coupling would
+        dominate and mask the Forcing signature.
+
+operator_signature:
+  primary: S3
+  form: "Forcing term: A·sin(Ω·t) — periodic time-coupled input"
+  sub_signature: "periodic forcing, T = S¹"
+  T_structure: "T = S¹ (period 2π/Ω); continuous real time"
+  exogenous: true
+  state_space_extension: "X ↦ X × S¹  (joint state + phase of forcing cycle)"
+  note: >
+    The system is non-autonomous by construction — dτ/dt = f(τ,t) with
+    explicit t-dependence. Stroboscopic map (Poincaré section at t = k·2π/Ω)
+    reduces this to a discrete-time autonomous system — standard S3 reduction.
+
+  secondary_signatures:
+    - S2: "Coupling cross terms present (κ=1.0); weaker than in CASE-0002"
+    - S1: "Poincaré section available — stroboscopic projection onto phase space"
+    - S4: "Not present — no damping term (γ=0)"
+    - S5: "Not present — deterministic"
+
+sweep_program:
+  parameter: Ω
+  range: [0.1, 10.0]
+  n_points: 50
+  spacing: log
+  spacing_note: >
+    Log-spacing preferred for frequency sweeps — resonances are multiplicatively
+    spaced. Ensures adequate coverage of both low-frequency and high-frequency
+    regimes with equal relative resolution.
+  measurement_window:
+    n_periods: 50
+    note: "Measure over 50 forcing periods to average out transients"
+
+integration:
+  method: RK45
+  t_span: "dynamic: [0, t_transient + 50·(2π/Ω)]"
+  t_transient: "100·(2π/Ω)  — 100 forcing periods for transient decay"
+  dt_max: "min(0.01, 2π/(100·Ω))  — at least 100 points per forcing period"
+  note: >
+    Integration time scales with 1/Ω — short forcing periods require
+    finer time resolution. dt_max must be adaptive.
+
+expected_regimes:
+  N: "3 or more (resonance structure)"
+  R1:
+    label: "off-resonance low-frequency"
+    condition: "Ω << ω_natural"
+    var_rel: "low — quasi-static forcing; system tracks forcing slowly"
+  R2:
+    label: "resonance band"
+    condition: "Ω ≈ ω_natural (one or more resonances)"
+    var_rel: "high — large-amplitude forced response"
+  R3:
+    label: "off-resonance high-frequency"
+    condition: "Ω >> ω_natural"
+    var_rel: "low — joints cannot track fast forcing; averaging effect"
+  transition:
+    theta_star: "Ω* near natural frequencies of pendulum chain"
+    type: "resonance peaks — multiple transitions expected"
+    note: >
+      Unlike Dissipation cases (monotone transitions), Forcing typically
+      produces non-monotone var_rel(Ω) with multiple peaks.
+      N may be > 2. This is expected and physically meaningful.
+
+  resonance_note: >
+    The Multi-Link-Pendel has n natural frequencies (n = number of links).
+    The Ω-sweep may reveal n resonance peaks → N = 2n+1 regimes alternating
+    between resonant and off-resonant bands. The pipeline must be run with
+    sufficient density to resolve individual peaks.
+
+relation_to_original:
+  original_case: CASE-20260311-0002
+  original_bc: Coupling
+  relation: >
+    CASE-0002 established the Coupling regime partition via κ-sweep at γ=0, Ω=0.
+    CASE-0006 adds periodic forcing at fixed κ=1.0 (incoherent Coupling regime).
+    Together with CASE-0005 (γ-sweep), all three cases span the 3D parameter
+    space of the Multi-Pendel: κ (Coupling), γ (Dissipation), Ω (Forcing).
+    This is the first complete BC-axis coverage of a single physical system
+    in the repo.

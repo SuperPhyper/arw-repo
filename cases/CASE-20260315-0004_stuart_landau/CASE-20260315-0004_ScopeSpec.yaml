@@ -1,0 +1,81 @@
+
+# ScopeSpec — CASE-20260315-0004
+# System: Stuart-Landau oscillator (supercritical Hopf normal form)
+# BC Class: Dissipation
+
+scope_tuple:
+  B:
+    description: >
+      Single Stuart-Landau oscillator in normal form.
+      State space: z ∈ ℂ (complex amplitude), equivalently (x, y) ∈ ℝ².
+      Admissible states: all z ∈ ℂ with |z| < z_max = 5 (numerical bound).
+      Equation of motion: dz/dt = (μ + iω)z − |z|²z
+      Parameters fixed: ω = 1.0 rad/s (natural frequency), z_max = 5.
+      Control parameter: μ ∈ [-2.0, 2.0] (bifurcation parameter).
+    state_space: "z ∈ ℂ, equivalently (x,y) ∈ ℝ²"
+    fixed_params:
+      omega: 1.0
+      z_max: 5.0
+    sweep_param: "μ (linear growth/decay rate)"
+    sweep_range: [-2.0, 2.0]
+
+  Pi:
+    - observable_key: r_ss
+      description: >
+        Steady-state amplitude |z(t→∞)| = lim_{t→∞} sqrt(x(t)² + y(t)²).
+        Measured after transient decay (t > 200 s).
+        Theoretical values: r_ss = 0 for μ < 0, r_ss = sqrt(μ) for μ ≥ 0.
+      primary: true
+      observable_sufficiency: sufficient
+      span_estimate: "0 to sqrt(2) ≈ 1.414 across sweep range"
+
+    - observable_key: lambda_proxy
+      description: >
+        Lyapunov proxy: max local divergence rate estimated from
+        trajectory separation. Positive for μ > 0 (limit cycle), 
+        near zero or negative for μ < 0 (fixed point).
+      primary: false
+      observable_sufficiency: insufficient
+      note: "lambda_proxy has low span in fixed-point regime; r_ss is primary"
+
+  Delta:
+    description: >
+      Perturbations: random initial conditions z(0) drawn uniformly from
+      disk |z(0)| < 0.5. Ten independent runs per μ-value.
+      Partition must be stable across all initial conditions.
+    perturbation_type: initial_condition_noise
+    n_runs: 10
+    ic_radius: 0.5
+
+  epsilon:
+    working_epsilon: 0.08
+    choice_note: >
+      Estimated from expected span(r_ss) ≈ 1.414 and anticipated N=2 partition.
+      Plateau location to be confirmed by epsilon_sweep pipeline.
+      Working value conservative — to be refined after sweep.
+    plateau_status: pending
+
+falsification:
+  - id: F1
+    condition: "span(r_ss) < epsilon across all μ — BC has no effect"
+    severity: scope_rejection
+    action: "Replace BC class or observable"
+
+  - id: F2
+    condition: "θ* unstable across 10 independent initial conditions"
+    severity: scope_rejection
+    action: "Increase n_runs or tighten ic_radius"
+
+  - id: F3
+    condition: "No robust epsilon plateau for r_ss"
+    severity: scope_rejection
+    action: "Reassess epsilon strategy; check integration time"
+
+  - id: F4
+    condition: "θ* = μ* at sweep boundary (μ = -2.0 or μ = 2.0)"
+    severity: sweep_refinement
+    action: "Extend sweep range; theoretical θ* = 0 should be interior"
+
+observable_sufficiency:
+  r_ss: sufficient
+  lambda_proxy: insufficient

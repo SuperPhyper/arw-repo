@@ -1,0 +1,90 @@
+%% ARW Signature Graph
+%% Primitive operators → Derived signatures (S1–S5) → BC classes
+%% Source: operator_signature_catalog.md, operator_signatures_cross_domain.md
+%% Status: working-definition | Layer: diagrams/
+
+graph TD
+
+  subgraph Primitives ["ARW Core Primitives"]
+    COMP["Composition ∘"]
+    PROD["Product ×"]
+    PROJ["Projection / Selection π"]
+  end
+
+  subgraph Signatures ["Derived Signatures"]
+    S1["S1: Projection / Selection
+    ────────────────
+    p ∘ p = p  (idempotent)
+    π_A : A×B → A  (categorical)"]
+
+    S2["S2: Product ∘ Composition
+    ────────────────
+    X_joint = X₁ × X₂
+    F(x₁,x₂) = (f(x₁,x₂), g(x₁,x₂))"]
+
+    S3["S3: Time-Coupled Product
+    ────────────────
+    X ↦ X × T
+    Φ : T × X → X"]
+
+    S4["S4: Scaling ∘ Composition
+    ────────────────
+    ‖F(x)−F(y)‖ ≤ c‖x−y‖
+    0 < c < 1  (contraction)"]
+
+    S5a["S5a: Stochastic Coupling
+    ────────────────
+    X ↦ X × Ω"]
+
+    S5b["S5b: Expectation as Projection
+    ────────────────
+    E[·|G] = Proj_{L²(G)}(·)"]
+  end
+
+  subgraph BCClasses ["BC Classes (semantic labels)"]
+    BC_R["BC: Restriction"]
+    BC_C["BC: Coupling"]
+    BC_A["BC: Aggregation"]
+    BC_SB["BC: Symmetry Breaking"]
+    BC_F["BC: Forcing"]
+    BC_D["BC: Dissipation"]
+    BC_S["BC: Stochastic
+    (ART sublayer)"]
+  end
+
+  %% Primitive → Signature edges
+  PROJ --> S1
+  PROD --> S2
+  COMP --> S2
+  PROD --> S3
+  COMP --> S3
+  COMP --> S4
+  PROD --> S5a
+  COMP --> S5a
+  S5a --> S5b
+
+  %% Signature → BC class edges
+  S1 --> BC_R
+  S1 --> BC_A
+  S1 --> BC_SB
+  S2 --> BC_C
+  S3 --> BC_F
+  S4 --> BC_D
+  S5b --> BC_S
+
+  %% Asymptotic edge (limit, not finite composition)
+  S4 -.->|"asymptotically\n(limit only)"| BC_R
+
+  %% QM extension note
+  PROD -. "QM: × → ⊗\nsee quantum_operator_extension.md" .-> S2
+
+  %% Styling
+  classDef primitive fill:#1e293b,stroke:#22d3ee,color:#e2e8f0
+  classDef signature fill:#111827,stroke:#60a5fa,color:#e2e8f0
+  classDef bcclass fill:#111827,stroke:#34d399,color:#e2e8f0
+  classDef bcstoch fill:#111827,stroke:#a78bfa,color:#e2e8f0
+
+  class COMP,PROD,PROJ primitive
+  class S1,S2,S3,S4,S5a,S5b signature
+  class BC_R,BC_C,BC_A,BC_SB,BC_F,BC_D bcclass
+  class BC_S bcstoch
