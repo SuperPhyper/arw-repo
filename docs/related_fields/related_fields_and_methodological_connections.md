@@ -57,6 +57,53 @@ From this perspective:
 - chaotic behavior may indicate a mismatch between the chosen scope
   and the degrees of freedom governing the system
 
+### Active connection points
+
+**Operator Inference / Scientific ROM (Reduced-Order Models)**
+
+Data-driven approaches (e.g., OpInf at the Oden Institute, UT Austin) learn
+reduced-order operators from trajectory data. The connection to ARW is
+methodological: ROM construction corresponds to a scope transition
+S → S' where Π is replaced by a lower-dimensional learned projection.
+Admissibility of the reduction is equivalent to the ARW partition
+compatibility condition.
+
+**Koopman Operator Methods**
+
+The Koopman formalism (DMD, EDMD; AI Institute in Dynamic Systems / Mezić
+Research Group, UCSB) linearizes nonlinear dynamics via an infinite-dimensional
+operator on observables. In ARW terms: choosing the Koopman observable basis
+is a Π-selection; the spectral decomposition into Koopman modes corresponds
+to a regime partition; mode decay rates correspond to S4 (Dissipation) signatures.
+
+**Mori-Zwanzig / Memory-DL**
+
+The Mori-Zwanzig formalism (and its ML extensions at Penn State, PNNL) projects
+full dynamics onto a relevant-observable subspace, producing memory-kernel
+terms for the irrelevant part. This is structurally the S5 signature (conditional
+expectation as projection) applied to dynamical reduction. Non-Markovian terms
+arise exactly when the projection is not admissible — a direct operationalization
+of ARW's admissibility condition for scope reductions.
+
+**Coherent Sets and Transfer Operators**
+
+The Froyland school (almost-invariant sets, coherent sets for non-autonomous
+systems, Mather semigroup methods) identifies regime-like structures as weakly
+mixing regions under the Perron-Frobenius / transfer operator. This provides
+an operator-theoretic grounding for ARW's regime concept that is particularly
+relevant for Forcing BC (S3, non-autonomous systems) and for formalizing
+Δ-stability of regime partitions.
+
+**DSGRN — Parameter Space Regime Maps**
+
+DSGRN (Cummins et al. 2018) constructs a finite partition of parameter space
+for regulatory network models such that each region carries an identical
+Morse graph (qualitative dynamical summary). The structural parallel to ARW
+is direct: parameter graph → Morse graph in DSGRN corresponds to
+BC adjacency graph → regime partition in ARW. DSGRN may be interpretable
+as a specific ART instantiation for switching/piecewise-linear systems.
+See docs/notes/arw_dsgrn_dialogue_plan.md and open_questions.md Q16.
+
 ---
 
 # 2 Philosophy of Science
@@ -164,6 +211,70 @@ In ARW terms:
   under reduced observables
 - emergent solution spaces correspond to structured sets of viable
   behaviors at the new scope
+
+---
+
+# 6 Applied Category Theory
+
+## Relevant traditions
+
+- monoidal categories and open systems
+- compositional approaches to dynamical systems
+- string diagrams and process theories
+- functorial semantics
+
+## Methodological connection
+
+Applied Category Theory (ACT) provides a compositional language for
+open systems: systems that interact with their environment via typed
+interfaces. The connection to ARW operates at the level of the primitive
+operator basis.
+
+ARW's product primitive `×` — used to build joint state spaces for
+Coupling BC (S2) — corresponds to the monoidal product in categorical
+systems theory. For quantum systems, this requires generalization to
+the tensor product `⊗` (non-Cartesian monoidal structure). ACT provides
+the formal framework for making this generalization rigorous.
+
+The AlgebraicJulia ecosystem and ACT 2026 community provide active
+tooling for compositional dynamical systems that may be directly
+applicable to ARW's multi-BC case analysis (e.g., CASE-0006: Forcing +
+Coupling co-presence). See open_questions.md Q-TENSOR-01.
+
+---
+
+# 7 Machine Learning — Representation Collapse
+
+## Relevant traditions
+
+- neural collapse
+- representation learning
+- feature geometry in deep networks
+- ICML/NeurIPS workshops: HiLD, NeurReps
+
+## Methodological connection
+
+Neural collapse refers to a geometry-convergence phenomenon in the
+final layers of trained classifiers: class means collapse to simplex
+vertices and within-class variability collapses to zero. The structural
+parallel to ARW emergence is direct.
+
+In ARW terms, neural collapse is an instance of Π_local collapse:
+the local (within-class) observable structure becomes indistinguishable
+under ε, while the relational (between-class) structure survives and
+defines the partition. This is precisely the ARW emergence condition
+demonstrated empirically in CASE-20260318-0004.
+
+Conversely, representation collapse pathologies (dead neurons, feature
+collapse in self-supervised learning) correspond to scope exhaustion:
+the observable Π loses its ability to distinguish any regime, causing
+partition collapse to N=1. This maps to ARW falsification condition F1
+(span(π) < ε).
+
+The ML community's operational language for these phenomena ("collapse",
+"entanglement", "feature diversity") can be translated into ARW's
+formal vocabulary of admissibility, plateau width, and observable
+sufficiency.
 
 ---
 
