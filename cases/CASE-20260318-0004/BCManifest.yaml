@@ -1,0 +1,168 @@
+# BCManifest — CASE-20260318-0004
+# System: Two coupled Stuart-Landau oscillators (K-sweep)
+# Primary BC: Coupling
+# Focus: ARW Emergence — local collapse before relational collapse
+#
+# Note on relation to CASE-20260315-0004:
+#   CASE-20260315-0004 treats the single Stuart-Landau oscillator with μ-sweep (Dissipation BC).
+#   This case treats TWO coupled oscillators with K-sweep (Coupling BC) and is specifically
+#   designed to demonstrate and quantify ARW relational emergence.
+
+schema_version: "0.2"
+id: "BCM-20260318-0004"
+scope_id: "SCOPE-20260318-0004"
+title: "Coupled Stuart-Landau oscillators — K-sweep, emergence window"
+status: "active"
+created_at: "2026-03-18"
+updated_at: "2026-03-18"
+
+bc_components:
+  - id: "bc_01"
+    class: "coupling"
+    name: "Inter-oscillator coupling strength K"
+    description: >
+      Real diffusive coupling term K(z_j - z_i) added to each oscillator's equation.
+      This is the canonical S2 operator: joint state space ℂ × ℂ with cross-terms
+      F(z1,z2) = (f(z1,z2), g(z2,z1)) where the dynamics of each oscillator depend
+      on the other. K = 0 gives fully decoupled oscillators; K → ∞ drives full
+      synchronization (PLV → 1, freq_gap → 0).
+
+    locus:
+      applies_to: "B"
+      location_description: >
+        Coupling manifests in the boundary constraint on the joint state space:
+        X_joint = ℂ × ℂ, with coupling term enforcing inter-oscillator dependence.
+        The admissible state changes qualitatively at K = K* ≈ 0.055 (synchronization
+        transition).
+
+    parameterization:
+      - name: "coupling_strength"
+        symbol: "K"
+        domain: "[0.01, 0.12]"
+        meaning: >
+          Real coupling coefficient in dz_i/dt = (λ_i + iω_i - (1+iα)|z_i|²)z_i + K(z_j - z_i).
+          K = 0: decoupled. K > K* ≈ 0.055: phase-locked (PLV = 1).
+        implementation_hook:
+          type: "code_param"
+          reference: "simulate_arw_emergence.py::sim_metrics(K=...)"
+
+    perturbation_program:
+      sweeps:
+        - param: "K"
+          values: [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10, 0.11, 0.12]
+          sweep_type: "grid"
+      fixed_params:
+        omega1: 1.00
+        omega2: 1.08
+        alpha: 0.20
+        lambda: 1.00
+        dlambda: 0.08
+        T: 200
+        dt: 0.01
+        t_transient: 50
+      admissible_delta_links:
+        - "delta_01"
+
+    resolution_plan:
+      epsilons: [0.05, 0.07, 0.09, 0.11, 0.13]
+      stability_window_criterion: >
+        Working ε = 0.09 confirmed by emergence window analysis:
+        amp_asym(K=0.03) = 0.082 < 0.09 (local collapse),
+        ΔPLV = 0.805 > 0.09 (relational distinction survives).
+        N=2 partition stable for ε ∈ [0.082, 0.805].
+
+    predicted_partition_effects:
+      qualitative:
+        - "PLV transition: incoherent (PLV ≈ 0.16–0.68) → phase-locked (PLV = 1.0) at K ≈ 0.055–0.06"
+        - "amp_asym remains below ε = 0.09 across all K (local collapse throughout)"
+        - "freq_gap collapses from 0.11 to 0 at K ≈ 0.06 (synchronous with PLV)"
+      partition_type_prediction: "binary"
+      invariants_to_track:
+        - "regime_count"
+        - "transition_boundary"
+        - "persistence_under_sweep"
+        - "emergence_window_width"
+
+    failure_signatures:
+      - "PLV does not reach 1.0 within sweep range — K_max insufficient"
+      - "amp_asym exceeds ε = 0.09 at any K — local collapse condition broken"
+
+    falsification_criteria:
+      - id: "fals_01"
+        statement: "span(PLV) < ε for all K — coupling has no relational effect"
+        measurable_test: "max(PLV) - min(PLV) < 0.09"
+        threshold: "0.09"
+      - id: "fals_02"
+        statement: "amp_asym(K) > ε = 0.09 at K where PLV = 1 — emergence window absent"
+        measurable_test: "amp_asym at K=0.08 > 0.09"
+        threshold: "0.09"
+
+  - id: "bc_02"
+    class: "restriction"
+    name: "Amplitude BC via λ parameter"
+    description: >
+      The growth parameter λ (with asymmetry dlambda=0.08) determines the amplitude
+      of each oscillator's limit cycle. λ acts as a BC restricting the accessible
+      amplitude range. The lambda-sweep (robustness test) shows that the emergence
+      window is λ-dependent: local collapse breaks for λ > 1.3 at weak K.
+    locus:
+      applies_to: "B"
+      location_description: "Amplitude constraint via λ in Stuart-Landau normal form"
+    parameterization:
+      - name: "amplitude_BC"
+        symbol: "λ"
+        domain: "[0.4, 1.6]  (robustness sweep)"
+        meaning: "Growth rate parameter; λ_1 = λ(1+0.08), λ_2 = λ(1-0.08)"
+        implementation_hook:
+          type: "code_param"
+          reference: "simulate_arw_emergence.py::sim_metrics(lam=...)"
+    perturbation_program:
+      sweeps: []
+      fixed_params:
+        lambda: 1.00
+      admissible_delta_links:
+        - "delta_02"
+
+transfer_targets:
+  - target_scope_id: "SCOPE-20260311-0001"
+    direction: "CASE-20260318-0004 -> CASE-20260311-0001"
+    structural_homology_claim: >
+      Both are DS-domain oscillator systems with Coupling BC and a sharp
+      synchronization transition. Kuramoto uses r_ss as order parameter;
+      this case uses PLV. Both transition from incoherent to phase-locked regime.
+    shared_bc_components:
+      - "bc_01 (Coupling)"
+    expected_transfer: "partial"
+    expected_transfer_rationale: >
+      Same BC class (Coupling), same transition type (incoherent → synchronized),
+      but different observable (PLV vs r_ss) and different system dimensionality.
+      RCD = 0 expected (both N=2). TBS_norm requires sweep_range alignment.
+      Φ expected partially_admissible.
+    distortion_metrics_planned:
+      - name: "RCD"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md#rcd"
+        expected_value: "0  (both N=2)"
+      - name: "TBS"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md#tbs"
+        expected_value: "TBD after pipeline — θ* positions differ in normalized range"
+      - name: "Phi"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md#phi"
+        expected_value: "partially_admissible"
+
+provenance:
+  sources:
+    - type: "experiment_doc"
+      ref: "simulate_arw_emergence.py"
+      pointer: "sim_metrics(K=...) — K-sweep with 12 values"
+    - type: "note"
+      ref: "docs/advanced/arw_emergence_bc_relative.md"
+      pointer: "Section 4: ARW Emergence definition"
+    - type: "note"
+      ref: "docs/advanced/emergence/epsilon_induced_relational_emergence.md"
+      pointer: "Core Statement"
+  owners:
+    - role: "ScopeFormalizer"
+      name: "session-2026-03-18"
+  links:
+    case_record_id: "CASE-20260318-0004"
+    experiment_doc: "cases/CASE-20260318-0004/results/raw/sweep_results.csv"

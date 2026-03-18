@@ -5,7 +5,6 @@
 case_id: CASE-20260315-0005
 system: "Multi-Link-Pendel with joint damping (γ-sweep)"
 domain: DS
-bc_class: Dissipation
 
 bc_class:
   primary: Dissipation

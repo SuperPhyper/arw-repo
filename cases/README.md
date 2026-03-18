@@ -48,6 +48,7 @@ CASE-YYYYMMDD-####/
 | [CASE-20260315-0008](CASE-20260315-0008/) | Pitchfork bifurcation (μ-sweep) | Symmetry_Breaking | DS | pending |
 | [CASE-20260315-0009](CASE-20260315-0009/) | Stochastic Kuramoto (σ-sweep) | Stochastic_BC | DS | pending |
 | [CASE-20260315-SOC1](CASE-20260315-SOC1/) | Shame interaction regime | Restriction | SOC | no_go (Pre-Screening blocked) |
+| [CASE-20260318-0004](CASE-20260318-0004/) | Two coupled Stuart-Landau oscillators (K-sweep) | Coupling | DS | in_progress (sim data complete, pipeline pending) |
 
 **BC coverage:** All 7 classes covered — Coupling, Restriction, Dissipation, Forcing, Aggregation, Symmetry_Breaking, Stochastic_BC
 

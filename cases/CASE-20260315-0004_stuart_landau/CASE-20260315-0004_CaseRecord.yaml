@@ -38,19 +38,19 @@ related_cases:
       would be first empirical test of this open question.
 
 artifact_registry:
-  - path: cases/CASE-20260315-0004/ScopeSpec.yaml
+  - path: cases/CASE-20260315-0004_stuart_landau/CASE-20260315-0004_ScopeSpec.yaml
     status: complete
-  - path: cases/CASE-20260315-0004/BCManifest.yaml
+  - path: cases/CASE-20260315-0004_stuart_landau/CASE-20260315-0004_BCManifest.yaml
     status: complete
-  - path: cases/CASE-20260315-0004/CaseRecord.yaml
+  - path: cases/CASE-20260315-0004_stuart_landau/CASE-20260315-0004_CaseRecord.yaml
     status: complete
-  - path: cases/CASE-20260315-0004/ScopeSpec_signature_first.md
+  - path: cases/CASE-20260315-0004_stuart_landau/CASE-20260315-0004_ScopeSpec_signature_first.md
     status: complete
-  - path: cases/CASE-20260315-0004/results/partition/PartitionResult.json
+  - path: cases/CASE-20260315-0004_stuart_landau/results/partition/PartitionResult.json
     status: pending
-  - path: cases/CASE-20260315-0004/results/partition/Invariants.json
+  - path: cases/CASE-20260315-0004_stuart_landau/results/partition/Invariants.json
     status: pending
-  - path: cases/CASE-20260315-0004/audits/
+  - path: cases/CASE-20260315-0004_stuart_landau/audits/
     status: pending
 
 open_questions:

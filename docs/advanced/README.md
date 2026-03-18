@@ -33,6 +33,10 @@ ARW interpretation of emergence as scope transition.
 | [emergence_scope_transition.md](emergence_scope_transition.md) | Emergence as transition between descriptive scopes |
 | [emergence_and_latent_degrees_of_freedom.md](emergence_and_latent_degrees_of_freedom.md) | How latent degrees of freedom drive emergence |
 | [emergent_solution_space.md](emergent_solution_space.md) | Structure of viable behaviors at a new scope |
+| [arw_emergence_bc_relative.md](arw_emergence_bc_relative.md) | ARW emergence as BC-relative observable collapse with relational persistence (formal definition) |
+| [bc_relative_observable_indistinguishability.md](bc_relative_observable_indistinguishability.md) | BC-relative notion of observable indistinguishability; direction-dependent collapse |
+| [epsilon_induced_scope_family.md](epsilon_induced_scope_family.md) | Scopes as ε-parameterized families; trajectories through resolution space |
+| [epsilon_induced_relational_emergence.md](epsilon_induced_relational_emergence.md) | Minimal formal case: Π_local collapses, Π_rel persists under ε |
 
 ## Resolution Threshold (ε)
 

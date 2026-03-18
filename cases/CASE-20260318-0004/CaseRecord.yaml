@@ -1,0 +1,157 @@
+# CaseRecord — CASE-20260318-0004
+# System: Two coupled Stuart-Landau oscillators (K-sweep)
+# BC Class: Coupling (primary)
+# Status: in_progress — sweep data available, pipeline artifacts pending
+
+schema_version: "0.2"
+id: "CASE-20260318-0004"
+title: "Coupled Stuart-Landau — relational emergence window (K-sweep)"
+phase: "1"
+system: "stuart_landau_coupled"
+status: "in_progress"
+created_at: "2026-03-18"
+updated_at: "2026-03-18"
+
+description: >
+  Two coupled Stuart-Landau oscillators (Hopf normal form) with diffusive coupling K.
+  K-sweep across [0.01, 0.12] with 12 points. Primary observable: PLV (phase-locking
+  value). Secondary: amp_asym (local amplitude asymmetry). The case demonstrates and
+  quantifies ARW relational emergence: amp_asym collapses under ε = 0.09 for all K,
+  while PLV cleanly distinguishes two regimes (PLV ≈ 0.16 vs PLV = 1.0).
+  Emergence window confirmed: ε ∈ [0.082, 0.805], width = 0.723.
+  Lambda-robustness sweep (13 λ-values) confirms Δ-stability for λ ∈ [0.4, 1.3].
+
+artifacts:
+  scope_spec:
+    id: "SCOPE-20260318-0004"
+    path: "ScopeSpec.yaml"
+    status: "complete"
+
+  bc_manifest:
+    id: "BCM-20260318-0004"
+    path: "BCManifest.yaml"
+    status: "complete"
+
+  partition_result:
+    id: "PIPE-20260318-0004"
+    path: "results/partition/PartitionResult.json"
+    status: "pending"
+    produced_by: "pipeline.extract_partition"
+    note: "Raw sweep data available at results/raw/sweep_results.csv"
+
+  invariants:
+    path: "results/partition/Invariants.json"
+    status: "pending"
+    produced_by: "pipeline.invariants"
+    note: "sweep_range: [0.01, 0.12] — required for TBS_norm"
+
+  epsilon_sweep:
+    path: "results/partition/EpsilonSweep.json"
+    status: "pending"
+    produced_by: "pipeline.epsilon_sweep"
+    note: >
+      Emergence window [0.082, 0.805] already analytically determined from sim data.
+      Formal epsilon_sweep will confirm plateau structure.
+
+  lambda_robustness:
+    path: "results/raw/lambda_robustness.csv"
+    status: "complete"
+    note: "13 lambda-values [0.4, 1.6]; confirms Δ-stability for λ ∈ [0.4, 1.3]"
+
+  sim_source:
+    path: "results/raw/sweep_results.csv"
+    status: "complete"
+    produced_by: "simulate_arw_emergence.py"
+    note: "12 K-values; all metrics: plv, amp_asym, freq_gap, corr, meanA1, meanA2"
+
+  figures:
+    - path: "figures/metrics_vs_coupling.png"
+      status: "complete"
+      description: "PLV, amp_asym, freq_gap vs K with ε = 0.09 reference line"
+    - path: "figures/epsilon_window.png"
+      status: "complete"
+      description: "ARW emergence window: local collapse threshold and relational threshold"
+    - path: "figures/bc_sweep_lambda.png"
+      status: "complete"
+      description: "BC-sweep λ: amp_asym and PLV for weak K and strong K across λ"
+    - path: "figures/time_series_weak.png"
+      status: "complete"
+      description: "Time series K=0.03 (incoherent, pre-transition)"
+    - path: "figures/time_series_strong.png"
+      status: "complete"
+      description: "Time series K=0.08 (phase-locked, post-transition)"
+
+  transfer_report:
+    path: "transfer/TransferReport.md"
+    status: "pending"
+    produced_by: "pipeline.transfer"
+    counterpart_case_id: "CASE-20260311-0001"
+
+  failure_audit:
+    path: "audits/FailureAudit_Phase1.md"
+    status: "pending"
+    produced_by: "pipeline.audit_helpers"
+
+go_nogo:
+  criterion: >
+    Pipeline recovers N=2 partition with K* ∈ [0.05, 0.07] (interior of sweep).
+    PLV sufficient observable (span >> 2ε). amp_asym insufficient (span << 2ε).
+    Emergence window ε ∈ (0.082, 0.805) confirmed.
+  measurable_test: >
+    PartitionResult.json: N=2, theta_star ≈ 0.055–0.06.
+    Invariants.json: sweep_range=[0.01, 0.12] present.
+    EpsilonSweep: plateau of N=2 confirmed for ε ∈ [0.082, 0.805].
+  threshold: "N=2 stable, K* interior, emergence window width > 0.5"
+  decision: "pending"
+  decision_date: null
+  decision_notes: >
+    Analytical pre-assessment from simulation data strongly suggests go.
+    F1, F2, F3, F4 all not triggered empirically (see ScopeSpec.yaml).
+    Formal go_nogo requires PartitionResult.json from pipeline.
+
+links:
+  experiment_doc: "cases/CASE-20260318-0004/results/raw/sweep_results.csv"
+  bc_doc: "docs/bc_taxonomy/boundary_condition_classes.md"
+  related_cases:
+    - CASE-20260311-0001   # Kuramoto — same BC class (Coupling), transfer target
+    - CASE-20260315-0004   # Stuart-Landau single osc — same system, Dissipation BC
+  emergence_docs:
+    - docs/advanced/arw_emergence_bc_relative.md
+    - docs/advanced/bc_relative_observable_indistinguishability.md
+    - docs/advanced/emergence/epsilon_induced_relational_emergence.md
+    - docs/advanced/epsilon_induced_scope_family.md
+
+assignments:
+  scope_spec: "A1"
+  bc_manifest: "A2"
+  partition_result: "A3"
+  invariants: "A3"
+  transfer_report: "A4"
+  failure_audit: "A5"
+  orchestrator: "A0"
+
+scientific_value:
+  primary: >
+    First empirical ARW emergence case. Demonstrates and quantifies the emergence
+    window (ε-interval where local collapse precedes relational collapse).
+    Provides numerical grounding for the theoretical definitions in
+    arw_emergence_bc_relative.md and epsilon_induced_relational_emergence.md.
+  secondary: >
+    First Coupling BC case with PLV as primary observable (vs r_ss in Kuramoto).
+    Lambda-robustness sweep provides first Δ-stability evidence for emergence condition.
+    Transfer to CASE-0001 (Kuramoto) will be first same-BC cross-system comparison.
+  open_questions:
+    - id: "Q-EMERGE-01"
+      question: >
+        Is the emergence window width (0.723) system-specific or does it generalize?
+        Does it scale with the frequency gap (ω2-ω1 = 0.08)?
+    - id: "Q-EMERGE-02"
+      question: >
+        The lambda-robustness breaks at λ > 1.3 for weak K.
+        Does this define a 2D emergence region in (K, λ)-space?
+        What is the boundary curve K*(λ)?
+    - id: "Q-EMERGE-03"
+      question: >
+        Transfer to Kuramoto (CASE-0001): does PLV-based partition transfer
+        to r_ss-based partition? If yes: relational observables may be more
+        transferable than local observables across coupled oscillator systems.
