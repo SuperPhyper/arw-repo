@@ -112,8 +112,9 @@ Different scopes produce different regime structures. The framework develops too
 | [docs/overview/novelty_and_projected_value.md](docs/overview/novelty_and_projected_value.md) | What makes ARW distinctive |
 | [docs/overview/limitations_and_open_questions.md](docs/overview/limitations_and_open_questions.md) | Honest assessment of open problems |
 | [docs/overview/roadmap.md](docs/overview/roadmap.md) | Research phases and planned development |
-| [docs/notes/open_questions.md](docs/notes/open_questions.md) | 14 open research questions across formalization, empirics, method |
-| [docs/notes/](docs/notes/README.md) | Research journal and literature links |
+| [docs/notes/open_questions.md](docs/notes/open_questions.md) | Open research questions (Q1–Q16 + Q_NEW_1–12) |
+| [docs/notes/research_journal.md](docs/notes/research_journal.md) | Research journal (incl. session 2026-03-18) |
+| [docs/INDEX.md](docs/INDEX.md) | **Full searchable index of all documentation** |
 
 ---
 
@@ -156,13 +157,20 @@ ARW / ART Framework
 │   └── TransitionTrials.schema.json
 │
 ├── cases/                          ← One directory per experiment instance
-│   ├── CASE-20260311-0001/         ← Kuramoto Phase 1 (end-to-end complete)
-│   └── CASE-20260311-0002/         ← Pendulum Phase 1
+│   ├── CASE-20260311-0001/         ← Kuramoto κ-sweep (go_nogo: pending / F1: sweep_refinement)
+│   ├── CASE-20260311-0002/         ← Multi-Link-Pendel κ-sweep (go_nogo: go)
+│   ├── CASE-20260311-0003/         ← Doppelpendel E-sweep (go_nogo: go)
+│   ├── CASE-20260318-0004/         ← Coupled Stuart-Landau K-sweep (go_nogo: pending; first emergence case)
+│   └── CASE-20260315-{0004–0009,SOC1}/  ← Signature-first cases (pipeline not yet run)
 │
 ├── data/                           ← Data storage (blobs/)
 ├── analysis/                       ← Analysis outputs (placeholder)
 ├── papers/                         ← Paper drafts (placeholder)
 ├── simulations/                    ← Simulation code (placeholder)
+│
+├── archive/                        ← Superseded/completed artifacts (read-only)
+│   ├── sessions/                   ← Session working docs (merged into canonical files)
+│   └── transfers/                  ← Completed transfer analysis index
 │
 ├── LICENSE                         ← MIT License
 └── README.md                       ← This file

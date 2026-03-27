@@ -114,3 +114,61 @@ Is resonance a special case of coupling BC, or a distinct mechanism?
 Tentative answer: resonance is the *mechanism* by which coupling BC generates regime structure —
 coupling constrains which frequencies/patterns can accumulate; resonance is the accumulation itself.
 This needs formalization.
+
+---
+
+## Session 2026-03-18: Observable Decomposition
+
+**Context:** Formalized observables as compositions of basis operations
+traceable to BC classes. Conducted for: r_ss (Kuramoto), var_rel, lambda_proxy
+(double pendulum), σ²(θ) (Kuramoto).
+
+**Finding 1 — Pre-scope substrate** [claim]
+Every non-trivial observable π carries a hierarchical substrate (~25 assumptions
+for r_ss across levels A0–A6). Exactly one (A5.2: phase ψ discarded) is a scope decision.
+All others are pre-scope. Reference: `docs/advanced/observable_decomposition.md`
+
+**Finding 2 — Observable range R(π)** [claim]
+The parameter-space subset where all substrate assumptions hold under Δ defines R(π).
+Z(π) is the exclusion zone — failure of the substrate, not the scope.
+```
+R(r_ss)         = { κ ≪ κ_c } ∪ { κ ≫ κ_c }       Z: κ ≈ κ_c
+R(var_rel)      = { E < E_diff, |Δθ| ≪ 2π }        Z: diffusion + phase wrapping
+R(lambda_proxy) = { λ_true ≫ 0 } ∪ { λ_true ≪ 0 }  Z: transitions, weak chaos
+R(σ²(θ))        = { σ(θ) ≪ π, P(θ) unimodal }      Z: Z_shared + wrap + multi
+```
+Reference: `docs/glossary/observable_range.md`
+
+**Finding 3 — BC structure of observables** [claim]
+All four observables are Restriction-dominated and blind to higher moments of P(θ,t):
+r_ss = D∘R³∘A; var_rel = S∘A²∘R³; lambda_proxy = Approx∘D³∘R²; σ²(θ) = D∘A²∘R³.
+
+**Finding 4 — S¹ embedding as two-layer structure** [interpretation]
+φ: R → R/2πZ carries a topological layer (winding numbers as latent DOF) and an algebraic
+layer (group structure). Both are meta-assumptions about X, prior to scope. (→ Q_NEW_1)
+
+**Finding 5 — lambda_proxy structurally insufficient by construction** [claim]
+A6.1 and A6.2 are violated by construction. Explains empirical insufficiency in CASE-0002/0003
+from first principles, not just data.
+
+**Finding 6 — F0 as new falsification category** [hypothesis]
+F0: R(π) ∩ B ≠ B, severity: observable_replacement. Distinct from F1 (span) and scope
+rejection (F2–F4). Not yet integrated into the formal falsification schema. (→ Q_NEW_2)
+
+**Finding 7 — Z_shared as dynamic universal zone** [claim]
+∀ π ∈ E: Z(π) ⊇ Z_shared. No scope with π ∈ E can have κ_c in its observable range.
+Reference: `docs/advanced/observable_consequences.md` — K1
+
+**Finding 8 — Phase transition κ_c is a scope transition, not a regime boundary** [interpretation]
+θ* ≈ 1.475 (CASE-0001) is more precisely a scope transition (observable leaves R(π)) than
+a regime boundary. CASE-0001 remains valid; framework needs formal distinction. (→ Q_NEW_10)
+
+**Finding 9 — Φ measures observable transfer, not system transfer** [claim]
+Φ = f(S_A, S_B), not f(System_A, System_B). Transfer reports should document observable BC
+structures of both scopes. Reference: `docs/advanced/observable_consequences.md` — K4
+
+**Finding 10 — Fluctuation observables as structural solution** [hypothesis]
+χ = ∂r_ss/∂κ diverges at κ_c rather than collapsing — R(χ) ∋ κ_c. First candidate of a new
+observable class suited for phase transitions. High priority as CASE-0001 extension. (→ Q_NEW_12)
+
+Open questions raised in this session: see Q_NEW_1–12 in `docs/notes/open_questions.md`.

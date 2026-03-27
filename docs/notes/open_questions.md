@@ -163,3 +163,90 @@ Does incorporating Morse graph structure into CaseRecord artifacts add value?
 See also: docs/notes/arw_dsgrn_dialogue_plan.md, docs/notes/literature_links.md
 (Cummins et al. 2018).
 Status: open
+
+---
+
+## Observable Decomposition & Pre-Scope Structure
+*(Added: session 2026-03-18)*
+
+**Q_NEW_1 — Status of meta-assumptions about X**
+The algebraic and topological structure of X (e.g. group structure of S¹,
+differentiability of the flow) is a prerequisite for the well-definedness of many
+observables — but it does not appear in the scope tuple S = (B, Π, Δ, ε).
+Does the structure of X belong to (a) B, (b) an independent meta-layer below S,
+or (c) the ART layer (domain-specific, not part of ARW-Core)?
+Reference: `docs/advanced/observable_decomposition.md` — S¹ embedding in r_ss.
+Status: open
+
+**Q_NEW_2 — F0: integration into falsification schema**
+Using an observable outside its range R(π) is neither observable insufficiency (F1)
+nor scope rejection (F2–F4). Proposal: F0: R(π) ∩ B ≠ B, severity: observable_replacement.
+Sub-questions: Is F0 a subtype of F1 or categorically distinct? How is R(π) operationally
+determined? Must F0 be entered in ScopeSpec.yaml?
+Reference: `docs/glossary/observable_range.md`.
+Status: open
+
+**Q_NEW_3 — Latent degrees of freedom: B-extension vs. new observable**
+Every Restriction operation generates a latent DOF. Under what criteria should a latent
+DOF be (a) a new observable π' with its own scope S', (b) incorporated into B, or (c) ignored?
+Candidates: ψ(t) (rotation phase), σ²(θ), w_topo, λ_conv, coupling geometry, Lyapunov spectrum.
+Reference: `docs/advanced/latent_degrees_of_freedom.md`.
+Status: open — next planned analysis step
+
+**Q_NEW_4 — Product scope: empirical tractability**
+The construction S_joint = S_1 ×_B S_2 is admissible. Does it carry a robust ε-plateau?
+How does ε_joint relate to ε_1 and ε_2?
+Status: open — tractable only after Q_NEW_3 is resolved
+
+**Q_NEW_5 — w_min as criterion for robust discreteness**
+Complete formulation needed: "Effectively discrete ↔ ∃ [ε_min, ε_max] with w > w_min
+and N(ε) = const and partition stable under Δ." What is w_min? Is there an ARW-internal
+criterion for minimum plateau width?
+Status: open
+
+**Q_NEW_6 — Completeness of regime partition relative to P(θ, t)**
+Are there regime differences exclusively visible in the full phase distribution P(θ, t)
+and invisible to all current (moment-based) observables? Formally: P_S = R_true or P_S ⊊ R_true?
+Reference: `docs/advanced/latent_degrees_of_freedom.md` — LF-SHARED-A.
+Status: open
+
+**Q_NEW_7 — Symmetry breaking as partition property**
+Symmetry Breaking appears for no latent DOF in the current BC mapping. Hypothesis (a): it is
+an emergent phenomenon at the level of the regime partition (bifurcation structure), not a
+single-observable property. Hypothesis (b): it is encoded in P(θ,t) distribution asymmetries.
+Reference: `docs/advanced/latent_degrees_of_freedom.md` — Finding 2.
+Status: open
+
+**Q_NEW_8 — σ²(θ) as complementary observable to r_ss**
+Finding (answered): σ²(θ) shares Z_shared with r_ss entirely — no genuine complementarity at κ_c.
+σ²(θ) has additional own exclusion zones (Z_wrap, Z_multi) not shared with r_ss.
+Reference: `docs/advanced/observable_decomposition.md` — σ²(θ) section.
+Status: partially answered
+
+**Q_NEW_9 — BC class: system property or scope property?**
+Observable decomposition shows that BC classes appear in the observable itself (r_ss is
+Restriction-dominated regardless of system). Is BC class in BCManifest (A) a property of
+the system or (B) of the scope? Consequence of (B): BCManifest needs separate system BC
+and observable BC; Φ decomposes into Φ_obs and Φ_sys.
+Reference: `docs/advanced/observable_consequences.md` — K5.
+Status: open — foundational question for BC taxonomy program
+
+**Q_NEW_10 — Formal distinction: regime boundary vs. scope transition**
+Does ARW need formal definitions distinguishing θ* (regime boundary within R(π))
+from a scope transition at Z(π)? How is a scope transition documented in CaseRecord?
+Reference: `docs/advanced/observable_consequences.md` — K3.
+Status: open
+
+**Q_NEW_11 — Transfer decomposition: Φ_obs × Φ_sys**
+Can Φ be decomposed into Φ_obs(observable-BC_A, observable-BC_B) × Φ_sys(System_A, System_B)?
+Operational approach: compare two scopes of the same system with different observables.
+Requires a new case with two observables on the same system (CASE-0001 with r_ss vs. σ²(θ)).
+Reference: `docs/advanced/observable_consequences.md` — K4.
+Status: open
+
+**Q_NEW_12 — χ = ∂r_ss/∂κ as new observable for CASE-0001**
+The susceptibility χ diverges at κ_c (R(χ) ∋ κ_c), unlike r_ss. Does a scope with Π = {χ}
+yield a different regime partition? Is χ the first representative of a fluctuation-observable
+class in ARW? High priority as CASE-0001 extension.
+Reference: `docs/advanced/observable_consequences.md` — K6.
+Status: open — high priority
