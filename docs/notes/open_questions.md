@@ -306,3 +306,19 @@ Conjecture: DR is high iff the observable has at least one dense cluster
 A purely linear/gradual observable can have large span but low DR.
 Reference: `docs/notes/research_journal.md` session 2026-03-28, Finding 4.
 Status: open
+
+**Q_NEW_18 — Non-axis-aligned regime boundaries as BC interaction signatures**
+In the 2D cover height analysis of CASE-0002 (κ × γ), cover-height contours
+are diagonal in the (κ, γ) plane — not parallel to either BC axis. This indicates
+that the regime boundary is a function of both BCs jointly, not independently.
+Formally: the separation condition Δ is a constraint on (BC₁, BC₂) jointly,
+not a product condition Δ₁ × Δ₂.
+Open questions:
+1. Does the ARW scope formalism currently permit joint-BC separation conditions?
+2. If not, should Δ be extended to allow interaction terms (e.g. Δ = {κ·γ > c})?
+3. How does the BC interaction structure relate to the BC class taxonomy
+   (coupling vs. restriction vs. modulation)?
+4. Can the degree of BC interaction be quantified from the cover-height field
+   (e.g. angle of contour lines from axis-aligned)?
+Reference: `docs/notes/research_journal.md` session 2026-03-28 (II), Finding 4.
+Status: open

@@ -228,3 +228,62 @@ Figures:
 - `figures/cover_height_dr_comparison.png` — DR comparison bar chart
 
 Reference: `docs/notes/research_journal.md` session 2026-03-28.
+
+---
+
+## 2D BC Sweep Analysis: Three Cases (2026-03-28)
+
+Cover height was extended to 2D BC grids for CASE-0002, CASE-0003, and CASE-0004,
+sweeping two BCs simultaneously.
+
+### Setup
+
+Self-contained RK4 simulations (no external dependencies) were run for:
+- CASE-0002 Pendulum: κ ∈ [0, 10] × γ ∈ [0.02, 0.4] (300 pts)
+- CASE-0003 Doppelpendel: E ∈ [0.5, 30 J] × m₂ ∈ [0.3, 2.0 kg] (308 pts)
+- CASE-0004 Stuart-Landau: K ∈ [0.005, 0.15] × λ ∈ [0.3, 1.5] (252 pts)
+
+Cover height was computed identically to the 1D case (the 2D grid is flattened
+to a 1D array of observable values). Results are then projected back to the
+2D BC plane for visualization.
+
+### Results
+
+| Case      | Observable     | Class | DR 2D  |
+|-----------|----------------|-------|--------|
+| CASE-0002 | var_rel        | S     | 11.9%  |
+| CASE-0002 | lambda_proxy   | I     | 17.5%  |
+| CASE-0003 | var_rel        | S     | 23.3%  |
+| CASE-0003 | lambda_proxy   | I     | 89.3%  |
+| CASE-0004 | PLV            | S     | 136.1% |
+| CASE-0004 | amp_asym       | I     | 14.2%  |
+
+CASE-0004 remains the clearest discriminator (10× DR ratio). The three-pattern
+diagnosis from the 1D analysis holds in 2D.
+
+### New finding: BC interaction structure
+
+The 2D analysis reveals something the 1D sweeps cannot: whether regime
+boundaries are axis-aligned or diagonal in BC space.
+
+In CASE-0002, cover-height contours run diagonally across the (κ, γ) plane.
+This indicates that the regime boundary is a joint condition on κ and γ —
+neither BC independently determines which regime the system is in. The regime
+depth function h(κ, γ) is not separable as h₁(κ) + h₂(γ).
+
+In CASE-0004, PLV contours trace the theoretical synchronization boundary
+K_c ≈ λ — a linear relationship between K and λ that is invisible in any
+1D sweep at fixed λ.
+
+This BC interaction detection is a capability unique to multi-dimensional
+BC sweeps combined with cover height visualization.
+
+Figures:
+- `figures/cover2d_0002_*` — CASE-0002 κ×γ panels and overlays
+- `figures/cover2d_0003_*` — CASE-0003 E×m₂ panels and overlays
+- `figures/cover2d_0004_*` — CASE-0004 K×λ panels and overlays
+- `figures/cover2d_dr_comparison.png` — cross-case DR comparison
+
+Figure descriptions: `docs/figures/cover_2d_all_cases.md`
+Implementation: `Simulationen/sweep_2d_all_cases.py`, `Simulationen/cover_2d_all_cases.py`
+Open questions: Q_NEW_18 in `docs/notes/open_questions.md`

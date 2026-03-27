@@ -1,0 +1,38 @@
+{
+  "0002_var_rel": {
+    "case": "0002",
+    "observable": "var_rel",
+    "sufficient": true,
+    "dynamic_range_pct": 11.944814766528864
+  },
+  "0002_lambda_proxy": {
+    "case": "0002",
+    "observable": "lambda_proxy",
+    "sufficient": false,
+    "dynamic_range_pct": 17.52634495598955
+  },
+  "0003_var_rel": {
+    "case": "0003",
+    "observable": "var_rel",
+    "sufficient": true,
+    "dynamic_range_pct": 23.26408890379475
+  },
+  "0003_lambda_proxy": {
+    "case": "0003",
+    "observable": "lambda_proxy",
+    "sufficient": false,
+    "dynamic_range_pct": 89.25800064646162
+  },
+  "0004_plv": {
+    "case": "0004",
+    "observable": "plv",
+    "sufficient": true,
+    "dynamic_range_pct": 136.10597400858572
+  },
+  "0004_amp_asym": {
+    "case": "0004",
+    "observable": "amp_asym",
+    "sufficient": false,
+    "dynamic_range_pct": 14.243124919306563
+  }
+}

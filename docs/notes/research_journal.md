@@ -386,3 +386,115 @@ structure creates a particularly sharp contrast in observable space.
 
 Open question: see Q_NEW_16 in `docs/notes/open_questions.md`.
 
+---
+
+## Session 2026-03-28 (II): 2D BC Sweep Cover Height — CASE-0002/0003/0004
+
+**Context:** Extended the observable-space cover height analysis from 1D BC sweeps to 2D
+BC grids. Self-contained RK4 simulations (no scipy dependency) were run for three cases,
+sweeping two BCs simultaneously. Cover height analysis identical to 1D method but applied
+to the flattened 2D sweep data; results are then visualized as 2D scatter plots and
+heatmap overlays.
+
+**Sweep grids:**
+- CASE-0002 Pendulum: κ ∈ [0, 10] (20 pts) × γ ∈ [0.02, 0.4] (15 pts) = 300 points
+- CASE-0003 Doppelpendel: E ∈ [0.5, 30] (22 pts) × m₂ ∈ [0.3, 2.0] (14 pts) = 308 points
+- CASE-0004 Stuart-Landau: K ∈ [0.005, 0.15] (18 pts) × λ ∈ [0.3, 1.5] (14 pts) = 252 points
+
+---
+
+### Finding 1 — 2D cover height confirms CASE-0004 discrimination [claim]
+
+DR results from 2D sweeps:
+
+| Case       | Observable     | Class | DR (2D) | DR (1D, prev.) |
+|------------|----------------|-------|---------|-----------------|
+| CASE-0002  | var_rel        | S     | 11.9%   | 25.5%           |
+| CASE-0002  | lambda_proxy   | I     | 17.5%   | 55.3%           |
+| CASE-0003  | var_rel        | S     | 23.3%   | ~20%            |
+| CASE-0003  | lambda_proxy   | I     | 89.3%   | ~89%            |
+| CASE-0004  | PLV            | S     | 136.1%  | 126.3%          |
+| CASE-0004  | amp_asym       | I     | 14.2%   | 18.4%           |
+
+CASE-0004 remains the clearest discriminator: PLV DR (136%) vs. amp_asym DR (14%),
+a 10× ratio. The 2D sweep confirms the 1D result with higher BC-space coverage.
+
+---
+
+### Finding 2 — 2D cover height reveals spatial structure the 1D sweep cannot [observation]
+
+In the 2D setting, the height field h(BC₁, BC₂) is a 2D surface rather than a
+1D profile. This exposes regime boundaries as 2D curves in (BC₁, BC₂) space.
+
+Key observations from overlays:
+
+**CASE-0002 var_rel:** The cover-height z-score shows a smooth gradient across
+the κ-γ plane. The transition boundary is approximately diagonal — higher damping γ
+requires higher coupling κ to maintain coordinated motion. The 2D overlay reveals
+this coupling between the two BCs, invisible in either 1D sweep alone.
+
+**CASE-0003 var_rel:** The low-energy region (E < 5 J) shows high cover height
+(deep regime interior), transitioning sharply to the diffusion-dominated regime
+at higher E. The m₂ axis has weaker influence, confirming that E is the primary BC.
+
+**CASE-0004 PLV:** The phase-locking transition appears as a curved boundary in
+(K, λ) space. Higher λ requires higher K for synchronization — consistent with the
+Stuart-Landau analytical prediction K_c ≈ λ. The 2D cover height maps this
+transition boundary more precisely than the 1D K-sweep.
+
+**CASE-0004 amp_asym:** Flat cover height throughout the (K, λ) plane, confirming
+F1 failure (span near-zero) regardless of which BC combination is probed.
+
+---
+
+### Finding 3 — CASE-0003 lambda_proxy anomaly persists in 2D [observation]
+
+lambda_proxy shows DR = 89.3% in the 2D sweep, consistent with its high DR in
+the 1D sweep (~89%). The 2D overlay shows the high-DR profile is structurally
+different from var_rel: the height field is patchy and non-monotone rather than
+smooth. This confirms the Pattern B diagnosis (F0 structural failure: noisy
+observable masquerading as high-DR sufficient).
+
+This is the most important cross-check from the 2D analysis: the two insufficient
+observables (lambda_proxy and amp_asym) display opposite DR signatures (high vs. low),
+but both produce structurally distinct cover-height fields relative to the sufficient
+observables in the same systems. DR alone still does not discriminate; spatial profile
+structure does.
+
+---
+
+### Finding 4 — BC interaction structure visible only in 2D [claim]
+
+In the 2D var_rel overlay for CASE-0002, cover-height contours are not axis-aligned.
+They run diagonally across the (κ, γ) plane, indicating that κ and γ interact:
+the position of the regime boundary depends on both BCs jointly, not independently.
+
+This is a structural observation that no 1D BC sweep can reveal. 2D cover height
+analysis is therefore a prerequisite for detecting BC interaction effects.
+
+**Consequence for ARW:** The scope tuple S = (B, Π, Δ, ε) should in principle
+permit BC interactions within Δ. Diagonal regime boundaries are the empirical
+signature of Δ being a joint condition on {BC₁, BC₂} rather than independent
+conditions on each BC.
+
+Open question: see Q_NEW_18 in `docs/notes/open_questions.md`.
+
+---
+
+Figures:
+- `figures/cover2d_0002_varrel_panel.png` — κ×γ observable field, z-score, min-subtracted
+- `figures/cover2d_0002_varrel_overlay.png` — height contours on observable heatmap
+- `figures/cover2d_0002_lambdaproxy_panel.png` — λ-proxy insufficient observable 2D
+- `figures/cover2d_0002_lambdaproxy_overlay.png`
+- `figures/cover2d_0003_varrel_panel.png` — E×m₂ sufficient observable 2D
+- `figures/cover2d_0003_varrel_overlay.png`
+- `figures/cover2d_0003_lambdaproxy_panel.png` — E×m₂ insufficient observable 2D
+- `figures/cover2d_0003_lambdaproxy_overlay.png`
+- `figures/cover2d_0004_plv_panel.png` — K×λ PLV sufficient 2D
+- `figures/cover2d_0004_plv_overlay.png`
+- `figures/cover2d_0004_ampasym_panel.png` — K×λ amp_asym insufficient 2D
+- `figures/cover2d_0004_ampasym_overlay.png`
+- `figures/cover2d_dr_comparison.png` — cross-case DR bar chart
+
+Implementation: `Simulationen/sweep_2d_all_cases.py` (RK4), `Simulationen/cover_2d_all_cases.py` (analysis)
+
