@@ -250,3 +250,37 @@ yield a different regime partition? Is χ the first representative of a fluctuat
 class in ARW? High priority as CASE-0001 extension.
 Reference: `docs/advanced/observable_consequences.md` — K6.
 Status: open — high priority
+
+---
+
+## Observable-Space Cover Height
+*(Added: session 2026-03-27)*
+
+**Q_NEW_13 — Cover-height maxima vs. ε-plateau correspondence**
+Observable-space cover height h(b_i) accumulates weight across all ε scales.
+Open question: do local maxima of h in BC space correspond systematically to
+stable ε-plateaus in the standard N(ε) curve of the ARW pipeline?
+If yes, h could serve as a pre-filter for ε selection — pointing to the
+BC-space regions where a plateau is likely, before running the full ε-sweep.
+If no, the two methods are genuinely complementary without formal correspondence.
+Empirical test: compare h-maxima positions with plateau regions from
+CASE-20260311-0001 (Kuramoto κ-sweep).
+Reference: `docs/advanced/observable_space_cover_height.md`
+Status: open
+
+**Q_NEW_14 — Cover height for multi-observable scopes**
+The current method uses a single observable to define the sort order and
+cover membership. For Π = {π₁, π₂}, a joint distance metric on the product
+observable space is needed. Candidates: L2 norm, L∞ norm, weighted combination.
+Does the choice of metric affect which regimes are visible?
+Is there a canonical metric derivable from the scope tuple structure?
+Reference: `docs/advanced/observable_space_cover_height.md` — Limitations §3.
+Status: open
+
+**Q_NEW_15 — Cover height as scope-depth indicator: formal criterion**
+The interpretation of high h as "deep inside a regime" is informal.
+Can this be made precise? Candidate formalization: h(b_i) is a measure
+of the ε-interval width over which b_i belongs to a cover of size ≥ k,
+integrated over k. This would connect h to the plateau width w in the
+ε-sweep (Q_NEW_5) and to the scope robustness condition under Δ.
+Status: open

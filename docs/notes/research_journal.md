@@ -172,3 +172,107 @@ structures of both scopes. Reference: `docs/advanced/observable_consequences.md`
 observable class suited for phase transitions. High priority as CASE-0001 extension. (→ Q_NEW_12)
 
 Open questions raised in this session: see Q_NEW_1–12 in `docs/notes/open_questions.md`.
+
+---
+
+## Session 2026-03-27: 2D BC Sweep and Observable-Space Cover Height
+
+**Context:** Kuramoto model (CASE-20260311-0001 lineage). New simulations in
+`Simulationen/` sweep two boundary conditions simultaneously (κ, σ) and introduce
+a novel method for visualizing scope granularity: observable-space interval covers.
+
+---
+
+### Finding 1 — 2D BC sweep reveals diagonal regime boundary [claim]
+
+A full (κ × σ) sweep was conducted: κ ∈ [0, 3] (40 points), σ ∈ [0.4, 2.0]
+(28 points), N = 400 oscillators, T = 150.0, observable = r_ss (mean of final 20%).
+Total: 1120 simulation points.
+
+The observable field shows a clean diagonal regime boundary consistent with the
+analytical Kuramoto result κ_c = 2σ. The incoherent regime (r_ss ≈ 0) occupies
+the upper-left, the synchronized regime (r_ss → 1) the lower-right.
+
+Reference figure: `figures/kuramoto_2d_observable_heatmap.png`
+
+---
+
+### Finding 2 — BC-space interval covers are uninformative on uniform grids [claim]
+
+Interval covers were first constructed along each BC axis independently (as in
+`cover_bc_intervals_weighted.py`). The epsilon range was set to [Δb/10, Δb]
+(sub-grid). This produced < 5% variation in weighted cover height across all
+1120 points.
+
+Extending the range to [Δb/10, BC_span] (four decades, log-spaced) yielded 0.0%
+variation. Root cause: a perfectly uniform BC grid gives all points identical
+cover membership at every epsilon. BC-space covers carry no structural information
+about the observable field when the BC sampling is uniform.
+
+**Methodological implication:** Cover structures meaningful for regime analysis
+must be constructed in observable space, not BC space, when the BC grid is uniform.
+
+---
+
+### Finding 3 — Observable-space cover height as ε-marginalisation [claim]
+
+A new method was developed: all points are sorted by their r_ss value. For each ε
+in a log-spaced range [Δr/10, r_span] (200 steps), consecutive points whose r_ss
+values differ by at most ε are grouped into maximal interval covers. Each point
+accumulates weighted height = Σ (member_count − 1) over all covers and all ε levels.
+
+Result: 57% dynamic range (min = 62299, max = 117322, mean = 96527, std = 18217).
+
+This is an ε-marginalisation: instead of committing to a single ε, the height
+integrates partition structure across all scales simultaneously.
+
+Reference figure: `figures/obs_space_cover_height_panel.png`
+Reference doc: `docs/advanced/observable_space_cover_height.md`
+
+---
+
+### Finding 4 — Cover height maps regime depth, not regime identity [interpretation]
+
+When mapped back to (κ, σ) space, the observable-space cover height shows:
+
+- HIGH height → incoherent regime (r_ss ≈ 0): many BC points produce nearly
+  identical observable values → large, dense covers → high accumulated weight.
+- LOW height → synchronized regime (r_ss varying 0.5–0.99): observable is more
+  spread in value → smaller covers → lower weight.
+- INTERMEDIATE → transition zone: r_ss changes steeply → each point isolated
+  in observable space → minimum cover size.
+
+The height contour lines run approximately parallel to the regime boundary
+(κ = 2σ diagonal), confirming that height encodes distance from the transition,
+not partition identity.
+
+Reference figures: `figures/obs_height_overlay.png`, `figures/obs_space_cover_height_panel.png`
+
+---
+
+### Finding 5 — Motivation: scope granularity and invisible regimes [interpretation]
+
+The observable-space cover height was designed to make scope granularity
+operationally visible and to expose regimes that would be missed by a
+single-ε partition. A regime existing only within a narrow ε-window would
+produce a local height elevation even if no fixed-ε sweep detects a stable plateau.
+
+The method makes ε a dependent variable (integrated over) rather than a free
+parameter to be set. This is complementary to, not a replacement of, the
+ARW ε-sweep pipeline.
+
+Open question: whether cover-height maxima correspond systematically to
+stable ε-plateaus in N(ε) — see Q_NEW_13 in `docs/notes/open_questions.md`.
+
+---
+
+### Finding 6 — Visualization: z-score normalization required [claim]
+
+Raw and min-subtracted height plots of BC-space covers showed apparent structure
+but with only 2–4% variation compressed by a large DC offset. Z-score normalization
+((h − mean)/std) is required to make structural differences visible. This applies
+to any height field with a large baseline relative to its variation.
+
+Reference figure: `figures/cover_height_contrast_panel.png`
+Reference script: `Simulationen/height_contrast.py`
+
