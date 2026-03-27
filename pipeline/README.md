@@ -1,3 +1,8 @@
+---
+status: note
+layer: pipeline/
+---
+
 # Pipeline
 
 Python implementation of the ARW/ART partition extraction pipeline.

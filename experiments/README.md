@@ -1,3 +1,8 @@
+---
+status: note
+layer: experiments/
+---
+
 # Experiments
 
 Concrete ART instantiations and experimental designs.

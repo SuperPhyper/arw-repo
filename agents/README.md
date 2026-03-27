@@ -1,3 +1,8 @@
+---
+status: note
+layer: agents/
+---
+
 # Agents
 
 Agent role definitions for the multi-agent research scaffold.

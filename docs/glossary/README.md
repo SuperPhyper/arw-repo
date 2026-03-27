@@ -23,7 +23,8 @@ For the full term table with adjacent-field distinctions, see [canonical_vocabul
 |---|---|
 | [scope.md](scope.md) | Scope — S = (B, Π, Δ, ε) |
 | [boundary_conditions.md](boundary_conditions.md) | Boundary conditions — B |
-| [observable.md](observable.md) | Observable — Π |
+| [observable.md](observable.md) | Observable — π ∈ Π |
+| [observable_range.md](observable_range.md) | Observable range R(π), exclusion zone Z(π), F0 falsification category |
 | [admissibility.md](admissibility.md) | Admissibility — when a scope remains structurally valid |
 
 ## Regime and Partition

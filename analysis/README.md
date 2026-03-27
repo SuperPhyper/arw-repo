@@ -1,3 +1,8 @@
+---
+status: note
+layer: analysis/
+---
+
 # Analysis
 
 Analysis outputs and cross-case comparisons.

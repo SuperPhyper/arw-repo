@@ -1,3 +1,8 @@
+---
+status: note
+layer: simulations/
+---
+
 # Simulations
 
 Simulation code for ARW/ART experimental systems.

@@ -1,3 +1,8 @@
+---
+status: note
+layer: schemas/
+---
+
 # Schemas
 
 YAML and JSON schemas that define the structure of pipeline artifacts.

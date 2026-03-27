@@ -1,3 +1,8 @@
+---
+status: note
+layer: figures/
+---
+
 # Figures
 
 Diagrams and visualizations for the ARW/ART framework.

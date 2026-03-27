@@ -1,3 +1,8 @@
+---
+status: note
+layer: papers/
+---
+
 # Papers
 
 Paper drafts and publication-ready documents.
