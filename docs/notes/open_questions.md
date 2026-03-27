@@ -284,3 +284,25 @@ of the ε-interval width over which b_i belongs to a cover of size ≥ k,
 integrated over k. This would connect h to the plateau width w in the
 ε-sweep (Q_NEW_5) and to the scope robustness condition under Δ.
 Status: open
+
+**Q_NEW_16 — Cover-height profile shape as failure-mode discriminator**
+The cover-height profile shape appears diagnostic for observable failure type:
+smooth profile → sufficient or gradual transition; jagged profile → F0 structural
+failure (noise); flat profile → F1 span failure.
+Can this be formalized? Is there a quantitative measure of profile smoothness
+(e.g. total variation, autocorrelation along BC axis) that separates the three
+patterns reliably? If yes, cover-height could serve as an automated pre-screening
+step for observable selection, before running the full ARW pipeline.
+Reference: `docs/notes/research_journal.md` session 2026-03-28, Finding 3.
+Status: open
+
+**Q_NEW_17 — Cover-height DR vs. pipeline span: formal relationship**
+In CASE-0002/0003, var_rel is sufficient (large span relative to ε) but shows
+low cover-height DR (smooth monotone gradient, no clustering). In CASE-0001/0004,
+sufficient observables show high DR (step/cluster structure). Is there a formal
+relationship between cover-height DR and observable span(π) / ε?
+Conjecture: DR is high iff the observable has at least one dense cluster
+(plateau), which requires either a step-like transition or a flat regime.
+A purely linear/gradual observable can have large span but low DR.
+Reference: `docs/notes/research_journal.md` session 2026-03-28, Finding 4.
+Status: open

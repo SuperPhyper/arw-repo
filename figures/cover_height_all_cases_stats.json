@@ -1,0 +1,85 @@
+{
+  "0001": {
+    "label": "CASE-0001 Kuramoto (\u03ba-sweep)",
+    "observables": {
+      "r_ss": {
+        "label": "r_ss",
+        "sufficient": true,
+        "dynamic_range_pct": 103.33944756150194,
+        "h_min": 376.0,
+        "h_max": 1653.0,
+        "h_mean": 1235.7333333333333,
+        "h_std": 515.1699352856514
+      }
+    }
+  },
+  "0002": {
+    "label": "CASE-0002 Multi-Pendulum (\u03ba-sweep)",
+    "observables": {
+      "var_rel": {
+        "label": "var_rel",
+        "sufficient": true,
+        "dynamic_range_pct": 25.461573763547147,
+        "h_min": 1952.0,
+        "h_max": 2529.0,
+        "h_mean": 2266.16,
+        "h_std": 180.98324342325176
+      },
+      "lambda_proxy": {
+        "label": "lambda_proxy",
+        "sufficient": false,
+        "dynamic_range_pct": 54.57116344836729,
+        "h_min": 1140.0,
+        "h_max": 2128.0,
+        "h_mean": 1810.48,
+        "h_std": 340.82700831946994
+      }
+    }
+  },
+  "0003": {
+    "label": "CASE-0003 Doppelpendel (E-sweep)",
+    "observables": {
+      "var_rel": {
+        "label": "var_rel",
+        "sufficient": true,
+        "dynamic_range_pct": 38.557253110726094,
+        "h_min": 814.0,
+        "h_max": 1222.0,
+        "h_mean": 1058.1666666666667,
+        "h_std": 137.1901559474618
+      },
+      "lambda_proxy": {
+        "label": "lambda_proxy",
+        "sufficient": false,
+        "dynamic_range_pct": 60.645705845115,
+        "h_min": 555.0,
+        "h_max": 1034.0,
+        "h_mean": 789.8333333333334,
+        "h_std": 185.05757362387405
+      }
+    }
+  },
+  "0004": {
+    "label": "CASE-0004 Stuart-Landau (K-sweep)",
+    "observables": {
+      "plv": {
+        "label": "PLV",
+        "sufficient": true,
+        "dynamic_range_pct": 126.27766599597585,
+        "h_min": 202.0,
+        "h_max": 1248.0,
+        "h_mean": 828.3333333333334,
+        "h_std": 466.1464958095851
+      },
+      "amp_asym": {
+        "label": "amp_asym",
+        "sufficient": false,
+        "dynamic_range_pct": 18.43003412969283,
+        "h_min": 839.0,
+        "h_max": 1010.0,
+        "h_mean": 927.8333333333334,
+        "h_std": 53.08300627842733
+      }
+    }
+  }
+}

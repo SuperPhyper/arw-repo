@@ -276,3 +276,113 @@ to any height field with a large baseline relative to its variation.
 Reference figure: `figures/cover_height_contrast_panel.png`
 Reference script: `Simulationen/height_contrast.py`
 
+
+---
+
+## Session 2026-03-28: Cover Height Applied to All Active Cases
+
+**Context:** Extension of the observable-space cover height method
+(session 2026-03-27) to all four ARW cases with raw sweep data.
+Central hypothesis tested: do sufficient observables show higher cover-height
+dynamic range (DR) than insufficient observables?
+
+Reference figures:
+- `figures/cover_height_all_cases.png`
+- `figures/cover_height_dr_comparison.png`
+
+Implementation: `Simulationen/cover_multi_case.py`
+
+---
+
+### Finding 1 — DR alone is not a reliable sufficiency indicator [claim]
+
+Dynamic range results across cases:
+
+| Case    | Observable   | Sufficient | DR (%) |
+|---------|--------------|------------|--------|
+| 0001    | r_ss         | yes        | 103.3  |
+| 0002    | var_rel      | yes        |  25.5  |
+| 0002    | lambda_proxy | no         |  54.6  |
+| 0003    | var_rel      | yes        |  38.6  |
+| 0003    | lambda_proxy | no         |  60.6  |
+| 0004    | PLV          | yes        | 126.3  |
+| 0004    | amp_asym     | no         |  18.4  |
+
+In CASE-0002 and CASE-0003, the insufficient observable (lambda_proxy) has
+HIGHER DR than the sufficient observable (var_rel). The hypothesis as stated
+is not universally supported.
+
+---
+
+### Finding 2 — DR reflects the structure of observable variation, not sufficiency per se [interpretation]
+
+Three distinct patterns emerge:
+
+**Pattern A — High DR, smooth/step profile (r_ss, PLV):**
+Observable clusters near stable values in one or more regimes; the cover-height
+profile is smooth and monotone or step-like. DR is high because regime interiors
+are dense in observable space. This pattern indicates true regime structure.
+
+**Pattern B — High DR, jagged/non-monotone profile (lambda_proxy in 0002/0003):**
+Observable values are scattered randomly in a narrow range with no monotone trend.
+Uneven local density in observable space creates variable cover sizes, producing
+high DR. This DR reflects noise/structural failure, not regime clustering.
+
+**Pattern C — Low DR, flat profile (amp_asym in 0004):**
+Observable span is near-zero. Covers are uniformly tiny. DR is low.
+This pattern is consistent with F1 (insufficient span).
+
+---
+
+### Finding 3 — Profile shape discriminates types of insufficiency [interpretation]
+
+The cover-height profile shape provides information beyond DR:
+
+- Smooth/monotone profile → gradual transition, regime structure present
+  (var_rel transitions smoothly from 0.31 to 0.0002 in CASE-0002)
+- Step-like profile → sharp transition, clear regimes
+  (r_ss in 0001, PLV in 0004)
+- Jagged/non-monotone profile → noisy observable, no regime structure
+  (lambda_proxy in 0002/0003, consistent with its F0 structural failure)
+- Flat profile → F1 failure, span too small to resolve regimes
+
+This suggests that the SHAPE of the cover-height profile may be diagnostic
+for the TYPE of observable failure (F0 structural vs. F1 span).
+
+---
+
+### Finding 4 — var_rel shows low DR in CASE-0002/0003 despite being sufficient [interpretation]
+
+var_rel in CASE-0002 decreases monotonically from 0.31 to 0.0002 across 25 BC points.
+In observable space, these values are roughly uniformly spread — covers are of
+similar sizes throughout, yielding flat cover-height (DR = 25.5%).
+
+This is consistent with the ARW pipeline result: var_rel is sufficient because
+its span (~0.31) exceeds ε_working = 0.023, enabling a 3-regime partition.
+But the smooth gradient means there are no prominent clusters in observable space —
+the "regimes" only become visible once a threshold ε is applied.
+
+Cover-height DR and pipeline sufficiency measure different aspects:
+- Pipeline sufficiency: span relative to ε, plateau stability
+- Cover-height DR: density contrast in observable space (clustering vs. spread)
+
+These are complementary, not equivalent.
+
+---
+
+### Finding 5 — CASE-0004 (Stuart-Landau) shows cleanest discrimination [claim]
+
+PLV (sufficient, emergence case): DR = 126.3%.
+Cover-height profile shows a step-like structure consistent with the
+phase-locking transition at K* ≈ 0.055.
+
+amp_asym (insufficient, F1): DR = 18.4%.
+Values nearly constant throughout sweep (~0.08), consistent with
+amp_asym being the local emergence precursor that collapses before PLV responds.
+
+CASE-0004 provides the clearest case where DR correctly discriminates
+sufficient from insufficient. This may be because the emergence window
+structure creates a particularly sharp contrast in observable space.
+
+Open question: see Q_NEW_16 in `docs/notes/open_questions.md`.
+

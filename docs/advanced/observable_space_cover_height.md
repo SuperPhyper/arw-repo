@@ -183,3 +183,48 @@ Implementation: `Simulationen/cover_observable_space.py`
    reflects the flat observable landscape there, not a "more stable regime"
    in the dynamical sense. The height reflects observable density, which depends
    on both the dynamics and the BC sampling geometry.
+
+---
+
+## Multi-Case Analysis: Sufficient vs. Insufficient Observables (2026-03-28)
+
+Cover height was computed for all four active ARW cases with raw sweep data.
+
+### Central hypothesis tested
+
+Sufficient observables show higher cover-height dynamic range (DR) than
+insufficient observables.
+
+**Result: not universally supported.** DR alone is ambiguous.
+
+### Three profile patterns observed
+
+| Pattern | DR    | Profile shape     | Interpretation           | Example              |
+|---------|-------|-------------------|--------------------------|----------------------|
+| A       | High  | Smooth / step     | True regime structure    | r_ss (0001), PLV (0004) |
+| B       | High  | Jagged / noisy    | F0 structural failure    | lambda_proxy (0002/0003) |
+| C       | Low   | Flat              | F1 span failure          | amp_asym (0004)      |
+
+The SHAPE of the cover-height profile, not DR alone, discriminates between
+sufficient observables and the two types of failure (F0, F1).
+
+### Key observation: DR vs. pipeline span
+
+A sufficient observable with a smooth monotone gradient (var_rel in CASE-0002/0003)
+can show LOW DR because its observable values are approximately uniformly distributed
+in observable space — no prominent density clusters. The pipeline correctly identifies
+it as sufficient because its span exceeds ε, but cover-height does not detect this.
+
+Cover-height DR is high only when the observable has DENSITY CONTRAST in observable
+space: dense clusters separated by sparse transition zones. A purely monotone
+gradient lacks this contrast regardless of its span.
+
+**Conclusion:** cover-height and pipeline sufficiency are complementary.
+Cover-height detects observable clustering structure; the pipeline detects
+span-relative-to-ε. Both are needed for a complete picture.
+
+Figures:
+- `figures/cover_height_all_cases.png` — per-case profiles
+- `figures/cover_height_dr_comparison.png` — DR comparison bar chart
+
+Reference: `docs/notes/research_journal.md` session 2026-03-28.
