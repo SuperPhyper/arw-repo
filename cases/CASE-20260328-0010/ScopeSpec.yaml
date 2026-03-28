@@ -1,0 +1,714 @@
+# ---
+# status: working-definition
+# layer: cases/CASE-20260328-0010/
+# ---
+
+case_id: CASE-20260328-0010
+title: German School System — Multi-Actor Regime Model
+version: "2.0"
+created: "2026-03-28"
+updated: "2026-03-28"
+status: open
+pipeline_status: pre-pipeline
+use_mode: policy_outcome_prediction
+
+# ============================================================
+# SCOPE TUPLE S = (B, Π, Δ, ε)
+# ============================================================
+
+# ------------------------------------------------------------
+# B — Boundary Conditions
+# Select admissible states X_B ⊆ X
+# ------------------------------------------------------------
+B:
+  - id: B1
+    bc_class: Coupling
+    description: >
+      Child state X_C is mutually constrained by family (X_F), peers (X_P),
+      and teacher (X_T) via shared learning time operators τ_F, τ_P, τ_T.
+      No actor regime is stable in isolation. Coupling collapse (all τ → 0)
+      renders B1 ineffective — triggers F1(BC).
+    operator_signature: S2
+    primary: true
+
+  - id: B2
+    bc_class: Restriction
+    description: >
+      Curriculum mandates (Lehrplan) select admissible competence trajectories
+      per subject. Each subject domain has its own restriction structure
+      (see subject_bc_classes in BCManifest). Admissible states X_B ⊆ X_C
+      differ per subject k.
+    operator_signature: S1
+    primary: true
+
+  - id: B3
+    bc_class: Forcing
+    description: >
+      External policy cycles (Schuljahr rhythm, PISA, Lehrplan reform cycles)
+      drive X_T and X_C with characteristic frequencies. These are boundary
+      conditions on the time axis — the system cannot opt out of the forcing schedule.
+    operator_signature: S3
+    primary: true
+
+  - id: B4
+    bc_class: Dissipation
+    description: >
+      Burnout dynamics in X_T, withdrawal in X_F, and disengagement in X_C
+      act as energy sinks with asymptotic attractors. Once dissipative collapse
+      is reached (θ*_3), return is hysteretic — Symmetry Breaking candidate.
+    operator_signature: S4
+    primary: false
+
+# ------------------------------------------------------------
+# Π — Admissible Observables
+# π ∈ Π maps X → descriptive space
+# ------------------------------------------------------------
+Pi:
+
+  # Tier 1 — Daily Need / Attendance Observables
+  # Structurally required: R(π) ⊇ {θ*_1, θ*_2, θ*_3}
+  - observable_key: wellbeing_index
+    tier: 1
+    maps: "X_C → [0,1]"
+    bc_structure: "R·A"
+    description: Physical need coverage (sleep, nutrition, movement) of the child.
+    primary: true
+    sufficiency: pending
+    valid_regimes: [R1, R2, R3, R4]
+    known_Z: []
+
+  - observable_key: attendance_rate
+    tier: 1
+    maps: "X_C → [0,1]"
+    bc_structure: "R·S1(Θ)"
+    description: >
+      Weekly school attendance fraction α ∈ [0,1].
+      Step-function form Θ(α − α_c) expected near threshold θ*_2.
+      BC class: Restriction (hard projection via Θ).
+    primary: true
+    sufficiency: pending
+    valid_regimes: [R1, R2, R3]
+    known_Z:
+      - condition: "α < 0.4 for extended periods"
+        reason: "Stationarity (A6) violated; no stable reference distribution"
+
+  # Tier 2 — Shared Learning Time (Coupling Operators)
+  # These are primary coupling observables — not supplementary metrics
+  - observable_key: shared_learning_time_F
+    tier: 2
+    maps: "X_C × X_F → R≥0 [h/week]"
+    bc_structure: "R²·A"
+    description: >
+      Weekly hours of joint child–family learning activity (homework, reading,
+      project work). Primary S2 coupling operator between X_C and X_F.
+    primary: true
+    sufficiency: pending
+    valid_regimes: [R1, R2, R3]
+    known_Z: []
+
+  - observable_key: shared_learning_time_P
+    tier: 2
+    maps: "X_C × X_P → R≥0 [h/week]"
+    bc_structure: "R²·A"
+    description: >
+      Weekly hours of child–peer joint learning (group work, projects, informal
+      study). Primary S2 coupling operator between X_C and X_P.
+    primary: true
+    sufficiency: pending
+    valid_regimes: [R1, R2, R3]
+    known_Z: []
+
+  - observable_key: shared_learning_time_T
+    tier: 2
+    maps: "X_C × X_T → R≥0 [h/day]"
+    bc_structure: "R²·A"
+    description: >
+      Daily hours of active child–teacher interaction (not passive attendance).
+      Distinguishes instruction time from genuine coupling time.
+    primary: true
+    sufficiency: pending
+    valid_regimes: [R1, R2, R3, R4]
+    known_Z:
+      - condition: "burnout_proximity > 0.85"
+        reason: "Teacher coupling collapses; τ_T becomes nominal not functional"
+
+  # Tier 3 — Relational Sync (Coupling Quality)
+  # Structural analog to var_rel in CASE-0002/0003
+  - observable_key: peer_learning_sync
+    tier: 3
+    maps: "X_C × X_P → [0,1]"
+    bc_structure: "R³·A²·S"
+    description: >
+      Temporal synchronization of learning processes between child and peers
+      (analogous to var_rel in CASE-0002). Captures coupling quality,
+      not just coupling quantity. Candidate fluctuation observable near θ*_2.
+    primary: true
+    sufficiency: pending
+    valid_regimes: [R1, R2]
+    known_Z:
+      - condition: "peer_cohesion < 0.3 (exclusion dynamics dominant)"
+        reason: "Stationarity of sync measure violated under high exclusion"
+
+  - observable_key: teacher_child_sync
+    tier: 3
+    maps: "X_C × X_T → [0,1]"
+    bc_structure: "R³·A²·S"
+    description: >
+      Relational synchronization quality between child and teacher.
+      Captures differentiation capacity in practice, not on paper.
+    primary: true
+    sufficiency: pending
+    valid_regimes: [R1, R2, R3]
+    known_Z:
+      - condition: "workload_index > 1.8"
+        reason: "Teacher capacity for relational attunement collapses"
+
+  - observable_key: family_child_sync
+    tier: 3
+    maps: "X_C × X_F → [0,1]"
+    bc_structure: "R³·A²·S"
+    description: >
+      Quality of family–child learning relationship.
+      Bimodal distribution expected near θ*_1 — Symmetry Breaking signal.
+    primary: true
+    sufficiency: pending
+    valid_regimes: [R1, R2, R3]
+    known_Z:
+      - condition: "socioeconomic_stress > 0.85"
+        reason: "Family capacity for synchronization collapses under extreme stress"
+
+  # Tier 4 — Competence Observables (secondary; F0 risk at θ*_3)
+  - observable_key: core_competence_index
+    tier: 4
+    maps: "X_C → [0,1]"
+    bc_structure: "R²·A²·S"
+    description: >
+      Aggregate of foundational literacy and numeracy skills (Lesen, Schreiben,
+      Rechnen). Valid only in R1 and R2. F0 risk at θ*_3: reference class
+      composition shifts and stationarity violated.
+    primary: false
+    sufficiency: pending
+    valid_regimes: [R1, R2]
+    known_Z:
+      - condition: "attendance_rate < 0.70"
+        reason: "A5 (normalization reference) unstable; class composition not stationary"
+      - condition: "regime = R4"
+        reason: "F0: observable outside R(π) — replace with dissipation indicators"
+
+  - observable_key: subject_score
+    tier: 4
+    maps: "X_C → [1,6] per subject k"
+    bc_structure: "R²·A·S"
+    description: >
+      German school grade per subject. BC structure varies by subject
+      (see BCManifest subject_bc_classes). Single unified score across subjects
+      is NOT admissible — different R(π) per subject domain.
+    primary: false
+    sufficiency: pending
+    valid_regimes: [R1, R2]
+    known_Z:
+      - condition: "near θ*_3"
+        reason: "F0: A6 stationarity violated; grades lose reference stability"
+      - condition: "subject = Kunst/Musik near bifurcation"
+        reason: "Symmetry Breaking BC — grades compress a bimodal distribution"
+
+  # Tier 5 — Dissipation Warning Indicators
+  - observable_key: burnout_proximity
+    tier: 5
+    maps: "X_T → [0,1]"
+    bc_structure: "R·D³·Approx"
+    description: >
+      Teacher burnout proximity index. Structural analog to lambda_proxy:
+      contains Approximation operator — structurally insufficient near θ*_3
+      by the same argument as CASE-0002/0003 (A6.1+A6.2 violated at transition).
+      Use as early-warning indicator only, not as primary partition observable.
+    primary: false
+    sufficiency: insufficient_by_construction
+    valid_regimes: [R1, R2, R3]
+    known_Z:
+      - condition: "near θ*_3"
+        reason: "Same F0/lambda_proxy argument: Approx operator fails at transition"
+
+  - observable_key: child_disengagement
+    tier: 5
+    maps: "X_C → [0,1]"
+    bc_structure: "R·D²·A"
+    description: Dissipative withdrawal index for child. Precursor signal for R3 → R4.
+    primary: false
+    sufficiency: pending
+    valid_regimes: [R2, R3, R4]
+    known_Z: []
+
+# Observable sufficiency summary (pre-pipeline)
+observable_sufficiency:
+  - observable_key: wellbeing_index
+    status: pending
+  - observable_key: attendance_rate
+    status: pending
+  - observable_key: shared_learning_time_F
+    status: pending
+  - observable_key: shared_learning_time_P
+    status: pending
+  - observable_key: shared_learning_time_T
+    status: pending
+  - observable_key: peer_learning_sync
+    status: pending
+  - observable_key: teacher_child_sync
+    status: pending
+  - observable_key: family_child_sync
+    status: pending
+  - observable_key: core_competence_index
+    status: pending
+  - observable_key: subject_score
+    status: pending
+  - observable_key: burnout_proximity
+    status: insufficient_by_construction
+  - observable_key: child_disengagement
+    status: pending
+
+# ------------------------------------------------------------
+# Δ — Admissible Perturbations
+# Regime distinctions must hold under all δ ∈ Δ
+# ------------------------------------------------------------
+Delta:
+  - id: D1
+    parameter: class_size
+    range: [15, 32]
+    unit: students
+    rationale: Standard German class size variation; partition must be stable across this range.
+
+  - id: D2
+    parameter: socioeconomic_gradient
+    range: [0.20, 0.50]
+    unit: Gini coefficient (class-level)
+    rationale: Captures SES heterogeneity in German urban vs. rural schools.
+
+  - id: D3
+    parameter: teacher_turnover
+    range: [0.0, 0.25]
+    unit: fraction per school year
+    rationale: Perturbation of teacher coupling continuity.
+
+  - id: D4
+    parameter: policy_pressure
+    symbol: κ
+    range: [0.0, 1.0]
+    unit: normalized
+    rationale: Primary sweep variable. Intensity of Kompetenzorientierung mandate.
+    sweep_variable: true
+
+  - id: D5
+    parameter: school_type
+    values: [Grundschule, Gesamtschule, Gymnasium, Förderschule]
+    rationale: Structural school-type variation; partition should generalize.
+
+  - id: D6
+    parameter: family_resource_access
+    symbol: ρ
+    range: [0.0, 1.0]
+    unit: normalized
+    rationale: Captures access to books, space, internet, parental time.
+
+# Primary sweep variable for pipeline
+sweep_variable: policy_pressure
+sweep_symbol: κ
+sweep_range: [0.0, 1.0]
+sweep_points: 20
+
+# ------------------------------------------------------------
+# ε — Resolution Threshold
+# d_Π(x,y) ≤ ε → x ~_S y (indistinguishable)
+# ------------------------------------------------------------
+epsilon:
+  value: 0.07
+  epsilon_choice_note: >
+    Initial conservative estimate for multi-BC system. Multi-BC systems
+    empirically show wider indistinguishability zones than single-BC
+    (cf. CASE-0002 ε=0.023 single-BC vs. CASE-0001 ε=0.09 coupled).
+    Requires empirical calibration via ε-sweep once data is available.
+    Expected working range: ε ∈ [0.05, 0.12].
+
+# ------------------------------------------------------------
+# Falsification Conditions
+# ------------------------------------------------------------
+falsification:
+  - id: F0_subject_score
+    type: F0
+    observable_key: subject_score
+    condition: "Used as primary observable in R3 or R4"
+    reason: >
+      R(subject_score) excludes dissipative collapse regime.
+      A5 (normalization) and A6 (stationarity) fail when reference class
+      composition shifts under high κ + low attendance. Observable leaves
+      its valid range precisely at the critical transition.
+    severity: observable_replacement
+    replacement_candidate: child_disengagement
+
+  - id: F0_burnout_proxy
+    type: F0
+    observable_key: burnout_proximity
+    condition: "Used as primary partition observable near θ*_3"
+    reason: >
+      Contains Approximation operator (identical argument to lambda_proxy
+      in CASE-0002/0003). A6.1 and A6.2 violated at dissipative transition
+      by construction.
+    severity: observable_replacement
+    replacement_candidate: child_disengagement
+
+  - id: F1_coupling_collapse
+    type: F1
+    condition: "All τ (shared_learning_time_F, _P, _T) < ε simultaneously"
+    reason: >
+      Coupling BC B1 becomes ineffective. span(τ_i) < 2ε for all coupling
+      observables simultaneously — F1(BC) condition.
+    severity: scope_rejection
+
+  - id: F2_attendance_instability
+    type: F2
+    observable_key: attendance_rate
+    condition: "θ*_2(α) shifts > 0.15 under Δ_teacher_turnover"
+    reason: Attendance threshold unstable under teacher continuity perturbation.
+    severity: scope_rejection
+
+  - id: F4_boundary
+    type: F4
+    condition: "θ*_3 found at κ = 1.0 (sweep boundary)"
+    reason: Boundary artifact — extend sweep range before interpreting.
+    severity: sweep_refinement
+
+# ------------------------------------------------------------
+# Δ_policy — Policy Intervention Vector
+# Extension of Δ for policy_outcome_prediction mode
+# Each entry is a controllable policy lever mapped to its
+# primary BC-class effect and direction
+# ------------------------------------------------------------
+Delta_policy:
+
+  - id: P1
+    label: Ganztagsschule (gebunden)
+    variable: ganztag_type
+    value: bound
+    primary_bc_effect:
+      bc_class: Forcing
+      direction: increase
+      mechanism: "τ_T structurally mandated; Schuljahr rhythm intensified"
+    collateral_bc_effects:
+      - bc_class: Coupling
+        direction: increase
+        condition: "only if teacher_child_sync quality maintained"
+      - bc_class: Restriction
+        direction: increase
+        condition: "κ often rises with bound Ganztag (more curriculum hours)"
+    regime_prediction: "R1 or R2 — depends on κ level"
+    collapse_risk: medium
+    note: >
+      Bound Ganztag increases τ_T quantity but can reduce τ_T quality
+      if workload_index rises simultaneously. Net Coupling effect ambiguous.
+
+  - id: P2
+    label: Ganztagsschule (offen)
+    variable: ganztag_type
+    value: open
+    primary_bc_effect:
+      bc_class: Coupling
+      direction: increase
+      mechanism: "τ_T and τ_P increase voluntarily; family load reduced"
+    collateral_bc_effects:
+      - bc_class: Dissipation
+        direction: decrease
+        condition: "family_withdrawal reduced by childcare relief"
+      - bc_class: Forcing
+        direction: neutral
+        condition: "no mandatory extension of curriculum hours"
+    regime_prediction: R1-stabilizing
+    collapse_risk: low
+    note: >
+      Only Ganztag form that increases Coupling BC without increasing Forcing BC.
+      Structural preference for R1 stabilization.
+
+  - id: P3
+    label: Institutionelle Elternlernzeiten
+    variable: elternlernzeit_h_week
+    range: [0.5, 5.0]
+    unit: h/week
+    primary_bc_effect:
+      bc_class: Coupling
+      direction: increase
+      mechanism: "τ_F structurally supported; family_child_sync stabilized"
+    collateral_bc_effects:
+      - bc_class: Restriction
+        direction: decrease
+        condition: "Hausaufgabendruck reduced when family time institutionalized"
+      - bc_class: Dissipation
+        direction: decrease
+        condition: "socioeconomic_stress partially absorbed by structured support"
+    regime_prediction: R1-stabilizing
+    collapse_risk: low
+    theta_effect: "θ*_1 shifts upward (higher κ needed to break coupling)"
+
+  - id: P4
+    label: Hausaufgabenabschaffung
+    variable: hausaufgaben_abgeschafft
+    value: true
+    primary_bc_effect:
+      bc_class: Restriction
+      direction: decrease
+      mechanism: "κ effective at home removed; family time freed"
+    collateral_bc_effects:
+      - bc_class: Coupling
+        direction: increase
+        condition: "freed family time converts to τ_F if family capacity exists"
+      - bc_class: Coupling
+        direction: neutral_or_decrease
+        condition: "if family capacity low (ρ < 0.4), freed time does not convert"
+    regime_prediction: "R1 if ρ > 0.4; no change if ρ < 0.4"
+    collapse_risk: low
+    note: >
+      Effect is ρ-conditional. In low-resource families, removing homework
+      does not increase τ_F — the coupling operator requires family capacity
+      to activate. Policy is insufficient alone; requires P3 or P5 combination.
+
+  - id: P5
+    label: Sozialleistungen / Familienentlastung
+    variable: family_resource_access
+    symbol: ρ
+    range: [0.0, 1.0]
+    primary_bc_effect:
+      bc_class: Dissipation
+      direction: decrease
+      mechanism: "socioeconomic_stress reduced; family_withdrawal prevented"
+    collateral_bc_effects:
+      - bc_class: Coupling
+        direction: increase
+        condition: "ρ increase activates latent τ_F capacity"
+    regime_prediction: "θ*_3 prevention — extends collapse_safety_margin"
+    collapse_risk: low
+    note: >
+      P5 is the primary θ*_3 prevention lever. Acts on Dissipation BC directly.
+      Required baseline for all other policies to have full effect in
+      low-SES school contexts.
+
+  - id: P6
+    label: Verkürzte / rhythmisierte Unterrichtseinheiten
+    variable: lesson_rhythm
+    values: [standard_45min, rhythmized_60_30, project_block]
+    primary_bc_effect:
+      bc_class: Forcing
+      direction: decrease
+      mechanism: "ω_policy reduced; teacher coupling time per unit increased"
+    collateral_bc_effects:
+      - bc_class: Coupling
+        direction: increase
+        condition: "more contiguous time enables teacher_child_sync quality"
+    regime_prediction: "θ*_1 shifts upward; R1 window widens"
+    collapse_risk: low
+
+  - id: P7
+    label: Projektwochen / fächerübergreifendes Lernen
+    variable: project_learning_fraction
+    range: [0.0, 0.4]
+    unit: fraction of school year
+    primary_bc_effect:
+      bc_class: Restriction
+      direction: decrease_temporary
+      mechanism: "κ reduced during project phases; Lehrplan constraint lifted"
+    collateral_bc_effects:
+      - bc_class: Coupling
+        direction: increase
+        condition: "τ_P increases strongly in project settings"
+      - bc_class: Aggregation
+        direction: increase
+        condition: "cross-subject knowledge integration"
+    regime_prediction: "Temporary R1 windows; R1 stabilization if repeated"
+    collapse_risk: low
+    note: >
+      Discrete temporal intervention — creates R1 windows rather than
+      continuous R1 stabilization. Effective as complement to P2/P3,
+      insufficient as standalone policy.
+
+# Policy combination rules
+policy_combinations:
+  - id: PC1
+    label: Minimum viable R1 stabilization
+    policies: [P2, P3]
+    logic: "Open Ganztag (Coupling ↑) + Elternlernzeiten (τ_F ↑)"
+    predicted_bc_dominance: "w_C > w_R, w_F, w_D"
+    predicted_regime: R1
+    prerequisite: "ρ > 0.4 (moderate family resource access)"
+
+  - id: PC2
+    label: Collapse prevention baseline
+    policies: [P5, P2]
+    logic: "Family resource floor (Dissipation ↓) + Open Ganztag (Coupling ↑)"
+    predicted_bc_dominance: "w_D minimal; w_C dominant"
+    predicted_regime: "R1 or R2 — collapse_safety_margin > 0.3 guaranteed"
+    prerequisite: none
+    note: "Required for low-SES contexts before any other policy is effective"
+
+  - id: PC3
+    label: Full R1 optimization
+    policies: [P2, P3, P4, P5, P6]
+    logic: "All Coupling-increasing + Restriction-decreasing + Dissipation-preventing"
+    predicted_bc_dominance: "w_C dominant; w_R, w_F, w_D all reduced"
+    predicted_regime: R1
+    note: "Theoretical optimum; not all components equally feasible"
+
+  - id: PC4
+    label: Counterproductive combination (warning)
+    policies: [P1_bound_ganztag_high_kappa]
+    logic: "Bound Ganztag + simultaneous Lehrplan intensification"
+    predicted_bc_dominance: "w_F > w_C; w_R increases"
+    predicted_regime: R2
+    collapse_risk: high
+    note: >
+      Bound Ganztag with high κ increases Forcing and Restriction simultaneously
+      while Coupling quality degrades under teacher workload pressure.
+      This combination drives R1 → R2 transition and may accelerate θ*_3.
+
+# ------------------------------------------------------------
+# Governance Observables (Tier 6)
+# Meta-observables for policy outcome prediction
+# These are computed from Tier 1-5 observables — not measured directly
+# ------------------------------------------------------------
+Pi_governance:
+
+  - observable_key: bc_dominance_profile
+    tier: 6
+    maps: "policy_vector p → (w_C, w_R, w_F, w_D) with Σw = 1"
+    bc_structure: "A³ (aggregation over all BC weights)"
+    description: >
+      Meta-observable: predicted BC weight distribution given a policy vector.
+      Primary output of the policy_outcome_prediction mode.
+      w_C = Coupling weight; w_R = Restriction; w_F = Forcing; w_D = Dissipation.
+    primary: true
+    computation: |
+      w_C = sigmoid(τ_F * family_child_sync + τ_P * peer_learning_sync
+                    + τ_T * teacher_child_sync) / Z
+      w_R = sigmoid(κ * (1 - attendance_rate) + subject_load_index) / Z
+      w_F = sigmoid(ω_policy * workload_index) / Z
+      w_D = sigmoid(burnout_proximity + family_withdrawal + child_disengagement) / Z
+      Z   = w_C_raw + w_R_raw + w_F_raw + w_D_raw
+    interpretation:
+      R1: "w_C dominant (> 0.45)"
+      R2: "w_R dominant (> 0.40)"
+      R3: "w_F dominant (> 0.35) OR w_C < 0.20"
+      R4: "w_D dominant (> 0.40)"
+
+  - observable_key: collapse_safety_margin
+    tier: 6
+    maps: "X_T × X_F × X_C → [0,1]"
+    bc_structure: "R·D (inverse dissipation projection)"
+    description: >
+      Primary governance indicator for θ*_3 prevention.
+      Measures distance from dissipative collapse.
+      Must remain > 0.3 at all times — below this threshold,
+      θ*_3 corridor is active and immediate policy intervention required.
+    primary: true
+    computation: |
+      collapse_safety_margin =
+        1 - max(burnout_proximity, family_withdrawal, child_disengagement)
+    thresholds:
+      green:  "> 0.5  — system stable, no intervention needed"
+      yellow: "0.3–0.5 — early warning, monitor closely"
+      red:    "< 0.3  — θ*_3 corridor active, intervention required"
+      critical: "< 0.15 — hysteresis zone, recovery requires external support"
+
+  - observable_key: coupling_activation_index
+    tier: 6
+    maps: "τ_F, τ_P, τ_T, ρ → [0,1]"
+    bc_structure: "A²·R (aggregation of coupling operators)"
+    description: >
+      Composite index of how much Coupling BC is actually activated
+      (not just structurally present). Accounts for ρ-conditionality:
+      τ_F only activates when family_resource_access is sufficient.
+    primary: true
+    computation: |
+      coupling_activation_index =
+        (τ_F * min(ρ, 1) * family_child_sync
+         + τ_P * peer_cohesion * peer_learning_sync
+         + τ_T * (1 - burnout_proximity) * teacher_child_sync) / 3
+    note: >
+      Key diagnostic for P4 (Hausaufgabenabschaffung) evaluation:
+      if ρ < 0.4, coupling_activation_index does not increase even
+      when τ_F nominally increases — policy effect is null.
+
+  - observable_key: theta1_distance
+    tier: 6
+    maps: "κ, w_C → R"
+    bc_structure: "R (projection onto transition axis)"
+    description: >
+      Estimated distance to θ*_1 (R1 → R2 transition).
+      Positive = system in R1, margin to transition.
+      Negative = system in R2, distance from last transition.
+    primary: false
+    computation: |
+      theta1_distance = coupling_activation_index - κ * restriction_weight
+    note: "Ordinal indicator only — not calibrated without pipeline data"
+
+  - observable_key: emergence_sync_index
+    tier: 6
+    maps: "peer_learning_sync[] across classes → [0,1]"
+    bc_structure: "A²·S (aggregation over classes)"
+    description: >
+      School-level emergent synchronization index.
+      Computed as variance of peer_learning_sync across classes.
+      Low variance = uniform regime (R1 or R4 school-wide).
+      High variance = regime fragmentation across classes — emergence candidate.
+      Used for scaling from class level to school level.
+    primary: false
+    note: >
+      If emergence_sync_index shows own regime structure distinct from
+      class-level aggregation mean, emergence window is active.
+      Reference: CASE-0004 emergence protocol.
+
+# ------------------------------------------------------------
+# Expected Partition
+# ------------------------------------------------------------
+expected_partition:
+  N: 4
+  regimes:
+    - id: R1
+      label: Integrated Learning
+      description: >
+        High coupling across all three τ dimensions; competence as byproduct
+        of relational stability. Wellbeing and attendance stable.
+      dominant_bc: Coupling
+
+    - id: R2
+      label: Competence Isolation
+      description: >
+        High subject_scores; low τ_F and τ_P; belonging and sync collapsing.
+        Restriction BC dominant over Coupling. Competence observables valid here.
+      dominant_bc: Restriction
+
+    - id: R3
+      label: Attendance Fragmentation
+      description: >
+        α < 0.75; coupling operators inconsistent; learning episodic.
+        Subject scores lose validity (A5 unstable). Relational sync collapses.
+      dominant_bc: Forcing (irregular)
+
+    - id: R4
+      label: Dissipative Collapse
+      description: >
+        burnout_proximity → 1; family_withdrawal → 1; child_disengagement → 1.
+        System dysfunction. Only dissipation indicators remain in R(π).
+        Transition from R3 likely hysteretic — Symmetry Breaking candidate.
+      dominant_bc: Dissipation
+
+  transition_candidates:
+    - id: theta1
+      symbol: "θ*_1(κ)"
+      description: R1 → R2; policy pressure breaks coupling structure
+      observable_signal: drop in peer_learning_sync + rise in subject_score gap
+
+    - id: theta2
+      symbol: "θ*_2(α)"
+      description: R1/R2 → R3; attendance threshold ~0.75
+      observable_signal: step in attendance_rate; peer_learning_sync collapse
+
+    - id: theta3
+      symbol: "θ*_3(λ_T)"
+      description: R2/R3 → R4; teacher burnout collapse; hysteresis suspected
+      observable_signal: burnout_proximity rapid rise + child_disengagement surge
+      hysteresis_flag: true

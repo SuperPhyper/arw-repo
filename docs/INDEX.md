@@ -116,6 +116,11 @@ For the full layer hierarchy, see [`docs/meta/repo_design.md`](meta/repo_design.
 | [Quantum Operator Extension](advanced/quantum_operator_extension.md) | open-question | — |
 | [Observable Space Cover Height](advanced/observable_space_cover_height.md) | working-definition | Cover height analysis for 2D BC sweeps |
 | [Admissible Resolution Lower Bound](advanced/admissible_resolution_lower_bound.md) | working-definition | ε lower bound from Δ; F5 falsification category; quantum transfer implications |
+| [Extended Z(π) and Observable Class Necessity](advanced/extended_z_observable_necessity.md) | working-definition | H2: extended failure zones in multi-BC systems; links CASE-20260328-0010 |
+| [IVA and Geometry of Z(π)](advanced/iva_z_geometry.md) | working-definition | H2': IVA replaces BC-count; dim(Z)=dim(span(IVA)); supersedes H2 heuristic |
+| [Theorem H2' — IVA Dimensionality Principle](advanced/h2_prime_theorem.md) | working-definition | Formal theorem (second revision); Axiom A + Genericity Lemma G; epistemic stratification |
+| [Axiom A Empirical Validation](advanced/axiom_a_empirical_validation.md) | working-definition | Empirical validation of Key Lemma (gradient rank); 4-strategy study |
+| [χ = ∂r_ss/∂κ as Fluctuation Observable](advanced/report_chi_observable.md) | claim | Empirical validation; χ valid at κ_c where r_ss ∈ Z(π); CASE-0001 |
 
 ---
 
@@ -166,6 +171,7 @@ For the full layer hierarchy, see [`docs/meta/repo_design.md`](meta/repo_design.
 | [ARW for Synergetics](art_instantiations/arw_for_synergetics.md) | hypothesis | — |
 | [Geopolitical Scope Example](art_instantiations/art_geopolitical_scope_example.md) | working-definition | — |
 | [Littman BC Analysis](art_instantiations/arw_littman_bc_analysis.md) | interpretation | — |
+| [Structural Observable Failure: German School System](art_instantiations/research_report_CASE-20260328-0010.md) | working-definition | ART: CASE-20260328-0010; extended Z(π) in social scopes; F0 over 38% of policy space |
 
 ---
 
@@ -202,6 +208,10 @@ For the full layer hierarchy, see [`docs/meta/repo_design.md`](meta/repo_design.
 | [Operator Signatures Cross-Domain](notes/operator_signatures_cross_domain.md) | hypothesis | Identical signatures across domains |
 | [BC Extraction (Littman-Metcalf)](notes/bc_extraction_littman_metcalf.md) | hypothesis | — |
 | [ARW–DSGRN Dialogue Plan](notes/arw_dsgrn_dialogue_plan.md) | note | Planned DSGRN comparison |
+| [Research Assignment: ARW Observable Superiority](notes/arw_research_assignment.md) | note | χ = ∂r_ss/∂κ vs r_ss; Kuramoto validation plan |
+| [Research Assignment: IVA and Z(π) Geometry](notes/arw_iva_research_assignment.md) | note | IVA formalization; motivation for H2' |
+| [Research Assignment: Extended Z(π)](notes/arw_extended_Z_research_assignment.md) | note | Multi-BC extended failure zones; CASE-20260328-0010 motivation |
+| [Research Assignment: Social Scope Observable Failure](notes/arw_social_scope_research_assignment.md) | note | Structural F0 in social/institutional scopes |
 | [Literature Links](notes/literature_links.md) | working-definition | Key references |
 | [Kuramoto ARW Notes](notes/kuramoto_arw_notes.md) | — | Case-specific notes |
 | [Kuramoto BC-Coupled ε Comparison](notes/kuramoto_bc_coupled_eps_comparison_report.md) | — | — |
@@ -236,3 +246,10 @@ For the full layer hierarchy, see [`docs/meta/repo_design.md`](meta/repo_design.
 | [Scope Completeness](figures/scope_completeness.md) | — |
 
 *Image files (.png, .mmd) are in [`figures/`](../figures/) at the repo root.*
+
+**New figures added 2026-03-28/29:**
+`chi_vs_kappa.png`, `r_ss_vs_kappa.png`, `cover_height_map.png` (CASE-0001/chi study),
+`fig1_kappa_sweep.png`, `fig2_bc_heatmaps.png`, `fig3_regime_failure.png`, `fig4_bc_timeline.png` (overview figs),
+`fig_emp1_gradient_rank.png`, `fig_emp2_sensitivity.png`, `fig_emp3_zdim_counter.png` (Axiom A empirical),
+`fig_ext1_three_systems.png`, `fig_ext2_dim_theorem.png`, `fig_ext3_validity_maps.png`, `fig_ext4_assumption_heatmap.png` (H2'/IVA extension),
+`fig_iva1_geometry.png`, `fig_iva2_bc_mapping.png`, `fig_iva3_h2prime.png` (IVA geometry).
