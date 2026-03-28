@@ -56,6 +56,7 @@ For the full layer hierarchy, see [`docs/meta/repo_design.md`](meta/repo_design.
 | [Canonical Vocabulary](glossary/canonical_vocabulary.md) | hypothesis | Preferred terminology |
 | [Glossary Index](glossary/glossary_index.md) | working-definition | Alphabetical pointer list |
 | [Glossary Map](glossary/glossary_map.md) | working-definition | Concept dependency graph |
+| [Independent Violation Axes (IVA)](glossary/independent_violation_axes.md) | working-definition | IVA(π): violation directions in T_p(P); dim(Z)=dim(span(IVA)); Axiom A |
 
 ---
 
