@@ -9,8 +9,10 @@ part of the active research core but are preserved for traceability.
 archive/
 ├── sessions/     Session-specific working documents from past research sessions.
 │                 These have been merged into the canonical docs/ files.
-└── transfers/    Summaries of completed cross-case transfer analyses.
-                  The source data remains in cases/ — this is a reference index.
+├── transfers/    Summaries of completed cross-case transfer analyses.
+│                 The source data remains in cases/ — this is a reference index.
+└── cases/        Draft or superseded case directories that have been replaced by
+                  a production case. Preserved for traceability.
 ```
 
 ## Policy
@@ -28,7 +30,6 @@ archive/
 |---|---|---|
 | `README_session_2026-03-18.md` | 2026-03-18 | — (session summary, no merge needed) |
 | `research_journal_session_2026-03-18.md` | 2026-03-18 | `docs/notes/research_journal.md` |
-| `open_questions_2026-03-18.md` | 2026-03-18 | `docs/notes/open_questions.md` |
 | `open_questions_session_2026-03-18.md` | 2026-03-18 | `docs/notes/open_questions.md` |
 
 ### transfers/
@@ -40,3 +41,9 @@ archive/
 | doppelpendulum_vs_kuramoto | CASE-0003 ↔ CASE-0001 | 0.40 raw / ≈0.95 matched-ε | completed |
 
 Source data: `cases/CASE-*/transfer/`
+
+### cases/
+
+| Directory | System | Reason archived | Superseded by |
+|---|---|---|---|
+| `CASE-20260315-0004_stuart_landau/` | Coupled Stuart-Landau | Pre-pipeline draft; non-standard naming; artifact filenames prefixed | `cases/CASE-20260318-0004/` |
