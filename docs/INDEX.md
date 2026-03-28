@@ -114,6 +114,8 @@ For the full layer hierarchy, see [`docs/meta/repo_design.md`](meta/repo_design.
 | [Engineering Scope Reduction](advanced/engineering_scope_reduction_and_regime_shift.md) | hypothesis | Engineering applications |
 | [ARW Hypothesis Structure Diagram](advanced/arw_hypothesis_structure_diagram.md) | note | Diagram of hypothesis network |
 | [Quantum Operator Extension](advanced/quantum_operator_extension.md) | open-question | — |
+| [Observable Space Cover Height](advanced/observable_space_cover_height.md) | working-definition | Cover height analysis for 2D BC sweeps |
+| [Admissible Resolution Lower Bound](advanced/admissible_resolution_lower_bound.md) | working-definition | ε lower bound from Δ; F5 falsification category; quantum transfer implications |
 
 ---
 
