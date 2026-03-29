@@ -48,6 +48,40 @@ Different scopes produce different regime structures. The framework develops too
 
 ---
 
+## Theorem H2' — IVA Dimensionality Principle
+
+*(see [docs/advanced/h2_prime_theorem.md](docs/advanced/h2_prime_theorem.md) — second revised draft, 2026-03-28)*
+
+The most structurally important recent result in the framework:
+
+> **dim_eff(Z(π)) = rank(IVA_ext(π))**
+
+The **effective dimension of an observable's exclusion zone** in parameter space equals the **rank of its extended independent violation axes** — the number of linearly independent directions along which the observable's pre-scopal substrate fails.
+
+This is not a heuristic. It is a proved theorem (Regular Value Theorem + Rank Theorem, with generic transversality established by Lemma G; Sard's theorem ensures measure-zero exceptions are negligible). It means the *geometry* of where an observable breaks down is structurally determined by the observable's construction, not by the system.
+
+**Why this matters:**
+
+Before Theorem H2', the exclusion zone Z(π) was defined but its geometry was left open. Could a Coupling-BC observable fail along a 2D surface in parameter space? A 1D curve? A fractal? The theorem answers this via the BC class alone:
+
+| BC class | rank(IVA_ext) | Shape of Z(π) |
+|---|---|---|
+| Coupling | 0 | Isolated point (κ_c) — failure is a scope singularity, not a region |
+| Symmetry Breaking | ≥ 1 | At least a half-line or surface |
+| k independent BCs | k | k-dimensional manifold |
+
+**Empirical validation across three cases:**
+
+| Case | System | dim_eff | Z(π) shape | Outcome |
+|---|---|---|---|---|
+| CASE-0001 | Kuramoto | 0 | point at κ_c ≈ 1.49 | θ* = 1.475 is a scope singularity, not a regime boundary ✓ |
+| CASE-0008 | Pitchfork normal form | 1 | half-line along μ ≥ 0 | Exclusion zone is a ray in μ-space ✓ |
+| CASE-0010 | German School System | 2 | 2D surface in joint BC space | Two independent failure axes confirmed ✓ |
+
+**Corollary C4 (Observable Class Necessity):** Two observables with different rank(IVA_ext) cannot be substituted within the same scope — they belong to structurally distinct observable classes. This makes observable selection principled rather than ad hoc, and connects directly to the F0 falsification category.
+
+---
+
 ## Reading Path
 
 ### 15-Minute Introduction
@@ -81,6 +115,7 @@ Different scopes produce different regime structures. The framework develops too
 | [docs/advanced/scope_completeness.md](docs/advanced/scope_completeness.md) | Observable agreement as scope completeness diagnostic; latent degrees of freedom |
 | [docs/advanced/observable_decomposition.md](docs/advanced/observable_decomposition.md) | Observables as compositions of basis operators; pre-scopal substrate; R(π) and Z(π) |
 | [docs/glossary/observable_range.md](docs/glossary/observable_range.md) | Observable range R(π), exclusion zone Z(π), F0 falsification category |
+| [docs/advanced/h2_prime_theorem.md](docs/advanced/h2_prime_theorem.md) | **Theorem H2' — IVA Dimensionality Principle:** dim_eff(Z(π)) = rank(IVA_ext(π)); proved, validated on 3 cases |
 | [docs/advanced/](docs/advanced/README.md) | Emergence, engineering applications, cover height |
 
 ### Level 3 — Application Domains
@@ -290,11 +325,11 @@ See [docs/notes/open_questions.md](docs/notes/open_questions.md) for the complet
 
 Active research workspace — concepts, experiments, and documentation evolve over time.
 
-**Active cases:** CASE-0001 (pending — sweep_refinement + F0 resolution at κ_c), CASE-0002 (go), CASE-0003 (go), CASE-0004 (in-progress — first emergence case, pipeline artifacts pending).
+**Active cases:** CASE-0001 (go_nogo: pending — PATH B preferred: F0 closure at κ_c; CASE-0001-ext with χ=∂r_ss/∂κ planned), CASE-0002 (go), CASE-0003 (go), CASE-0004 (go — first empirical emergence case; Φ=0.9 transfer to CASE-0001 confirmed 2026-03-29).
 
 **Pending cases:** CASE-0005 through CASE-0009, SOC1, CASE-0010 (German School System — first multi-BC-class case) — all have pre-pipeline artifacts; none have been run through the pipeline yet.
 
-**Next priorities:** (1) Resolve CASE-0001 with χ observable or formal F0 closure. (2) Complete CASE-0004 pipeline and run CASE-0004 ↔ CASE-0001 transfer (first same-BC cross-system comparison). (3) Integrate cover height method into pipeline infrastructure.
+**Next priorities:** (1) Create CASE-0001-ext with χ=∂r_ss/∂κ as primary observable and run pipeline (closes CASE-0001 F0 formally). (2) Integrate `Simulationen/` cover height scripts into pipeline infrastructure as a first-class module. (3) Run pipeline on CASE-0005 (most complete pending case: Dissipation BC).
 
 See [docs/overview/limitations_and_open_questions.md](docs/overview/limitations_and_open_questions.md) for current open problems.
 See [docs/notes/repo_weakpoints.md](docs/notes/repo_weakpoints.md) for a systematic gap assessment (last reviewed: 2026-03-29).
