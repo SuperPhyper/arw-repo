@@ -22,7 +22,7 @@ cognitive processing modes in the labyrinth agent.
 | Coupling | Anchor memory links context to mode | Anchor retrieval (R_B3) | Familiar context activates stored mode via coupling |
 | Symmetry breaking | Ambiguous junctions, competing paths | Salience spike / mode competition | No single mode is clearly dominant |
 | Dissipation | Policy gradient convergence | Mode stabilization (all modes) | Dissipation contracts policy space toward mode attractors |
-| Forcing | Dynamic constraint shifts | Forced scope transition | External BC change forces mode switch regardless of context |
+| Forcing | Dynamic constraint shifts | Forced regime transition | External BC change forces mode switch regardless of context |
 | Aggregation | Episode-level view, coarse evaluation | No specific mode (meta-operation) | Aggregation suppresses intra-episode mode structure |
 
 ---
@@ -127,24 +127,25 @@ to in-episode perturbations.
 
 ---
 
-### Forcing → Forced Scope Transition
+### Forcing → Forced Regime Transition
 
 Dynamic constraint shifts (mid-episode BC changes) implement forcing:
 an external signal that overrides the current BC configuration.
 
 ```
 B_forcing: constraint_shift(t)
-→ current scope loses admissibility suddenly
-→ forced scope transition, regardless of context similarity to anchors
+→ current regime cell R_mᵢ loses admissibility suddenly
+→ forced regime transition within S_global, regardless of context similarity to anchors
 ```
 
 **Key distinction from normal mode switching:**
-In normal operation, mode switches are driven by context (anchor retrieval
-or salience-based selection — internally triggered).
-Forced transitions are externally triggered by BC changes.
+In normal operation, mode switches are internally triggered: the agent's
+parameter point moves through S_global until it crosses a partition boundary.
+Forced transitions are externally triggered by BC changes that shift the
+partition boundary itself, evicting the agent from its current regime cell.
 
 This distinction is testable: forced transitions should show
-higher mode-switch latency (the agent must override its current scope
+higher mode-switch latency (the agent must re-identify its regime cell
 rather than smoothly transitioning to an anchored one)
 and lower initial performance in the new mode (no prior anchor applies).
 
@@ -161,8 +162,28 @@ The BC taxonomy is not just a classification scheme — it is a
 4. Salience is the admissibility-loss detector at BC class boundaries
 
 An agent with fewer modes than BC classes in its environment will
-systematically lose scope admissibility in some regions —
+systematically lose regime admissibility in some regions —
 it will be structurally suboptimal, not just quantitatively suboptimal.
+
+---
+
+## Note: BC Classes as Sub-Scope Properties
+
+**Revision note (see `docs/context_navigation/mode_scope_regime_audit.md` §2.5; Q_NEW_9):**
+The BC classes assigned to modes in this document characterize the boundary conditions
+that dominate within the regime R_m — they are **sub-scope properties of R_m**
+as a partition cell of S_global, not properties of the agent substrate independently
+of the scope.
+
+Consequence: if the agent is observed with different observables Π', the same
+behavioral mode may appear to have a different BC class (because observable BC
+structure and system BC structure are distinct — see K5 in
+`docs/advanced/observable_consequences.md`). This is the cognitive-architecture
+instance of the open question Q_NEW_9, partially addressed by Q-CNS-07.
+
+Until Q_NEW_9 is resolved, BCManifest entries for cognitive-architecture cases
+should document both the system-level BC class (zone type) and the observable-level
+BC class (notation for mode_dist, salience_mean, etc.).
 
 ---
 

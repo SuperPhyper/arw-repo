@@ -498,3 +498,186 @@ Figures:
 
 Implementation: `Simulationen/sweep_2d_all_cases.py` (RK4), `Simulationen/cover_2d_all_cases.py` (analysis)
 
+
+---
+
+## Session 2026-03-29: Q-CNS-06 to Q-CNS-09 — Theoretical Analysis
+
+These questions arose from the context-navigation audit (`mode_scope_regime_audit.md`).
+The entries below give the current best theoretical treatment and derive testable predictions.
+
+---
+
+### Q-CNS-06 — Minimal fluctuation observable for cognitive mode transitions
+
+**Question:** What is the minimal fluctuation observable for mode transitions in the
+cognitive architecture, and does it show a Z_shared peak at transition points?
+
+**Theoretical analysis (interpretation):**
+
+The structural analog in the physical cases is χ = ∂r_ss/∂κ at K_c (CASE-0001).
+r_ss is class-E (stationary expectation); it fails at the transition (F0, R(r_ss) ∌ κ_c).
+χ is class-F (fluctuation / derivative); R(χ) ∋ κ_c — precisely valid where r_ss fails.
+
+For the cognitive architecture, mode_dist is the primary observable (class-E: stationary
+expectation over mode activations within a zone). mode_dist fails at zone boundaries
+(A4 violation → F0 condition). The corresponding fluctuation observable is:
+
+```
+χ_mode(p) = ∂(mode_dist_concentration) / ∂(context_load)
+```
+
+where mode_dist_concentration is a scalar measure of how peaked the mode distribution is
+(e.g., 1 − H(mode_dist) / H_max, or the dominant mode's probability mass).
+
+**Pre-scopal analysis of χ_mode:**
+- Stationarity (A4): required over context_load increments Δλ — valid away from transitions
+- Differentiability (A_diff): requires mode_dist to be smooth in context_load — valid in regime interiors
+- Observable BC structure: Aggregation-dominated (∂ of an aggregation) with Restriction co-component → A·R
+
+**Expected behavior (claim):**
+χ_mode peaks at regime boundaries in parameter space. At the transition point, where
+mode_dist has entered its exclusion zone Z(mode_dist), the fluctuation observable χ_mode
+remains valid (R(χ_mode) ∋ transition) and reaches its maximum.
+
+This is the Z_shared peak predicted by the ARW framework — the fluctuation observable's
+peak coincides with the class-E observable's exclusion zone.
+
+**Minimal operationalization:**
+The simplest implementation is the **mode-switch rate** per episode, which approximates
+∂(mode_distribution)/∂(episode) without requiring explicit context_load parameterization.
+At regime boundaries, mode-switch rate peaks. This is already measurable in the labyrinth
+experiment and requires no additional instrumentation.
+
+**Status:** interpretation — testable via labyrinth experiment (compare mode-switch rate
+profile across BC parameter sweep with mode_dist coverage height profile).
+
+---
+
+### Q-CNS-07 — BC class of a mode: stable under change of observation set Π?
+
+**Question:** If the labyrinth agent is observed with different observables, does the same
+behavioral mode appear to have the same BC class?
+
+**Theoretical analysis:**
+
+This is the cognitive instance of Q_NEW_9 (BC class: system vs. scope property).
+The resolution for physical cases (K5 in `docs/advanced/observable_consequences.md`)
+is that observable BC structure and system BC structure are distinct: r_ss is
+Restriction-dominated regardless of the Kuramoto system it observes.
+
+For cognitive modes: two observables are available —
+- mode_dist: Aggregation-dominated (A·R) — projects mode sequence onto a distribution
+- salience_mean: Restriction-dominated (R·A) — projects mode-fitness variance onto a scalar
+
+If BC class is a sub-scope property of R_m (the revised position from the audit), then:
+the BC class *as seen through mode_dist* reflects the observable's A·R structure overlaid
+on the system's actual BC class. The BC class *as seen through salience_mean* reflects
+R·A structure overlaid on the same system.
+
+**Theoretical prediction (hypothesis):**
+The BC class assignment will NOT be stable across observables if the two observables
+have structurally different BC notations (A·R vs. R·A). The Φ_obs value between the
+two scope descriptions will be < 1. In the extreme case, a Restriction-mode environment
+could appear as an Aggregation-dominated BC if observed through mode_dist.
+
+**Consequence for experimental design:**
+BCManifest entries for labyrinth cases must specify both:
+1. System BC class: the zone type (R / C / F as designed)
+2. Observable BC class: the notation for each observable used (A·R for mode_dist, R·A for salience_mean)
+
+The Φ_obs (observable-transfer) experiment in transfer_semantics §2.2 is the direct
+empirical test: compute Φ between S_1=(B, {mode_dist}, Δ, ε_1) and S_2=(B, {salience_mean}, Δ, ε_2)
+on the same labyrinth. A low Φ_obs confirms BC-class instability under Π change.
+
+**Status:** hypothesis — testable by transfer experiment type §2.2 (same system, different observables).
+
+---
+
+### Q-CNS-08 — Empirical signature: scope transition vs. regime transition in behavioral data
+
+**Question:** How do we distinguish a scope transition (S_global failure) from a regime
+transition (mode switch) in the behavioral data of a context-navigation agent?
+
+**Theoretical analysis:**
+
+From the audit, the formal distinction is:
+- Regime transition: agent moves between R_i and R_j within S_global; partition updated, not replaced
+- Scope transition: S_global loses validity; all π ∈ Π enter Z(π); descriptive framework fails
+
+This translates to the following behavioral signatures (interpretation):
+
+| Feature | Regime transition | Scope transition |
+|---|---|---|
+| Observables affected | Mode-specific (Π_m of old mode enters Z) | All observables simultaneously anomalous |
+| Duration | Transient — new mode emerges | Sustained — no stable mode found |
+| Salience pattern | Peak then decline to new stable level | Elevated plateau; does not decline |
+| mode_dist shape | Shifts to new dominant mode | Becomes flat or unstable |
+| Task performance | Dips then recovers in new mode | Collapses; no recovery via mode switch |
+| Anchor activation | New anchors found (new zone) | No anchors match; full exploratory mode |
+
+**Formal discrimination criterion (claim):**
+
+Let T_stable be the time to re-stabilize mode_dist after an event (salience spike or mode switch).
+Let σ_mode be the variance of mode_dist over T_stable.
+
+```
+Regime transition:   T_stable < T_consolidation  AND  σ_mode → 0 (converges to new mode)
+Scope transition:    T_stable ~ T_consolidation  OR   σ_mode ≁ 0 (does not converge)
+```
+
+In words: if the agent finds a new stable mode within one consolidation interval,
+the event was a regime transition. If the agent fails to stabilize within a consolidation
+interval, the event was a scope transition — the current S_global is inadequate.
+
+**Experimental operationalization:**
+This is directly testable in the labyrinth experiment by introducing:
+1. Standard zone-crossing events (regime transitions by design)
+2. Novel zone types that were not present during training (potential scope transitions)
+Category 2 should produce sustained salience elevation and T_stable > T_consolidation.
+
+**Status:** claim with formal criterion — testable in labyrinth experiment Phase 2.
+
+---
+
+### Q-CNS-09 — Consolidation: asymptotic sharpening or faster mechanism?
+
+**Question:** Does consolidation produce asymptotic partition sharpening (K6: dissipation
+is a limit process), or is there a faster non-asymptotic mechanism?
+
+**Theoretical analysis:**
+
+The K6 finding (from `docs/advanced/observable_decomposition.md`) states that dissipation
+contracts the state space toward attractors only asymptotically — projective mapping
+is the limit, not a finite-step operation.
+
+If consolidation is purely dissipative, the empirical signature must be:
+- Monotone decrease in partition boundary width (ε-instability zone) over consolidation cycles
+- No discontinuous jumps in partition stability after individual consolidation phases
+- The convergence rate is proportional to anchor density (more anchors → faster asymptotic approach)
+
+**The alternative hypothesis:**
+If there exists a non-asymptotic (faster) mechanism — e.g., discrete winner-take-all
+anchor replacement, phase-transition-like reorganization of the anchor set — the signature
+would be:
+- Step-like jumps in partition stability (discontinuous, not monotone)
+- Stability increase concentrated at specific consolidation cycles, not distributed across all
+
+**Testable prediction (hypothesis):**
+Asymptotic consolidation predicts that the partition ε-stability metric (ε-plateau width)
+increases monotonically and smoothly across consolidation cycles.
+A faster mechanism predicts step-like increases.
+
+**Operationalization:**
+Measure the ε-sweep N(ε) plateau width after each consolidation cycle.
+Plot plateau width as a function of consolidation cycle count.
+Monotone smooth → asymptotic (K6 prediction confirmed).
+Step-like → faster mechanism present.
+
+**Practical implication:**
+If consolidation is purely asymptotic, the architecture should not expect post-consolidation
+improvements to be immediately visible in the next episode. Evaluation of consolidation
+effects requires accumulation over multiple cycles, not single-shot testing.
+
+**Status:** hypothesis — testable by ablation study with ε-sweep per consolidation cycle.
+

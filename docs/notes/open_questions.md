@@ -340,7 +340,15 @@ The cognitive counterpart would be χ_mode = ∂(mode_distribution)/∂(context_
 a fluctuation-class observable with R(χ_mode) ∋ transition points.
 Source: `docs/context_navigation/mode_scope_regime_audit.md` §2.2.
 Priority: high.
-Status: open
+
+*Theoretical analysis (session 2026-03-29):* The minimal operationalization is
+mode-switch rate per episode — a proxy for χ_mode without requiring explicit
+context_load parameterization. Observable BC structure: A·R (Aggregation-dominated
+with Restriction co-component). Expected: mode-switch rate peaks at regime boundaries
+where mode_dist has entered Z(mode_dist). Testable by comparing mode-switch rate
+profile across BC parameter sweep with mode_dist coverage height profile.
+See `docs/notes/research_journal.md` Session 2026-03-29.
+Status: partially_answered — operationalization proposed; awaits experimental confirmation
 
 **Q-CNS-07 — BC class of a mode: stable under change of observation set?**
 Is the BC class of a mode R_m stable under changes to the observation set Π?
@@ -349,7 +357,15 @@ to have the same BC class? This is the cognitive-architecture instance of Q_NEW_
 (BC class: system property or scope property?).
 Source: `docs/context_navigation/mode_scope_regime_audit.md` §2.5.
 Priority: medium.
-Status: open
+
+*Theoretical analysis (session 2026-03-29):* The BC class of a mode as seen through
+mode_dist (A·R) and as seen through salience_mean (R·A) will differ because the
+observable's own BC structure overlays the system's actual BC class (K5).
+The Φ_obs transfer experiment (same labyrinth, two observables) is the direct test.
+Prediction: Φ_obs < 1 for mode_dist vs. salience_mean, confirming BC-class instability
+under Π change for the cognitive architecture.
+See `docs/notes/research_journal.md` Session 2026-03-29.
+Status: partially_answered — hypothesis and test operationalized; awaits experiment
 
 **Q-CNS-08 — Empirical signature: scope transition vs. regime transition**
 What is the empirical signature of a scope transition (S_global failure, all
@@ -359,7 +375,15 @@ This distinction is critical for interpreting zone boundary crossings
 in the labyrinth experiment without ground-truth zone labels.
 Source: `docs/context_navigation/mode_scope_regime_audit.md` §2.3.
 Priority: high.
-Status: open
+
+*Theoretical analysis (session 2026-03-29):* Formal discrimination criterion proposed.
+Regime transition: T_stable < T_consolidation AND mode_dist converges to new dominant mode.
+Scope transition: T_stable ≥ T_consolidation OR mode_dist does not converge.
+In words: failure to find a new stable mode within one consolidation interval signals
+S_global inadequacy, not a zone crossing. Testable by introducing novel zone types
+(absent from training) into the labyrinth evaluation.
+See `docs/notes/research_journal.md` Session 2026-03-29.
+Status: partially_answered — formal criterion proposed; awaits experimental validation
 
 **Q-CNS-09 — Consolidation: asymptotic sharpening or faster mechanism?**
 Does consolidation produce asymptotic partition sharpening (as predicted by
@@ -370,7 +394,16 @@ not an immediate post-consolidation step. Testable by ablation study on
 consolidation phase frequency and partition stability measurement.
 Source: `docs/context_navigation/mode_scope_regime_audit.md` §2.4.
 Priority: medium.
-Status: open
+
+*Theoretical analysis (session 2026-03-29):* The K6 prediction is clear: ε-plateau
+width should increase monotonically across consolidation cycles (smooth, not step-like).
+The alternative — discrete reorganization — would produce step-like jumps concentrated
+at specific consolidation cycles. Operationalization: measure ε-sweep N(ε) plateau width
+after each consolidation cycle and plot against cycle count. Monotone smooth → K6 confirmed.
+Practical implication: consolidation effects require multiple cycles to be visible;
+single-shot post-consolidation testing is insufficient to evaluate the mechanism.
+See `docs/notes/research_journal.md` Session 2026-03-29.
+Status: partially_answered — hypothesis and measurement protocol defined; awaits experiment
 
 ---
 

@@ -207,6 +207,22 @@ the system selects a processing mode:
 
 mode = argmax P(m | c)
 
+**ARW grounding (see `mode_scope_regime_audit.md` §1.3 and §2.1):**
+This formula identifies which regime cell R_m in the partition of S_global
+the current parameter point p occupies. Modes are not independent scope tuples
+— they are stable partition cells in S_global, each characterized by which
+observables π_m ∈ Π remain within their observable range R(π_m) at p.
+
+The admissibility-grounded reading:
+
+```
+mode*(p) = R_m ∈ partition(S_global)  such that  p ∈ R(π_m) for all π_m ∈ Π_m
+```
+
+P(m | c) is the agent's posterior estimate of current regime-cell membership.
+The argmax is maximum-likelihood regime identification, not activation of
+an independent scope.
+
 Mode selection can be implemented through:
 
 - gating networks
