@@ -215,3 +215,35 @@ The central rule of resonance‑dialectic context navigation is:
 choose the interpretive regime whose admissibility is maximal in the current context, based on prototypical experience.
 
 This transforms resonance from a metaphor into a **computable decision principle for adaptive cognition**.
+
+---
+
+# 13 Terminological Note: Formal vs. Informal Uses of "Resonance"
+
+This document uses the word *resonance* in two distinct senses. Readers familiar
+with the ARW framework should distinguish them explicitly.
+
+**Formal usage (ARW):** "Resonance" in the ARW sense refers to coherent coupling under
+compatible boundary conditions — specifically, the mechanism by which a Coupling BC class
+generates regime structure. In this reading, two sub-systems *resonate* when their
+respective boundary conditions permit sustained mutual amplification of a shared mode.
+Resonance is the process by which the coupling BC accumulates pattern; the regime partition
+is the result. See [docs/glossary/resonance.md](../glossary/resonance.md) and
+[docs/glossary/resonance_field.md](../glossary/resonance_field.md) for formal definitions.
+See also [docs/context_navigation/boundary_conditions_as_resonance_filters.md](boundary_conditions_as_resonance_filters.md)
+for how BC classes act as resonance filters in architectural terms.
+
+**Informal usage (this document):** Throughout Sections 1–12, "resonance" and
+"high resonance" are used to mean *high compatibility between context and mode* —
+equivalently, high admissibility A(m|x). This is consistent with the formal sense
+(admissibility is the architectural analogue of resonance), but it is not the same
+as the technical ARW definition above. The mapping is: R(m, x) = A(m|x) uses
+"resonance" as a shorthand for admissibility, not as a claim about the physical
+coupling mechanism.
+
+**The bridge:** The two senses converge under the interpretation that modes are reduced
+scopes (as established in [docs/cognitive_architecture/modal_cognition.md](../cognitive_architecture/modal_cognition.md)).
+A mode *resonates* with a context in the informal sense precisely because the underlying
+Coupling BC between context features and mode structure produces a stable regime under
+those conditions — the formal sense. Resonance-as-admissibility and resonance-as-coupling-mechanism
+describe the same phenomenon at different levels of description.

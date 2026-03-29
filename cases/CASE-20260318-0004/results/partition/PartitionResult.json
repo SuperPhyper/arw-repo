@@ -1,84 +1,271 @@
 {
   "case_id": "CASE-20260318-0004",
-  "produced_by": "manual_from_simulation",
-  "simulation_source": "simulate_arw_emergence.py",
-  "created_at": "2026-03-18",
-  "status": "complete",
-  "note": "Derived analytically from sweep_results.csv. Formal pipeline.extract_partition run pending.",
-
-  "sweep_parameter": "K",
-  "sweep_range": [0.01, 0.12],
-  "n_points": 12,
-
-  "primary_observable": "plv",
-  "working_epsilon": 0.09,
-
-  "regimes": [
-    {
-      "id": "R1",
-      "label": "incoherent",
-      "K_range": [0.01, 0.05],
-      "n_points": 5,
-      "plv_mean": 0.394,
-      "plv_min": 0.158,
-      "plv_max": 0.680,
-      "amp_asym_mean": 0.082,
-      "description": "Incoherent regime: PLV < 0.7, oscillators not phase-locked. amp_asym < epsilon throughout."
-    },
-    {
-      "id": "R2",
-      "label": "phase_locked",
-      "K_range": [0.06, 0.12],
-      "n_points": 7,
-      "plv_mean": 1.000,
-      "plv_min": 0.9999,
-      "plv_max": 1.000,
-      "amp_asym_mean": 0.076,
-      "description": "Phase-locked regime: PLV = 1.0, oscillators fully synchronized. amp_asym < epsilon throughout."
-    }
-  ],
-
-  "transition": {
-    "theta_star": 0.055,
-    "theta_star_range": [0.05, 0.06],
-    "type": "sharp",
-    "note": "PLV jumps from 0.68 (K=0.05) to 1.000 (K=0.06). Transition within one sweep step."
+  "system": "stuart_landau_coupled",
+  "epsilon": 0.09,
+  "method": "eps_clustering_bc_coupled",
+  "sweep_param": "K",
+  "regime_count": 4,
+  "regime_labels": {
+    "0": "R0",
+    "1": "R1",
+    "2": "R2",
+    "3": "R3"
   },
-
-  "N": 2,
-
-  "emergence_analysis": {
-    "local_collapse_threshold": 0.082,
-    "relational_threshold": 0.805,
-    "emergence_window": [0.082, 0.805],
-    "emergence_window_width": 0.723,
-    "working_epsilon_in_window": true,
-    "note": >
-      For epsilon = 0.09 in [0.082, 0.805]:
-      (1) amp_asym < epsilon for ALL K — local description collapsed
-      (2) DELTA_PLV = 0.805 > epsilon — relational distinction survives
-      ARW emergence condition satisfied.
+  "regime_counts": {
+    "0": 3,
+    "1": 1,
+    "2": 1,
+    "3": 7
   },
-
-  "observable_sufficiency": {
-    "plv": {
-      "sufficient": true,
-      "span": 0.842,
-      "span_over_2epsilon": 4.68
+  "regime_observable_ranges": {
+    "0": {
+      "min": 0.157718,
+      "max": 0.194954
     },
-    "amp_asym": {
-      "sufficient": false,
-      "span": 0.009,
-      "span_over_2epsilon": 0.05,
-      "interpretation": "observable_insufficiency — intentional (Π_local collapse, not scope rejection)"
+    "1": {
+      "min": 0.384494,
+      "max": 0.384494
     },
-    "freq_gap": {
-      "sufficient": true,
-      "span": 0.110,
-      "span_over_2epsilon": 0.61,
-      "note": "Sufficient but correlated with PLV; secondary only"
+    "2": {
+      "min": 0.680224,
+      "max": 0.680224
+    },
+    "3": {
+      "min": 0.999855,
+      "max": 1.0
     }
   },
-
-  "raw_data_ref": "results/raw/sweep_results.csv"
+  "transition_boundary": {
+    "param": "K",
+    "transitions": [
+      {
+        "from_regime": 0,
+        "to_regime": 1,
+        "param_before": 0.03,
+        "param_after": 0.04,
+        "theta_star": 0.035
+      },
+      {
+        "from_regime": 1,
+        "to_regime": 2,
+        "param_before": 0.04,
+        "param_after": 0.05,
+        "theta_star": 0.045
+      },
+      {
+        "from_regime": 2,
+        "to_regime": 3,
+        "param_before": 0.05,
+        "param_after": 0.060000000000000005,
+        "theta_star": 0.05500000000000001
+      }
+    ],
+    "theta_star": 0.035
+  },
+  "annotated_results": [
+    {
+      "sweep_index": 0,
+      "sweep_point": {
+        "K": 0.01,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.15771751996073363,
+      "observable_name": "plv",
+      "all_observables": {
+        "plv": 0.15771751996073363,
+        "amp_asym": 0.08034358932555519,
+        "freq_gap": 0.10970869930283511
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 1,
+      "sweep_point": {
+        "K": 0.02,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.1587941592341251,
+      "observable_name": "plv",
+      "all_observables": {
+        "plv": 0.1587941592341251,
+        "amp_asym": 0.0806797039383933,
+        "freq_gap": 0.1072256236371959
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 2,
+      "sweep_point": {
+        "K": 0.03,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.1949542814861051,
+      "observable_name": "plv",
+      "all_observables": {
+        "plv": 0.1949542814861051,
+        "amp_asym": 0.08160003983249442,
+        "freq_gap": 0.10063188436356063
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 3,
+      "sweep_point": {
+        "K": 0.04,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.38449423140146055,
+      "observable_name": "plv",
+      "all_observables": {
+        "plv": 0.38449423140146055,
+        "amp_asym": 0.08178071626019223,
+        "freq_gap": 0.08122239264527464
+      },
+      "regime_id": 1,
+      "regime_label": "R1"
+    },
+    {
+      "sweep_index": 4,
+      "sweep_point": {
+        "K": 0.05,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.6802240328851835,
+      "observable_name": "plv",
+      "all_observables": {
+        "plv": 0.6802240328851835,
+        "amp_asym": 0.08226822445664306,
+        "freq_gap": 0.043770990954463795
+      },
+      "regime_id": 2,
+      "regime_label": "R2"
+    },
+    {
+      "sweep_index": 5,
+      "sweep_point": {
+        "K": 0.060000000000000005,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.9998554137459247,
+      "observable_name": "plv",
+      "all_observables": {
+        "plv": 0.9998554137459247,
+        "amp_asym": 0.07960994879838001,
+        "freq_gap": 0.0005056117979228558
+      },
+      "regime_id": 3,
+      "regime_label": "R3"
+    },
+    {
+      "sweep_index": 6,
+      "sweep_point": {
+        "K": 0.06999999999999999,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.9999969921411366,
+      "observable_name": "plv",
+      "all_observables": {
+        "plv": 0.9999969921411366,
+        "amp_asym": 0.07769516259846165,
+        "freq_gap": 9.009780022295466e-05
+      },
+      "regime_id": 3,
+      "regime_label": "R3"
+    },
+    {
+      "sweep_index": 7,
+      "sweep_point": {
+        "K": 0.08,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.9999998618614303,
+      "observable_name": "plv",
+      "all_observables": {
+        "plv": 0.9999998618614303,
+        "amp_asym": 0.07638592917979614,
+        "freq_gap": 2.1905129502508558e-05
+      },
+      "regime_id": 3,
+      "regime_label": "R3"
+    },
+    {
+      "sweep_index": 8,
+      "sweep_point": {
+        "K": 0.09,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.9999999913273454,
+      "observable_name": "plv",
+      "all_observables": {
+        "plv": 0.9999999913273454,
+        "amp_asym": 0.07530729533206337,
+        "freq_gap": 6.015084267452231e-06
+      },
+      "regime_id": 3,
+      "regime_label": "R3"
+    },
+    {
+      "sweep_index": 9,
+      "sweep_point": {
+        "K": 0.09999999999999999,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.999999999351032,
+      "observable_name": "plv",
+      "all_observables": {
+        "plv": 0.999999999351032,
+        "amp_asym": 0.0743545682000174,
+        "freq_gap": 1.7698315775138695e-06
+      },
+      "regime_id": 3,
+      "regime_label": "R3"
+    },
+    {
+      "sweep_index": 10,
+      "sweep_point": {
+        "K": 0.11,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.9999999999455956,
+      "observable_name": "plv",
+      "all_observables": {
+        "plv": 0.9999999999455956,
+        "amp_asym": 0.07348279940475377,
+        "freq_gap": 5.447080281273387e-07
+      },
+      "regime_id": 3,
+      "regime_label": "R3"
+    },
+    {
+      "sweep_index": 11,
+      "sweep_point": {
+        "K": 0.12,
+        "_bc_id": "bc_01",
+        "_bc_class": "coupling"
+      },
+      "observable": 0.999999999995061,
+      "observable_name": "plv",
+      "all_observables": {
+        "plv": 0.999999999995061,
+        "amp_asym": 0.07266851567833155,
+        "freq_gap": 1.7303305621663156e-07
+      },
+      "regime_id": 3,
+      "regime_label": "R3"
+    }
+  ]
 }

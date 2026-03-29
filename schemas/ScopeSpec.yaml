@@ -128,14 +128,23 @@ comparability:
 # ── Falsification conditions ─────────────────────────────────────────────────
 # Operate at BC level (not observable level — observable insufficiency is handled
 # separately in observable_sufficiency above).
-# severity: scope_rejection — the BC cannot generate a valid partition
-#           sweep_refinement — the sweep range/density needs extension (not a failure)
+#
+# Severity values:
+#   observable_replacement — F0: R(π) ∩ B ≠ B; the observable's pre-scopal
+#                            substrate fails structurally (exclusion zone Z(π)
+#                            overlaps B). Replace the observable class; the scope
+#                            and BC remain valid. Distinct from F1 (span failure).
+#                            See docs/glossary/observable_range.md.
+#   scope_rejection        — F1(BC)/F2/F3: the BC cannot generate a valid partition
+#   sweep_refinement       — F4: θ* at sweep boundary; measurement gap, not a failure
+#
+# F0 entries should identify: which observable, which assumption fails, and Z(π) ∩ B.
 falsification:
   - id: "F1"
     condition: ""                   # what empirical finding would weaken this instantiation
     measurable_test: ""
     threshold: ""
-    severity: "scope_rejection"    # scope_rejection | sweep_refinement
+    severity: "scope_rejection"    # observable_replacement | scope_rejection | sweep_refinement
 
 # ── Provenance ───────────────────────────────────────────────────────────────
 provenance:

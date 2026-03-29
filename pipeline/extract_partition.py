@@ -88,18 +88,36 @@ def extract_observables_double_pendulum(result: dict) -> dict:
     }
 
 
+def extract_observables_stuart_landau_coupled(result: dict) -> dict:
+    """Coupled Stuart-Landau oscillators: PLV (primary), amp_asym, freq_gap.
+
+    PLV (phase-locking value) is the relational observable — measures inter-oscillator
+    phase coherence. amp_asym is the local emergence precursor (collapses below ε
+    before PLV transition — CASE-20260318-0004 emergence window). Default primary: plv.
+    """
+    return {
+        "observables": {
+            "plv":      result.get("plv"),
+            "amp_asym": result.get("amp_asym"),
+            "freq_gap": result.get("freq_gap"),
+        },
+        "default_primary": "plv",
+    }
+
+
 def extract_observables_stub(result: dict) -> dict:
     return {"observables": {},
             "note": "Implement observable extractor for this system"}
 
 
 OBSERVABLE_MAP = {
-    "kuramoto":        extract_observables_kuramoto,
-    "pendulum":        extract_observables_pendulum,
-    "double_pendulum": extract_observables_double_pendulum,
-    "consensus":       extract_observables_stub,
-    "meanfield":       extract_observables_stub,
-    "labyrinth":       extract_observables_stub,
+    "kuramoto":               extract_observables_kuramoto,
+    "pendulum":               extract_observables_pendulum,
+    "double_pendulum":        extract_observables_double_pendulum,
+    "stuart_landau_coupled":  extract_observables_stuart_landau_coupled,
+    "consensus":              extract_observables_stub,
+    "meanfield":              extract_observables_stub,
+    "labyrinth":              extract_observables_stub,
 }
 
 

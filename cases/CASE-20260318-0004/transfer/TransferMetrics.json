@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "case_A": "CASE-20260318-0004",
+    "case_B": "CASE-20260311-0001",
+    "system_A": "stuart_landau_coupled",
+    "system_B": "kuramoto"
+  },
+  "metrics": {
+    "RCD": {
+      "value": 0,
+      "N_A": 4,
+      "N_B": 4,
+      "interpretation": "perfect_match"
+    },
+    "TBS": {
+      "value": 1.44,
+      "tbs_raw": 1.44,
+      "method": "raw_only",
+      "theta_star_A": 0.035,
+      "theta_star_B": 1.475,
+      "sweep_range_A": null,
+      "sweep_range_B": [
+        0.0,
+        3.0
+      ],
+      "interpretation": "large_shift"
+    },
+    "PCI": {
+      "value": 1.0,
+      "N_A": 4,
+      "N_B": 4,
+      "interpretation": "full_compatibility",
+      "note": "Structural PCI approximation. Full PCI requires aligned annotated results."
+    },
+    "SDI": {
+      "value": 0,
+      "nodes_A": 4,
+      "nodes_B": 4,
+      "edges_A": 3,
+      "edges_B": 3,
+      "interpretation": "identical_structure"
+    },
+    "Phi": {
+      "value": 0.9,
+      "components": {
+        "PCI": 1.0,
+        "RCD_score": 1.0,
+        "SDI_score": 1.0,
+        "TBS_score": 0
+      },
+      "interpretation": "highly_admissible"
+    }
+  }
+}

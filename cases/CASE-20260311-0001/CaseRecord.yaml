@@ -62,7 +62,20 @@ go_nogo:
   threshold: "5% of K_c_analytical = 0.6366"
   decision: "pending"
   decision_date: ""
-  decision_notes: "theta_star=1.475 — denser sweep in kappa=[0.5,0.9] needed (F1: sweep_refinement)"
+  decision_notes: >
+    theta_star=1.475 — criterion not met. Two-path interpretation (session 2026-03-18):
+    PATH A (sweep_refinement): theta_star=1.475 may be an F4 artifact (sweep boundary at
+    kappa=3.0 is too close). A denser sweep in kappa=[1.0, 2.5] could shift theta_star
+    into the admissible range [0.605, 0.668].
+    PATH B (F0 closure): Session 2026-03-18 established that kappa_c ≈ 1.49 lies in Z(r_ss)
+    — the exclusion zone of the observable — where five substrate assumptions simultaneously
+    fail. theta_star=1.475 is a scope transition (r_ss collapses at kappa_c), not a regime
+    boundary. Under PATH B, this case documents a valid F0 falsification for r_ss at kappa_c,
+    and a new case (CASE-0001-ext) with chi = dr_ss/dkappa as primary observable is needed.
+    chi diverges at kappa_c rather than collapsing — R(chi) includes kappa_c.
+    See Q_NEW_12 in docs/notes/open_questions.md and docs/advanced/report_chi_observable.md.
+    Resolution: PATH B (F0) is the preferred interpretation as of 2026-03-29.
+    CASE-0001-ext is planned but not yet created (see docs/notes/repo_weakpoints.md).
 
 # ── Links ────────────────────────────────────────────────────────────────────
 links:

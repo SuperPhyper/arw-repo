@@ -20,8 +20,6 @@ See `arw-doc-consistency` skill for usage rules.
 
 ## Known Issues
 
-All issues from the 2026-03-29 maintenance session have been resolved. No open issues.
-
 | ID | File | Issue | Resolution | Date |
 |---|---|---|---|---|
 | I-01 | `docs/advanced/emergence/epsilon_induced_relational_emergence.md` | DUPLICATE — identical to `docs/advanced/epsilon_induced_relational_emergence.md` | Deleted `docs/advanced/emergence/` subdirectory | 2026-03-29 |
@@ -29,6 +27,10 @@ All issues from the 2026-03-29 maintenance session have been resolved. No open i
 | I-03 | `docs/notes/operator_signatures_cross_domain.md` | LAYER MISMATCH — front-matter said `layer: advanced` | Moved to `docs/advanced/operator_signatures_cross_domain.md` | 2026-03-29 |
 | I-04 | `docs/notes/open_questions_2026-03-18.md` + `open_questions_session_2026-03-18.md` | ARCHIVED STUBS in active notes/ | Moved both to `archive/sessions/` | 2026-03-29 |
 | I-05 | `kuramoto_arw_notes.md`, `kuramoto_bc_coupled_eps_comparison_report.md`, `methodological_lessons.md` | MISSING FRONT-MATTER | Added `status: note` + `layer: docs/notes/` to all three | 2026-03-29 |
+| I-06 | `docs/advanced/epsilon_resolution_window_arw.md` | DEAD STUB — redirected to epsilon_and_scope_resolution.md with no content | Deleted; entry superseded in DOC_INDEX | 2026-03-29 |
+| I-07 | `README_session_2026-03-18.md` at repo root | UNARCHIVED SESSION ARTIFACT | Moved to `archive/sessions/` | 2026-03-29 |
+| I-08 | `docs/context_navigation/resonance_dialectic_context_navigation.md` | INFORMAL RESONANCE USAGE — 12 informal uses without formal ARW distinction | Added Section 13 (formal vs. informal resonance note) | 2026-03-29 |
+| I-09 | `schemas/ScopeSpec.yaml` — falsification severity field | F0 (`observable_replacement`) missing as valid severity value | Added F0 documentation to falsification block | 2026-03-29 |
 
 ---
 
@@ -115,7 +117,7 @@ All issues from the 2026-03-29 maintenance session have been resolved. No open i
 | docs/advanced/epsilon_and_scope_resolution.md | working-definition | ε and scope resolution | — | — |
 | docs/advanced/epsilon_induced_relational_emergence.md | working-definition | ε-induced relational emergence | — | **Canonical copy.** Duplicate at docs/advanced/emergence/ — see I-01 |
 | docs/advanced/epsilon_induced_scope_family.md | working-definition | ε-induced scope families | — | — |
-| docs/advanced/epsilon_resolution_window_arw.md | working-definition | ε as resolution window | — | — |
+| ~~docs/advanced/epsilon_resolution_window_arw.md~~ | — | — | docs/advanced/epsilon_and_scope_resolution.md | **DELETED 2026-03-29** — dead redirect stub; canonical doc is epsilon_and_scope_resolution.md |
 | docs/advanced/extended_z_observable_necessity.md | working-definition | extended Z(π), observable class necessity, multi-BC systems | — | — |
 | docs/advanced/h2_prime_theorem.md | working-definition | Theorem H2' — IVA dimensionality principle | — | — |
 | docs/advanced/iva_z_geometry.md | working-definition | IVA, Z(π) geometry | — | — |
