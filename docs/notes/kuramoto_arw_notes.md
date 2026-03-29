@@ -1,3 +1,8 @@
+---
+status: note
+layer: docs/notes/
+---
+
 
 # Kuramoto BC‑Perturbation Study Notes
 

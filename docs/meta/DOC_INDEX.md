@@ -18,15 +18,17 @@ See `arw-doc-consistency` skill for usage rules.
 
 ---
 
-## Known Issues (resolve before next major session)
+## Known Issues
 
-| ID | File | Issue | Action |
-|---|---|---|---|
-| I-01 | `docs/advanced/emergence/epsilon_induced_relational_emergence.md` | **DUPLICATE** — byte-for-byte identical to `docs/advanced/epsilon_induced_relational_emergence.md` | Delete the `emergence/` subdirectory copy; keep the `advanced/` root copy |
-| I-02 | `docs/context_navigation/` vs `docs/cognitive_architecture/` | **DIVERGED COPIES** — anchor_memory, bc_taxonomy_cognitive_modes, context_navigation_ai, modal_cognition exist in both layers with different content | Decide canonical layer per file; supersede the weaker copies |
-| I-03 | `docs/notes/operator_signatures_cross_domain.md` | **LAYER MISMATCH** — front-matter says `layer: advanced` but file is in `docs/notes/` | Move to `docs/advanced/` or correct front-matter |
-| I-04 | `docs/notes/open_questions_2026-03-18.md` + `open_questions_session_2026-03-18.md` | **ARCHIVED STUBS** in active docs/notes/ — status: archived; content superseded by `open_questions.md` | Move both to `archive/sessions/` or confirm current placement is intentional |
-| I-05 | `docs/notes/kuramoto_arw_notes.md`, `kuramoto_bc_coupled_eps_comparison_report.md`, `methodological_lessons.md` | **MISSING FRONT-MATTER** — no status/layer block | Add YAML front-matter |
+All issues from the 2026-03-29 maintenance session have been resolved. No open issues.
+
+| ID | File | Issue | Resolution | Date |
+|---|---|---|---|---|
+| I-01 | `docs/advanced/emergence/epsilon_induced_relational_emergence.md` | DUPLICATE — identical to `docs/advanced/epsilon_induced_relational_emergence.md` | Deleted `docs/advanced/emergence/` subdirectory | 2026-03-29 |
+| I-02 | `docs/context_navigation/` (4 files) vs `docs/cognitive_architecture/` | Apparent diverged copies | Confirmed as intentional redirect stubs (`redirects_to:` front-matter); not a real issue | 2026-03-29 |
+| I-03 | `docs/notes/operator_signatures_cross_domain.md` | LAYER MISMATCH — front-matter said `layer: advanced` | Moved to `docs/advanced/operator_signatures_cross_domain.md` | 2026-03-29 |
+| I-04 | `docs/notes/open_questions_2026-03-18.md` + `open_questions_session_2026-03-18.md` | ARCHIVED STUBS in active notes/ | Moved both to `archive/sessions/` | 2026-03-29 |
+| I-05 | `kuramoto_arw_notes.md`, `kuramoto_bc_coupled_eps_comparison_report.md`, `methodological_lessons.md` | MISSING FRONT-MATTER | Added `status: note` + `layer: docs/notes/` to all three | 2026-03-29 |
 
 ---
 
@@ -128,7 +130,7 @@ See `arw-doc-consistency` skill for usage rules.
 | docs/advanced/quantum_operator_extension.md | open-question | quantum operator extension | — | Open question; speculative |
 | docs/advanced/report_chi_observable.md | claim | χ = ∂r_ss/∂κ as fluctuation observable | — | Empirical; links CASE-0001 |
 | docs/advanced/scope_completeness.md | working-definition | scope completeness, observable agreement | — | — |
-| docs/advanced/emergence/epsilon_induced_relational_emergence.md | working-definition | ε-induced relational emergence | — | **⚠ DUPLICATE of docs/advanced/epsilon_induced_relational_emergence.md — see I-01. Delete this copy.** |
+| ~~docs/advanced/emergence/epsilon_induced_relational_emergence.md~~ | — | — | — | **DELETED 2026-03-29 (was duplicate of docs/advanced/epsilon_induced_relational_emergence.md — I-01)** |
 
 ---
 
@@ -178,13 +180,13 @@ See `arw-doc-consistency` skill for usage rules.
 |---|---|---|---|---|
 | docs/context_navigation/admissibility_and_mode_selection.md | working-definition | admissibility in context-navigating architectures, mode selection | — | — |
 | docs/context_navigation/agent_architecture_mode_ecology.md | hypothesis | agent architecture, mode ecology | — | — |
-| docs/context_navigation/anchor_memory.md | note | anchor memory (context nav.) | — | ⚠ See I-02: diverged copy also in cognitive_architecture/ |
-| docs/context_navigation/bc_taxonomy_cognitive_modes.md | note | BC taxonomy cognitive modes (context nav.) | — | ⚠ See I-02: diverged copy also in cognitive_architecture/ |
+| docs/context_navigation/anchor_memory.md | note | redirect → docs/cognitive_architecture/anchor_memory.md | — | Intentional redirect stub (redirects_to: front-matter) |
+| docs/context_navigation/bc_taxonomy_cognitive_modes.md | note | redirect → docs/cognitive_architecture/bc_taxonomy_cognitive_modes.md | — | Intentional redirect stub |
 | docs/context_navigation/boundary_conditions_as_resonance_filters.md | hypothesis | BC as resonance filters | — | — |
-| docs/context_navigation/context_navigation_ai.md | note | context navigation AI (context nav.) | — | ⚠ See I-02: diverged copy also in cognitive_architecture/ |
+| docs/context_navigation/context_navigation_ai.md | note | redirect → docs/cognitive_architecture/context_navigation_ai.md | — | Intentional redirect stub |
 | docs/context_navigation/context_navigation_architecture_notes.md | hypothesis | context navigation architecture, mode optimization | — | — |
 | docs/context_navigation/context_navigation_model_spec.md | working-definition | context navigation model specification | — | — |
-| docs/context_navigation/modal_cognition.md | note | modal cognition (context nav.) | — | ⚠ See I-02: diverged copy also in cognitive_architecture/ |
+| docs/context_navigation/modal_cognition.md | note | redirect → docs/cognitive_architecture/modal_cognition.md | — | Intentional redirect stub |
 | docs/context_navigation/resonance_dialectic_context_navigation.md | hypothesis | resonance–dialectic context navigation | — | — |
 | docs/context_navigation/salience_mode_ecology.md | hypothesis | salience as emergent property of mode ecology | — | — |
 
@@ -257,14 +259,14 @@ See `arw-doc-consistency` skill for usage rules.
 | docs/notes/arw_research_assignment.md | note | observable superiority validation assignment | — | — |
 | docs/notes/arw_social_scope_research_assignment.md | note | social scope research assignment | — | Links CASE-20260315-SOC1 |
 | docs/notes/bc_extraction_littman_metcalf.md | hypothesis | BC extraction — Littman-Metcalf method | — | Links to art_instantiations/arw_littman_bc_analysis.md |
-| docs/notes/kuramoto_arw_notes.md | — | Kuramoto BC-perturbation study notes | — | ⚠ Missing front-matter (see I-05) |
-| docs/notes/kuramoto_bc_coupled_eps_comparison_report.md | — | BC-coupled epsilon comparison (Kuramoto) | — | ⚠ Missing front-matter (see I-05) |
+| docs/notes/kuramoto_arw_notes.md | note | Kuramoto BC-perturbation study notes | — | — |
+| docs/notes/kuramoto_bc_coupled_eps_comparison_report.md | note | BC-coupled epsilon comparison (Kuramoto) | — | — |
 | docs/notes/literature_links.md | working-definition | literature links | — | — |
-| docs/notes/methodological_lessons.md | — | methodological lessons (Kuramoto study) | — | ⚠ Missing front-matter (see I-05) |
+| docs/notes/methodological_lessons.md | note | methodological lessons (Kuramoto study) | — | — |
 | docs/notes/open_questions.md | working-definition | active open research questions (Q1–Q16+) | — | **Canonical; add new questions here** |
-| docs/notes/open_questions_2026-03-18.md | note | session 2026-03-18 open questions | — | ⚠ Archived stub (see I-04); superseded by open_questions.md |
-| docs/notes/open_questions_session_2026-03-18.md | note | session 2026-03-18 open questions | — | ⚠ Archived stub (see I-04); superseded by open_questions.md |
-| docs/notes/operator_signatures_cross_domain.md | hypothesis | operator signatures across domains | — | ⚠ Front-matter says layer: advanced but file is in notes/ (see I-03) |
+| ~~docs/notes/open_questions_2026-03-18.md~~ | — | — | — | MOVED to archive/sessions/ 2026-03-29 (I-04) |
+| ~~docs/notes/open_questions_session_2026-03-18.md~~ | — | — | — | MOVED to archive/sessions/ 2026-03-29 (I-04) |
+| docs/advanced/operator_signatures_cross_domain.md | hypothesis | operator signatures across domains | — | MOVED from docs/notes/ 2026-03-29 (I-03) |
 | docs/notes/repo_weakpoints.md | working-definition | repository weak points, systematic assessment | — | — |
 | docs/notes/research_journal.md | working-definition | research journal (all sessions) | — | **Canonical; add new session findings here** |
 | docs/notes/research_journal_session_2026-03-18.md | note | session 2026-03-18 research journal | — | Archived; merged into research_journal.md |

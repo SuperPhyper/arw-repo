@@ -1,3 +1,8 @@
+---
+status: note
+layer: docs/notes/
+---
+
 # Additional BC-coupled epsilon comparisons
 
 Two additional partitions were generated from the same Kuramoto sweep using the BC-coupled rule, at epsilon = 0.05 and epsilon = 0.2.

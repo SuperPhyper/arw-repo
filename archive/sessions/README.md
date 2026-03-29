@@ -20,7 +20,6 @@ The canonical versions are in `docs/notes/`.
 |---|---|---|---|
 | [README_session_2026-03-18.md](README_session_2026-03-18.md) | 2026-03-18 | — (session summary) | 2026-03-27 |
 | [research_journal_session_2026-03-18.md](research_journal_session_2026-03-18.md) | 2026-03-18 | `docs/notes/research_journal.md` | 2026-03-27 |
-| [open_questions_2026-03-18.md](open_questions_2026-03-18.md) | 2026-03-18 | `docs/notes/open_questions.md` (Q_NEW_1–12) | 2026-03-27 |
 | [open_questions_session_2026-03-18.md](open_questions_session_2026-03-18.md) | 2026-03-18 | `docs/notes/open_questions.md` (Q_NEW_1–12) | 2026-03-27 |
 
 ## What was in session 2026-03-18

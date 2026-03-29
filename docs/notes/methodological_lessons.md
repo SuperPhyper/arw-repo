@@ -1,3 +1,8 @@
+---
+status: note
+layer: docs/notes/
+---
+
 
 # Methodological Lessons from Kuramoto Regime Study
 
