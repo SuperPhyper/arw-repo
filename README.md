@@ -17,7 +17,9 @@ ARW (Allgemeine Regime-Wissenschaft) is a formal framework that maps descriptive
 **What is ART in one sentence?**
 ART (Allgemeine Regime-Theorie) is the application layer: it instantiates ARW by specifying concrete scopes for real systems, enabling experiments and measurements.
 
-**What can a new reader cover in 15 minutes?**
+**Where should a new reader start?**
+→ [docs/overview/why_arw.md](docs/overview/why_arw.md) — the problem ARW solves, illustrated with two concrete cases (5 min)
+→ [docs/overview/arw_concepts.md](docs/overview/arw_concepts.md) — the four scope components explained with examples (10 min)
 → [docs/overview/ARW_in_one_page.md](docs/overview/ARW_in_one_page.md) — the complete framework compactly
 → [docs/overview/minimal_example.md](docs/overview/minimal_example.md) — a concrete walkthrough with a two-link pendulum
 
@@ -84,7 +86,14 @@ Before Theorem H2', the exclusion zone Z(π) was defined but its geometry was le
 
 ## Reading Path
 
-### 15-Minute Introduction
+### Narrative Introduction — Start Here
+
+| Document | Purpose |
+|---|---|
+| [docs/overview/why_arw.md](docs/overview/why_arw.md) | Why ARW? The problem of regime identification — motivation via double pendulum and Kuramoto (5 min) |
+| [docs/overview/arw_concepts.md](docs/overview/arw_concepts.md) | The four scope components B, Π, Δ, ε explained with examples (10 min) |
+
+### Compact Overview
 
 | Document | Purpose |
 |---|---|

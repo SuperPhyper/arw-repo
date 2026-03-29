@@ -38,6 +38,8 @@ See `arw-doc-consistency` skill for usage rules.
 
 | File path | Status | Canonical concept(s) | Supersedes | Notes |
 |---|---|---|---|---|
+| docs/overview/why_arw.md | working-definition | problem motivation, regime identification, observable failure, resolution dependence | — | Narrative entry point; uses double pendulum + Kuramoto as motivating cases |
+| docs/overview/arw_concepts.md | working-definition | scope components B, Π, Δ, ε — conceptual intro with examples | — | Bridge between why_arw.md and formal docs; covers F0/F1, BC classes overview |
 | docs/overview/ARW_in_one_page.md | working-definition | ARW one-page summary, entry point | — | Primary human-facing intro |
 | docs/overview/arw-operator.md | working-definition | ARW operator, formal definition | — | Key entry point for LLMs |
 | docs/overview/conceptual_outlook.md | hypothesis | ARW in social systems, conceptual extension | — | Provisional; social scope |
