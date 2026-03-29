@@ -44,31 +44,18 @@ trail purposes and are no longer blocking.
 | DOC_INDEX.md | Did not exist / incomplete | Created and maintained; full sweep 2026-03-29 resolved I-01 through I-05 |
 | CASE-0004 (Stuart-Landau emergence) | Did not exist | In-progress; first empirical emergence case with emergence window documented |
 | Observable-space cover height method | Did not exist | Session 2026-03-27/28: `docs/advanced/observable_space_cover_height.md`, 14 figures, cross-case analysis across CASE-0001–0004 |
+| README.md | 6 weeks stale (missing sessions 2026-03-18/27/28) | Updated 2026-03-29: Observable Decomposition, Emergence Case, Cover Height, full pipeline table, all cases, Research Questions |
+| F0 not in `schemas/ScopeSpec.yaml` | `observable_replacement` unrecognized severity value | Added F0/observable_replacement to falsification block with full semantics (2026-03-29) |
+| CASE-0004 pipeline artifacts | PartitionResult, Invariants, EpsilonSweep, TransferReport pending | Full pipeline run 2026-03-29: N=4, I_ε=[0.039,0.184], go_nogo: go |
+| CASE-0004 ↔ CASE-0001 transfer | Not executed; first same-BC cross-system comparison pending | Executed 2026-03-29: Φ=0.9 (highly_admissible), RCD=0, PCI=1.0 |
+| CASE-0001 go_nogo interpretation | Only F4/sweep_refinement path documented | Two-path interpretation (PATH A: sweep_refinement, PATH B: F0 closure at κ_c) documented in CaseRecord; PATH B preferred (2026-03-29) |
+| Resonance bridge missing | `resonance_dialectic_context_navigation.md` used resonance informally without ARW link | Added Section 13 with explicit formal/informal distinction and bridge via modal_cognition (2026-03-29) |
+| `epsilon_resolution_window_arw.md` dead stub | 13-line redirect stub, no content | Deleted 2026-03-29; DOC_INDEX entry superseded (I-06) |
+| `README_session_2026-03-18.md` at root | Unarchived session artifact at repo root | Moved to `archive/sessions/` (2026-03-29, I-07) |
 
 ---
 
 ## Category 1 — Active Gaps (Blocking or Distorting)
-
-### README.md stale — missing two full research sessions
-
-**Status:** Critical. The main README was last substantively updated before session 2026-03-18.
-It is missing:
-- Session 2026-03-18: observable decomposition, F0 falsification category, pre-scopal substrates,
-  observable BC structure, Φ as observable transfer, χ as fluctuation observable (Q_NEW_12)
-- Session 2026-03-27: 2D BC sweep (κ × σ), observable-space cover height method, 57% DR finding
-- Session 2026-03-28 (I): cover height cross-case analysis across CASE-0001–0004; Pattern A/B/C
-- Session 2026-03-28 (II): 2D cover height on CASE-0002/0003/0004; BC interaction structure (Q_NEW_18)
-- CASE-20260328-0010 (German School System multi-BC case) — first multi-BC-class case
-- Q_NEW_13–18 (cover height open questions) not reflected in README Research Questions section
-- Pipeline modules: `epsilon_kappa_map.py`, `epsilon_multi_observable.py`, `audit.py`, `new_case.py`
-  are absent from the README pipeline table (only listed in `pipeline/README.md`)
-
-**Priority:** 1 (first-impression document; severely outdated for any new reader or LLM)
-
-**Recommended action:** Update README Empirical Results, Pipeline, cases/ structure, and Research
-Questions sections. *(Being addressed in this session.)*
-
----
 
 ### `Simulationen/` code not integrated into pipeline
 
@@ -89,90 +76,25 @@ but it cannot be run as part of the standard ARW pipeline workflow.
 
 ---
 
-### F0 not yet in ScopeSpec.yaml falsification schema
+### CASE-0001 — F0 closure pending (CASE-0001-ext not yet created)
 
-**Status:** F0 (R(π) ∩ B ≠ B, severity: observable_replacement) is formally defined in
-`docs/glossary/observable_range.md` and referenced in the skill context, but it is not yet
-a recognized `severity:` value in the ScopeSpec.yaml schema (`schemas/ScopeSpec.yaml`).
-Existing falsification entries in CASE-0001 and CASE-0002 use only F1–F4 severities.
-Q_NEW_2 is still open: should F0 entries be required in ScopeSpec.yaml?
-
-**Priority:** 1 (structural gap between documented theory and schema)
-
----
-
-### CASE-0001 sweep_refinement pending since 2026-03-12
-
-**Status:** CASE-20260311-0001 (Kuramoto κ-sweep) has `go_nogo: pending` with failure mode
-`F1: sweep_refinement` — θ* ≈ 1.475 sits at the sweep boundary. A refined sweep near κ ∈ [1.0, 2.5]
-was called for but not executed. This is additionally complicated by the session 2026-03-18 finding
-that θ* ≈ 1.475 is more precisely a scope transition (κ_c lies in Z(r_ss)) than a regime boundary.
+**Status:** CASE-20260311-0001 (Kuramoto κ-sweep) has `go_nogo: pending`. The PATH B
+interpretation (F0 closure: θ*=1.475 is a scope transition at Z(r_ss), not a regime boundary)
+is now documented in the CaseRecord (2026-03-29). The next required step is creating
+CASE-0001-ext with χ = ∂r_ss/∂κ as primary observable, which diverges at κ_c rather than
+collapsing (R(χ) ∋ κ_c). This is the highest-priority remaining experimental item for
+the Kuramoto case.
 
 **What is needed:**
-- Either: run sweep refinement with a different observable (e.g., χ = ∂r_ss/∂κ as proposed in Q_NEW_12)
-- Or: formally close CASE-0001 with the interpretation that r_ss cannot have a valid regime boundary
-  at κ_c (F0 classification), document this in the CaseRecord, and open a new CASE-0001 extension
-  with χ as primary observable
+- Create `cases/CASE-20260311-0001-ext/` with ScopeSpec.yaml for χ as primary observable
+- Run sweep and pipeline on CASE-0001-ext to confirm partition at κ_c
+- Formally close CASE-0001 (decision: F0 via r_ss at κ_c)
 
-**Priority:** 1 (single go-pending case in the four active cases)
-
----
-
-### CASE-0004 pipeline artifacts pending
-
-**Status:** CASE-20260318-0004 (Stuart-Landau, first emergence case) has `status: in_progress`.
-`PartitionResult.json`, `Invariants.json`, and `TransferMetrics.json` (for planned transfer to
-CASE-0001) are not yet produced. The theoretical analysis (emergence window, PLV sufficiency,
-amp_asym failure) is complete; the pipeline has not been run.
-
-**Priority:** 1 (only after this is done can the first same-BC cross-system transfer be computed)
-
----
-
-### CASE-0004 ↔ CASE-0001 transfer not yet executed
-
-**Status:** The transfer between CASE-20260318-0004 (Coupling, Stuart-Landau) and
-CASE-20260311-0001 (Coupling, Kuramoto) is planned as the first same-BC cross-system comparison.
-It requires CASE-0004's pipeline to be complete first (see above).
-
-**Priority:** 1 (depends on CASE-0004 pipeline completion)
-
----
-
-### Resonance: informal usage persists in architecture documents
-
-**Status:** Partially addressed (glossary entries `resonance.md` 125 lines, `resonance_field.md`
-99 lines, `boundary_conditions_as_resonance_filters.md` 176 lines exist).
-`resonance_dialectic_context_navigation.md` (216 lines) still uses "resonance" 12 times without
-consistently distinguishing formal (coupling BC mechanism) from informal usage.
-
-**Priority:** 2 (does not block experiments but affects conceptual consistency)
+**Priority:** 1 (see Q_NEW_12 in open_questions.md; CASE-0001 is the only go-pending case)
 
 ---
 
 ## Category 2 — Structural Housekeeping
-
-### `epsilon_resolution_window_arw.md` — dead redirect stub
-
-**Status:** 13 lines. Redirects to `epsilon_and_scope_resolution.md` (canonical ε document,
-180 lines). The stub adds no content. Still present as of 2026-03-29.
-
-**Recommended action:** Delete the file. Update any links in `docs/advanced/README.md`.
-
-**Priority:** 3
-
----
-
-### `README_session_2026-03-18.md` at repo root — unarchived session artifact
-
-**Status:** A session working document remains at the root level alongside `README.md`.
-It should be in `archive/sessions/`.
-
-**Recommended action:** Move to `archive/sessions/README_session_2026-03-18.md`.
-
-**Priority:** 3
-
----
 
 ### ART instantiation catalog incomplete
 
@@ -264,15 +186,8 @@ none have been run through the pipeline. CASE-0005 is the most complete (full YA
 
 | Gap | Type | Priority | Status |
 |---|---|---|---|
-| README.md 6 weeks stale | Documentation | 1 | Being updated this session |
+| CASE-0001-ext (χ observable) not yet created | Experimental | 1 | PATH B documented; CASE-0001-ext needed |
 | `Simulationen/` not in pipeline | Structural | 1 | No pipeline module; isolated analysis code |
-| F0 not in ScopeSpec schema | Schema | 1 | Defined in glossary, missing in schema |
-| CASE-0001 sweep_refinement pending | Experimental | 1 | 18 days unresolved; F0 / χ path needed |
-| CASE-0004 pipeline artifacts missing | Experimental | 1 | First emergence case incomplete |
-| CASE-0004 ↔ CASE-0001 transfer not run | Experimental | 1 | Depends on CASE-0004 pipeline |
-| Resonance formalization bridge | Conceptual consistency | 2 | Partially addressed; architecture docs lagging |
-| `epsilon_resolution_window_arw.md` dead stub | Housekeeping | 3 | Delete |
-| `README_session_2026-03-18.md` at root | Housekeeping | 3 | Archive |
 | ART instantiation catalog incomplete | Structural | 3 | Scope specs in experiments/, not centralized |
 | `cases/.templates/` empty | Housekeeping | 4 | Verify or remove |
 | `docs/pipelines/` stubs | Structural | 4 | Redirect or expand |
@@ -281,3 +196,10 @@ none have been run through the pipeline. CASE-0005 is the most complete (full YA
 | BC class: system vs. scope (Q_NEW_9) | Depth / Schema | — | Track; foundational question |
 | ε adaptive refinement | Depth | — | Track, not blocking |
 | Pending cases pipeline not run | Experimental | — | Queued; CASE-0005 most ready |
+| ~~README.md stale~~ | Documentation | ~~1~~ | **Resolved 2026-03-29** |
+| ~~F0 not in ScopeSpec schema~~ | Schema | ~~1~~ | **Resolved 2026-03-29** |
+| ~~CASE-0004 pipeline missing~~ | Experimental | ~~1~~ | **Resolved 2026-03-29** — go; Φ=0.9 |
+| ~~CASE-0004↔0001 transfer not run~~ | Experimental | ~~1~~ | **Resolved 2026-03-29** |
+| ~~Resonance bridge~~ | Conceptual | ~~2~~ | **Resolved 2026-03-29** — Section 13 added |
+| ~~epsilon_resolution_window_arw.md stub~~ | Housekeeping | ~~3~~ | **Resolved 2026-03-29** — deleted |
+| ~~README_session_2026-03-18.md at root~~ | Housekeeping | ~~3~~ | **Resolved 2026-03-29** — archived |

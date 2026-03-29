@@ -184,7 +184,12 @@ nor scope rejection (F2–F4). Proposal: F0: R(π) ∩ B ≠ B, severity: observ
 Sub-questions: Is F0 a subtype of F1 or categorically distinct? How is R(π) operationally
 determined? Must F0 be entered in ScopeSpec.yaml?
 Reference: `docs/glossary/observable_range.md`.
-Status: open
+
+*Partial resolution (2026-03-29):* `observable_replacement` is now a documented severity
+value in `schemas/ScopeSpec.yaml` with full F0 semantics. CASE-0001 CaseRecord documents
+an F0 case (r_ss at κ_c). Sub-question still open: should F0 entries be **required** in
+ScopeSpec when R(π) ∩ B ≠ B is known? Pipeline does not yet enforce this.
+Status: partially resolved — schema updated; requirement question open
 
 **Q_NEW_3 — Latent degrees of freedom: B-extension vs. new observable**
 Every Restriction operation generates a latent DOF. Under what criteria should a latent
@@ -242,14 +247,28 @@ Can Φ be decomposed into Φ_obs(observable-BC_A, observable-BC_B) × Φ_sys(Sys
 Operational approach: compare two scopes of the same system with different observables.
 Requires a new case with two observables on the same system (CASE-0001 with r_ss vs. σ²(θ)).
 Reference: `docs/advanced/observable_consequences.md` — K4.
-Status: open
+
+*New data point (2026-03-29):* CASE-0004 (Stuart-Landau, PLV) → CASE-0001 (Kuramoto, r_ss):
+Φ=0.9 (highly_admissible) across different systems AND different observables. This is
+unexpectedly high given that Coupling↔Coupling with same observable (CASE-0001↔CASE-0002)
+yielded only Φ=0.675. Tentative interpretation: high Φ here is driven by structural match
+(both N=4, linear adjacency graph, same BC class) rather than observable similarity.
+This motivates the Φ_obs × Φ_sys decomposition: the system contribution Φ_sys appears
+dominant when BC class and partition topology match. Φ_obs test still requires
+same-system different-observable case.
+Status: open — new data from CASE-0004↔CASE-0001 motivates but does not resolve
 
 **Q_NEW_12 — χ = ∂r_ss/∂κ as new observable for CASE-0001**
 The susceptibility χ diverges at κ_c (R(χ) ∋ κ_c), unlike r_ss. Does a scope with Π = {χ}
 yield a different regime partition? Is χ the first representative of a fluctuation-observable
 class in ARW? High priority as CASE-0001 extension.
 Reference: `docs/advanced/observable_consequences.md` — K6.
-Status: open — high priority
+
+*Progress (2026-03-29):* F0 closure for r_ss at κ_c is now documented in CASE-0001
+CaseRecord (PATH B interpretation). CASE-0001-ext with χ as primary observable is
+planned as the next Kuramoto case. The scope tuple for CASE-0001-ext is not yet created.
+See `docs/notes/repo_weakpoints.md` Category 1 for the concrete next steps.
+Status: open — high priority; CASE-0001-ext planned, not yet created
 
 ---
 
