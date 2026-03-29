@@ -326,6 +326,54 @@ A purely linear/gradual observable can have large span but low DR.
 Reference: `docs/notes/research_journal.md` session 2026-03-28, Finding 4.
 Status: open
 
+---
+
+## Context Navigation — Cognitive Architecture
+*(Added: session 2026-03-29, from mode_scope_regime_audit.md)*
+
+**Q-CNS-06 — Minimal fluctuation observable for cognitive mode transitions**
+What is the minimal fluctuation observable for cognitive mode transitions,
+and does it show the Z_shared peak predicted by the ARW framework?
+The structural analog is χ = ∂r_ss/∂κ in CASE-20260311-0001, which has
+R(χ) ∋ κ_c — precisely where the class-E observable r_ss fails.
+The cognitive counterpart would be χ_mode = ∂(mode_distribution)/∂(context_load),
+a fluctuation-class observable with R(χ_mode) ∋ transition points.
+Source: `docs/context_navigation/mode_scope_regime_audit.md` §2.2.
+Priority: high.
+Status: open
+
+**Q-CNS-07 — BC class of a mode: stable under change of observation set?**
+Is the BC class of a mode R_m stable under changes to the observation set Π?
+If we observe the agent with different observables, does the same mode appear
+to have the same BC class? This is the cognitive-architecture instance of Q_NEW_9
+(BC class: system property or scope property?).
+Source: `docs/context_navigation/mode_scope_regime_audit.md` §2.5.
+Priority: medium.
+Status: open
+
+**Q-CNS-08 — Empirical signature: scope transition vs. regime transition**
+What is the empirical signature of a scope transition (S_global failure, all
+observables entering Z(π)) vs. a regime transition (mode switch, agent moves
+between partition cells within S_global) in behavioral data?
+This distinction is critical for interpreting zone boundary crossings
+in the labyrinth experiment without ground-truth zone labels.
+Source: `docs/context_navigation/mode_scope_regime_audit.md` §2.3.
+Priority: high.
+Status: open
+
+**Q-CNS-09 — Consolidation: asymptotic sharpening or faster mechanism?**
+Does consolidation produce asymptotic partition sharpening (as predicted by
+dissipation analysis, K6 in observable_decomposition.md), or is there a faster
+non-asymptotic mechanism? The expected empirical signature of purely asymptotic
+sharpening is a monotone approach to stable partition over repeated cycles —
+not an immediate post-consolidation step. Testable by ablation study on
+consolidation phase frequency and partition stability measurement.
+Source: `docs/context_navigation/mode_scope_regime_audit.md` §2.4.
+Priority: medium.
+Status: open
+
+---
+
 **Q_NEW_18 — Non-axis-aligned regime boundaries as BC interaction signatures**
 In the 2D cover height analysis of CASE-0002 (κ × γ), cover-height contours
 are diagonal in the (κ, γ) plane — not parallel to either BC axis. This indicates
