@@ -130,6 +130,9 @@ All issues from the 2026-03-29 maintenance session have been resolved. No open i
 | docs/advanced/quantum_operator_extension.md | open-question | quantum operator extension | — | Open question; speculative |
 | docs/advanced/report_chi_observable.md | claim | χ = ∂r_ss/∂κ as fluctuation observable | — | Empirical; links CASE-0001 |
 | docs/advanced/scope_completeness.md | working-definition | scope completeness, observable agreement | — | — |
+| docs/advanced/arw_observable_complexity_landscape.md | note | observable complexity landscape, subscope density | — | MOVED from figures/ 2026-03-29 |
+| docs/advanced/regime_graphs_arw.md | note | regime graphs, partition adjacency structure | — | MOVED from figures/ 2026-03-29 |
+| docs/advanced/operator_signatures_cross_domain.md | hypothesis | operator signatures across domains | — | MOVED from docs/notes/ 2026-03-29 (I-03) |
 | ~~docs/advanced/emergence/epsilon_induced_relational_emergence.md~~ | — | — | — | **DELETED 2026-03-29 (was duplicate of docs/advanced/epsilon_induced_relational_emergence.md — I-01)** |
 
 ---
@@ -213,10 +216,28 @@ All issues from the 2026-03-29 maintenance session have been resolved. No open i
 
 ## Layer: figures
 
-| File path | Status | Canonical concept(s) | Supersedes | Notes |
-|---|---|---|---|---|
-| docs/figures/boundary_shift.md | note | boundary shift figure description | — | — |
-| docs/figures/cover_2d_all_cases.md | note | 2D BC sweep cover height (CASE-0002/0003/0004) | — | — |
+See `docs/figures/FIGURES_INDEX.md` for the complete registry of all 57 figure files
+and their description documents. Summary of description `.md` files:
+
+| File path | Status | Figures covered | Notes |
+|---|---|---|---|
+| docs/figures/FIGURES_INDEX.md | note | All 57 figures (registry) | Created 2026-03-29 |
+| docs/figures/boundary_shift.md | note | boundary_shift.png | — |
+| docs/figures/cover_2d_all_cases.md | note | cover2d_* (14 files, CASE-0002/0003/0004) | — |
+| docs/figures/cover_height_analysis.md | note | cover_height_*, cover_cp_*, fiber_* (13 files) | Stubs; description pending |
+| docs/figures/epsilon_figures.md | note | ε-filtration figures | — |
+| docs/figures/epsilon_kappa_robustness.md | note | epsilon_kappa_robustness.png | — |
+| docs/figures/epsilon_sweep_kuramoto.md | note | epsilon_sweep_kuramoto.png | — |
+| docs/figures/iva_h2prime_figures.md | note | fig_iva1–3 (3 files) | Stubs; description pending |
+| docs/figures/kuramoto_2d_cover_height.md | note | kuramoto_2d_observable_heatmap.png | — |
+| docs/figures/kuramoto_observables.md | note | r_ss_vs_kappa, chi_vs_kappa, bc_sweep_lambda | Stubs; description pending |
+| docs/figures/kuramoto_paper_figures.md | note | fig1–4, time_series_*, metrics_vs_coupling, epsilon_window | Stubs; description pending |
+| docs/figures/kuramoto_sync_transition.md | note | kuramoto_sync_transition.png | — |
+| docs/figures/multi_observable_agreement.md | note | multi_observable_agreement.png | — |
+| docs/figures/observable_decomposition_figures.md | note | fig_emp1–3, fig_ext1–4 (7 files) | Stubs; description pending |
+| docs/figures/pci_scaling.md | note | pci_scaling.png | — |
+| docs/figures/scope_completeness.md | note | scope_completeness.png, obs_* (3 files) | — |
+| docs/figures/structural_diagrams.md | note | arw_signature_graph.mmd | Stub; description pending |
 | docs/figures/epsilon_figures.md | working-definition | ε-filtration figures | — | — |
 | docs/figures/epsilon_kappa_robustness.md | note | scope robustness I_ε(κ) figure | — | — |
 | docs/figures/epsilon_sweep_kuramoto.md | note | ε-sweep partition invariant (Kuramoto) | — | — |
