@@ -1,7 +1,7 @@
 ---
 status: working-definition
 layer: docs/notes/
-updated: 2026-03-11
+updated: 2026-03-29
 ---
 
 # Repository Weak Points — Systematic Assessment
@@ -11,7 +11,7 @@ and missing components across the repository.
 Entries are ordered by priority: how much analytical damage the gap causes
 and how tractable it is to fill.
 
-Last full review: 2026-03-11.
+Last full review: 2026-03-29.
 
 ---
 
@@ -31,107 +31,164 @@ trail purposes and are no longer blocking.
 | `docs/context_navigation/modal_cognition.md` | 1 sentence | 121 lines; modes as reduced scopes, mode identity, mode ecology, switching as scope transition |
 | `docs/context_navigation/bc_taxonomy_cognitive_modes.md` | 1 sentence | 170 lines; BC class → mode mapping with detail per class |
 | `docs/context_navigation/context_navigation_ai.md` | 4-item list | 116 lines; system map with component → ARW mapping, scope transitions in operation |
-| `docs/notes/open_questions.md` | Empty | 105 lines; 14 questions across formalization, empirical, conceptual, methodological |
-| `docs/notes/research_journal.md` | Empty | 36 lines; current focus, pending decisions, notes on resonance |
+| `docs/notes/open_questions.md` | Empty | Q1–Q18 + Q_NEW_1–18 = 36 questions, updated through session 2026-03-28 |
+| `docs/notes/research_journal.md` | Empty | Full session logs through 2026-03-28 (II) |
 | `docs/notes/literature_links.md` | Empty | 36 lines; references across 6 fields |
 | Glossary entries (scope_transition, scope_dominance, regime_partition, admissible_reduction) | Missing | All present, 44–65 lines each, with status frontmatter |
 | All glossary entries: status tags | 12 entries untagged | All entries now have `status: working-definition` frontmatter |
-| `docs/advanced/epsilon_*.md` overlap | Two overlapping documents | Consolidated; `epsilon_and_scope_resolution.md` (180 lines, 7 sections) is the canonical document; `epsilon_resolution_window_arw.md` is a redirect stub |
+| `docs/advanced/epsilon_*.md` overlap | Two overlapping documents | Consolidated; `epsilon_and_scope_resolution.md` is canonical; `epsilon_resolution_window_arw.md` remains as redirect stub (see below — still unresolved) |
 | `docs/core/basins_as_scope_partitions.md` | Stopped before key analytical move | 219 lines; formal relationship stated (§4), four divergence cases, admissibility connection |
-| `docs/advanced/emergence_overview.md` | No formal emergence condition | Formal condition now present: admissible reduction ([x]_S ⊆ [x]_S') vs. emergence (∃x: [x]_S ⊄ [x]_S') |
-| `docs/overview/roadmap.md` | High-level phase list without milestones | 159 lines; 5 phases with milestones, go/no-go decision points, OSV fellowship connection |
+| `docs/advanced/emergence_overview.md` | No formal emergence condition | Formal condition now present |
+| `docs/overview/roadmap.md` | High-level phase list without milestones | 159 lines; 5 phases with milestones, go/no-go decision points |
+| Observable decomposition framework | Did not exist | Session 2026-03-18: `docs/advanced/observable_decomposition.md`, `docs/glossary/observable_range.md`, `docs/advanced/observable_consequences.md`, `docs/advanced/latent_degrees_of_freedom.md` all created; R(π), Z(π), F0 formalized |
+| DOC_INDEX.md | Did not exist / incomplete | Created and maintained; full sweep 2026-03-29 resolved I-01 through I-05 |
+| CASE-0004 (Stuart-Landau emergence) | Did not exist | In-progress; first empirical emergence case with emergence window documented |
+| Observable-space cover height method | Did not exist | Session 2026-03-27/28: `docs/advanced/observable_space_cover_height.md`, 14 figures, cross-case analysis across CASE-0001–0004 |
 
 ---
 
 ## Category 1 — Active Gaps (Blocking or Distorting)
 
-### Resonance: informal usage in context_navigation documents
+### README.md stale — missing two full research sessions
 
-**Status:** Partially addressed. The glossary entries (`resonance.md`: 125 lines,
-`resonance_field.md`: 99 lines) provide formal definitions.
-`boundary_conditions_as_resonance_filters.md` (176 lines) develops the concept
-in the architecture context.
+**Status:** Critical. The main README was last substantively updated before session 2026-03-18.
+It is missing:
+- Session 2026-03-18: observable decomposition, F0 falsification category, pre-scopal substrates,
+  observable BC structure, Φ as observable transfer, χ as fluctuation observable (Q_NEW_12)
+- Session 2026-03-27: 2D BC sweep (κ × σ), observable-space cover height method, 57% DR finding
+- Session 2026-03-28 (I): cover height cross-case analysis across CASE-0001–0004; Pattern A/B/C
+- Session 2026-03-28 (II): 2D cover height on CASE-0002/0003/0004; BC interaction structure (Q_NEW_18)
+- CASE-20260328-0010 (German School System multi-BC case) — first multi-BC-class case
+- Q_NEW_13–18 (cover height open questions) not reflected in README Research Questions section
+- Pipeline modules: `epsilon_kappa_map.py`, `epsilon_multi_observable.py`, `audit.py`, `new_case.py`
+  are absent from the README pipeline table (only listed in `pipeline/README.md`)
 
-**What remains:** `resonance_dialectic_context_navigation.md` (216 lines) uses
-"resonance" 12 times but does not consistently distinguish between formal usage
-(coherent coupling under compatible BCs) and informal/metaphorical usage.
-The research journal notes this explicitly and proposes that resonance is the
-*mechanism* by which coupling BC generates regime structure. This tentative
-answer needs to be formalized and reflected back into the document.
+**Priority:** 1 (first-impression document; severely outdated for any new reader or LLM)
 
-**Recommended action:** Add a short paragraph to `resonance_dialectic_context_navigation.md`
-that explicitly marks which uses of "resonance" are formal (as defined in the glossary)
-and which are informal, or formalize the informal uses by connecting them to the
-coupling BC class.
+**Recommended action:** Update README Empirical Results, Pipeline, cases/ structure, and Research
+Questions sections. *(Being addressed in this session.)*
+
+---
+
+### `Simulationen/` code not integrated into pipeline
+
+**Status:** Sessions 2026-03-27/28 produced working Python scripts for the 2D BC sweep and
+observable-space cover height analysis. These live in `Simulationen/` (separate from `pipeline/`)
+and have no pipeline interface (no CLI, no CaseRecord integration, no schema outputs).
+
+The cover height method is now cited in open questions (Q_NEW_13–18) and in the research journal,
+but it cannot be run as part of the standard ARW pipeline workflow.
+
+**What is missing:**
+- A `pipeline/cover_height.py` module (or equivalent) that reads sweep data and produces
+  cover height profiles as structured output
+- Integration with `CaseRecord.yaml` (artifact registry entry for cover height outputs)
+- A schema or output format for cover height results (analogous to `PartitionResult.json`)
+
+**Priority:** 1 (the method is now a first-class research tool; isolation causes drift)
+
+---
+
+### F0 not yet in ScopeSpec.yaml falsification schema
+
+**Status:** F0 (R(π) ∩ B ≠ B, severity: observable_replacement) is formally defined in
+`docs/glossary/observable_range.md` and referenced in the skill context, but it is not yet
+a recognized `severity:` value in the ScopeSpec.yaml schema (`schemas/ScopeSpec.yaml`).
+Existing falsification entries in CASE-0001 and CASE-0002 use only F1–F4 severities.
+Q_NEW_2 is still open: should F0 entries be required in ScopeSpec.yaml?
+
+**Priority:** 1 (structural gap between documented theory and schema)
+
+---
+
+### CASE-0001 sweep_refinement pending since 2026-03-12
+
+**Status:** CASE-20260311-0001 (Kuramoto κ-sweep) has `go_nogo: pending` with failure mode
+`F1: sweep_refinement` — θ* ≈ 1.475 sits at the sweep boundary. A refined sweep near κ ∈ [1.0, 2.5]
+was called for but not executed. This is additionally complicated by the session 2026-03-18 finding
+that θ* ≈ 1.475 is more precisely a scope transition (κ_c lies in Z(r_ss)) than a regime boundary.
+
+**What is needed:**
+- Either: run sweep refinement with a different observable (e.g., χ = ∂r_ss/∂κ as proposed in Q_NEW_12)
+- Or: formally close CASE-0001 with the interpretation that r_ss cannot have a valid regime boundary
+  at κ_c (F0 classification), document this in the CaseRecord, and open a new CASE-0001 extension
+  with χ as primary observable
+
+**Priority:** 1 (single go-pending case in the four active cases)
+
+---
+
+### CASE-0004 pipeline artifacts pending
+
+**Status:** CASE-20260318-0004 (Stuart-Landau, first emergence case) has `status: in_progress`.
+`PartitionResult.json`, `Invariants.json`, and `TransferMetrics.json` (for planned transfer to
+CASE-0001) are not yet produced. The theoretical analysis (emergence window, PLV sufficiency,
+amp_asym failure) is complete; the pipeline has not been run.
+
+**Priority:** 1 (only after this is done can the first same-BC cross-system transfer be computed)
+
+---
+
+### CASE-0004 ↔ CASE-0001 transfer not yet executed
+
+**Status:** The transfer between CASE-20260318-0004 (Coupling, Stuart-Landau) and
+CASE-20260311-0001 (Coupling, Kuramoto) is planned as the first same-BC cross-system comparison.
+It requires CASE-0004's pipeline to be complete first (see above).
+
+**Priority:** 1 (depends on CASE-0004 pipeline completion)
+
+---
+
+### Resonance: informal usage persists in architecture documents
+
+**Status:** Partially addressed (glossary entries `resonance.md` 125 lines, `resonance_field.md`
+99 lines, `boundary_conditions_as_resonance_filters.md` 176 lines exist).
+`resonance_dialectic_context_navigation.md` (216 lines) still uses "resonance" 12 times without
+consistently distinguishing formal (coupling BC mechanism) from informal usage.
 
 **Priority:** 2 (does not block experiments but affects conceptual consistency)
 
 ---
 
+## Category 2 — Structural Housekeeping
+
 ### `epsilon_resolution_window_arw.md` — dead redirect stub
 
-**Status:** 13 lines. Redirects to `epsilon_and_scope_resolution.md` (which is
-now the canonical ε document at 180 lines). The stub adds no content.
+**Status:** 13 lines. Redirects to `epsilon_and_scope_resolution.md` (canonical ε document,
+180 lines). The stub adds no content. Still present as of 2026-03-29.
 
-**Recommended action:** Delete the file. Remove the reference from
-`docs/advanced/README.md`. Any links pointing to it should be updated to
-point directly to `epsilon_and_scope_resolution.md`.
+**Recommended action:** Delete the file. Update any links in `docs/advanced/README.md`.
 
-**Priority:** 3 (housekeeping, low analytical impact)
+**Priority:** 3
+
+---
+
+### `README_session_2026-03-18.md` at repo root — unarchived session artifact
+
+**Status:** A session working document remains at the root level alongside `README.md`.
+It should be in `archive/sessions/`.
+
+**Recommended action:** Move to `archive/sessions/README_session_2026-03-18.md`.
+
+**Priority:** 3
 
 ---
 
 ### ART instantiation catalog incomplete
 
-**Status:** `docs/art_instantiations/` contains only the geopolitical scope example
-(317 lines) and the blank template (132 lines). The physical systems (Kuramoto,
-pendulum) and the agent system (labyrinth) have their ART scope specifications
-embedded in their respective experiment files under `experiments/`, but not as
-standalone scope cards in `art_instantiations/`.
+**Status:** `docs/art_instantiations/` contains: the geopolitical scope example, the blank
+template, five domain hypotheses (ecology, game theory, ML, neuroscience, social science),
+statistical physics, synergetics, Littman-Metcalf optics, and the CASE-0010 research report.
+The physical systems (Kuramoto, pendulum, Stuart-Landau) still lack standalone ART scope
+cards in this folder; their specifications live in `experiments/` and `cases/`.
 
-**Recommended action:** Either:
-(a) Extract condensed scope-tuple reference cards for Kuramoto, pendulum, and
-labyrinth from the experiment files and place them in `art_instantiations/`, or
-(b) Accept that `art_instantiations/` is an example collection (not a complete catalog)
-and document this explicitly in the folder's README.
-
-**Priority:** 3 (does not block work; the scope specifications exist, they are
-just not centralized)
-
----
-
-## Category 2 — Structural Housekeeping
-
-### Empty top-level directories
-
-Four directories contain zero files:
-
-| Directory | Intended purpose | Recommendation |
-|---|---|---|
-| `agents/` | Agent role definitions | Roles are documented in `pipeline/PartitionPipeline.md` § Agent Role Mapping. The directory should either be populated when agent configs are implemented, or removed until needed. |
-| `analysis/` | Cross-case analysis outputs | Will be needed in Phase 2+. Keep as placeholder. |
-| `papers/` | Paper drafts | Keep as placeholder; will be populated during Phase 4 (consolidation). |
-| `simulations/` | Standalone simulation code | Simulation kernels currently live in `pipeline/sweep.py`. Factor out when systems mature beyond the sweep interface. |
-
-**Recommended action:** Keep `analysis/`, `papers/`, `simulations/` as placeholders
-(they align with roadmap phases). Consider removing `agents/` until agent
-configurations become artifacts rather than just documentation — the role
-descriptions already live in `PartitionPipeline.md`.
-
-**Priority:** 4 (cosmetic; no analytical impact)
+**Priority:** 3
 
 ---
 
 ### `cases/.templates/` is empty
 
-`pipeline.new_case` references templates, but the `.templates/` directory
-contains no files. Either the templates are generated programmatically
-(in which case the directory is unnecessary), or template files were
-planned but not created.
-
-**Recommended action:** Verify whether `new_case.py` uses this directory.
-If not, remove it. If yes, populate it with the schema stubs that `new_case`
-would stamp.
+**Status:** `pipeline/new_case.py` references templates; directory still empty as of 2026-03-29.
 
 **Priority:** 4
 
@@ -139,50 +196,67 @@ would stamp.
 
 ### `docs/pipelines/` contains minimal stubs
 
-`PartitionPipeline.md` (5 lines) and `RegimeGraphPipeline.md` (5 lines) are
-conceptual stubs. The actual implemented pipeline documentation lives in
-`pipeline/PartitionPipeline.md` (full design document, ~170 lines).
+**Status:** `docs/pipelines/PartitionPipeline.md` (5 lines) and `RegimeGraphPipeline.md` (5 lines)
+remain stubs. The actual pipeline documentation is in `pipeline/PartitionPipeline.md` (~170 lines).
 
-**Recommended action:** Either:
-(a) Expand the stubs in `docs/pipelines/` to be the conceptual design documents
-and keep `pipeline/PartitionPipeline.md` as the implementation reference, or
-(b) Redirect the stubs to the implementation document and note the distinction.
+**Priority:** 4
 
-**Priority:** 4 (the information exists, it is just split awkwardly)
+---
+
+### Empty top-level directories
+
+| Directory | Status |
+|---|---|
+| `agents/` | Still empty; role descriptions live in `pipeline/PartitionPipeline.md`. Remove until agent configs become artifacts. |
+| `analysis/` | Placeholder; will be needed in Phase 2+. Keep. |
+| `papers/` | Placeholder for Phase 4. Keep. |
+| `simulations/` | Placeholder; actual simulation code is in `pipeline/sweep.py` and `Simulationen/`. Keep until factored out. |
+
+**Priority:** 4
 
 ---
 
 ## Category 3 — Content Depth (Not Blocking, But Worth Tracking)
 
-These items are not gaps in the sense of missing content — the relevant
-documents exist and have substance. They are tracked here as directions
-where further formalization would strengthen the framework.
+### Cover height open questions (Q_NEW_13–18) — no experimental plan
 
-### ε estimation procedure
+Six new open questions were raised in sessions 2026-03-27/28 around the observable-space
+cover height method. None yet have a designated next-action experimental plan in the research
+journal or in `open_questions.md`. Q_NEW_13 (cover-height maxima vs. ε-plateau correspondence)
+is directly testable against CASE-0001 data.
 
-`epsilon_and_scope_resolution.md` § 4 introduces the admissible ε-interval
-I_ε = [ε_min, ε_max] and the ε-sweep protocol. Three pipeline modules now
-implement this:
+**Status:** Track. Priority candidate for next Simulationen session.
 
-- `pipeline/epsilon_sweep.py` — basic ε-sweep (validated on Kuramoto)
-- `pipeline/epsilon_kappa_map.py` — 2D (κ, ε) robustness map (validated on Kuramoto: w and |dr/dκ| anti-correlate with r = −0.77)
-- `pipeline/epsilon_multi_observable.py` — per-observable ε-sweep (validated on Pendulum: confirms independent εᵢ needed)
+---
 
-**What remains open:**
-- Adaptive step refinement near critical ε-values
-- State-dependent ε formalization
-- Observable normalization as a scope choice (new question from Pendulum results)
+### BC class: system vs. scope property (Q_NEW_9)
 
-### Resonance ↔ coupling BC: formal relationship
+The question of whether BC class belongs to the system or the scope (Q_NEW_9 in
+`open_questions.md`) is identified as foundational for the BC taxonomy program.
+No dedicated working document exists yet. If the BC class is a scope property, BCManifest
+would need separate `system_bc` and `observable_bc` fields, and Φ would decompose into
+Φ_obs × Φ_sys. This is a significant potential schema change.
 
-The research journal tentatively proposes that resonance is the mechanism
-by which coupling BC generates regime structure. This is an interesting
-analytical claim that could sharpen the BC taxonomy if formalized.
+**Status:** Track. Addressed if/when Φ decomposition is implemented (Q_NEW_11).
 
-### ART scope cards for physical/agent systems
+---
 
-See Category 1. The scope specifications exist in experiment files
-but are not available as quick-reference cards.
+### ε estimation procedure: adaptive refinement not implemented
+
+Three pipeline modules implement ε-sweep, 2D robustness map, and per-observable ε.
+Adaptive step refinement near critical ε-values is not yet implemented.
+State-dependent ε formalization (Q2) remains open.
+
+**Status:** Track, not blocking current case runs.
+
+---
+
+### Pending cases (CASE-0005 through CASE-0009, SOC1): pipeline not yet run
+
+All six pending cases have pre-pipeline artifacts (ScopeSpec, BCManifest, CaseRecord);
+none have been run through the pipeline. CASE-0005 is the most complete (full YAML triple).
+
+**Status:** Queued. Not blocking but represents the next major experimental frontier.
 
 ---
 
@@ -190,11 +264,20 @@ but are not available as quick-reference cards.
 
 | Gap | Type | Priority | Status |
 |---|---|---|---|
-| Resonance formalization in context_navigation | Conceptual consistency | 2 | Partially addressed; glossary entries exist, bridge to architecture usage missing |
-| `epsilon_resolution_window_arw.md` dead stub | Housekeeping | 3 | Delete file, update links |
-| ART instantiation catalog incomplete | Structural | 3 | Scope specs exist in experiments/, not centralized |
-| Empty dirs (agents/) | Housekeeping | 4 | Consider removing until populated |
-| `cases/.templates/` empty | Housekeeping | 4 | Verify if used by new_case.py |
-| `docs/pipelines/` minimal stubs | Structural | 4 | Redirect or expand |
-| ε estimation procedure | Depth | — | Tracked, not blocking |
-| Resonance ↔ coupling formalization | Depth | — | Tracked, not blocking |
+| README.md 6 weeks stale | Documentation | 1 | Being updated this session |
+| `Simulationen/` not in pipeline | Structural | 1 | No pipeline module; isolated analysis code |
+| F0 not in ScopeSpec schema | Schema | 1 | Defined in glossary, missing in schema |
+| CASE-0001 sweep_refinement pending | Experimental | 1 | 18 days unresolved; F0 / χ path needed |
+| CASE-0004 pipeline artifacts missing | Experimental | 1 | First emergence case incomplete |
+| CASE-0004 ↔ CASE-0001 transfer not run | Experimental | 1 | Depends on CASE-0004 pipeline |
+| Resonance formalization bridge | Conceptual consistency | 2 | Partially addressed; architecture docs lagging |
+| `epsilon_resolution_window_arw.md` dead stub | Housekeeping | 3 | Delete |
+| `README_session_2026-03-18.md` at root | Housekeeping | 3 | Archive |
+| ART instantiation catalog incomplete | Structural | 3 | Scope specs in experiments/, not centralized |
+| `cases/.templates/` empty | Housekeeping | 4 | Verify or remove |
+| `docs/pipelines/` stubs | Structural | 4 | Redirect or expand |
+| Empty dirs (`agents/`) | Housekeeping | 4 | Consider removing |
+| Cover height Q_NEW_13–18 no plan | Depth | — | Track; Q_NEW_13 most tractable |
+| BC class: system vs. scope (Q_NEW_9) | Depth / Schema | — | Track; foundational question |
+| ε adaptive refinement | Depth | — | Track, not blocking |
+| Pending cases pipeline not run | Experimental | — | Queued; CASE-0005 most ready |
