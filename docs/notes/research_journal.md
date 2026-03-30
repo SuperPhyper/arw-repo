@@ -681,3 +681,89 @@ effects requires accumulation over multiple cycles, not single-shot testing.
 
 **Status:** hypothesis — testable by ablation study with ε-sweep per consolidation cycle.
 
+
+---
+
+## Session 2026-03-30: Emergent Modes Experiment — Case Registration
+
+**Case registered:** CASE-20260330-0012
+
+**What was done:**
+Registered the Emergent Modes Experiment as a formal ART case. The experiment
+was previously defined in two docs-layer documents:
+- `docs/context_navigation/context_navigation_emergent_modes_experiment.md` (experiment-proposal)
+- `docs/context_navigation/context_navigation_scope_spec_emergent.md` (working-definition)
+
+Today's session translated these docs into the three standard case artifacts:
+
+| Artifact | Status | Key content |
+|---|---|---|
+| ScopeSpec.yaml | draft | S_emergent = (B_emergent, Π_emergent, Δ_emergent, ε_emergent); primary observable: action_dist; F0–F4 falsification conditions |
+| BCManifest.yaml | draft | BC components: Restriction (primary, bc_01), Coupling (co-driver, bc_02), ε-sweep program (bc_03); transfer target: CASE-0011 |
+| CaseRecord.yaml | draft | go_nogo criterion: stable ε-plateau at N >= 2 in >= 80% of training runs; emergence_docs linked; physical analogs documented |
+
+---
+
+### Structural decisions (claims)
+
+**CASE-20260330-0012 is a new case strand, not Phase 2 of CASE-0011.**
+
+Status: claim
+
+CASE-20260329-0011 is Phase 1 of the Designed Modes Experiment (agent with prescribed
+mode library M). CASE-20260330-0012 is the Emergent Modes Experiment (unstructured policy,
+ARW as observation instrument). These are complementary experiments on the same environment,
+not sequential phases of one experiment. The `next_phase` pointer in CASE-0011 should
+eventually point to Designed Modes Phase 2 (zone switching), not to this case.
+
+**The ε-sweep for this case is over ε, not over a physical BC parameter.**
+
+Status: claim
+
+All prior cases sweep a physical BC parameter (κ for Kuramoto, E for Doppelpendel, K for
+Stuart-Landau). In CASE-0012, the agent is trained on a multi-zone environment; the "sweep"
+is the post-hoc ε-sweep over action_dist behavioral data. The `sweep_range` in Invariants.json
+will record [ε_min, ε_max], not a BC parameter range. This is a new sweep type in the
+case portfolio. TBS_norm computation against physical cases is undefined; TBS can only be
+computed against other labyrinth cases with the same sweep type.
+
+**Observable BC notation for action_dist: A·R.**
+
+Status: claim (consistent with scope spec docs)
+
+action_dist is Aggregation-dominated (projects action sequences onto a probability vector)
+with a Restriction component from the finite action space. This places it in the same
+observable class as trajectory_entropy, and different from mode_dist (A·R·B, with B for
+the mode library Restriction in CASE-0011).
+
+---
+
+### Open questions registered
+
+| ID | Question | Status |
+|---|---|---|
+| Q-EMG-01 | Does the emergent partition arise gradually (asymptotic) or abruptly (phase-transition-like) during training? | open |
+| Q-EMG-02 | Is the emergent partition richer than N = zone count? Could sub-zone strategies produce finer-grained clusters? | open |
+
+These are in addition to Q-CNS-03, Q-CNS-05, Q-CNS-06, Q-CNS-08 already registered,
+which this case also bears on (see CaseRecord.yaml scientific_value.open_questions).
+
+---
+
+### Prerequisite for execution
+
+The case artifacts are complete. To run the experiment, the following are still needed:
+
+1. **RL agent and labyrinth environment** — unstructured policy (no mode library),
+   multi-zone labyrinth with zones R, C, F. Not yet implemented; see
+   `experiments/labyrinth_experiment_agenda.md` for environment design.
+
+2. **Behavioral adapter for the ARW pipeline** — the existing pipeline modules
+   (`epsilon_sweep.py`, `extract_partition.py`, `invariants.py`) operate on numerical
+   time series from physical simulations. A behavioral adapter is needed to extract
+   action_dist from RL trajectory data and feed it to the pipeline in the expected format.
+
+3. **Transfer directory** — `transfer/CASE-0011_vs_CASE-0012/` to be created when
+   the partition results from both cases are available.
+
+Status: the case is formally registered and ready for implementation.

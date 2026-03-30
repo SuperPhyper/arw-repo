@@ -1,0 +1,435 @@
+# ScopeSpec.yaml — CASE-20260330-0012
+# System: Context-navigation labyrinth agent — Emergent Modes Experiment
+# BC Class: Restriction (primary), Coupling (co-driver)
+# Purpose: Formalizes the ART scope for the Emergent Modes Experiment.
+#          An unstructured RL policy is trained on the multi-zone labyrinth.
+#          No mode library, no mode selector, no mode-labeled signal.
+#          ARW is applied as a post-hoc observation instrument.
+#
+# Experiment definition: docs/context_navigation/context_navigation_emergent_modes_experiment.md
+# Scope companion doc:   docs/context_navigation/context_navigation_scope_spec_emergent.md
+# Contrast with:        cases/CASE-20260329-0011 (Designed Modes, Phase 1)
+
+schema_version: "0.2"
+id: "SCOPE-20260330-0012"
+title: "Labyrinth agent — Emergent Modes scope (unstructured policy, ARW as observation)"
+status: "draft"
+created_at: "2026-03-30"
+updated_at: "2026-03-30"
+system_domain: "cognitive"
+
+# ── ART: underlying state space ─────────────────────────────────────────────
+X:
+  name: "Joint agent-environment state in multi-zone labyrinth (unstructured policy)"
+  type: "product"
+  structure:
+    topology: true
+    metric: "required"    # L1 distance over action_dist; L1 over trajectory_entropy
+    measure: "optional"
+  state_coordinates:
+    - name: "grid_position"
+      domain: "discrete grid — {(i,j) : i,j in {0,...,9}} (10x10 default)"
+      description: "Agent's current cell in the maze."
+    - name: "local_observation"
+      domain: "binary feature vector, |obs| = f(r) where r=5"
+      description: >
+        Local perceptual field within visibility radius r=5.
+        Encodes wall layout, goal distance proxy, zone-type indicators.
+        This is the agent's only perceptual input — no global map.
+    - name: "action_history"
+      domain: "sequence of actions from finite action set A"
+      description: >
+        The sequence of actions taken within the current episode window.
+        This is the primary substrate for action_dist computation.
+        There is NO active_mode field — key distinction from CASE-20260329-0011.
+    - name: "zone_membership"
+      domain: "{R, C, F}  (zone types: Restriction, Coupling, Forcing)"
+      description: >
+        Current zone type. Determines which resource constraints are active.
+        Not directly observable by the agent; inferred from local_observation.
+    - name: "episode_step"
+      domain: "integer in {0, ..., T_max}"
+      description: "Step counter within the current episode."
+  notes: >
+    The absence of an active_mode coordinate is constitutive of this scope.
+    This is S_emergent, not S_global. The agent is a single unstructured policy;
+    regime structure, if present, must emerge in behavior, not architecture.
+
+# ── ART: constraints selecting admissible subset X_B ⊆ X ────────────────────
+B:
+  description: >
+    The boundary conditions of S_emergent are predominantly Restriction-class:
+    the dominant structural condition is what the agent is NOT given —
+    no mode library, no mode labels, no modular architecture.
+    One co-driver BC is Coupling: the agent's behavior is shaped by local
+    perceptual coupling to zone features.
+  constraints:
+    - name: "B_e1 — Labyrinth finiteness and connectedness"
+      form: "membership"
+      expression: "x(t) ∈ L for all t, where L is the finite fully-connected zone graph"
+      notes: "Zone boundaries are discontinuous; crossing one changes the active constraint set."
+    - name: "B_e2 — Zone-dependent resource constraints"
+      form: "membership"
+      expression: "active_constraints(x) = constraints(zone_membership(x))"
+      notes: >
+        Crossing a zone boundary changes the active constraint set.
+        This is the primary source of environmental structure that could
+        induce behavioral differentiation.
+    - name: "B_e3 — Unstructured policy (restriction on architecture)"
+      form: "logic"
+      expression: "agent has NO mode_library M, NO mode_selector, NO mode-label signal"
+      notes: >
+        Negatively specified: the agent is what it is NOT given.
+        This is the constitutive BC of the Emergent Modes Experiment.
+        Contrast: CASE-20260329-0011 B_g3 prescribes M = {m1,...,mk}.
+    - name: "B_e4 — Local perception only (no global map)"
+      form: "inequality"
+      expression: "visibility_radius r = 5; agent cannot observe beyond r cells"
+      notes: >
+        Coupling BC: the agent's policy is shaped by its local perceptual
+        coupling to zone features within radius r. This limits behavioral
+        differentiation to locally observable zone features.
+    - name: "B_e5 — Task-performance reward only"
+      form: "logic"
+      expression: "reward signal R(x,a) depends only on task performance; no mode-label component"
+      notes: >
+        No mode-specific reward shaping is permitted. Any behavioral
+        differentiation must arise from task-performance optimization under
+        zone-specific constraints, not from reward-signal design.
+  admissible_set:
+    notation: "X_B_emergent"
+    membership_test: >
+      x in X_B_emergent iff:
+        x.grid_position in L
+        AND agent_policy has no mode_library
+        AND agent_policy has no mode_selector
+        AND reward_signal(x) is task-performance-only
+  boundary_condition_classes:
+    - class: "restriction"
+      role: >
+        Primary BC class. B_e1, B_e2, B_e3, B_e5 are all Restriction-class.
+        B_e3 is a negative Restriction: it restricts the agent by removing
+        architectural structure rather than imposing it.
+      primary: true
+    - class: "coupling"
+      role: >
+        Co-driver BC. B_e4 (local perception) creates a coupling between
+        agent behavior and zone features within visibility radius.
+        This coupling is what allows zone structure to induce behavioral
+        differentiation — but only locally, not globally.
+      primary: false
+
+# ── ART: admissible descriptions/projections Π ──────────────────────────────
+Pi:
+  - id: "pi_01"
+    name: "action_dist"
+    observable_key: "action_dist"
+    primary: true
+    map:
+      domain: "X_B_emergent (trajectory segments within a single zone)"
+      codomain: "probability simplex over action set A"
+      definition: >
+        For a trajectory window W = {(x_t, a_t)}_{t=t0}^{t1} entirely within
+        zone z: action_dist(W) = empirical distribution of actions in W.
+        action_dist_i = count(a = i in W) / |W|.
+        Requires |W| >= min_window_size for reliable estimation.
+    distinguishability:
+      d_pi: "L1 distance: d(action_dist_1, action_dist_2) = sum_i |p_i - q_i|"
+      type: "metric"
+      units: "dimensionless (probability mass)"
+    resolution_floor: "2 / |W|  (resolution limited by window size)"
+    noise_model: >
+      Stochastic policies add sampling variance proportional to sqrt(1/|W|).
+      Deterministic or near-deterministic policies after convergence have
+      low noise; high-entropy early-training policies have high noise.
+    notes: >
+      action_dist is the behavioral analog of r_ss (Kuramoto) and var_rel
+      (Doppelpendel): a distributional summary statistic over a trajectory
+      window that aggregates behavioral variation into a representational vector.
+      Observable BC notation: A·R (Aggregation-dominated, Restriction component
+      from finite action space).
+      Pre-scopal assumptions: A4 (stationarity within zone window), A2
+      (decorrelation of consecutive actions), A_conv (policy convergence).
+      F0 condition: action_dist observed during zone-transition windows
+      violates A4 (stationarity) — these windows fall in Z(action_dist).
+
+  - id: "pi_02"
+    name: "trajectory_entropy"
+    observable_key: "trajectory_entropy"
+    primary: false
+    map:
+      domain: "X_B_emergent (trajectory segments within a single zone)"
+      codomain: "R>=0"
+      definition: >
+        trajectory_entropy(W) = H(action_dist(W))
+          = -sum_i action_dist_i * log(action_dist_i)
+        Measures behavioral diversity within the window.
+    distinguishability:
+      d_pi: "absolute difference: |H(W1) - H(W2)|"
+      type: "metric"
+      units: "nats or bits"
+    notes: >
+      Secondary observable. Lower dimensional than action_dist but easier
+      to interpret as a scalar. Observable BC notation: A·R.
+
+  - id: "pi_03"
+    name: "zone_return"
+    observable_key: "zone_return"
+    primary: false
+    map:
+      domain: "X_B_emergent (complete episodes, partitioned by zone type)"
+      codomain: "R"
+      definition: >
+        zone_return(z, episode) = sum of rewards r_t for all steps t
+        where zone_membership(x_t) = z.
+    distinguishability:
+      d_pi: "absolute difference: |zone_return(z1) - zone_return(z2)|"
+      type: "metric"
+      units: "reward units"
+    notes: >
+      Tertiary observable for regime fitness assessment. Not suitable for
+      ε-sweep partitioning (scalar, not distributional). Observable BC
+      notation: R·A.
+
+# ── ART: admissible perturbations Δ ─────────────────────────────────────────
+Delta:
+  - id: "delta_01"
+    name: "Perceptual input noise"
+    type: "bounded_noise"
+    action:
+      on: "measurement"
+      definition: >
+        Add bounded random noise η to the agent's local_observation vector:
+        obs_noisy = obs + ξ, where ξ ~ Uniform(-η, +η)^|obs|.
+    bounds:
+      magnitude: "||ξ||_inf <= η; η = 0.05 (working value)"
+      locality: "acts on all components of local_observation simultaneously"
+    admissibility_rationale: >
+      Zone structure is encoded in categorical features. Small magnitude
+      noise does not flip zone-type indicators; regime partition is expected
+      to be robust to perceptual noise below zone-distinguishability threshold.
+
+  - id: "delta_02"
+    name: "Unseen labyrinth geometry (same zone topology)"
+    type: "local_intervention"
+    action:
+      on: "parameters"
+      definition: >
+        Replace the training labyrinth L_A with a different labyrinth L_B
+        that has the same zone type distribution (same R/C/F counts and
+        connectivity structure) but different spatial geometry.
+    bounds:
+      magnitude: "zone topology preserved; only geometry varies"
+      locality: "global — affects all grid positions"
+    admissibility_rationale: >
+      Critical robustness test for H3 (transfer generalization). A partition
+      that collapses under δ₂ is environment-specific, not a generalizable
+      emergent regime structure.
+    notes: "Corresponds to H3 in context_navigation_emergent_modes_experiment.md."
+
+  - id: "delta_03"
+    name: "Different training random seeds"
+    type: "ic_perturbation"
+    action:
+      on: "initial_conditions"
+      definition: >
+        Run independent training runs with different random seeds for
+        weight initialization, environment sampling, and RL updates.
+    bounds:
+      magnitude: "any seed; reproducibility criterion >= 80% of runs"
+      locality: "affects full training trajectory; not applied post-training"
+    admissibility_rationale: >
+      Critical robustness test for H1 (regime emergence). A partition
+      that depends on specific training seeds is not a robust emergent
+      structure. Reproducibility requirement: go_nogo criterion below.
+
+  - id: "delta_04"
+    name: "RL hyperparameter variation"
+    type: "parameter_kick"
+    action:
+      on: "parameters"
+      definition: >
+        Vary learning rate, discount factor, entropy coefficient, or
+        number of training steps within a reasonable range.
+    bounds:
+      magnitude: "within 1 order of magnitude of default values"
+      locality: "affects training only; not applied to the trained policy"
+    admissibility_rationale: >
+      The emergent partition should not depend sensitively on RL
+      hyperparameters within the range where the agent converges.
+
+# ── ART: resolution threshold ε > 0 ─────────────────────────────────────────
+epsilon:
+  value: null                       # to be determined via ε-sweep
+  interpretation: >
+    Two behavioral states x, y are indistinguishable under S_emergent if
+    d_Π(x, y) = L1(action_dist(x), action_dist(y)) ≤ ε_emergent.
+  tie_to_perturbations: >
+    ε_emergent should be large enough to absorb δ₁ (perceptual noise) but
+    small enough to distinguish behavioral regimes across zone types.
+    Working expectation: ε_emergent << max_d(action_dist_R, action_dist_C, action_dist_F)
+    (the inter-zone behavioral distance).
+  epsilon_choice_note: >
+    ε_emergent is the center of the most robust N-plateau in the ε-sweep
+    over action_dist data. If H1 holds, this plateau occurs at N = number
+    of zone types (3 for R/C/F labyrinth). ε will be chosen from within
+    the plateau; its exact value is not critical.
+  stability_window_plan:
+    vary_epsilon: []               # to be filled after ε-sweep
+    vary_delta_strength: [0.01, 0.05, 0.10]  # η values for δ₁
+
+# ── Observable sufficiency ───────────────────────────────────────────────────
+observable_sufficiency:
+  - observable_key: "action_dist"
+    sufficient: null              # to be determined empirically
+    reason: >
+      Sufficient iff span(action_dist) > 2 * ε_emergent across zone types.
+      Expected: the action distributions under Zone R, Zone C, and Zone F
+      are structurally different after convergence, reflecting the different
+      constraint structures of each zone type. Awaiting empirical data.
+  - observable_key: "trajectory_entropy"
+    sufficient: null
+    reason: >
+      Secondary observable; sufficiency not required for go_nogo.
+      Will be assessed alongside action_dist.
+
+# ── Expected regime partition ────────────────────────────────────────────────
+expected_partition:
+  partition_type: "clustered"
+  regime_count_predicted: 3        # N = 3: one per zone type (R, C, F)
+  regimes:
+    - id: "R_r"
+      name: "Restriction-zone behavioral regime"
+      signature: >
+        action_dist concentrated on low-cost, conservative actions.
+        Low trajectory_entropy (stereotyped behavior under tight constraints).
+      bc_conditions: "Agent is operating within Zone R — active Restriction constraints."
+      notes: "Analog of the stable synchronized regime in Kuramoto (CASE-0001)."
+    - id: "R_c"
+      name: "Coupling-zone behavioral regime"
+      signature: >
+        action_dist shows coordinated sequential patterns reflecting local
+        coupling cues (e.g. directed movement toward coupling targets).
+        Higher trajectory_entropy than R_r.
+      bc_conditions: "Agent is operating within Zone C — active Coupling constraints."
+    - id: "R_f"
+      name: "Forcing-zone behavioral regime"
+      signature: >
+        action_dist reflects forced or driven behavior patterns aligned
+        with the zone's forcing signal (e.g., directional bias).
+        trajectory_entropy intermediate between R_r and R_c.
+      bc_conditions: "Agent is operating within Zone F — active Forcing constraints."
+    - id: "Z_transitions"
+      name: "Zone-transition exclusion windows"
+      signature: >
+        Zone-boundary crossings; A4 stationarity violated.
+        F0 condition; excluded from partition computation.
+      bc_conditions: "Zone boundary crossing — no stable zone membership."
+      notes: >
+        Not a regime; an exclusion zone in the sense of Z(action_dist).
+        See docs/glossary/observable_range.md.
+
+# ── Comparability with other scopes ─────────────────────────────────────────
+comparability:
+  common_underlying_X: >
+    The labyrinth environment is shared with CASE-20260329-0011 (Designed Modes).
+    Both agents operate in the same grid with the same zone structure.
+  overlap_domain: >
+    X_B_emergent ∩ X_B_designed: same grid positions and zone structure,
+    but the agent component differs (unstructured vs. mode-library policy).
+  transfer_targets:
+    - scope_id: "SCOPE-20260329-0011"
+      direction: "this -> SCOPE-20260329-0011"
+      structural_homology_claim: >
+        Same environment, same zone topology, different agent architecture.
+        Transfer tests whether emergent behavioral regimes have the same
+        observable signatures as the designed regimes in CASE-0011.
+      expected_admissibility: "unknown"
+
+# ── Falsification conditions ─────────────────────────────────────────────────
+falsification:
+  - id: "F0"
+    condition: >
+      action_dist observed during zone-transition windows (A4 stationarity
+      assumption violated; Z(action_dist) ∩ B ≠ ∅ at zone boundaries).
+    measurable_test: >
+      Behavioral windows spanning zone boundary crossings show high
+      within-window variance in action_dist (non-stationary distribution).
+    threshold: "variance(action_dist over window) > threshold_stationary"
+    severity: "observable_replacement"
+    notes: >
+      F0 is not a failure; it is a structural property of the observable.
+      Resolution: exclude transition windows from partition computation.
+      Transition windows are defined as the w_transition steps around each
+      zone boundary crossing (w_transition to be set empirically).
+
+  - id: "F1"
+    condition: >
+      span(action_dist) < 2 * ε_emergent across all zone types: behavioral
+      variation is below the resolution threshold.
+    measurable_test: >
+      max_z1,z2 d(action_dist_z1, action_dist_z2) < 2 * ε_emergent.
+    threshold: "inter-zone L1 distance < 2 * ε_emergent"
+    severity: "observable_replacement"
+    notes: "Try trajectory_entropy as secondary observable."
+
+  - id: "F1_BC"
+    condition: >
+      span(ALL observables) < ε_emergent: agent behavior is completely
+      undifferentiated across zone types for all observables.
+    measurable_test: >
+      max over all Pi: max_z1,z2 d_pi(z1, z2) < ε_emergent.
+    threshold: "max inter-zone distance < ε_emergent for all observables"
+    severity: "scope_rejection"
+    notes: >
+      H1 falsification condition: zone structure has not induced behavioral
+      differentiation. The training procedure produced an undifferentiated
+      policy, or ε is too large.
+
+  - id: "F2"
+    condition: "Partition unstable under δ₃ (different training seeds)."
+    measurable_test: >
+      Partition structure varies substantially across independent training runs
+      (Φ < 0.5 across seed pairs).
+    threshold: "Φ < 0.5 for seed-pair transfer"
+    severity: "scope_rejection"
+
+  - id: "F3"
+    condition: >
+      No robust ε-plateau in the ε-sweep over action_dist: N(ε) is
+      not stable over any interval of width >= 3 ε steps.
+    measurable_test: >
+      max plateau_width in ε-sweep < 3 ε steps.
+    threshold: "plateau_width < 3"
+    severity: "scope_rejection"
+    notes: "H1 primary falsification condition."
+
+  - id: "F4"
+    condition: >
+      Regime boundary θ* at episode boundary (artifact of episode length
+      rather than genuine behavioral transition).
+    measurable_test: >
+      θ* aligns with episode reset rather than zone boundary.
+    threshold: "θ* at t = 0 or t = T_max in > 50% of episodes"
+    severity: "sweep_refinement"
+    notes: "Resolution: extend episode length; rerun."
+
+# ── Provenance ───────────────────────────────────────────────────────────────
+provenance:
+  sources:
+    - type: "experiment_doc"
+      ref: "docs/context_navigation/context_navigation_emergent_modes_experiment.md"
+      pointer: "§3 Formal Scope Specification"
+    - type: "experiment_doc"
+      ref: "docs/context_navigation/context_navigation_scope_spec_emergent.md"
+      pointer: "§2 Global Scope S_emergent"
+    - type: "note"
+      ref: "docs/context_navigation/mode_scope_regime_audit.md"
+      pointer: "§2.5 BC classes as sub-scope properties"
+  owners:
+    - role: "ScopeFormalizer"
+      name: "ARW Research"
+  links:
+    bc_manifest_id: "BCM-20260330-0012"
+    case_record_id: "CASE-20260330-0012"
+    experiment_doc: "docs/context_navigation/context_navigation_emergent_modes_experiment.md"

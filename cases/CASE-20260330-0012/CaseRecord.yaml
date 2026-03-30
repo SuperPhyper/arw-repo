@@ -1,0 +1,175 @@
+# CaseRecord.yaml — CASE-20260330-0012
+# System: Context-navigation labyrinth agent — Emergent Modes Experiment
+# Purpose: ARW as post-hoc observation instrument on an unstructured RL policy.
+#          Tests whether stable behavioral regime structure emerges from training
+#          in a structured multi-zone labyrinth, without prescribed mode architecture.
+
+schema_version: "0.2"
+id: "CASE-20260330-0012"
+title: "Labyrinth agent — Emergent Modes Experiment (unstructured policy, ARW as observation)"
+phase: "emergent"
+system: "labyrinth"
+status: "open"
+created_at: "2026-03-30"
+updated_at: "2026-03-30"
+
+description: >
+  The Emergent Modes Experiment is the complement of the Designed Modes case
+  (CASE-20260329-0011). An unstructured RL policy — no mode library, no mode
+  selector, no mode-labeled reward — is trained on the multi-zone labyrinth.
+  ARW regime analysis (ε-sweep over action_dist) is applied post-hoc to
+  determine whether a stable behavioral partition emerges. The primary hypothesis
+  is that training in a structured environment induces zone-differentiated behavior
+  detectable as N=3 distinct regime clusters, corresponding to the three zone types
+  (R, C, F). A positive result extends ARW's partition claim to emergent, non-architecturally
+  prescribed cognitive structure.
+
+# ── Artifact Registry ────────────────────────────────────────────────────────
+artifacts:
+  scope_spec:
+    id: "SCOPE-20260330-0012"
+    path: "ScopeSpec.yaml"
+    status: "draft"
+
+  bc_manifest:
+    id: "BCM-20260330-0012"
+    path: "BCManifest.yaml"
+    status: "draft"
+
+  partition_result:
+    id: ""
+    path: "results/partition/PartitionResult.json"
+    status: "pending"
+    produced_by: >
+      pipeline.extract_partition (behavioral adapter required:
+      extract action_dist from RL trajectory data before running pipeline)
+
+  invariants:
+    path: "results/partition/Invariants.json"
+    status: "pending"
+    produced_by: >
+      pipeline.invariants (behavioral adapter required;
+      sweep_range entry: [epsilon_min, epsilon_max] for ε-sweep)
+    notes: >
+      sweep_range is the ε range used in the ε-sweep, not a BC parameter range.
+      Required for TBS_norm computation in any transfer comparison.
+
+  transfer_report:
+    path: "transfer/CASE-0011_vs_CASE-0012/TransferReport.md"
+    status: "not_started"
+    produced_by: "pipeline.transfer"
+    counterpart_case_id: "CASE-20260329-0011"
+    notes: >
+      Transfer comparison with CASE-0011 (Designed Modes) is planned but
+      secondary. Conceptually, this compares emergent vs. designed regime
+      structure on the same environment. Note that observables differ
+      (action_dist vs. mode_dist), so Φ measures observable transfer,
+      not system transfer. See BCManifest transfer_targets section.
+
+  failure_audit:
+    path: "audits/FailureAudit_Emergent.md"
+    status: "pending"
+    produced_by: "pipeline.audit_helpers"
+
+# ── Go/No-Go Criteria ────────────────────────────────────────────────────────
+go_nogo:
+  criterion: >
+    H1 (Regime Emergence): the ε-sweep over action_dist data from the trained
+    unstructured agent shows at least one stable plateau with N >= 2 distinct
+    behavioral regime clusters, reproducible across training seeds.
+    Primary target: N = 3 (one per zone type).
+  measurable_test: >
+    epsilon_sweep on action_dist observations produces a plateau of width
+    >= 3 consecutive ε values with constant N >= 2. Plateau must be present
+    in at least 80% of independent training runs (delta_03 reproducibility).
+  threshold: "plateau_width >= 3 AND N_plateau >= 2 AND reproducibility >= 0.80"
+  decision: "pending"
+  decision_date: ""
+  decision_notes: ""
+
+# ── Links ────────────────────────────────────────────────────────────────────
+links:
+  experiment_doc: "docs/context_navigation/context_navigation_emergent_modes_experiment.md"
+  scope_companion_doc: "docs/context_navigation/context_navigation_scope_spec_emergent.md"
+  bc_doc: "docs/bc_taxonomy/boundary_condition_classes.md"
+  scope_doc: "docs/context_navigation/context_navigation_scope_spec.md"
+  related_cases:
+    - "CASE-20260329-0011"         # Designed Modes Phase 1 — same environment, different agent
+  next_case: ""                    # Phase 2: multi-zone transfer (to be created after go verdict)
+  prior_cases:
+    - "CASE-20260318-0004"         # Stuart-Landau — first empirical emergence case (physical)
+
+# ── Scientific Value ─────────────────────────────────────────────────────────
+scientific_value:
+  primary: >
+    First ARW emergence test on a cognitive/computational system with
+    endogenous, unarchitecturally-prescribed regime structure. CASE-20260318-0004
+    (Stuart-Landau) established ARW emergence for a physical system where the
+    emergence condition is analytically known. This case asks whether ARW can
+    detect emergence in a behavioral system where no ground-truth emergence
+    condition exists — only environmental structure and task optimization.
+    A positive result extends the ARW partition claim to a new class of systems.
+  secondary: >
+    Provides the empirical baseline for comparing designed vs. emergent regime
+    structure on the same environment. Together with CASE-20260329-0011, this
+    case tests whether prescribed mode architecture produces the same observable
+    regime structure as emergent behavioral differentiation — a fundamental
+    question about the role of architectural design in regime formation.
+  open_questions:
+    - id: "Q-EMG-01"
+      question: >
+        Does the emergent partition arise gradually during training (asymptotic
+        convergence, consistent with Q-CNS-03 consolidation hypothesis) or
+        abruptly (phase-transition-like, analogous to Stuart-Landau K → K_c)?
+    - id: "Q-EMG-02"
+      question: >
+        Is the emergent partition richer than N = zone count? Could sub-zone
+        behavioral strategies produce finer-grained regime clusters?
+    - id: "Q-CNS-05"
+      question: >
+        Do the emergent regimes correspond to the BC classes predicted by
+        bc_taxonomy_cognitive_modes? (H2 test — now as emergent result, not by design)
+    - id: "Q-CNS-03"
+      question: >
+        Is consolidation necessary for regime partition stability? (H4 ablation test
+        — compare unstructured agent with vs. without consolidation phase)
+
+# ── Relationship to Physical System Cases ────────────────────────────────────
+physical_analogs:
+  - case_id: "CASE-20260311-0001"
+    system: "Kuramoto"
+    analog: >
+      Agent in coupling zone; action_dist ≅ r_ss as order parameter.
+      Both measure a distributional quantity that reflects the degree of
+      synchronization / behavioral coordination.
+  - case_id: "CASE-20260311-0003"
+    system: "Doppelpendel"
+    analog: >
+      Agent in restriction zone; trajectory_entropy ≅ var_rel.
+      Both measure variance / entropy as an indicator of regime regime.
+  - case_id: "CASE-20260318-0004"
+    system: "Stuart-Landau"
+    analog: >
+      Emergence condition: the entire experiment corresponds to K → K_c
+      in Stuart-Landau. The question is whether training crosses an
+      emergence threshold, not which side of K_c the system is on.
+
+# ── Emergence Documentation ──────────────────────────────────────────────────
+# Required for cases involving emergence analysis (per CaseRecord extended fields)
+emergence_docs:
+  - docs/advanced/arw_emergence_bc_relative.md
+  - docs/advanced/emergence_overview.md
+  - docs/advanced/epsilon_induced_relational_emergence.md
+  - docs/advanced/emergence_and_latent_degrees_of_freedom.md
+  - docs/context_navigation/context_navigation_emergent_modes_experiment.md
+  - docs/context_navigation/context_navigation_scope_spec_emergent.md
+
+# ── Agent Assignments ────────────────────────────────────────────────────────
+assignments:
+  scope_spec: "A1"
+  bc_manifest: "A2"
+  partition_result: "A3"
+  invariants: "A3"
+  transfer_report: "A4"
+  failure_audit: "A5"
+  orchestrator: "A0"

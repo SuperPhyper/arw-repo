@@ -1,0 +1,351 @@
+# BCManifest.yaml — CASE-20260330-0012
+# System: Context-navigation labyrinth agent — Emergent Modes Experiment
+# BC Class: Restriction (primary), Coupling (co-driver)
+# Purpose: Formalizes the BC classification and the sweep program for
+#          the Emergent Modes Experiment. The experiment does not sweep
+#          a physical BC parameter; the sweep is over the resolution
+#          threshold ε applied to action_dist behavioral data.
+#
+# Linked scope:   cases/CASE-20260330-0012/ScopeSpec.yaml  (SCOPE-20260330-0012)
+# Experiment doc: docs/context_navigation/context_navigation_emergent_modes_experiment.md
+
+schema_version: "0.2"
+id: "BCM-20260330-0012"
+scope_id: "SCOPE-20260330-0012"
+title: "Emergent Modes Experiment — BC classification and ε-sweep program"
+status: "draft"
+created_at: "2026-03-30"
+updated_at: "2026-03-30"
+
+# ── BC Components ────────────────────────────────────────────────────────────
+bc_components:
+
+  # ── BC Component 1: Restriction (primary) ──────────────────────────────────
+  - id: "bc_01"
+    class: "restriction"
+    name: "Zone-imposed architectural and signal restrictions"
+    description: >
+      The primary BC class of S_emergent. The key boundary conditions are
+      what the agent is NOT given: no mode library, no mode selector, no
+      mode-labeled training signal. In addition, the environment imposes
+      zone-specific resource constraints. All four Restriction BCs (B_e1,
+      B_e2, B_e3, B_e5) are grouped here.
+      The negatively-specified B_e3 is the constitutive BC of this experiment.
+
+    locus:
+      applies_to: "B"
+      location_description: >
+        B_e1: admissible state set X_B restricted to L (finite maze).
+        B_e2: active constraint set depends on zone_membership (zone restrictions).
+        B_e3: agent architecture constrained by ABSENCE of mode library.
+        B_e5: reward signal restricted to task-performance component only.
+
+    parameterization:
+      - name: "zone_type"
+        symbol: "z"
+        domain: "{R, C, F}"
+        meaning: >
+          The zone type determines which resource constraints are active.
+          This is not swept; zone types are fixed by the environment design.
+          The observable contrast across zone types is the source of
+          regime structure under H1.
+        implementation_hook:
+          type: "config_field"
+          reference: "environment.zone_config.zone_type"
+
+    perturbation_program:
+      sweeps: []                    # No BC parameter sweep in this experiment.
+                                    # The experiment is an ε-sweep (see bc_02 below).
+      fixed_params:
+        zone_types: [R, C, F]
+        visibility_radius: 5
+        grid_size: 10
+        mode_library: null          # explicitly absent — constitutive of S_emergent
+        reward_mode_label: false    # no mode-label component in reward
+      admissible_delta_links:
+        - "delta_01"                # perceptual input noise
+        - "delta_02"                # unseen labyrinth geometry
+        - "delta_03"                # different training seeds
+        - "delta_04"                # RL hyperparameter variation
+
+    resolution_plan:
+      epsilons: []                  # filled after ε-sweep; working range [0.01, 1.0]
+      stability_window_criterion: >
+        Plateau: N(ε) constant over >= 3 consecutive ε steps.
+        Reproducibility: plateau present in >= 80% of independent training runs
+        (different seeds under delta_03).
+
+    predicted_partition_effects:
+      qualitative:
+        - >
+          If H1 holds: the ε-sweep reveals a stable plateau at N = 3,
+          corresponding to the three zone types (R, C, F). Each regime cluster
+          occupies a distinct region of the action_dist space, reflecting
+          the different behavioral strategies the agent has converged to
+          in each zone type.
+        - >
+          If H1 fails: either no plateau (F3 — scope rejection), or plateau at
+          N = 1 (agent has not differentiated behavior across zone types), or
+          plateau at N > 3 (agent has developed sub-zone behavioral strategies
+          not predicted by the coarse zone topology).
+      partition_type_prediction: "clustered"
+      invariants_to_track:
+        - "regime_count"
+        - "adjacency_graph"
+        - "persistence_under_sweep"
+        - "transition_boundary"
+
+    failure_signatures:
+      - >
+        No stable ε-plateau (F3): action_dist does not form stable clusters
+        — the agent has not developed zone-differentiated behavior.
+      - >
+        Plateau at N=1: a single behavioral cluster dominates — the agent
+        has converged to a uniform policy that ignores zone structure.
+      - >
+        Plateau depends on training seed (δ₃ instability): emergent partition
+        is training-run-specific, not a robust structural feature.
+
+    falsification_criteria:
+      - id: "fals_01"
+        statement: >
+          H1 falsification: no robust ε-plateau at N = number of zone types
+          in at least 80% of training runs.
+        measurable_test: >
+          epsilon_sweep on action_dist data: max plateau_width < 3 ε steps,
+          OR plateau N ≠ zone_count in > 20% of runs.
+        threshold: "plateau_width < 3 OR reproducibility < 0.80"
+
+  # ── BC Component 2: Coupling (co-driver) ────────────────────────────────────
+  - id: "bc_02"
+    class: "coupling"
+    name: "Local perceptual coupling to zone features"
+    description: >
+      The agent's behavioral differentiation, if present, arises from its
+      local perceptual coupling to zone features within visibility radius r=5.
+      This coupling mediates the Restriction BCs: the agent cannot directly
+      observe zone type, but observes zone-feature indicators within r.
+      Without this coupling, zone structure could not induce behavioral
+      differentiation at all.
+
+    locus:
+      applies_to: "B"
+      location_description: >
+        B_e4: agent perceives local zone features within visibility radius r=5.
+        The coupling is indirect: zone_type is encoded in local_observation
+        features (wall layout, zone-type indicators, resource-level proxies).
+
+    parameterization:
+      - name: "visibility_radius"
+        symbol: "r"
+        domain: "positive integer"
+        meaning: >
+          Radius of the agent's perceptual field. r=5 is the default.
+          Not swept in this experiment; fixed as part of the environment design.
+          Relevant for future ablation: lower r → weaker zone-feature coupling
+          → potentially weaker emergent differentiation.
+        implementation_hook:
+          type: "config_field"
+          reference: "environment.agent_config.visibility_radius"
+
+    perturbation_program:
+      sweeps: []                    # r not swept in Phase 1; potential future ablation.
+      fixed_params:
+        visibility_radius: 5
+      admissible_delta_links:
+        - "delta_01"                # perceptual input noise perturbs this coupling
+
+    resolution_plan:
+      epsilons: []
+      stability_window_criterion: >
+        Not the primary sweep dimension. Stability assessed through δ₁
+        (perceptual noise) perturbation trials.
+
+    predicted_partition_effects:
+      qualitative:
+        - >
+          Coupling BC acts as a mediator: it allows zone-type information
+          to enter the agent's policy through the perceptual field.
+          Without it (r=0), no zone-type differentiation would be possible.
+          With r=5, zone-type features are reliably observable within each zone.
+      partition_type_prediction: "clustered"
+      invariants_to_track:
+        - "regime_count"
+        - "persistence_under_sweep"
+
+    failure_signatures:
+      - >
+        Perceptual noise sensitivity (δ₁): if regime partition collapses under
+        small perceptual noise, the coupling BC is too weak to induce robust
+        differentiation.
+
+    falsification_criteria:
+      - id: "fals_02"
+        statement: >
+          Coupling-mediated differentiation fails: no zone-type information
+          reaches the policy through local_observation features.
+        measurable_test: >
+          action_dist distributions show no correlation with zone_type
+          even after extended training with r=5.
+        threshold: "KL(action_dist_R || action_dist_C) < threshold_zone_info"
+
+  # ── BC Component 3: ε-sweep (measurement program) ───────────────────────────
+  - id: "bc_03"
+    class: "restriction"
+    name: "ε-sweep program over action_dist behavioral data"
+    description: >
+      The primary measurement program for this experiment. Rather than sweeping
+      a physical BC parameter, the partition structure is measured by varying
+      the resolution threshold ε applied to action_dist data from the trained
+      agent. This is the same ε-sweep procedure used in the physical system cases
+      (Kuramoto, Doppelpendel, Stuart-Landau), applied to behavioral observables.
+      The "sweep parameter" is ε; the "partition" is the clustering of
+      behavioral trajectory windows under d_Π(x,y) ≤ ε.
+
+    locus:
+      applies_to: "epsilon"
+      location_description: >
+        ε is swept over a range covering the expected inter-zone behavioral
+        distances. The pipeline module epsilon_sweep.py is used, reading
+        observable_key: action_dist from ScopeSpec.yaml.
+
+    parameterization:
+      - name: "epsilon"
+        symbol: "ε"
+        domain: "[ε_min, ε_max]  (working range: [0.01, 1.0] for L1 action_dist)"
+        meaning: >
+          Resolution threshold for the behavioral partition. Two trajectory
+          windows are indistinguishable iff their action_dist L1 distance <= ε.
+          The ε-sweep reveals how partition structure changes with resolution.
+        implementation_hook:
+          type: "code_param"
+          reference: "pipeline.epsilon_sweep.epsilon_range"
+
+    perturbation_program:
+      sweeps:
+        - param: "epsilon"
+          values: []               # determined by epsilon_sweep.py; log-spaced [0.01, 1.0]
+          sweep_type: "log_grid"
+      fixed_params:
+        observable_key: "action_dist"
+        min_window_size: 20        # minimum trajectory window size for reliable estimation
+        transition_exclusion: true # exclude zone-boundary windows (F0 condition)
+      admissible_delta_links:
+        - "delta_03"               # reproducibility: run across training seeds
+
+    resolution_plan:
+      epsilons: []                 # full range: [0.01, 1.0] log-spaced, 50 pts
+      stability_window_criterion: >
+        Plateau: N(ε) constant for >= 3 consecutive ε values.
+        Primary plateau (H1 prediction): N = 3 at ε ≈ inter-zone L1 distance.
+
+    predicted_partition_effects:
+      qualitative:
+        - >
+          At very small ε: N large (every trajectory window is its own cluster;
+          no generalization). Corresponds to ε < intra-zone behavioral variance.
+        - >
+          At ε ≈ intra-zone variance: N = 3 plateau (one cluster per zone type).
+          This is the H1 prediction.
+        - >
+          At large ε: N = 1 (all windows merge into a single cluster).
+        - >
+          Transition sharpness: a sharp N=3 → N=1 transition would indicate
+          high within-zone coherence and large inter-zone separation.
+      partition_type_prediction: "clustered"
+      invariants_to_track:
+        - "regime_count"
+        - "persistence_under_sweep"
+        - "transition_boundary"    # θ*: ε at which N drops from 3 to 2 or 2 to 1
+
+    failure_signatures:
+      - >
+        No plateau (F3): N(ε) is monotone decreasing without a stable interval.
+        The agent has not formed distinguishable behavioral clusters.
+      - >
+        Plateau at N=1 for all ε < ε_merge: agent policy is uniform across zones.
+
+    falsification_criteria:
+      - id: "fals_03"
+        statement: >
+          ε-sweep reveals no stable N=3 plateau (or no plateau at all).
+        measurable_test: >
+          epsilon_sweep produces no interval of width >= 3 consecutive ε values
+          with N = 3 (or any fixed N >= 2).
+        threshold: "plateau_width < 3 or max(N over plateau) < 2"
+
+# ── Transfer Targets ─────────────────────────────────────────────────────────
+transfer_targets:
+  - target_scope_id: "SCOPE-20260329-0011"
+    target_bc_manifest_id: "BCM-20260329-0011"
+    direction: "CASE-20260330-0012 -> CASE-20260329-0011"
+
+    structural_homology_claim: >
+      Both cases operate in the same labyrinth environment with the same
+      zone structure. The Designed Modes case (CASE-0011) has prescribed modes;
+      this case has emergent modes. Transfer measures whether the emergent
+      behavioral partition has the same structure as the designed partition.
+      This is a conceptual comparison, not a standard BC-class transfer:
+      the two agents' observable structures differ (mode_dist vs. action_dist).
+
+    shared_bc_components:
+      - "bc_01 (Restriction — zone structure)"
+      - "bc_02 (Coupling — local perception)"
+
+    expected_transfer: "unknown"
+    expected_transfer_rationale: >
+      If H2 holds (BC-class correspondence), the emergent regimes will have
+      similar BC-class signatures as the designed regimes. Transfer Φ measures
+      whether the behavioral partition structures are compatible. However,
+      because the observables differ (action_dist vs. mode_dist), low Φ
+      does not imply different physical structure — it may reflect observable
+      difference rather than regime difference.
+      See: docs/bc_taxonomy/transfer_distortion_metrics.md note on Φ and
+      observable BC structures.
+
+    distortion_metrics_planned:
+      - name: "RCD"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md#rcd"
+        expected_value: "0 if both cases yield N=3; > 0 if emergent N differs"
+      - name: "TBS"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md#tbs"
+        expected_value: "unknown; requires sweep_range in both Invariants.json"
+      - name: "PCI"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md#pci"
+        expected_value: "unknown"
+      - name: "SDI"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md#sdi"
+        expected_value: "unknown"
+      - name: "Phi"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md#phi"
+        expected_value: ">= 0.75 (H3) or < 0.5 (H3 falsified)"
+
+    transfer_falsification:
+      - id: "tf_01"
+        statement: >
+          H3 falsification: emergent partition does not generalize across
+          labyrinth instances (δ₂ instability). Φ < 0.5 for geometry transfer.
+        measurable_test: >
+          Φ computed between S_training (training labyrinth) and S_transfer
+          (unseen labyrinth with same zone topology, different geometry).
+        threshold: "Phi < 0.5"
+
+# ── Provenance ───────────────────────────────────────────────────────────────
+provenance:
+  sources:
+    - type: "experiment_doc"
+      ref: "docs/context_navigation/context_navigation_emergent_modes_experiment.md"
+      pointer: "§2 ARW Observation Protocol, §3 Formal Scope Specification"
+    - type: "experiment_doc"
+      ref: "docs/context_navigation/context_navigation_scope_spec_emergent.md"
+      pointer: "§2 Global Scope S_emergent, §5 Transfer Specification"
+    - type: "note"
+      ref: "docs/notes/research_journal.md"
+      pointer: "session 2026-03-18: Φ measures observable transfer, not system transfer"
+  owners:
+    - role: "BoundaryTaxonomist"
+      name: "ARW Research"
+  links:
+    partition_pipeline_id: ""      # pending — requires behavioral adapter
+    case_record_id: "CASE-20260330-0012"
+    experiment_doc: "docs/context_navigation/context_navigation_emergent_modes_experiment.md"
