@@ -1,0 +1,317 @@
+# BCManifest.yaml — CASE-20260329-0011
+# System: Context-navigation labyrinth agent (Phase 1 — Mode Emergence)
+# BC Classes: Restriction (primary), Coupling (co-driver)
+#
+# Note on sweep design: Phase 1 differs structurally from all prior cases
+# (Kuramoto, pendulum, Stuart-Landau). Those cases sweep a BC parameter (kappa,
+# energy, K) and measure a scalar observable at each sweep point. Phase 1 has
+# NO BC parameter sweep — all Zone A constraints are fixed. The only sweep is
+# the epsilon-sweep over the resolution threshold, applied to behavioral
+# trajectory data (mode_dist, policy_embedding). This is documented explicitly
+# in the perturbation_program below.
+
+schema_version: "0.2"
+id: "BCM-20260329-0011"
+scope_id: "SCOPE-20260329-0011"
+title: "Labyrinth Phase 1 — Zone A restriction BC, epsilon-sweep only"
+status: "draft"
+created_at: "2026-03-29"
+updated_at: "2026-03-29"
+
+# ── BC Components ────────────────────────────────────────────────────────────
+bc_components:
+  - id: "bc_01"
+    class: "restriction"
+    name: "Zone A environmental constraint set"
+    description: >
+      The Zone A BC tuple jointly restricts the admissible behavioral mode space
+      to {R_B1 (Exploration)}. This is implemented as a fixed configuration of
+      five resource parameters: planning budget d=5, visibility r=5, action cost
+      c=0.05, memory m=0, error tolerance tau=lenient. No parameter sweep is
+      performed in Phase 1 — all five are fixed. The restriction BC eliminates
+      deliberative, anchor retrieval, and reactive modes as admissible strategies.
+      The scientific test is whether this restriction produces a MEASURABLE discrete
+      partition in the agent's behavioral space, not merely a forced single behavior.
+
+    locus:
+      applies_to: "B"
+      location_description: >
+        Manifests in B as the joint constraint set (d, r, c, m, tau) = (5, 5, 0.05, 0, lenient).
+        Together these select X_B^{Zone A} ⊆ X.
+
+    parameterization:
+      - name: "planning_budget"
+        symbol: "d"
+        domain: "fixed: d = 5  (lookahead depth)"
+        meaning: "Controls depth of deliberative planning. d=5 permits planning but does not force it."
+        implementation_hook:
+          type: "config_field"
+          reference: "env_config.planning_budget"
+
+      - name: "visibility_radius"
+        symbol: "r"
+        domain: "fixed: r = 5  (cells, L1 ball)"
+        meaning: "Radius of the perceptual field. r=5 provides near-global visibility in 10x10 grid."
+        implementation_hook:
+          type: "config_field"
+          reference: "env_config.visibility_radius"
+
+      - name: "action_cost"
+        symbol: "c"
+        domain: "fixed: c = 0.05 per step"
+        meaning: "Penalty per action. Low cost makes spatial exploration economically viable."
+        implementation_hook:
+          type: "config_field"
+          reference: "env_config.action_cost"
+
+      - name: "memory_capacity"
+        symbol: "m"
+        domain: "fixed: m = 0  (disabled)"
+        meaning: "Number of storable context anchors. m=0 suppresses anchor retrieval mode."
+        implementation_hook:
+          type: "config_field"
+          reference: "agent_config.memory_capacity"
+
+      - name: "error_tolerance"
+        symbol: "tau"
+        domain: "fixed: tau = lenient"
+        meaning: "No irreversible states; wrong-turn penalty = c = 0.05. Makes recovery cheap."
+        implementation_hook:
+          type: "config_field"
+          reference: "env_config.error_tolerance"
+
+    perturbation_program:
+      # Phase 1 has no BC parameter sweep.
+      # All Zone A parameters are held fixed (see fixed_params below).
+      # The sweep in Phase 1 is exclusively over epsilon (resolution threshold),
+      # applied during partition extraction from behavioral trajectory data.
+      # This is a structural departure from the physics pipeline:
+      # instead of sweeping kappa and measuring r_ss(kappa), we
+      # train the agent under fixed Zone A BC and then sweep epsilon
+      # over the collected mode_dist / policy_embedding data.
+      sweeps: []
+      fixed_params:
+        planning_budget: 5
+        visibility_radius: 5
+        action_cost: 0.05
+        memory_capacity: 0
+        error_tolerance: "lenient"
+        grid_size: "10x10"
+        mode_count: 4
+        episode_length: 500
+        warmup_steps: 50
+        n_training_episodes: 1000
+        epsilon_greedy: 0.03
+      admissible_delta_links:
+        - "delta_01"  # perception noise
+        - "delta_02"  # maze layout variation
+        - "delta_03"  # random seed variation
+        - "delta_04"  # epsilon-greedy exploration noise
+
+    resolution_plan:
+      # Epsilon-sweep over L1(mode_dist) to find stable regime count N
+      epsilons: [0.05, 0.08, 0.10, 0.12, 0.15, 0.20, 0.25]
+      stability_window_criterion: >
+        Regime count N is stable if constant over >= 3 consecutive epsilon values.
+        For Phase 1: expected N=1 plateau spanning the full range [0.08, 0.25].
+      notes: >
+        A parallel epsilon-sweep over cosine distance (policy_embedding) uses
+        thresholds: [0.05, 0.08, 0.10, 0.12, 0.15, 0.20].
+        Both sweeps must be performed; results cross-validated.
+
+    predicted_partition_effects:
+      qualitative:
+        - >
+          Single stable cluster (N=1) emerges in policy_embedding space under
+          uniform Zone A BC. The embedding space is discretely structured
+          (not a continuous manifold) even under single-mode training.
+        - >
+          mode_dist concentrates near (1, 0, 0, 0) after convergence.
+          Distribution is stable across seeds (delta_03) and layout variations (delta_02).
+        - >
+          salience_mean remains low throughout training. No mode competition
+          is expected under a single-mode BC configuration.
+      partition_type_prediction: "clustered"
+      invariants_to_track:
+        - "regime_count"          # expected: N=1
+        - "epsilon_plateau_width" # expected: wide plateau (>= 5 epsilon steps)
+        - "seed_reproducibility"  # expected: N=1 in >= 80% of N_seeds=10 runs
+        - "salience_baseline"     # record for Phase 2 comparison
+
+    failure_signatures:
+      - >
+        Continuous manifold in policy_embedding space: cosine distances form
+        a unimodal distribution with no gap — no discrete cluster boundary detectable.
+      - >
+        mode_dist uniform across all modes: agent selects modes randomly
+        (mode_count / k = 0.25 each) — indicates gating mechanism failure,
+        not regime emergence.
+      - >
+        N varies monotonically with epsilon without plateau — epsilon-sweep
+        produces N = T/epsilon (trivial counting artifact, not a partition).
+
+    falsification_criteria:
+      - id: "fals_01"
+        statement: >
+          No stable epsilon plateau in mode_dist epsilon-sweep — regime structure
+          is not discrete.
+        measurable_test: >
+          epsilon_sweep(mode_dist) shows no plateau of width >= 3 epsilon steps
+          with constant N, across >= 80% of N_seeds=10 runs.
+        threshold: "plateau_width < 3"
+
+      - id: "fals_02"
+        statement: >
+          policy_embedding forms a continuous manifold — no cluster gap detectable.
+        measurable_test: >
+          cosine distance distribution over all within-episode embedding pairs
+          is unimodal with no gap (gap defined as: <= 5% of pairs in an
+          interval of width 0.05 in [0, 0.5]).
+        threshold: "no gap in cosine distance distribution"
+
+      - id: "fals_03"
+        statement: >
+          mode_dist is not reproducible across seeds — N varies between 0 and 4
+          depending on random initialization.
+        measurable_test: >
+          std(N_per_seed) > 1 across N_seeds=10 runs at epsilon = 0.10.
+        threshold: "std(N) > 1"
+
+  - id: "bc_02"
+    class: "coupling"
+    name: "Agent-environment perception coupling"
+    description: >
+      The agent and environment are coupled through the shared perception channel
+      (B_g4 in context_navigation_scope_spec.md). The agent's context_embedding
+      is a deterministic function of local_observation, which is determined by
+      grid_position and the environment's wall structure. This coupling is structural
+      and cannot be varied in Phase 1 — it is the defining feature of the
+      agent-environment interface in all phases.
+      In Phase 1, the coupling BC is inactive as a sweep variable; it is
+      documented here for completeness and for alignment with S_global.
+
+    locus:
+      applies_to: "B"
+      location_description: >
+        Manifests as the perception function: local_observation = f(grid_position, env_walls).
+        The context_embedding = g(local_observation) couples agent representation
+        to environmental structure.
+
+    parameterization:
+      - name: "perception_coupling_strength"
+        symbol: "rho"
+        domain: "fixed: rho = 1.0  (full coupling; no information loss)"
+        meaning: >
+          Fraction of local_observation features passed intact to context_embedding.
+          rho=1.0: no bottleneck. Could be varied in future phases (Phase 3 dynamic shifts).
+        implementation_hook:
+          type: "config_field"
+          reference: "agent_config.perception_coupling"
+
+    perturbation_program:
+      sweeps: []
+      fixed_params:
+        perception_coupling: 1.0
+        perception_noise_eta: 0.02   # see delta_01
+      admissible_delta_links:
+        - "delta_01"  # perception noise is the admissible perturbation for this BC
+
+    resolution_plan:
+      epsilons: []  # resolved together with bc_01 epsilon-sweep
+      stability_window_criterion: "same as bc_01"
+
+    predicted_partition_effects:
+      qualitative:
+        - >
+          Full coupling (rho=1.0) ensures that policy_embedding reflects the
+          full environmental context. Cluster structure in embeddings is therefore
+          informative about environmental state, not an artifact of information loss.
+      partition_type_prediction: "clustered"
+      invariants_to_track:
+        - "regime_count"
+
+    failure_signatures:
+      - >
+        policy_embedding is constant across grid positions — perception coupling
+        is not functioning (agent receives no environmental signal).
+
+    falsification_criteria:
+      - id: "fals_04"
+        statement: >
+          policy_embedding shows no spatial variation across grid positions —
+          the coupling BC is not transmitting environmental information.
+        measurable_test: >
+          Variance of policy_embedding across grid positions < 0.01
+          (embeddings are position-independent).
+        threshold: "var(policy_embedding | grid_position) < 0.01"
+
+# ── Transfer Targets ─────────────────────────────────────────────────────────
+transfer_targets:
+  - target_scope_id: "SCOPE-20260329-0012"  # Phase 2 (to be created)
+    target_bc_manifest_id: "BCM-20260329-0012"
+    direction: "SCOPE-20260329-0011 -> SCOPE-20260329-0012"
+
+    structural_homology_claim: >
+      Phase 1 (Zone A uniform) and Phase 2 Zone A sub-partition share the same
+      BC configuration. The R_B1 (Exploration) regime learned in Phase 1 should
+      transfer directly to Zone A cells in Phase 2. Transfer admissibility
+      measures whether Phase 1 partition remains valid in a multi-zone context.
+
+    shared_bc_components:
+      - "bc_01"   # same Zone A Restriction BC
+      - "bc_02"   # same perception coupling
+
+    expected_transfer: "highly_admissible"
+    expected_transfer_rationale: >
+      Zone A cells in Phase 2 have identical BC configuration to Phase 1.
+      The R_B1 regime should activate in Zone A of Phase 2 without retraining.
+      Predicted Phi >= 0.75 for the Zone A sub-partition comparison.
+
+    distortion_metrics_planned:
+      - name: "RCD"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md#rcd"
+        expected_value: "0  (both scopes: N=1 in Zone A)"
+      - name: "TBS"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md#tbs"
+        expected_value: >
+          undefined — Phase 1 has no transition boundary theta* (single regime).
+          TBS_norm not computable for Phase 1. Flag as undefined in TransferMetrics.
+      - name: "PCI"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md#pci"
+        expected_value: ">= 0.80  (R_B1 compatible across Phase 1 and Phase 2 Zone A)"
+      - name: "SDI"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md#sdi"
+        expected_value: "0  (same Zone A BC graph structure)"
+      - name: "Phi"
+        definition_ref: "docs/bc_taxonomy/transfer_distortion_metrics.md#phi"
+        expected_value: ">= 0.75  (highly_admissible)"
+
+    transfer_falsification:
+      - id: "tf_01"
+        statement: >
+          Phase 1 R_B1 partition is incompatible with Phase 2 Zone A sub-partition —
+          the agent cannot reactivate the learned Exploration mode in Zone A of
+          the multi-zone environment without retraining.
+        measurable_test: >
+          anchor_retrieval_rate in Zone A cells of Phase 2 < 0.40 (chance level).
+        threshold: "anchor_retrieval_rate < 0.40"
+
+# ── Provenance ───────────────────────────────────────────────────────────────
+provenance:
+  sources:
+    - type: "experiment_doc"
+      ref: "experiments/labyrinth_experiment_agenda.md"
+      pointer: "Section 2 (Scope B_B), Section 8 (Phase 1 design), Section 9 (Phase 1 observables)"
+    - type: "experiment_doc"
+      ref: "experiments/labyrinth_experiment_extended_design.md"
+      pointer: "Section 2 (Zone A scope S_A), Section 8 (Phase 1)"
+    - type: "note"
+      ref: "docs/context_navigation/context_navigation_scope_spec.md"
+      pointer: "Section 2 (B_global constraints B_g1-B_g6), Section 3 (zone scopes)"
+  owners:
+    - role: "BoundaryTaxonomist"
+      name: "session-2026-03-29"
+  links:
+    partition_pipeline_id: ""     # pending
+    case_record_id: "CASE-20260329-0011"
+    experiment_doc: "experiments/labyrinth_experiment_agenda.md"

@@ -1,0 +1,114 @@
+# CaseRecord.yaml — CASE-20260329-0011
+# System: Context-navigation labyrinth agent — Phase 1 (Mode Emergence)
+# Purpose: First empirical test of the labyrinth ART instantiation.
+#          Verifies that a discrete behavioral regime partition emerges at all
+#          under uniform Zone A boundary conditions (single-zone environment).
+
+schema_version: "0.2"
+id: "CASE-20260329-0011"
+title: "Labyrinth agent — Phase 1: Mode emergence under uniform Zone A scope"
+phase: "1"
+system: "labyrinth"
+status: "open"
+created_at: "2026-03-29"
+updated_at: "2026-03-29"
+
+description: >
+  Phase 1 of the labyrinth ART instantiation. The agent operates in a single uniform
+  10x10 grid environment with Zone A boundary conditions (low action cost, large
+  visibility radius, no memory). The scientific question is whether a discrete
+  regime partition emerges in the agent's behavioral space (policy embedding cluster
+  structure) under a single fixed BC configuration. This is a prerequisite for all
+  subsequent phases. No BC parameter sweep; the only sweep is over the resolution
+  threshold epsilon applied to the mode_dist observable.
+
+# ── Artifact Registry ────────────────────────────────────────────────────────
+artifacts:
+  scope_spec:
+    id: "SCOPE-20260329-0011"
+    path: "ScopeSpec.yaml"
+    status: "draft"
+
+  bc_manifest:
+    id: "BCM-20260329-0011"
+    path: "BCManifest.yaml"
+    status: "draft"
+
+  partition_result:
+    id: ""
+    path: "results/partition/PartitionResult.json"
+    status: "pending"
+    produced_by: "pipeline.extract_partition (behavioral adapter required)"
+
+  invariants:
+    path: "results/partition/Invariants.json"
+    status: "pending"
+    produced_by: "pipeline.invariants (behavioral adapter required)"
+
+  transfer_report:
+    path: ""
+    status: "not_applicable"
+    notes: "Phase 1 has no transfer target; transfer begins in Phase 4."
+
+  failure_audit:
+    path: "audits/FailureAudit_Phase1.md"
+    status: "pending"
+    produced_by: "pipeline.audit_helpers"
+
+# ── Go/No-Go Criteria ────────────────────────────────────────────────────────
+go_nogo:
+  criterion: >
+    The epsilon-sweep over mode_dist observations shows at least one stable
+    plateau with N >= 1 distinct regime cluster, indicating that a discrete
+    behavioral partition emerges under uniform Zone A BC.
+  measurable_test: >
+    epsilon_sweep produces a plateau of width >= 3 consecutive epsilon values
+    with constant N (regime count). Plateau must be present in at least 80%
+    of independent training runs (different random seeds, delta_04).
+  threshold: "plateau_width >= 3 epsilon steps; reproducibility >= 80%"
+  decision: "pending"
+  decision_date: ""
+  decision_notes: ""
+
+# ── Links ────────────────────────────────────────────────────────────────────
+links:
+  experiment_doc: "experiments/labyrinth_experiment_agenda.md"
+  experiment_doc_extended: "experiments/labyrinth_experiment_extended_design.md"
+  bc_doc: "docs/bc_taxonomy/boundary_condition_classes.md"
+  scope_doc: "docs/context_navigation/context_navigation_scope_spec.md"
+  related_cases: []
+  next_phase: "CASE-20260329-0012"  # Phase 2 — Zone Switching (to be created)
+
+# ── Scientific Value ─────────────────────────────────────────────────────────
+scientific_value:
+  primary: >
+    First empirical ARW test on a cognitive/computational system with endogenous
+    regime structure. Unlike the physical calibration cases (Kuramoto, pendulum,
+    Stuart-Landau), regime structure here must EMERGE from agent-environment
+    interaction rather than being analytically derivable from equations of motion.
+    Positive result extends the ARW partition claim beyond dynamical systems.
+  secondary: >
+    Establishes the baseline partition structure for Phase 2 (zone switching)
+    and Phase 4 (cross-maze transfer). Without a confirmed Phase 1 partition,
+    subsequent phase results cannot be interpreted.
+  open_questions:
+    - id: "Q-CNS-01"
+      question: "What is the empirically optimal epsilon_global for the labyrinth partition?"
+    - id: "Q-CNS-03"
+      question: >
+        Is consolidation necessary for regime partition stability? Phase 1
+        deliberately disables consolidation — this is the baseline for Q-CNS-03.
+    - id: "Q-LABY-01"
+      question: >
+        Does a single dominant cluster (N=1) emerge as predicted under uniform Zone A BC,
+        or does the agent spontaneously generate multiple sub-modes even in the uniform case?
+
+# ── Agent Assignments ────────────────────────────────────────────────────────
+assignments:
+  scope_spec: "A1"
+  bc_manifest: "A2"
+  partition_result: "A3"
+  invariants: "A3"
+  transfer_report: "not_applicable"
+  failure_audit: "A5"
+  orchestrator: "A0"

@@ -1,0 +1,74 @@
+{
+  "case_id": "CASE-20260329-0011",
+  "sweep_type": "behavioral_epsilon",
+  "phase": "1",
+  "note": "Labyrinth Phase 1 behavioral \u03b5-sweep. Sweep axis = \u03b5 (cosine distance threshold), not a BC parameter. N_clusters = connected components in episode embedding space under cosine distance < \u03b5. Representative seed=0.",
+  "cosine_sweep": [
+    {
+      "epsilon": 0.05,
+      "N_clusters": 1,
+      "metric": "cosine"
+    },
+    {
+      "epsilon": 0.1,
+      "N_clusters": 1,
+      "metric": "cosine"
+    },
+    {
+      "epsilon": 0.15,
+      "N_clusters": 1,
+      "metric": "cosine"
+    },
+    {
+      "epsilon": 0.2,
+      "N_clusters": 1,
+      "metric": "cosine"
+    }
+  ],
+  "l1_sweep": [
+    {
+      "epsilon": 0.05,
+      "N_clusters": 1,
+      "metric": "l1_mode_dist"
+    },
+    {
+      "epsilon": 0.1,
+      "N_clusters": 1,
+      "metric": "l1_mode_dist"
+    },
+    {
+      "epsilon": 0.15,
+      "N_clusters": 1,
+      "metric": "l1_mode_dist"
+    },
+    {
+      "epsilon": 0.2,
+      "N_clusters": 1,
+      "metric": "l1_mode_dist"
+    },
+    {
+      "epsilon": 0.25,
+      "N_clusters": 1,
+      "metric": "l1_mode_dist"
+    }
+  ],
+  "cosine_plateaus": [
+    {
+      "N": 1,
+      "eps_start": 0.05,
+      "eps_end": 0.2,
+      "width": 4
+    }
+  ],
+  "l1_plateaus": [
+    {
+      "N": 1,
+      "eps_start": 0.05,
+      "eps_end": 0.25,
+      "width": 5
+    }
+  ],
+  "reproducibility_cosine": 1.0,
+  "phase1_go_nogo": "go",
+  "created_at": "2026-03-29T21:59:31"
+}

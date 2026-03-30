@@ -226,9 +226,62 @@ def run_meanfield(params: dict, sweep_point: dict, rng: np.random.Generator) -> 
 
 
 def run_labyrinth(params: dict, sweep_point: dict, rng: np.random.Generator) -> dict:
-    """Stub — context-navigation agent."""
-    return {"status": "stub", "sweep_point": sweep_point,
-            "note": "Implement labyrinth environment in pipeline/kernels/labyrinth.py"}
+    """
+    Context-navigation agent — Phase 1 behavioral sweep.
+
+    NOTE: The labyrinth system does not use a BC parameter sweep.
+    Use pipeline.sweep_behavioral instead of pipeline.sweep for this system:
+
+        python -m pipeline.sweep_behavioral --case cases/CASE-20260329-0011
+
+    This function is retained for interface compatibility but redirects
+    to the behavioral adapter, which performs training + ε-sweep
+    over policy embeddings (cosine distance) and mode_dist (L1).
+    """
+    try:
+        from pipeline.sweep_behavioral import run_behavioral_sweep
+        import yaml
+        from pathlib import Path
+
+        case_id = params.get("case_id", "")
+        repo_root = Path(__file__).parent.parent
+        case_dir = None
+
+        # Try to locate case directory by id
+        for candidate in (repo_root / "cases").iterdir():
+            if candidate.is_dir() and (case_id in candidate.name or not case_id):
+                if (candidate / "BCManifest.yaml").exists():
+                    bcm = yaml.safe_load((candidate / "BCManifest.yaml").read_text())
+                    if bcm.get("id", "").endswith("0011"):
+                        case_dir = candidate
+                        break
+
+        if case_dir is None:
+            return {
+                "status": "redirect",
+                "note": (
+                    "Labyrinth uses pipeline.sweep_behavioral (not pipeline.sweep). "
+                    "Run: python -m pipeline.sweep_behavioral "
+                    "--case cases/CASE-20260329-0011"
+                ),
+            }
+
+        result = run_behavioral_sweep(
+            case_dir=case_dir,
+            n_train=params.get("n_training_episodes", 500),
+            n_eval=params.get("n_eval_episodes", 100),
+            n_seeds=params.get("n_seeds", 3),
+            epsilon_greedy=params.get("epsilon_greedy", 0.03),
+            eps_cosine=[0.05, 0.08, 0.10, 0.12, 0.15, 0.20],
+            eps_l1=[0.05, 0.08, 0.10, 0.12, 0.15, 0.20, 0.25],
+            verbose=False,
+        )
+        return {"status": "ok", "phase1_go_nogo": result.get("phase1_go_nogo"),
+                "reproducibility_cosine": result.get("reproducibility_cosine")}
+
+    except Exception as e:
+        return {"status": "error", "note": str(e),
+                "redirect": "python -m pipeline.sweep_behavioral --case cases/CASE-20260329-0011"}
 
 
 def run_double_pendulum(params: dict, sweep_point: dict, rng: np.random.Generator) -> dict:

@@ -1,0 +1,465 @@
+# ScopeSpec — CASE-20260329-0011
+# System: Context-navigation labyrinth agent (Phase 1 — Mode Emergence)
+# BC Class: Restriction (primary) + Coupling (co-driver)
+# Purpose: Formalizes the ART scope for Phase 1 of the labyrinth experiment.
+#          Single uniform Zone A environment; no zone transitions; no memory;
+#          no consolidation. Tests whether a discrete behavioral partition
+#          emerges under uniform boundary conditions.
+#
+# Source of truth for this scope: docs/context_navigation/context_navigation_scope_spec.md
+# S_global is defined there; this ScopeSpec instantiates S_global
+# restricted to a single uniform Zone A BC configuration.
+
+schema_version: "0.2"
+id: "SCOPE-20260329-0011"
+title: "Labyrinth agent Phase 1 — mode emergence under uniform Zone A scope"
+status: "draft"
+created_at: "2026-03-29"
+updated_at: "2026-03-29"
+system_domain: "cognitive"
+
+# ── ART: underlying state space ─────────────────────────────────────────────
+X:
+  name: "Joint agent-environment state in single-zone 10x10 labyrinth"
+  type: "product"
+  structure:
+    topology: true
+    metric: "required"    # cosine distance in embedding space; L1 over mode_dist
+    measure: "optional"
+  state_coordinates:
+    - name: "grid_position"
+      domain: "discrete 10x10 grid — {(i,j) : i,j in {0,...,9}}"
+      description: "Agent's current cell in the maze"
+    - name: "local_observation"
+      domain: "binary feature vector, |obs| = f(r) where r=5"
+      description: >
+        Local perceptual field within visibility radius r=5.
+        Encodes wall layout, goal distance proxy, zone-type indicators.
+    - name: "active_mode"
+      domain: "{0, 1, 2, 3}  (k=4 modes)"
+      description: "Index of the currently selected behavioral mode in the mode library"
+    - name: "context_embedding"
+      domain: "R^d  (d=64, preliminary)"
+      description: >
+        Continuous latent representation of the current context, produced by
+        the perception layer and used by the gating mechanism for mode selection.
+        Primary substrate for partition clustering in Phase 1.
+    - name: "anchor_memory_state"
+      domain: "empty set  (m=0 for Phase 1)"
+      description: "Anchor memory disabled for Phase 1 (m=0). No stored contexts."
+    - name: "salience_vector"
+      domain: "R^k with k=4  (k=number of modes)"
+      description: >
+        Mode competition signal. Entry i = estimated fitness advantage of mode i
+        relative to currently active mode. Used by gating mechanism for mode switches.
+    - name: "episode_step"
+      domain: "Z_+ bounded by T_max=500"
+      description: "Elapsed steps within the current episode"
+  notes: >
+    State space is the Cartesian product of the above coordinates.
+    context_embedding is the primary observable substrate: it is the output of
+    the perception layer and the input to the mode gating mechanism.
+    For Phase 1, anchor_memory_state is always empty (m=0), reducing X
+    effectively to (grid_position, local_observation, active_mode,
+    context_embedding, salience_vector, episode_step).
+
+# ── ART: constraints selecting admissible subset X_B ⊆ X ────────────────────
+B:
+  description: >
+    Zone A fixed boundary conditions. All BC parameters are held constant at
+    Zone A values for Phase 1. No parameter sweep is performed over BC values;
+    the only sweep is over the resolution threshold epsilon. The Zone A
+    configuration eliminates deliberative (R_B2), anchor retrieval (R_B3), and
+    reactive (R_B4) modes as admissible strategies, leaving Exploration (R_B1)
+    as the uniquely admissible behavioral regime.
+  constraints:
+    - name: "planning_budget"
+      form: "inequality"
+      expression: "lookahead_depth d = 5  (fixed)"
+      notes: >
+        d=5 provides sufficient planning budget for exploration in an open
+        low-cost environment. Deliberative planning (R_B2) requires high action
+        cost to be admissible; under Zone A cost, d=5 is compatible with R_B1.
+    - name: "visibility_radius"
+      form: "inequality"
+      expression: "r = 5  (fixed; agent observes all cells within L1-ball of radius 5)"
+      notes: >
+        Large visibility enables global map construction — a precondition for
+        Exploration (R_B1). Reactive mode (R_B4) is inadmissible under r=5
+        because local-only sensing is strictly suboptimal when global information
+        is available.
+    - name: "action_cost"
+      form: "inequality"
+      expression: "c = 0.05 per step  (fixed; low)"
+      notes: >
+        Low action cost makes spatial coverage cheap. Exploration (R_B1) is
+        admissible because the coverage budget is not binding. Deliberative
+        planning (R_B2) is inadmissible: its computational overhead is not
+        justified when wrong turns are cheap to recover from.
+    - name: "memory_capacity"
+      form: "equality"
+      expression: "m = 0  (anchor memory disabled)"
+      notes: >
+        m=0 suppresses anchor retrieval mode (R_B3) by construction. No stored
+        context anchors can be formed or retrieved. This is a deliberate Phase 1
+        restriction to test mode emergence without memory assistance.
+    - name: "error_tolerance"
+      form: "membership"
+      expression: "tau = lenient  (no irreversible states; penalty per wrong step = c = 0.05)"
+      notes: >
+        Lenient error tolerance means wrong turns are correctable — reactive
+        mode (R_B4) has no advantage over exploration in this regime.
+    - name: "grid_structure"
+      form: "topological"
+      expression: "10x10 grid, single uniform zone, fully connected, no zone boundaries"
+      notes: >
+        No zone boundaries → no sub-scope transitions within episodes.
+        The environment is structurally homogeneous: the same BC applies at
+        every cell. This is the defining feature of Phase 1.
+  admissible_set:
+    notation: "X_B^{Zone A}"
+    membership_test: >
+      x in X_B iff:
+        grid_position in 10x10 grid
+        AND r = 5 (visibility constraint satisfied)
+        AND c = 0.05 (action cost constraint satisfied)
+        AND m = 0 (no memory active)
+        AND episode_step <= T_max = 500
+  boundary_condition_classes:
+    - class: "restriction"
+      role: >
+        Primary BC. Zone A parameters (visibility r=5, cost c=0.05, m=0)
+        jointly restrict the admissible behavioral mode set to {R_B1}.
+        Modes R_B2, R_B3, R_B4 are structurally inadmissible under Zone A BC:
+        their expected regime value falls below the admissibility threshold.
+        This is a Restriction BC in the sense of S1 operator: the constraint
+        filters the admissible regime subspace.
+      primary: true
+    - class: "coupling"
+      role: >
+        Co-driver BC. Agent and environment are coupled through the perception
+        channel (B_g4 in context_navigation_scope_spec.md): the agent's
+        context_embedding is a function of the local_observation, which is
+        determined by grid_position and the environment structure.
+        This coupling is present in all phases and defines the agent-environment
+        interaction architecture.
+      primary: false
+
+# ── ART: admissible descriptions/projections Π ──────────────────────────────
+Pi:
+  - id: "pi_01"
+    name: "Mode distribution"
+    observable_key: "mode_dist"
+    primary: true
+    map:
+      domain: "X_B^{Zone A}  (trajectory segment within zone, after warmup t > t_warm)"
+      codomain: "Delta^k = {p in R^k : sum(p) = 1, p_i >= 0}  (k=4)"
+      definition: >
+        mode_dist(tau) = (1/|tau|) * sum_{t in tau} one_hot(active_mode(t))
+        measured over a trajectory segment tau within a single episode after
+        warmup. Represents the empirical distribution over active modes within
+        a zone. For Phase 1: tau = full episode minus first 50 steps.
+    distinguishability:
+      d_pi: "d_mode(y1, y2) = L1_distance(y1, y2) = sum_i |y1_i - y2_i|"
+      type: "metric"
+      units: "dimensionless  (range [0, 2])"
+    resolution_floor: "1/T_max = 0.002  (one mode switch per episode)"
+    noise_model: >
+      Stochastic due to epsilon-greedy exploration (epsilon_explore < 0.05).
+      Expected noise in mode_dist: O(epsilon_explore / k) per mode entry.
+    notes: >
+      Primary observable for regime partition extraction. BC class of observable:
+      A·R (Aggregation-dominated: projects mode-activation sequence onto
+      probability vector; see context_navigation_scope_spec.md §5).
+      Under uniform Zone A BC, predicted to concentrate on mode R_B1:
+      mode_dist ≈ (1, 0, 0, 0) after convergence.
+      Observable range R(mode_dist): valid within episodes, after warmup.
+      Violates stationarity assumption A4 during warmup and any unexpected
+      mode transitions → exclude these steps (F0 condition applies there).
+
+  - id: "pi_02"
+    name: "Context embedding"
+    observable_key: "policy_embedding"
+    primary: false
+    map:
+      domain: "X_B^{Zone A}  (per step t)"
+      codomain: "R^d  (d=64, preliminary)"
+      definition: >
+        policy_embedding(t) = context_embedding(t) as produced by the
+        perception layer at step t. Per-step continuous representation of
+        the agent's current context, prior to mode gating.
+    distinguishability:
+      d_pi: "d_embed(y1, y2) = 1 - cos(y1, y2)  (cosine distance)"
+      type: "metric"
+      units: "dimensionless  (range [0, 2])"
+    resolution_floor: "0.001  (numerical precision of embedding layer)"
+    notes: >
+      Primary clustering diagnostic for Phase 1 (mentioned explicitly in
+      labyrinth_experiment_agenda.md §9, Phase 1). The ε-sweep on policy_embedding
+      (cosine distance threshold) checks whether embedding space is discretely
+      structured or forms a continuous manifold. Cluster count from this observable
+      provides a cross-check on mode_dist cluster count.
+      Not used as primary because mode_dist has a direct ARW interpretation
+      (regime occupancy) while policy_embedding requires additional clustering step.
+
+  - id: "pi_03"
+    name: "Mean salience within episode"
+    observable_key: "salience_mean"
+    primary: false
+    map:
+      domain: "X_B^{Zone A}  (per step t)"
+      codomain: "[0, sigma^2_max]"
+      definition: >
+        salience_mean = mean_{t in episode} Var_m(F_m(context_embedding(t)))
+        where F_m is the estimated fitness of mode m given the current context.
+        Measures mean mode-competition intensity throughout an episode.
+    distinguishability:
+      d_pi: "d_sal(y1, y2) = |salience_mean_1 - salience_mean_2|"
+      type: "metric"
+      units: "dimensionless (variance units of fitness estimates)"
+    notes: >
+      Secondary diagnostic. Under uniform Zone A BC with a single admissible mode
+      (R_B1), salience_mean is predicted to be LOW — the agent is not near a
+      partition boundary, so mode competition is minimal.
+      High salience in Phase 1 would indicate unexpected mode ambiguity.
+      BC class of observable: R·A (Restriction-dominated, see context_navigation_scope_spec.md §5).
+      Baseline value from Phase 1 is required for Phase 2 salience comparison.
+
+# ── ART: admissible perturbations Δ ─────────────────────────────────────────
+Delta:
+  - id: "delta_01"
+    name: "Perception noise"
+    type: "bounded_noise"
+    action:
+      on: "measurement"
+      definition: >
+        Gaussian noise added to local_observation features.
+        noise ~ N(0, eta^2) per feature, eta = 0.02.
+    bounds:
+      magnitude: "||noise||_2 <= 0.1 per observation vector"
+      locality: "acts on observation features; does not affect grid_position"
+    admissibility_rationale: >
+      Small perception noise models sensor imperfection. The regime partition
+      must be stable under minor perceptual uncertainty within the zone.
+    notes: "Phase 1 minimal noise; increase to eta=0.05 for Phase 3 stress tests."
+
+  - id: "delta_02"
+    name: "Maze layout variation"
+    type: "local_intervention"
+    action:
+      on: "state"
+      definition: >
+        Repositioning of up to 10% of internal walls within the 10x10 grid,
+        preserving full connectivity and keeping all cells in Zone A.
+        N_layouts = 5 distinct maze instances per experiment run.
+    bounds:
+      magnitude: "< 10 wall segments repositioned"
+      locality: "internal walls only; outer boundary fixed"
+    admissibility_rationale: >
+      Partition must be stable across minor structural variations of the maze.
+      This tests whether the behavioral regime (Exploration) is layout-independent
+      or tied to a specific wall configuration.
+
+  - id: "delta_03"
+    name: "Random seed variation"
+    type: "ic_perturbation"
+    action:
+      on: "initial_conditions"
+      definition: >
+        N_seeds = 10 independent training runs with different random seeds
+        controlling agent initialization, mode weight initialization, and
+        epsilon-greedy exploration sequence.
+    bounds:
+      magnitude: "all seeds from {1, ..., 10000}"
+      locality: "global: affects full training trajectory"
+    admissibility_rationale: >
+      Results must be reproducible across random initializations. If partition
+      structure is seed-dependent, the partition is not robust.
+
+  - id: "delta_04"
+    name: "Epsilon-greedy exploration noise"
+    type: "bounded_noise"
+    action:
+      on: "state"
+      definition: >
+        Epsilon-greedy policy: with probability epsilon_explore = 0.03,
+        a random action is taken instead of the mode-gated action.
+    bounds:
+      magnitude: "epsilon_explore = 0.03"
+      locality: "affects action selection per step"
+    admissibility_rationale: >
+      Standard RL exploration noise. Does not change the BC configuration,
+      only introduces stochasticity in the action sequence.
+
+# ── ART: resolution threshold ε > 0 ─────────────────────────────────────────
+epsilon:
+  value: null                       # TBD empirically via epsilon-sweep
+  interpretation: >
+    d_mode(x, y) <= epsilon means the two states x, y are indistinguishable
+    in their behavioral regime structure — they belong to the same regime cell.
+    L1 distance over mode_dist: epsilon = 0.10 means two mode distributions
+    are considered equivalent if their L1 distance is at most 0.10.
+  tie_to_perturbations: >
+    epsilon must be chosen so that within-regime variation (from delta_01 to
+    delta_04) falls below epsilon, while between-regime distances (once Phase 2
+    introduces multiple zone types) exceed epsilon.
+  epsilon_choice_note: >
+    Working hypothesis: epsilon ~ 0.10 (L1 over mode_dist). This is motivated
+    by the agenda document's prior of cosine distance < 0.10 for policy_embedding
+    indistinguishability. The empirical value will be determined by the epsilon-sweep
+    in Phase 1. For Phase 1 with a single mode (R_B1 dominance), any epsilon in
+    [noise_floor, 0.5] should yield N=1. A stable plateau over this range is the
+    go_nogo criterion.
+  stability_window_plan:
+    vary_epsilon: [0.05, 0.08, 0.10, 0.12, 0.15, 0.20, 0.25]
+    vary_delta_strength: ["eta=0.01", "eta=0.02", "eta=0.05"]
+
+# ── Observable sufficiency ───────────────────────────────────────────────────
+observable_sufficiency:
+  - observable_key: "mode_dist"
+    sufficient: null                # TBD post-pipeline; sufficiency requires span(mode_dist) > 2*epsilon
+    reason: >
+      Pre-pipeline: cannot determine sufficiency without empirical data.
+      Expected: mode_dist concentrates near (1,0,0,0) after convergence
+      under Zone A BC. Span across episodes expected to reflect within-mode
+      variation only. Sufficiency requires at least 2*epsilon = 0.20 span
+      across distinct regime states (relevant once Phase 2 introduces multiple
+      zones). For Phase 1 (single zone), N=1 — span is within-regime noise,
+      not a between-regime distance. Phase 1 sufficiency criterion: mode_dist
+      is observable and converges stably (not a flat non-signal).
+  - observable_key: "policy_embedding"
+    sufficient: null                # TBD post-pipeline; cluster count check
+    reason: >
+      Pre-pipeline. Cosine distance structure to be determined from embedding
+      trajectories. Sufficient if policy_embedding forms at least 1 distinct
+      cluster (N >= 1) for Phase 1 go_nogo. Insufficient if embeddings form
+      a continuous manifold with no detectable cluster structure at any epsilon.
+  - observable_key: "salience_mean"
+    sufficient: null                # TBD; expected: low but non-zero in Phase 1
+    reason: >
+      Pre-pipeline. Phase 1 baseline value needed for Phase 2 comparison.
+      Predicted: low salience under single-zone uniform BC. Not the primary
+      partition observable; cannot trigger scope_rejection.
+
+# ── Expected regime partition ────────────────────────────────────────────────
+expected_partition:
+  partition_type: "clustered"
+  regime_count_predicted: 1
+  regimes:
+    - id: "R_B1"
+      name: "Exploration"
+      signature: >
+        mode_dist ≈ (1, 0, 0, 0) after convergence (mode 0 = Exploration dominant).
+        policy_embedding forms a single cluster (cosine distances << 0.10 within cluster).
+        salience_mean: low (no mode competition; single admissible mode).
+        action_distribution: high entropy (coverage behavior).
+      bc_conditions: >
+        action_cost = 0.05 (low) AND visibility = 5 (large) AND memory = 0 (disabled)
+        AND error_tolerance = lenient. All four Zone A constraints jointly active.
+      notes: >
+        R_B1 is the uniquely admissible regime under Zone A BC. The other three
+        candidate modes (R_B2 Deliberative, R_B3 Anchor retrieval, R_B4 Reactive)
+        are structurally inadmissible under Zone A: their expected regime value
+        falls below the admissibility threshold given Zone A BC.
+        Phase 1 does NOT test N=4 (four modes present) — it tests N>=1 (any discrete
+        structure exists at all). N=1 is the prediction; N=0 (continuous manifold)
+        is the falsification.
+
+# ── Comparability with other scopes ─────────────────────────────────────────
+comparability:
+  common_underlying_X: "labyrinth_agent_state_space"
+  overlap_domain: >
+    Phase 1 scope X_B^{Zone A} is a restriction of the Phase 2 scope X_B^{multi-zone}.
+    Transfer from Phase 1 to Phase 2: R_B1 (Exploration) should remain stable
+    in Zone A cells of the multi-zone environment.
+  transfer_targets:
+    - scope_id: "SCOPE-20260329-0012"  # Phase 2 (to be created)
+      direction: "SCOPE-20260329-0011 -> SCOPE-20260329-0012"
+      structural_homology_claim: >
+        Phase 1 R_B1 (Exploration under Zone A BC) is the same behavioral regime
+        that should activate in Zone A cells of the Phase 2 multi-zone environment.
+        Φ between Phase 1 and Phase 2 Zone A sub-partition should be highly_admissible.
+      expected_admissibility: "highly_admissible"
+
+# ── Falsification conditions ─────────────────────────────────────────────────
+falsification:
+  - id: "F0"
+    condition: >
+      mode_dist observed during warmup steps (first 50 steps of episode) —
+      stationarity assumption A4 violated during initial transient.
+    measurable_test: >
+      mode_dist computed over full episode including warmup shows higher variance
+      than mode_dist computed over episode[50:] alone.
+    threshold: "variance ratio > 1.5"
+    severity: "observable_replacement"
+    notes: >
+      Fix: exclude warmup steps from mode_dist computation. This is a known
+      pre-scopal substrate violation (transient dynamics before attractor is reached)
+      and does NOT constitute scope rejection.
+
+  - id: "F1"
+    condition: >
+      span(mode_dist) < 2*epsilon across all N_seeds training runs —
+      the observable cannot distinguish any behavioral states.
+    measurable_test: >
+      max(mode_dist) - min(mode_dist) in L1 norm < 2*epsilon = 0.20
+      across all episodes and seeds.
+    threshold: "span < 0.20"
+    severity: "observable_replacement"
+    notes: >
+      Observable insufficiency; replace pi. Does not constitute scope rejection.
+      Candidate replacement: per-step mode_activation (categorical) instead of
+      aggregated mode_dist.
+
+  - id: "F1_BC"
+    condition: >
+      span(ALL observables) < epsilon simultaneously — no observable
+      distinguishes any behavioral states in the Phase 1 environment.
+    measurable_test: >
+      span(mode_dist) < epsilon AND span(policy_embedding cluster count) = 0
+      AND salience_mean indistinguishable across episodes.
+    threshold: "all spans < epsilon"
+    severity: "scope_rejection"
+    notes: >
+      This would mean the labyrinth environment with Zone A BC produces no
+      measurable behavioral variation at all — the BC is wirkungslos.
+      Practical check: if the agent doesn't move or selects modes uniformly
+      at random, this condition triggers. Fix: verify agent implementation.
+
+  - id: "F3"
+    condition: >
+      No robust epsilon plateau in epsilon-sweep — regime count N varies
+      continuously with epsilon, with no stable window of width >= 3 steps.
+    measurable_test: >
+      epsilon_sweep on mode_dist shows N monotonically decreasing from
+      N_max to 1 with no plateau of width >= 3 consecutive epsilon values.
+    threshold: "plateau_width < 3"
+    severity: "scope_rejection"
+    notes: >
+      This is the primary Phase 1 falsification. If no plateau exists,
+      the behavioral partition is not discrete — the ARW claim that
+      BC-induced regime structure is measurable fails for this system.
+      Continuous manifold → no partition → scope rejection for Phase 1.
+
+# ── Provenance ───────────────────────────────────────────────────────────────
+provenance:
+  sources:
+    - type: "experiment_doc"
+      ref: "experiments/labyrinth_experiment_agenda.md"
+      pointer: "Sections 2-3 (Scope Definition, Regime Partition), Section 9 (Phase 1 observables)"
+    - type: "experiment_doc"
+      ref: "experiments/labyrinth_experiment_extended_design.md"
+      pointer: "Section 2 (Zone A scope S_A), Section 8 (Phase 1 design)"
+    - type: "note"
+      ref: "docs/context_navigation/context_navigation_scope_spec.md"
+      pointer: "Section 2 (S_global), Section 5 (observable pre-scopal substrates), Section 6 (failure modes)"
+    - type: "note"
+      ref: "docs/context_navigation/mode_scope_regime_audit.md"
+      pointer: "Post-audit clarifications: modes are regimes in S_global, not independent scope tuples"
+  owners:
+    - role: "ScopeFormalizer"
+      name: "session-2026-03-29"
+  links:
+    bc_manifest_id: "BCM-20260329-0011"
+    case_record_id: "CASE-20260329-0011"
+    experiment_doc: "experiments/labyrinth_experiment_agenda.md"
