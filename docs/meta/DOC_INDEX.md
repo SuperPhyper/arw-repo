@@ -196,6 +196,11 @@ See `arw-doc-consistency` skill for usage rules.
 | docs/context_navigation/modal_cognition.md | note | redirect → docs/cognitive_architecture/modal_cognition.md | — | Intentional redirect stub |
 | docs/context_navigation/resonance_dialectic_context_navigation.md | hypothesis | resonance–dialectic context navigation | — | — |
 | docs/context_navigation/salience_mode_ecology.md | hypothesis | salience as emergent property of mode ecology | — | — |
+| docs/context_navigation/context_navigation_scope_spec.md | working-definition | S_global scope (designed modes experiment), mode_dist primary observable, zone sub-scopes, agent ARW role mapping | — | Scope companion to context_navigation_model_spec.md; covers S_global, Π_global, Z(mode_dist), F0–F4 |
+| docs/context_navigation/mode_scope_regime_audit.md | note | mode-scope-regime audit, terminological corrections post-audit | — | Post-audit clarifications: modes as regimes, salience as fluctuation observable, consolidation as asymptotic process |
+| docs/context_navigation/transfer_semantics_context_navigation.md | working-definition | Φ as observable transfer (not system transfer), three transfer experiment types for labyrinth | — | Transfer protocol for context navigation; Φ reporting requirements |
+| docs/context_navigation/context_navigation_emergent_modes_experiment.md | experiment-proposal | emergent modes experiment, ARW as observation instrument, unstructured policy regime analysis | — | Complementary to designed modes experiment; H1–H4; references experiments/labyrinth_experiment_agenda.md |
+| docs/context_navigation/context_navigation_scope_spec_emergent.md | working-definition | S_emergent scope, action_dist observable, emergent regime partition, R(action_dist), Z(action_dist) | — | Scope companion to context_navigation_emergent_modes_experiment.md; distinct from context_navigation_scope_spec.md |
 
 ---
 
