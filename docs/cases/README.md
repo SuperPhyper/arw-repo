@@ -14,14 +14,14 @@ Each file should cover:
 
 ## Status
 
-**TODO:** No motivational case documents have been written yet.
-All active cases have pipeline artifacts in `cases/` but no ARW-layer motivation documents here.
-
-Active cases that need motivational docs:
-- CASE-20260311-0001 — Kuramoto (Coupling)
-- CASE-20260311-0002 — Multi-Link-Pendel (Coupling)
-- CASE-20260311-0003 — Doppelpendel (Restriction)
-- CASE-20260318-0004 — Coupled Stuart-Landau (Coupling / emergence)
+| Case | Document | Status |
+|------|----------|--------|
+| CASE-20260329-0011 — Labyrinth Designed Modes Phase 1 | [CASE-20260329-0011.md](CASE-20260329-0011.md) | complete |
+| CASE-20260330-0012 — Labyrinth Emergent Modes | [CASE-20260330-0012.md](CASE-20260330-0012.md) | complete |
+| CASE-20260311-0001 — Kuramoto (Coupling) | — | TODO |
+| CASE-20260311-0002 — Multi-Link-Pendel (Coupling) | — | TODO |
+| CASE-20260311-0003 — Doppelpendel (Restriction) | — | TODO |
+| CASE-20260318-0004 — Stuart-Landau (Coupling / emergence) | — | TODO |
 
 Also present as template reference:
 - `CASE_TEMPLATE_signature_first.md` — structural template for signature-first cases

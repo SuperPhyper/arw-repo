@@ -53,10 +53,18 @@ similar environments.
 
 ## Context Navigation Agent
 
-| Document | Content |
-|---|---|
-| [labyrinth_experiment_agenda.md](labyrinth_experiment_agenda.md) | Full ART scope, regime partition, hypotheses in ARW terms, distortion metrics |
-| [labyrinth_experiment_extended_design.md](labyrinth_experiment_extended_design.md) | Zone scopes as explicit BC classes, intra-episode scope transitions, experimental phases |
+Two complementary experiments on the same labyrinth environment:
+
+| Document | Experiment | Case | Content |
+|---|---|---|---|
+| [labyrinth_experiment_agenda.md](labyrinth_experiment_agenda.md) | Designed Modes | CASE-20260329-0011 | Agent with prescribed mode library M; regime navigation under known BC structure; ART scope, hypotheses, distortion metrics |
+| [labyrinth_experiment_extended_design.md](labyrinth_experiment_extended_design.md) | Designed Modes (extended) | CASE-20260329-0011 | Zone scopes as explicit BC classes, intra-episode scope transitions, experimental phases |
+| [labyrinth_emergent_modes.md](labyrinth_emergent_modes.md) | Emergent Modes | CASE-20260330-0012 | Unstructured policy; ARW as post-hoc observation instrument; does regime structure emerge without architectural prescription? |
+
+**Key distinction:**
+The Designed Modes experiment tests regime *navigation* (architecture provides modes, experiment measures their use).
+The Emergent Modes experiment tests regime *emergence* (no prescribed modes; experiment measures whether they arise).
+Both use the same labyrinth environment and the same ARW pipeline.
 
 ---
 
