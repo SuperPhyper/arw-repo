@@ -201,6 +201,17 @@ See `arw-doc-consistency` skill for usage rules.
 | docs/context_navigation/transfer_semantics_context_navigation.md | working-definition | Φ as observable transfer (not system transfer), three transfer experiment types for labyrinth | — | Transfer protocol for context navigation; Φ reporting requirements |
 | docs/context_navigation/context_navigation_emergent_modes_experiment.md | experiment-proposal | emergent modes experiment, ARW as observation instrument, unstructured policy regime analysis | — | Complementary to designed modes experiment; H1–H4; references experiments/labyrinth_experiment_agenda.md |
 | docs/context_navigation/context_navigation_scope_spec_emergent.md | working-definition | S_emergent scope, action_dist observable, emergent regime partition, R(action_dist), Z(action_dist) | — | Scope companion to context_navigation_emergent_modes_experiment.md; distinct from context_navigation_scope_spec.md |
+| docs/context_navigation/agent_online_scope.md | working-definition | S_online scope, perception observable set (7 observables), weight dynamics, encounter protocol, saliency events, ε_stab | — | One of three scopes in three-scope architecture; S_online ≠ S_emergent; ε_stab ≠ ARW ε |
+| docs/context_navigation/agent_sleep_scope.md | working-definition | S_sleep scope, archetype library, archetype revision protocol, eff_norm, effectiveness evaluation, Π_evaluation | — | Agent-internal offline phase; complements S_online; distinct from S_observer |
+| docs/context_navigation/arw_observer_scope.md | working-definition | S_observer scope, Π_behavior (Layer 1 + Layer 2), Z_shared(S_observer), regime detection protocol, salience_freq, action_switching_rate | — | External ARW measurement scope; refines S_emergent; behavioral fluctuation observable analog of χ = ∂r_ss/∂κ |
+
+---
+
+## Layer: experiments
+
+| File path | Status | Canonical concept(s) | Supersedes | Notes |
+|---|---|---|---|---|
+| experiments/labyrinth_three_scope_minimal_setup.md | experiment-proposal | minimal three-scope experiment, 9×9 labyrinth, PPO+S_online+S_sleep, action_dist ε-sweep, hyperparameter table | — | Execution-oriented; covers Phase 0–2; all hyperparameters consolidated in §9 |
 
 ---
 
