@@ -5,7 +5,6 @@ depends_on:
   - docs/context_navigation/agent_online_scope.md
   - docs/context_navigation/context_navigation_emergent_modes_experiment.md
   - docs/glossary/scope.md
-  - docs/glossary/observable_range.md
 ---
 
 # Agent Sleep Scope — Archetype Revision and Effectiveness Evaluation
@@ -14,22 +13,18 @@ depends_on:
 
 This document defines the **sleep scope** of the context navigation agent —
 the offline evaluation and consolidation phase that runs between active
-labyrinth traversal runs. It is the second of three scope-level documents
-in the multi-scope architecture of the Emergent Modes Experiment.
+labyrinth runs. It is the second of three scope-level documents in the
+multi-scope architecture of the Emergent Modes Experiment.
 
 | Document | Scope | Operates |
 |----------|-------|----------|
 | `agent_online_scope.md` | S_online | At each timestep during a run |
 | `agent_sleep_scope.md` (this document) | S_sleep | Between runs |
-| `arw_observer_scope.md` | S_observer | Across runs (ARW external measurement) |
+| `arw_observer_scope.md` | S_observer | Across runs (external ARW measurement) |
 
-S_sleep is structurally **distinct from S_online**: it operates on accumulated
-encounter protocols, not on perceptual observations. Its output is an updated
-archetype library, which feeds back into S_online on the next run.
-
-S_sleep is also distinct from S_observer: S_sleep is agent-internal
-(the agent evaluates its own protocols); S_observer is external (ARW measures
-the agent's behavioral output without access to internal state).
+S_sleep is agent-internal. Its output is an updated archetype library A',
+which feeds back into S_online on the next run. S_observer does not have
+access to A or to the protocol buffer — it observes only behavioral output.
 
 ---
 
@@ -43,244 +38,185 @@ S_sleep = (B_sleep, Π_evaluation, Δ_archetype, ε_eff)
 
 | ID | Constraint | BC Class |
 |----|-----------|----------|
-| B_sl1 | S_sleep operates on the encounter protocol buffer accumulated during the preceding run. The buffer is read-only during sleep. | Restriction |
-| B_sl2 | S_sleep has read and write access to the archetype library A. The library is frozen during S_online. | Coupling |
-| B_sl3 | The archetype library has a bounded capacity: |A| ≤ A_max. If capacity is reached, the least-effective archetype is evicted before a new one is added. | Restriction |
-| B_sl4 | The sleep phase is non-interactive: no new perceptual input is received during sleep. | Restriction |
-| B_sl5 | The output of S_sleep is a revised archetype library A'. S_online on the next run reads A'. | Coupling |
-
-The primary BC class of S_sleep is **Restriction** (bounded memory, frozen
-buffer) coupled with **Coupling** (bidirectional connection to S_online via
-archetype library A).
+| B_sl1 | S_sleep operates on the encounter protocol buffer from the preceding run. Buffer is read-only during sleep. | Restriction |
+| B_sl2 | S_sleep has read and write access to the archetype library A. A is frozen during S_online. | Coupling |
+| B_sl3 | The archetype library is partitioned by saliency type. Revision operates within each partition independently. | Restriction |
+| B_sl4 | No new perceptual input is received during sleep. | Restriction |
+| B_sl5 | Output of S_sleep is a revised library A'. S_online reads A' on the next run. | Coupling |
 
 ---
 
-## 2 Evaluation Observables — Π_evaluation
+## 2 Evaluation Observable — Π_evaluation
 
-The evaluation observables operate on the encounter protocol buffer, not on
-individual timesteps. They project each protocol record onto scalar or vector
-quantities that can be compared against archetype profiles.
+The single primary evaluation observable in the minimal sleep scope is:
 
-| Key | Definition | BC Signature |
-|-----|-----------|--------------|
-| `eff_norm` | Normalized progress efficiency per encounter (defined in `agent_online_scope.md` §4.4) | R·S (ratio, normalized) |
-| `weight_stability` | `1 − σ(w_i) / mean(w_i)` over the encounter — consistency of the weight profile during the encounter | A·S (aggregation over timesteps, scaled) |
-| `encounter_duration` | `t_end − t_start` in steps — length of the encounter | R (direct measurement) |
-| `archetype_coherence` | `cos(w_encounter, w(A_nearest))` — cosine similarity between the encounter weight profile and the weight profile of the nearest archetype | R·A (projection onto archetype space) |
+**`progress_rate`** — as recorded in the encounter protocol
+(see `agent_online_scope.md` §5.1):
 
-**Primary evaluation observable: `eff_norm`**
+```
+progress_rate(e) = clip((d_exit(t_start) - d_exit(t_end)) / (steps + ε_stab), 0, 1)
+```
 
-Progress efficiency is the primary criterion for archetype revision. It is
-directly task-relevant, interpretable without external labels, and computable
-entirely from Π_perception quantities recorded in the protocol.
+This is the sole effectiveness criterion for archetype revision in the
+minimal experiment. It is directly task-relevant, requires no external
+labels, and is computable entirely from within Π_perception.
 
-`weight_stability`, `encounter_duration`, and `archetype_coherence` are
-secondary evaluation observables. They provide additional discriminating
-information for the archetype revision decision and prevent revision based
-on single high-efficiency encounters that may not be structurally robust.
+No secondary evaluation observables (weight stability, support counts,
+promotion thresholds) are used in the minimal version. These are deferred
+to later phases.
 
-### Pre-Scopal Substrate — eff_norm
+### Observable Range R(progress_rate)
 
-| ID | Assumption | Violated when |
-|----|-----------|---------------|
-| A_buf | The protocol buffer contains a representative sample of the preceding run's encounters. | When the run is very short and the buffer contains fewer than min_protocols records. |
-| A_conv | The encounter effectiveness is approximately stationary within the encounter window. | During encounters that span two environmental contexts (saliency event missed). |
-| A_res | `resource_spent(e) > ε_stab`. | When the agent is nearly depleted (r_resource → 0) and encounters are resource-trivial. |
+Valid when:
+- `steps > 0` (non-trivial encounter)
+- `r_resource > ε_stab` at encounter onset (not resource-depleted at entry)
+- encounter duration ≥ `min_duration` (sufficient length for meaningful estimation)
 
-**Observable range R(eff_norm):**
-Valid when A_buf, A_conv, and A_res hold. Violated when the buffer is
-underpopulated or when encounters span multiple environmental contexts.
-At minimum: `min_protocols = 5` (hyperparameter) required for meaningful
-evaluation. Below this threshold, S_sleep should apply a **null revision**
-(archetype library unchanged) rather than risk spurious updates.
+Encounters violating these conditions are excluded from revision.
 
 ---
 
 ## 3 Archetype Library
 
-An **archetype** is a compressed representation of a family of similar
-encounter contexts with historically effective weight profiles.
+### 3.1 Structure
 
-### 3.1 Archetype Record
+The archetype library is partitioned by saliency type:
 
 ```
-archetype(A_i) = {
-    signature:     sig(A_i)     // representative encounter signature (mean of family)
-    weight:        w(A_i)       // weight profile associated with this archetype
-    effectiveness: eff(A_i)     // running estimate of effectiveness (EMA)
-    support:       n(A_i)       // number of encounters that contributed to this archetype
-    last_updated:  run_id       // run index when this archetype was last revised
+A = {
+    'structure_loss':      [ A_0, A_1, ... ],
+    'resource_threshold':  [ A_0, A_1, ... ],
+    'progress_drop':       [ A_0, A_1, ... ]
 }
 ```
 
-The archetype signature `sig(A_i)` lives in the encounter signature space
-(the same space as `s(e)` in S_online). The archetype weight `w(A_i)` is the
-weight profile that the archetype recommends for encounters matching its signature.
+Each archetype record:
 
-### 3.2 Archetype Initialization
-
-The archetype library is initialized as empty: `A = {}`. The first run produces
-encounter protocols that seed the library at the end of the first sleep phase.
-
-If no archetypes exist, S_online falls back to exploratory updates:
 ```
-w_target = w(t) + δ(e)
+archetype = {
+    saliency_type:     'structure_loss' | 'resource_threshold' | 'progress_drop'
+    saliency_strength: 'weak' | 'medium' | 'strong' | None
+    w_in:              weight vector at encounter onset (matching key)
+    w_out:             weight vector at encounter close (recommended exit weight)
+    effectiveness:     progress_rate estimate for this archetype
+    last_updated:      run index of last revision
+}
 ```
-as specified in `agent_online_scope.md` §3.
+
+### 3.2 Initialization
+
+The archetype library is initialized empty: `A = {}` (all partitions empty).
+The first run produces encounter protocols that seed the library at the
+end of the first sleep phase. During the first run, all weight updates
+are exploratory (no match possible).
 
 ---
 
-## 4 Archetype Revision Protocol
+## 4 Revision Protocol
 
 The revision protocol runs once per sleep phase. It processes the encounter
-protocol buffer and updates the archetype library A.
+protocol buffer partition by partition.
 
 ### 4.1 Protocol Filtering
 
-Before revision, exclude protocols with:
-- `encounter_duration` < min_duration (too short for reliable effectiveness estimation)
-- `resource_spent` < ε_stab (resource-trivial encounters; eff_norm undefined)
-- Any A_buf or A_conv violation flagged during the run
+Before revision, exclude protocols where:
+- `steps < min_duration` (too short)
+- `C_in < ε_stab` (resource-depleted at encounter entry)
 
-Remaining protocols form the **evaluation set** E for this sleep phase.
+Remaining protocols form the **evaluation set** E.
 
-### 4.2 Signature Clustering
+If `|E| < min_protocols`, apply **null revision**: archetype library unchanged.
+This prevents spurious updates from underpopulated runs.
 
-Group the evaluation set by encounter signature similarity:
+### 4.2 Matching Within Partition
 
-```
-For each e in E:
-    A_nearest = argmin_{A_i ∈ A} dist(s(e), sig(A_i))
-    If dist(s(e), sig(A_nearest)) < θ_match:
-        assign e to archetype group G(A_nearest)
-    Else:
-        create candidate new archetype from e
-```
-
-This produces:
-- **Matched groups**: encounter protocols assigned to existing archetypes
-- **Candidate archetypes**: novel encounter signatures without an archetype match
-
-### 4.3 Effectiveness Comparison — Matched Groups
-
-For each matched group G(A_i), compute the group's mean effectiveness:
+For each protocol `p` in E:
 
 ```
-eff_group(A_i) = mean(eff_norm(e) for e in G(A_i))
+partition = A[p.saliency_type]
+
+find A_match in partition where:
+  A_match.saliency_strength == p.saliency_strength
+  AND |p.w_in - A_match.w_in|_inf <= θ_tolerance
 ```
 
-Compare against the stored archetype effectiveness using an exponential moving
-average update:
+Same matching rule as in S_online (Section 4.1 of `agent_online_scope.md`).
+
+### 4.3 Revision Decision
+
+The revision rule is a **single comparison with winner-takes-place**. No
+averaging, no merging, no smoothing. One encounter, one decision:
+
+**Case 1 — Match found:**
 
 ```
-eff_updated(A_i) = α · eff_group(A_i) + (1 − α) · eff(A_i)
+if proto.progress_rate > A_match.effectiveness:
+    replace A_match entirely with proto's w_out and progress_rate
+    update A_match.last_updated = current_run
+
+elif proto.progress_rate == A_match.effectiveness:
+    replace A_match.w_out with proto.w_out          ← recency tie-break
+    update A_match.last_updated = current_run
+
+else:  # proto.progress_rate < A_match.effectiveness
+    discard proto — no change to archetype
 ```
 
-Where α ∈ (0, 1] is the learning rate (hyperparameter; default: 0.3).
+**Why winner-takes-place, not averaging:** The archetype stores a specific
+weight profile that produced a specific effectiveness. Averaging two profiles
+would produce a profile that was never actually tested. The goal is to retain
+the best-performing observed configuration, not to estimate a mean behavior.
 
-**Weight revision decision:**
+**Case 2 — No match:**
 
-```
-If eff_group(A_i) > eff(A_i) + θ_improve:
-    w(A_i) ← mean(w(e) for e in G(A_i))   // update weight profile
-    sig(A_i) ← mean(s(e) for e in G(A_i)) // update signature (online mean)
-    eff(A_i) ← eff_updated(A_i)
-    n(A_i) ← n(A_i) + |G(A_i)|
-Else:
-    eff(A_i) ← eff_updated(A_i)            // update effectiveness estimate only
-    n(A_i) ← n(A_i) + |G(A_i)|             // increment support count
-```
-
-Where `θ_improve` is the minimum effectiveness improvement threshold
-(hyperparameter; default: 0.05). This prevents revision on marginal improvements.
-
-**Structural interpretation:** This revision rule has a **selective Dissipation
-signature (S4)**: the archetype weight profile contracts toward the empirically
-better-performing weight profile. The threshold `θ_improve` prevents contraction
-toward marginally better attractors, ensuring only structurally significant
-improvements drive revision.
-
-### 4.4 Candidate Archetype Promotion
-
-A candidate archetype (novel signature without an archetype match) is promoted
-to the library if:
+Promote unconditionally to a new archetype. No threshold, no stability check:
 
 ```
-eff_norm(e_candidate) > θ_promote    AND
-weight_stability(e_candidate) > θ_stability
+new_archetype = {
+    saliency_type:     proto.saliency_type,
+    saliency_strength: proto.saliency_strength,
+    w_in:              proto.w_in,
+    w_out:             proto.w_out,
+    effectiveness:     proto.progress_rate,
+    last_updated:      current_run
+}
+A[proto.saliency_type].append(new_archetype)
 ```
 
-Where:
-- `θ_promote` is the minimum effectiveness for promotion (hyperparameter; default: 0.4)
-- `θ_stability` is the minimum weight consistency required (hyperparameter; default: 0.5)
+Every unmatched valid encounter with a distinct weight profile becomes its
+own archetype. Whether two archetypes represent the same latent subscope is
+not decided here — that is S_observer's analysis after experiment end.
 
-A single encounter with high effectiveness and stable weights is sufficient for
-initial promotion. The promoted archetype has `n = 1` and will be consolidated
-or evicted in future sleep phases depending on future encounter evidence.
+### 4.4 Library Size
 
-### 4.5 Archetype Eviction
-
-If `|A| = A_max` and a new archetype is to be promoted, evict the archetype
-with the lowest effectiveness and lowest support:
-
-```
-A_evict = argmin_{A_i ∈ A} [eff(A_i) · log(1 + n(A_i))]
-```
-
-The product `eff · log(1 + n)` balances effectiveness against evidence count.
-A low-effectiveness archetype with little support is evicted before a
-low-effectiveness archetype that is well-supported — the latter may be
-well-supported for structural reasons (e.g., an unavoidable low-efficiency zone).
+No hard capacity limit in the minimal version. The library grows as new
+encounter patterns are observed. Library size is logged as an observable
+for S_observer. Capacity management (eviction) is deferred to later phases.
 
 ---
 
-## 5 Δ_archetype — Admissible Perturbations
+## 5 Connection to ARW Framework
 
-The archetype revision must produce stable library updates under:
+S_sleep implements a **discrete selection event** between runs: only
+encounter patterns with higher effectiveness than the stored archetype
+replace it; equal patterns trigger recency-based replacement; weaker
+patterns are silently discarded. This selective retention is the mechanism
+by which stable behavioral patterns persist across runs.
 
-| ID | Perturbation |
-|----|-------------|
-| δ_sl1 | Variation in encounter ordering within the protocol buffer (order independence). |
-| δ_sl2 | Different run lengths (more or fewer encounter protocols; bounded by min_protocols). |
-| δ_sl3 | Noise in `eff_norm` within measurement uncertainty (numerical stability). |
-| δ_sl4 | Different values of α (learning rate) within a reasonable range. |
-
-A revision that produces qualitatively different archetype updates under
-δ_sl1 (order dependence) is a structural failure of the revision protocol.
-
----
-
-## 6 Connection to ARW Framework
-
-S_sleep is the agent-internal analog of a **regime stabilization process**.
-From the ARW perspective:
-
-- The archetype library A is a compressed representation of the agent's
-  experienced regime partition in encounter-signature space.
-- The archetype revision protocol is a **discrete selection event** that
-  determines which behavioral regimes (weight profiles) persist.
-- This mirrors the ARW principle that regimes become identifiable when a
-  stable partition is established under admissible perturbations.
-
-S_sleep is not directly observable by S_observer (the ARW measurement scope).
-S_observer sees the behavioral output of S_online (which is shaped by A),
-not A itself. Whether the archetype library A corresponds to the emergent
-behavioral partition detected by S_observer is an empirical question —
-it is not guaranteed by construction.
-
-This correspondence is the content of **H2** in
-`context_navigation_emergent_modes_experiment.md`: if the archetypes cluster
-by zone BC class, then the agent-internal representation and the ARW-observed
-partition are in structural correspondence.
+From the ARW perspective, the archetype library is the agent's internal
+compressed representation of experienced encounter contexts. Whether the
+archetypes cluster by zone BC class — and whether that clustering corresponds
+to the regime partition detected by S_observer — is an empirical question,
+not a design guarantee. This correspondence is the content of H2 in
+`context_navigation_emergent_modes_experiment.md`.
 
 ---
 
-## 7 Open Questions
+## 6 Open Questions
 
 | ID | Question | Status |
 |----|----------|--------|
-| Q-SL-01 | Should `eff_norm` be supplemented by a consistency-across-runs term? A weight profile that is effective but unstable across runs should be penalized relative to one that is reliably effective. | open |
-| Q-SL-02 | Is the EMA update rate α appropriate, or should α decay over time (less revision as archetypes mature)? A decaying α would implement a stability-over-novelty bias in mature archetypes. | open |
-| Q-SL-03 | What is the right `A_max`? If A_max equals the number of zone types, the library is constrained to match the zone structure. A larger A_max allows finer-grained archetypes; a smaller one forces coarse-graining. This is a scope decision, not an optimization problem. | open |
-| Q-SL-04 | Can the archetype library serve as the ARW observer's indirect access to the agent's internal regime partition? If sig(A_i) clusters by zone type, this would confirm H2 from the agent-internal side without requiring behavioral trajectory analysis. | open |
-| Q-SL-05 | At what point does the archetype library stabilize? The number of archetype revisions per sleep phase may serve as a convergence indicator — analogous to χ = ∂r_ss/∂κ in the Kuramoto case. | open |
+| Q-SL-01 | Should progress_rate be supplemented by a cross-run consistency term in later phases? A weight profile that is effective but unstable across runs should eventually be penalized. | open |
+| Q-SL-02 | At what library size does S_observer begin to see meaningful clustering? Is there a minimum archetype count required for regime detection? | open |
+| Q-SL-03 | Should capacity management (eviction) be based on effectiveness, recency, or both? | open |
+| Q-SL-04 | Can the archetype library serve as indirect access to the agent's internal regime partition for S_observer correspondence analysis? | open |
