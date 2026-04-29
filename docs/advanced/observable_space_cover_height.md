@@ -1,6 +1,11 @@
 ---
-status: hypothesis
+status: working-definition
 layer: docs/advanced/
+last_updated: 2026-04-29
+depends_on:
+  - docs/glossary/perturbation_spread.md
+  - docs/core/cover_stability_criterion.md
+  - docs/advanced/epsilon_and_scope_resolution.md
 ---
 
 # Observable-Space Cover Height
@@ -287,3 +292,66 @@ Figures:
 Figure descriptions: `docs/figures/cover_2d_all_cases.md`
 Implementation: `Simulationen/sweep_2d_all_cases.py`, `Simulationen/cover_2d_all_cases.py`
 Open questions: Q_NEW_18 in `docs/notes/open_questions.md`
+
+
+---
+
+## Relationship to Cover-Stability Criterion (Felder 2026)
+
+The formal foundation for the observable-space cover height method is now
+provided by Felder (2026), which proves when a cover construction sustains
+observable information (see `docs/core/cover_stability_criterion.md`).
+
+### Agreement with the formal Čech cover (Felder 2026 §3)
+
+The paper constructs the observable cover as **connected components of the
+ε-adjacency graph G_ε(O)** — the formal Čech cover construction. The ARW
+cover height method uses a **contiguous interval grouping** in sorted
+observable space: groups break wherever a gap > ε occurs in the sorted sequence.
+
+The two constructions **agree when the observable is monotone along BC space**.
+When O is monotone (or approximately so), the path-connected components of
+G_ε(O) coincide with the contiguous groups in sorted observable space.
+
+They **diverge for non-monotone observables**: if observable values are
+non-monotone along BC space, two BC points with similar observable values
+may not be neighbors in sorted order. The Čech cover groups them (they are
+ε-adjacent); the contiguous grouping may not (if a point with a different
+value lies between them in sort order). The paper's construction is provably
+transitivity-correct for all cases; the ARW method is an approximation that
+works well for monotone observables but lacks formal grounding for non-monotone cases.
+
+The cover height doc already acknowledged a related limitation (§Limitations §1).
+It is now confirmed as a formal distinction, not merely a numerical approximation.
+
+### Status of the three-pattern diagnostic
+
+The three-pattern diagnostic (Pattern A: true regime structure; Pattern B: F0
+structural failure; Pattern C: F1 span failure) is empirically confirmed across
+four cases. The Felder 2026 framework provides the formal backing:
+
+- **Pattern A** (smooth/step profile, high DR): observables for which
+  sup_x σ_Δ(x) < ε — the admissible resolution regime is non-empty.
+- **Pattern B** (jagged/noisy profile, high DR): F0 observables where
+  pre-scope substrate fails — σ_Δ(x) → ∞ in Z(π). The noise in the profile
+  reflects the instability of the observable outside R(π).
+- **Pattern C** (flat profile, low DR): F1 observables where ε ≥ ε*(O,X)
+  — the cover is trivial and cover height accumulates no differential signal.
+
+A fourth pattern is now expected for **F-gradient** observables: a profile
+with a pronounced dip at the descriptive crossover zone (E ≈ ω₀² in the
+conservative pendulum), reflecting locally high σ_Δ within R(π). This pattern
+has not yet been empirically tested with the cover height method (pending
+CASE-0003b with ω observable).
+
+### Promotion rationale
+
+Promoted from `hypothesis` to `working-definition` on 2026-04-29:
+
+- Empirically confirmed across four ARW cases (CASE-0001–0004)
+- 2D BC sweep extension confirmed and validated (CASE-0002, -0003, -0004)
+- Three-pattern diagnostic confirmed and formally grounded (Felder 2026)
+- Formal relationship to the Čech cover construction clarified (agreement for
+  monotone observables; known divergence for non-monotone cases)
+- Remaining open question (Čech cover for non-monotone observables) is now
+  a well-defined research question, not an unexamined limitation

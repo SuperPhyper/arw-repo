@@ -1,6 +1,7 @@
 ---
 status: working-definition
 layer: docs/related_fields/
+last_updated: 2026-04-29
 ---
 
 
@@ -297,3 +298,64 @@ The framework focuses on:
 Rather than replacing existing theories, ARW aims to provide a
 **meta-level methodology** for studying the dynamics of scientific
 description itself.
+
+---
+
+# 8 Formal Foundations — Cover Stability and Observable Information (Felder 2026)
+
+## Reference
+
+Rico Felder, *When Does a System Have a Well-Defined State? Cover Stability as a
+Necessary Condition for Observable Information*, April 2026 (v1 + v2).
+
+## Methodological connection
+
+This paper provides ARW's **missing foundational layer**: it proves when a
+descriptive setup is valid at all, which is the logical precondition for ARW's
+regime-partition machinery. The paper is best understood not as a replacement
+of ARW concepts but as their formal grounding.
+
+**Central contribution:** A necessary condition for *observable information* —
+the existence of at least one stable, non-trivial descriptive distinction —
+requires that the observable cover C_ε be both non-trivial (ε < ε*(O,X)) and
+Δ-stable (sup_x σ_Δ(x) < ε). This defines the **admissible resolution regime**,
+the formal counterpart to ARW's admissible ε-interval I_ε.
+
+**Key results integrated into ARW:**
+
+- **Perturbation spread σ_Δ(x)** (Definition 4): the worst-case observable shift
+  under admissible perturbations. Now the canonical name for ARW's "ε–Δ consistency
+  condition" (previously unnamed).
+
+- **Observable cover C_ε as Čech cover** (§3): the correct partition construction
+  is via connected components of the ε-adjacency graph G_ε(O) — not via transitive
+  closure of direct ε-indistinguishability. This is the sorites-proof formulation.
+
+- **ε*(O,X) collapse threshold** (Proposition 1): the topology-dependent upper
+  bound on the admissible ε regime. Generalizes ARW's ε_max from a
+  researcher-judgment criterion to a topology-determined quantity.
+
+- **Corollary 1 (Lipschitz bound):** if O is Lipschitz with constant L and Δ is
+  norm-bounded by r, then σ_Δ(x) ≤ L·r. For smooth O, L = |∇O| locally —
+  formally justifying the gradient proxy in `pipeline/epsilon_kappa_map.py`.
+
+- **Descriptive crossover / F-gradient (§6.2 v2):** a new failure mode where the
+  observable is within R(π) but σ_Δ(x) ≥ ε due to high gradient — not F0 (no
+  substrate failure), not F1 (sufficient span). Introduced to explain the secondary
+  instability ridge at E ≈ ω₀² in the conservative pendulum.
+
+- **Multi-observable generalization (§8 v2):** the admissible resolution regime for
+  a k-observable scope is a region in ℝᵏ. ARW's box-shaped I_εᵢ is a special case
+  assuming decoupled observables.
+
+**What the paper does NOT change:**
+
+- The scope tuple S = (B, Π, Δ, ε) remains correct and complete.
+- Pre-scopal substrate machinery and R(π), Z(π) are confirmed.
+- F0, the ε-sweep protocol, BC class taxonomy, and transfer metrics are unaffected.
+- CASE-0001 (Kuramoto r_ss collapse at κ_c) and CASE-0003 (Doppelpendel) are confirmed
+  and formally deepened.
+
+See `docs/core/cover_stability_criterion.md` for the full formal treatment,
+`docs/core/observable_information.md` for the scope-validity precondition,
+and `docs/glossary/perturbation_spread.md` for σ_Δ.

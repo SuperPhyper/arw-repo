@@ -1,7 +1,7 @@
 ---
 status: working-definition
 layer: docs/meta/
-last_updated: 2026-03-29
+last_updated: 2026-04-29
 ---
 
 # DOC_INDEX — ARW/ART Documentation Index
@@ -71,7 +71,8 @@ See `arw-doc-consistency` skill for usage rules.
 | docs/glossary/independent_violation_axes.md | working-definition | independent violation axes (IVA), Z(π) geometry | — | See advanced/iva_z_geometry.md for full treatment |
 | docs/glossary/latent_degrees_of_freedom.md | working-definition | latent degrees of freedom | — | See advanced/latent_degrees_of_freedom.md |
 | docs/glossary/observable.md | working-definition | observable, π: X → D | — | — |
-| docs/glossary/observable_range.md | working-definition | observable range R(π), exclusion zone Z(π), F0 | — | **Key doc for F0 falsification** |
+| docs/glossary/observable_range.md | working-definition | observable range R(π), exclusion zone Z(π), F0, F-gradient, Z_cover, descriptive crossover, F1 topology-corrected | — | **Key doc for F0/F-gradient falsification**; updated 2026-04-29 |
+| docs/glossary/perturbation_spread.md | definition | perturbation spread σ_Δ(x), pointwise stability, Lipschitz bound | — | Felder 2026 Def 4; formally names ε–Δ consistency condition; added 2026-04-29 |
 | docs/glossary/partition.md | working-definition | partition, regime partition | — | — |
 | docs/glossary/regime.md | working-definition | regime | — | — |
 | docs/glossary/regime_partition.md | working-definition | regime partition (formal) | — | — |
@@ -91,6 +92,8 @@ See `arw-doc-consistency` skill for usage rules.
 | docs/core/arw_scope_reduction_partition_criterion.md | working-definition | scope transition, admissible reduction, partition criterion | — | — |
 | docs/core/basins_as_scope_partitions.md | working-definition | basins as scope partitions | — | — |
 | docs/core/bc_classes_and_regime_generation.md | working-definition | BC classes and regime generation | — | Connects to bc_taxonomy/ |
+| docs/core/cover_stability_criterion.md | working-definition | cover stability, ε-adjacency graph G_ε(O), observable cover C_ε, admissible resolution regime, Corollary 1 (Lipschitz), perturbation-stable cover | — | Felder 2026 foundational layer; added 2026-04-29 |
+| docs/core/observable_information.md | working-definition | observable information (necessary condition), non-trivial Δ-stable cover, scope validity precondition | — | Closes Q4 (partial); added 2026-04-29 |
 | docs/core/regime_stability_regions.md | working-definition | regime stability regions | — | — |
 | docs/core/scope_dominance.md | working-definition | scope dominance (formal) | — | See also docs/glossary/scope_dominance.md |
 | docs/core/scope_resolution.md | working-definition | scope resolution | — | — |
@@ -128,7 +131,7 @@ See `arw-doc-consistency` skill for usage rules.
 | docs/advanced/minimal_operator_basis_arw.md | working-definition | minimal operator basis | — | — |
 | docs/advanced/observable_consequences.md | claim | consequences of observable decomposition | — | Still claim-level |
 | docs/advanced/observable_decomposition.md | claim | observable decomposition, pre-scopal substrates, BC mapping | — | Still claim-level; key for F0 |
-| docs/advanced/observable_space_cover_height.md | hypothesis | observable-space cover height | — | — |
+| docs/advanced/observable_space_cover_height.md | working-definition | observable-space cover height, three-pattern diagnostic, Čech cover relationship | — | Promoted from hypothesis 2026-04-29; Felder 2026 relationship section added |
 | docs/advanced/operator_signature_catalog.md | working-definition | operator signature catalog S1–S5 | — | — |
 | docs/advanced/primitive_operator_time_coupling.md | working-definition | primitive operators, time coupling, emergent dynamic BCs | — | — |
 | docs/advanced/quantum_operator_extension.md | open-question | quantum operator extension | — | Open question; speculative |

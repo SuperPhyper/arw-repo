@@ -92,10 +92,13 @@ does not just give a noisy answer — it silently changes the number of regimes 
 
 ### Observable failure is structural, not just noisy
 
-ARW distinguishes two failure modes for observables:
+ARW distinguishes three observable failure modes:
 
-**F1 — Resolution failure:** The observable's spread of values is smaller than 2ε.
-Two states that differ physically look identical under this observable at this resolution.
+**F1 — Resolution failure:** The observable cover C_ε is trivial — no stable distinction
+exists at the chosen resolution. General criterion: ε ≥ ε*(O,X), where ε*(O,X) is the
+smallest ε at which the cover collapses to a single component (topology-dependent).
+For connected-interval observable images: span(π) < 2ε is a sufficient indicator.
+For multi-modal or fragmented images, use ε*(O,X) directly.
 Fix: choose a different observable or reduce ε.
 
 **F0 — Range failure:** The observable is structurally outside R(π).
@@ -106,6 +109,15 @@ Fix: replace the observable with one from a different structural class.
 λ_proxy near a phase transition is a classic F0 case: the Lyapunov exponent requires
 an infinite-time limit and non-zero separation, both of which are violated exactly
 where the transition occurs.
+
+**F-gradient — Descriptive crossover (Felder 2026):** The observable is within R(π)
+and has sufficient spread, but is too steep for the chosen (ε, Δ) pair at specific
+states: σ_Δ(x) = sup_{δ∈Δ}|O(x+δ)−O(x)| ≥ ε within R(π). The cover C_ε is not
+Δ-stable at these states. This is not a substrate failure (F0) and not a span failure
+(F1) — it is a cover-stability failure caused by high observable gradient.
+Fix: increase ε, reduce the perturbation class Δ, apply a stability mask, or replace
+the observable with one of lower gradient magnitude in the affected region.
+See `docs/glossary/observable_range.md` for the distinction table.
 
 ### The observable selection problem
 

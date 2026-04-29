@@ -37,6 +37,15 @@ and var_rel: only 37% agreement across ε-values. var_rel (span=0.297) requires
 cannot satisfy both. This operationalises the question: the εᵢ vector is the
 minimal adequate description for multi-observable scopes.
 
+*Partially resolved at the definitional level (2026-04-29, Felder 2026 §8):*
+The admissible resolution regime for a k-observable scope is a **region in ℝᵏ**:
+{ (ε₁,...,εₖ) : ∀ i: sup_x σ_Δ(x; πᵢ) < εᵢ < ε*(πᵢ, X_B) }.
+The box-shaped approximation currently used in ARW (component-wise I_εᵢ) is a
+special case assuming decoupled observables. Cross-observable ε constraints
+(when the stability of one observable depends on the resolution of another)
+remain open. See also Q-NEW-COVER-2 below.
+Status: partially resolved — definitional; cross-observable constraints open
+
 **Q15 — Bidirectionality of the BC-class / operator-signature correspondence**
 The document `docs/advanced/bc_operator_signatures_arw.md` establishes a forward mapping:
 BC classes → operator signatures → regime partitions.
@@ -52,6 +61,17 @@ Status: open
 Regime partitions have a topological structure (adjacency, boundary topology).
 Is there a formal correspondence between ARW partition types and persistence
 homology or sheaf-theoretic descriptions of data structure?
+
+*Partially resolved (2026-04-29, Felder 2026):* The observable cover C_ε is a
+Čech cover — the same object studied in persistent homology. The admissible
+resolution regime (sup σ_Δ, ε*) is the ARW counterpart to the persistence window
+in which topological features are stable. The observable-space cover height method
+(`docs/advanced/observable_space_cover_height.md`) accumulates evidence across ε
+scales analogously to persistence diagrams, but without full topological bookkeeping.
+The formal correspondence to persistent homology — in particular whether ARW cover
+height is computable from a persistence diagram and vice versa — remains open.
+See `docs/core/observable_information.md` for the connection.
+Status: partially resolved — Čech cover link established; persistence correspondence open
 
 ---
 
@@ -421,4 +441,43 @@ Open questions:
 4. Can the degree of BC interaction be quantified from the cover-height field
    (e.g. angle of contour lines from axis-aligned)?
 Reference: `docs/notes/research_journal.md` session 2026-03-28 (II), Finding 4.
+Status: open
+
+---
+
+## Cover Stability and Observable Information (Felder 2026)
+*(Added: session 2026-04-29)*
+
+**Q-NEW-COVER-1 — Completeness of a set of observables relative to a system**
+When is a set of observables *complete* relative to a system — i.e., when does
+their joint cover structure resolve all relevant distinctions in X_B? Is there a
+formal ARW condition for observable completeness that goes beyond individual
+sufficiency (F1 not triggered) and individual stability (F-gradient not triggered)?
+Reference: Felder 2026 §8 (multi-observable generalization).
+Status: open
+
+**Q-NEW-COVER-2 — Cross-observable ε constraints in the admissible region ℝᵏ**
+The admissible resolution regime for a k-observable scope is a region in ℝᵏ.
+The box-shaped approximation (component-wise I_εᵢ) assumes decoupled observables.
+Are there systems where the stability of one observable constrains the admissible
+ε of another? Under what structural conditions do cross-observable ε constraints arise,
+and how would they be detected empirically (e.g. via the joint ε-sweep)?
+Reference: Felder 2026 §8; `docs/core/observable_information.md` §Scope-Level.
+Status: open
+
+**Q-NEW-CROSS-1 — Physical correlates of descriptive crossovers**
+Under what conditions does a descriptive crossover (Z_cover ∩ R(π) ≠ ∅)
+have a physical correlate — e.g. an anharmonic crossover, a mode coupling threshold,
+a soft mode — versus arising purely from the choice of observable and (ε, Δ)?
+Is the crossover always visible as a gradient discontinuity, or can it arise
+from a smooth but steep increase in |∇O|?
+Reference: Felder 2026 §6.2 (secondary ridge at E ≈ ω₀²); `docs/glossary/observable_range.md`.
+Status: open
+
+**Q-NEW-CROSS-2 — Analytic Lipschitz constant for ARW observables**
+Can the Lipschitz constant L(x) be computed analytically for observables where
+the operator structure is known (e.g. r_ss, var_rel, PLV)?
+What does L(x) look like in Z_shared — does it diverge at the transition in
+the same way for all class-E observables?
+Reference: Felder 2026 Corollary 1 and Remark 4; `docs/core/cover_stability_criterion.md` §4.
 Status: open

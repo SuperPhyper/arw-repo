@@ -161,3 +161,20 @@ survey of ARW-adjacent research programs.
 - **Neural/Representation Collapse** — NeurIPS/ICML workshops (HiLD, NeurReps).
   Collapse of representational geometry in deep networks; structural parallel
   to ARW's Π_local collapse in emergence formalism (CASE-20260318-0004).
+
+---
+
+## ARW Formal Foundations (Felder 2026)
+
+- Felder, R. (2026). *When Does a System Have a Well-Defined State? Cover Stability
+  as a Necessary Condition for Observable Information*. April 2026 (v1 + v2).
+  — Provides the formal necessary condition for when a descriptive scope sustains
+  observable information: the cover C_ε must be non-trivial (ε < ε*(O,X)) and
+  Δ-stable (sup_x σ_Δ(x) < ε). Introduces perturbation spread σ_Δ(x) as a named
+  formal quantity; the Lipschitz bound on σ_Δ (Corollary 1); the descriptive
+  crossover concept (F-gradient); and the multi-observable admissible regime as a
+  region in ℝᵏ. Empirically confirmed via Kuramoto and conservative pendulum case
+  studies. The foundational layer for ARW's ε-sweep and regime-partition machinery.
+  See: docs/core/cover_stability_criterion.md, docs/core/observable_information.md,
+  docs/glossary/perturbation_spread.md,
+  docs/related_fields/related_fields_and_methodological_connections.md §8.

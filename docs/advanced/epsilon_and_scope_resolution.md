@@ -1,6 +1,11 @@
 ---
 status: working-definition
 layer: docs/advanced/
+last_updated: 2026-04-29
+depends_on:
+  - docs/glossary/scope.md
+  - docs/glossary/perturbation_spread.md
+  - docs/core/cover_stability_criterion.md
 ---
 
 # ε and Scope Resolution
@@ -114,10 +119,30 @@ where:
   observable differences above ε, producing noise-sensitive class assignments
   across the bulk of state space (not just at boundaries).
 
+  Formal characterization (Felder 2026): ε_min = sup_{x ∈ bulk} σ_Δ(x),
+  where σ_Δ(x) = sup_{δ ∈ Δ} |Π(x+δ) − Π(x)| is the **perturbation spread**
+  at state x (see `docs/glossary/perturbation_spread.md`). The bulk excludes
+  known boundary states where σ_Δ diverges by construction.
+
 - **ε_max** is the largest ε below which the partition preserves the
   structurally relevant distinctions. Above ε_max, regimes that are
   qualitatively different (different stability properties, different
   dynamical behavior) collapse into the same class.
+
+  Formal characterization (Felder 2026): ε_max ≈ ε*(O, X_B), the **collapse
+  threshold** — the smallest ε at which the observable cover C_ε becomes trivial
+  (collapses to a single connected component):
+
+  ```
+  ε*(O, X_B) := inf { ε > 0 : |C_ε| = 1 }
+  ```
+
+  ε*(O, X_B) depends on the **topology of the observable image** O(X_B), not
+  merely its span. For a connected-interval image, ε*(O,X) = ½·span(O(X)).
+  For fragmented or multi-component images, ε*(O,X) can be substantially smaller.
+  The two coincide for well-structured (monotone, unimodal) observables; they
+  diverge for multi-modal or fragmented observable images. See also
+  `docs/core/cover_stability_criterion.md` §1.
 
 Within I_ε, the **partition invariants** (regime count N, adjacency graph G_S,
 transition boundary locations θ*) are stable under small ε-perturbations.
@@ -364,7 +389,7 @@ If this occurs, the regime assignment is unstable under admissible perturbations
 [x]_S and [x+δ]_S are different classes, but δ is within Δ.
 
 This is the formal definition of a **partition boundary state**:
-states x where ∃ δ ∈ Δ: |Π(x+δ) - Π(x)| > ε.
+states x where ∃ δ ∈ Δ: |Π(x+δ) - Π(x)| > ε, equivalently: σ_Δ(x) ≥ ε.
 
 Such states are structurally ambiguous — they sit on the regime boundary
 and their class assignment is noise-sensitive.
@@ -374,8 +399,18 @@ A well-specified scope should have ε and Δ consistent:
 perturbations within Δ should produce observable changes below ε.
 
 ```
-consistency condition:   max_{δ ∈ Δ} |Π(x+δ) - Π(x)| < ε   for bulk states x
+consistency condition (= pointwise stability):   σ_Δ(x) < ε   for bulk states x
 ```
+
+where σ_Δ(x) := sup_{δ ∈ Δ} |Π(x+δ) − Π(x)| is the **perturbation spread**
+(`docs/glossary/perturbation_spread.md`). The consistency condition previously
+written as `max_{δ ∈ Δ} |Π(x+δ) - Π(x)| < ε` is identical to `σ_Δ(x) < ε`;
+σ_Δ is now the canonical name for this quantity (Felder 2026, Definition 4).
+
+The **binary stability mask** is {x : σ_Δ(x) < ε} — the set of states that
+satisfy the consistency condition pointwise. States outside the mask are
+partition boundary states. The mask is computed (approximately via gradient
+proxy) in `pipeline/epsilon_kappa_map.py` and (exactly) in `pipeline/stability_mask.py`.
 
 Boundary states are the exception — and their density defines
 the "width" of regime boundaries.
@@ -444,10 +479,13 @@ The following aspects of ε require further formalization:
   The admissible ε-interval narrows near phase transitions. Correlation
   between plateau width and observable gradient: r = −0.77 on Kuramoto.
   Open: does this hold for non-continuous transitions? For multi-stable systems?
-- **ε and information content:** Is there a relationship between ε and the
-  information-theoretic mutual information between scope observables?
-  The plateau width w might correlate with channel capacity — wide plateaus
-  indicate that the observable carries robust structural information.
+- **ε and information content:** *Resolved at the structural level (2026-04-29).*
+  Observable information (Felder 2026, Definition 6) is the necessary condition
+  that must hold before information-theoretic quantities (Shannon entropy, mutual
+  information) are meaningful. The admissible ε-interval I_ε = [ε_min, ε_max] is
+  precisely the set of ε values for which observable information exists. The
+  specific relationship between plateau width w(I_ε) and channel capacity remains
+  open. See `docs/core/observable_information.md`.
 - **Multiple ε for multiple observables:** Empirically confirmed as necessary
   (§4, Pendulum). Observables with different dynamic ranges require independent
   εᵢ. The admissible region is a box in ε-space. Open: what is the joint

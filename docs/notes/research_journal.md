@@ -767,3 +767,84 @@ The case artifacts are complete. To run the experiment, the following are still 
    the partition results from both cases are available.
 
 Status: the case is formally registered and ready for implementation.
+
+---
+
+## Session 2026-04-29 — Felder 2026 Integration: Foundational Layer for ARW
+
+**Topic:** Full integration of Felder (2026), *When Does a System Have a Well-Defined
+State? Cover Stability as a Necessary Condition for Observable Information* (v1 + v2)
+into the ARW canon. Migration plan executed; commit preparation completed.
+
+---
+
+### Key findings
+
+**Finding 1 — The paper is ARW's missing foundational layer.**
+Felder (2026) proves when a descriptive setup is valid at all — the logical precondition
+for ARW's regime-partition machinery. It is not a replacement but a grounding.
+The migration is: four consequential corrections + five new formal concepts absorbed.
+
+**Finding 2 — F-gradient as a new falsification category.**
+CASE-0003 (conservative Doppelpendel) with observable ω(E,ω₀) reveals a secondary
+instability ridge at E ≈ ω₀² (anharmonic crossover). This cannot be classified as F0
+(substrate is sound; ω ∈ R(ω) at this energy) or Z_shared (no ergodicity failure at
+the anharmonic crossover). It is a **descriptive crossover**: σ_Δ(x) ≫ ε due to high
+|∇ω| within R(ω). New category F-gradient added to the falsification schema.
+At ε = 0.05, the primary ridge (E_sep = 2ω₀²) and secondary ridge (E ≈ ω₀²) merge
+into a single connected instability band (~4% of parameter window).
+
+**Finding 3 — F1 criterion is topology-dependent (correction).**
+The shorthand `span(π) < 2ε → F1` is valid only when O(X_B) is a connected interval.
+The general condition is ε ≥ ε*(O,X_B), where ε*(O,X_B) is the cover-collapse
+threshold (topology-determined). For fragmented or multi-component observable images,
+ε*(O,X) can be much smaller than ½·span. Updated in: observable_range.md, ScopeSpec.yaml,
+arw_concepts.md.
+
+**Finding 4 — σ_Δ(x) is now the canonical name for the ε–Δ consistency condition.**
+Previously unnamed in ARW; now formally defined as σ_Δ(x) = sup_{δ∈Δ}|O(x+δ)−O(x)|.
+The "max_{δ∈Δ}|Π(x+δ)−Π(x)| < ε" consistency condition is identical to σ_Δ(x) < ε.
+ε_min = sup_{x∈bulk} σ_Δ(x) is now the formal definition of the lower bound of I_ε.
+
+**Finding 5 — Gradient proxy in epsilon_kappa_map.py formally justified.**
+Corollary 1 (Felder 2026): if O is Lipschitz with constant L and Δ is norm-bounded
+by r, then σ_Δ(x) ≤ L·r. For smooth O, L(x) = |∂O/∂κ| locally → the pipeline's
+gradient field is the leading-order bound on σ_Δ. This closes the gap between the
+heuristic and the formal stability criterion.
+
+**Finding 6 — Q4 and the ε-information question are partially resolved.**
+The observable cover C_ε is a Čech cover (studied in persistent homology).
+The admissible resolution regime = the ε window where observable information exists.
+The ε-information question (§8 of epsilon_and_scope_resolution.md) is resolved at
+the structural level: observable information is the necessary precondition for
+Shannon entropy and mutual information to be meaningful. Plateau width w(I_ε) as
+a channel-capacity proxy remains open.
+
+**Finding 7 — Multi-observable admissible regime is a region in ℝᵏ.**
+Felder 2026 §8 explicitly states the generalization. ARW's component-wise I_εᵢ
+(box in ε-space) is a special case assuming decoupled observables. Q3 partially resolved.
+
+---
+
+### Artifacts created/updated in this session
+
+**New files (commit-ready):**
+- `docs/core/cover_stability_criterion.md` — A-1 + A-6 (P1)
+- `docs/glossary/perturbation_spread.md` — A-2 (P1)
+- `docs/core/observable_information.md` — A-4 (P1)
+
+**Updated files:**
+- `docs/glossary/observable_range.md` — F-gradient, Z_cover, F1 topology correction (A-7, B-1)
+- `docs/advanced/epsilon_and_scope_resolution.md` — formal σ_Δ naming, ε*(O,X) (A-3)
+- `docs/advanced/observable_space_cover_height.md` — Felder 2026 section, promoted to working-definition (A-5)
+- `schemas/ScopeSpec.yaml` — F-gradient doc, F1 topology note (B-1, B-2)
+- `docs/overview/arw_concepts.md` — F-gradient category added (B-2)
+- `docs/related_fields/related_fields_and_methodological_connections.md` — §8 Felder 2026 (C-1)
+- `docs/notes/literature_links.md` — Felder 2026 entry (C-1)
+- `docs/notes/open_questions.md` — Q3 partially resolved, Q4 partially resolved, new Q-NEW-COVER-1/2, Q-NEW-CROSS-1/2
+- `docs/meta/DOC_INDEX.md` — three new entries, one status update
+
+**Deferred (P3/P4):**
+- D-1 (CASE-0001 Gaussian reference line audit), D-2 (CASE-0001-2D), D-3 (CASE-0003 ω observable),
+  E-1/E-2 (stability_mask.py), F-1 (scope.md B vs. X note), F-3/F-4/F-5 — all deferred,
+  no false urgency created. Action plan in Knowledgebase: paper_migration_action_plan_2026-04-29.md.

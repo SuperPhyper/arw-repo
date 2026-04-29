@@ -101,6 +101,14 @@ observable_sufficiency:
     sufficient: true               # true | false
     reason: ""                     # e.g. "span=0.274 >> 2*epsilon=0.046"
     #       if false: "span=0.037 < 2*epsilon — observable_insufficiency, replace pi"
+    #
+    # F1 CRITERION NOTE (Felder 2026): span(π) < 2ε is a sufficient condition for
+    # cover triviality ONLY when the observable image O(X_B) is a connected interval.
+    # The general condition is ε ≥ ε*(O,X_B), where ε*(O,X_B) is the smallest ε at
+    # which the cover C_ε collapses to a single component (topology-dependent).
+    # For typical ARW observables (monotone, unimodal image) the two coincide.
+    # For multi-modal or fragmented observable images, use ε*(O,X_B) directly.
+    # See docs/glossary/observable_range.md §F1 and docs/core/cover_stability_criterion.md §1.
 
 # ── Expected regime partition ────────────────────────────────────────────────
 # (predicted before running; updated after extraction)
@@ -135,10 +143,17 @@ comparability:
 #                            overlaps B). Replace the observable class; the scope
 #                            and BC remain valid. Distinct from F1 (span failure).
 #                            See docs/glossary/observable_range.md.
+#                          — F-gradient: O ∈ R(π) everywhere but σ_Δ(x) ≥ ε at some
+#                            x ∈ X_B — cover-stability failure due to high |∇O|·r.
+#                            Observable is structurally valid but too steep for (ε,Δ).
+#                            Remedy: increase ε, reduce Δ, apply stability mask, or
+#                            replace observable. Distinct from F0 (no substrate failure).
+#                            See docs/glossary/observable_range.md §F-gradient.
 #   scope_rejection        — F1(BC)/F2/F3: the BC cannot generate a valid partition
 #   sweep_refinement       — F4: θ* at sweep boundary; measurement gap, not a failure
 #
 # F0 entries should identify: which observable, which assumption fails, and Z(π) ∩ B.
+# F-gradient entries should identify: which observable, which region, σ_Δ estimate.
 falsification:
   - id: "F1"
     condition: ""                   # what empirical finding would weaken this instantiation
