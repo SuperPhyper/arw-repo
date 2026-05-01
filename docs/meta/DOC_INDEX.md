@@ -1,7 +1,7 @@
 ---
 status: working-definition
 layer: docs/meta/
-last_updated: 2026-04-29
+last_updated: 2026-05-01
 ---
 
 # DOC_INDEX — ARW/ART Documentation Index
@@ -82,6 +82,7 @@ See `arw-doc-consistency` skill for usage rules.
 | docs/glossary/scope_transition.md | working-definition | scope transition (glossary entry) | — | See also docs/core/scope_transition.md |
 | docs/glossary/stability.md | working-definition | stability, regime stability | — | — |
 | docs/glossary/state_space.md | working-definition | state space X | — | — |
+| docs/glossary/scope_extended_definition.md | working-definition | scope as stable descriptive regime (not truth claim), observable admissibility as stability-grounded, time as observable, three foundational clarifications extending scope.md | — | Added 2026-05-01; extends but does not alter scope.md; depends on multi_scale_observables_and_latent_regime_formation.md |
 
 ---
 
@@ -141,6 +142,11 @@ See `arw-doc-consistency` skill for usage rules.
 | docs/advanced/regime_graphs_arw.md | note | regime graphs, partition adjacency structure | — | MOVED from figures/ 2026-03-29 |
 | docs/advanced/operator_signatures_cross_domain.md | hypothesis | operator signatures across domains | — | MOVED from docs/notes/ 2026-03-29 (I-03) |
 | ~~docs/advanced/emergence/epsilon_induced_relational_emergence.md~~ | — | — | — | **DELETED 2026-03-29 (was duplicate of docs/advanced/epsilon_induced_relational_emergence.md — I-01)** |
+| docs/advanced/multi_scale_observables_and_latent_regime_formation.md | hypothesis | multi-scale observables (micro/meso/macro), latent regime formation, aggregation as information loss, Z_cover inter-group variation, cover-collapse sequence | — | Added 2026-05-01; extends arw_emergence_bc_relative.md from 2-level to multi-scale; scientific basis for CASE-20260430-0013 |
+| docs/advanced/multi_scale_sweep_protocol.md | note | multi-scale sweep protocol, single-pass sweep, grid density from G_max/ε, nesting hypothesis testability, cover height ordering | — | Added 2026-05-01; operational companion to multi_scale_observables_and_latent_regime_formation.md; depends on cover_height.md |
+| docs/advanced/causality_as_directed_observable_structure.md | working-definition | causality as scope-relative directed observable coupling, asymmetric induction, Δ-stable causal structure, causal admissibility conditions | — | Added 2026-05-01; extends scope_extended_definition.md; causality as descriptive property, not primitive system feature |
+| docs/advanced/invariance_as_scope_persistence.md | working-definition | invariance as scope-persistence, Noether/Einstein invariance in ARW context, Δ-stable partition, generalized invariance, scope-relative conservation | — | Added 2026-05-01; connects classical invariance theory to ARW; depends on causality_as_directed_observable_structure.md |
+| docs/advanced/epistemic_ceilings_as_scope_saturation.md | working-definition | epistemic ceilings as scope saturation, cover exhaustion C_ε, three structural causes (Π-narrowness, ε-mismatch, Δ-excess), ceiling diagnosis and resolution | — | Added 2026-05-01; depends on invariance_as_scope_persistence.md + causality_as_directed_observable_structure.md |
 
 ---
 
@@ -215,6 +221,13 @@ See `arw-doc-consistency` skill for usage rules.
 | File path | Status | Canonical concept(s) | Supersedes | Notes |
 |---|---|---|---|---|
 | experiments/labyrinth_three_scope_minimal_setup.md | experiment-proposal | minimal three-scope experiment, 9×9 labyrinth, encounter-window segmentation, Python pseudocode for S_online/S_sleep/S_observer, winner-takes-place revision, 5-step correspondence analysis, hyperparameter table | — | Execution-oriented; covers Phase 0–2 (3-phase checklist); starting position randomized in Zone R; zone structure is scaffold not object of study |
+| experiments/spring_mass_chain/ (scripts) | — | spring_mass_sweep.py + spring_mass_cover.py — simulation and cover analysis for CASE-20260430-0013 | — | Python scripts; not indexed as docs. See experiments/spring_mass_chain/README.md and cases/CASE-20260430-0013/ |
+| experiments/labyrinth_calibration/ (scripts) | — | calibrate_scope.py — scope calibration (Q1) and training convergence (Q2) for CASE-20260330-0012 labyrinth | — | Python script; not indexed as docs. See experiments/labyrinth_calibration/README.md |
+
+**Case: CASE-20260430-0013** (Vertical Spring-Mass Chain, multi-scale observable scope; pre-pipeline)
+- `cases/CASE-20260430-0013/ScopeSpec_signature_first.md` — active ScopeSpec v3 (supersedes pendulum drafts v1/v2)
+- `cases/CASE-20260430-0013/consistency_check.md` — pre-ScopeSpec physical model verification
+- `archive/cases/CASE-20260430-0013_pendulum_drafts/` — v1 and v2 pendulum ScopeSpec drafts (superseded)
 
 ---
 
