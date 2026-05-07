@@ -326,4 +326,17 @@ and their description documents. Summary of description `.md` files:
 | docs/notes/open_questions.md | working-definition | active open research questions (Q1–Q16+) | — | **Canonical; add new questions here** |
 | ~~docs/notes/open_questions_2026-03-18.md~~ | — | — | — | MOVED to archive/sessions/ 2026-03-29 (I-04) |
 | ~~docs/notes/open_questions_session_2026-03-18.md~~ | — | — | — | MOVED to archive/sessions/ 2026-03-29 (I-04) |
-| docs/advanced/operator_signatures_cross_domain.md | hypothesis | operator signatures across domains | — | MOVED from doc
+| docs/advanced/operator_signatures_cross_domain.md | hypothesis | operator signatures across domains | — | MOVED from docs/notes/ 2026-03-29 (I-03) |
+| docs/notes/repo_weakpoints.md | working-definition | repository weak points, systematic assessment | — | — |
+| docs/notes/research_journal.md | working-definition | research journal (all sessions) | — | **Canonical; add new session findings here** |
+| docs/notes/research_journal_session_2026-03-18.md | note | session 2026-03-18 research journal | — | Archived; merged into research_journal.md |
+| docs/notes/social_bc_extraction_method.md | experiment-proposal | social BC extraction method | — | ART instantiation |
+| docs/notes/validation_program_signatures.md | experiment-proposal | operator signatures validation program | — | — |
+
+---
+
+## Navigation Index
+
+The existing `docs/INDEX.md` serves as human-facing navigation.
+This file (DOC_INDEX.md) serves as the anti-pile-up registry — tracking canonical ownership
+of concepts, supersession chains, and open issues. Both should be maintained together.
