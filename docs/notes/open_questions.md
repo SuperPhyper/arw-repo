@@ -481,3 +481,82 @@ What does L(x) look like in Z_shared — does it diverge at the transition in
 the same way for all class-E observables?
 Reference: Felder 2026 Corollary 1 and Remark 4; `docs/core/cover_stability_criterion.md` §4.
 Status: open
+
+---
+
+## Generator Admissibility Taxonomy
+*(Added: session 2026-05-07)*
+
+**Q-GEN-01 — Exhaustiveness of the three-type generator admissibility taxonomy**
+- **Status:** open
+- **Question:** Is the three-type generator admissibility taxonomy exhaustive?
+  Candidate gap: non-autonomous generators may produce collapse geometries not
+  captured by Type I, II, or III.
+- **Registered:** 2026-05-07
+- **Source:** docs/art_instantiations/generator_admissibility_taxonomy.md
+
+**Q-GEN-02 — Signature-first inference for generator collapse type**
+- **Status:** partially answered (2026-05-07)
+- **Question:** Can generator collapse type be inferred purely from operator
+  signatures (S1–S5)?
+- **Partial answer:** Yes for Type I (S1/S2/S4/S5 dominant) and Type II
+  (S3 dominant). No for Type III — requires explicit conflict analysis of K.
+- **Remaining open:** Formal signature-first protocol for Type III.
+- **Source:** docs/art_instantiations/generator_admissibility_taxonomy.md
+
+**Q-GEN-03 — Correct ARW formalization of the generator G**
+- **Status:** partially answered (2026-05-07)
+- **Question:** What is the correct ARW formalization of the generator G?
+- **Partial answer:** G = (Λ, Σ, φ, C). φ: Λ → (B, Π) partial instantiation.
+  A(G) and A_f(G | C) formally defined.
+- **Remaining open:** Formal topology conditions on Λ per collapse type;
+  formal A_f / A_h boundary independent of specific C.
+- **Source:** docs/art_instantiations/generator_admissibility_taxonomy.md
+
+**Q-GEN-04 — Minimal C for non-empty A_f per collapse type**
+- **Status:** open
+- **Question:** What is the minimal C that makes A_f(G | C) non-empty for
+  each generator collapse type?
+- **Registered:** 2026-05-07
+- **Source:** docs/art_instantiations/generator_admissibility_taxonomy.md
+
+---
+
+## Epistemic Context and Functional Admissibility
+*(Added: session 2026-05-07)*
+
+**Q-EPO-01 — Formal ordering of the seven A_f criteria**
+- **Status:** open
+- **Question:** Can the seven A_f criteria be formally ordered by strength?
+  Is there a minimal sufficient subset per collapse type?
+- **Registered:** 2026-05-07
+- **Source:** docs/art_instantiations/epistemic_context_and_functional_admissibility.md
+
+**Q-EPO-02 — Compression viability κ and ARW cover metrics**
+- **Status:** partially answered (2026-05-07)
+- **Question:** Is compression viability κ formally related to existing ARW
+  cover metrics? Is cover height the formal bridge?
+- **Partial answer:**
+  - Local level: h_norm(b_i) = h(b_i)/h_max is a formally grounded proxy
+    for κ_local. Three structural alignments confirmed: (1) regime interior =
+    high h = high κ; (2) transition regions = low h = low κ (Z_cover active);
+    (3) ε-persistence of h = compression robustness required by κ.
+  - Global level: κ(G,C) ≈ E_λ[h_norm(φ(λ))] — expectation of h_norm over
+    the scope family — is the generator-level bridge. This is a hypothesis,
+    not yet proven.
+  - Operationalization: h_norm is immediately computable via existing pipeline
+    (cover_observable_space.py). Cross-scope aggregation requires new pipeline
+    step.
+- **Remaining open:** Formal proof of global correspondence; pipeline for
+  cross-scope h_norm aggregation; tightness conditions (monotone vs.
+  non-monotone observables).
+- **Source:** docs/art_instantiations/epistemic_context_and_functional_admissibility.md;
+  session finding documented in docs/notes/research_journal.md (session 2026-05-07)
+
+**Q-EPO-03 — Relationship between C and the three generator collapse types**
+- **Status:** open
+- **Question:** What is the formal relationship between C and the three
+  generator collapse types? Does each type impose a characteristic structure
+  on the minimum C for non-empty A_f?
+- **Registered:** 2026-05-07
+- **Source:** docs/art_instantiations/epistemic_context_and_functional_admissibility.md

@@ -848,3 +848,191 @@ Felder 2026 §8 explicitly states the generalization. ARW's component-wise I_ε�
 - D-1 (CASE-0001 Gaussian reference line audit), D-2 (CASE-0001-2D), D-3 (CASE-0003 ω observable),
   E-1/E-2 (stability_mask.py), F-1 (scope.md B vs. X note), F-3/F-4/F-5 — all deferred,
   no false urgency created. Action plan in Knowledgebase: paper_migration_action_plan_2026-04-29.md.
+## Session 2026-05-07: Generator Admissibility Taxonomy — Full Development
+
+### Context
+
+Session developed a new ART-layer formalism for generator classification,
+motivated by the observation that many formal systems (Hamiltonians, Lagrangians,
+field equations, institutional formalisms) are generators of admissible scope
+families rather than descriptions of single regime structures.
+
+The session proceeded in four phases:
+1. Inductive derivation of three collapse types from known generator classes
+2. Partial formalization of Q-GEN-02 (signature inference) and Q-GEN-03
+   (formal structure of G)
+3. Fundamental revision: A_f(G | C) — functional admissibility as context-relative
+   relation; C = (O, Δ_C, ε_C, ρ, τ, σ, κ) replacing R
+4. Formal investigation of Q-EPO-02: Cover-height as compression viability proxy
+
+---
+
+### Finding 1 — Three generator collapse types (hypothesis)
+
+Induced from cross-domain survey of known generator types:
+
+| Type | Collapse location | Dominant signature | A_f/A_h boundary |
+|---|---|---|---|
+| I — Boundary | ∂A(G) in Λ | S1, S2, S4, S5 | Sharp |
+| II — Solution Space | Interior of Λ | S3 | Interior bifurcation |
+| III — Consistency | Internal to G | K ≠ ∅ | Gradual, within A_h |
+
+Supported by structural argument and literature evidence from quadratic gravity
+(Stelle 1977, Piva 2023, Edelstein et al. 2021).
+
+---
+
+### Finding 2 — Generator formal structure G = (Λ, Σ, φ, C) (hypothesis)
+
+Revised from earlier G = (Λ, Σ, φ, R). R (expected regime structure) was too
+narrow — C (epistemic-operational context) is the correct generalization, with
+R ⊂ C.
+
+Components:
+- Λ: parametrization space (topological, not necessarily metric)
+- Σ = (P, D, K): signature structure — present, dominant, conflict
+- φ: Λ → (B, Π): partial instantiation — G determines domain and observable
+  class; observer determines Δ and ε
+- C = (O, Δ_C, ε_C, ρ, τ, σ, κ): epistemic-operational context
+
+The partial nature of φ is constitutive: observer sovereignty over Δ and ε
+is preserved.
+
+Remaining open: formal topology conditions on Λ per collapse type; formal
+definition of A_f / A_h boundary independent of specific C. (Q-GEN-03)
+
+---
+
+### Finding 3 — A_f(G | C): functional admissibility is context-relative (hypothesis)
+
+A_f is not a property of G — it is a relation between G and C.
+
+> A_f(G | C) = {λ ∈ A(G) : S = (φ(λ), Δ_C, ε_C) satisfies all seven
+> criteria of C}
+
+Seven criteria: Δ-Stability, Reproducibility, Observable Persistence, Resource
+Proportionality, Predictive Closure, Compression Viability (κ), Transfer Stability.
+
+Criterion 6 (Compression Viability) identified as the deepest: it connects
+admissibility to information economy and explains persistence of formally
+superseded theories (Newton in A_f under macroscopic C).
+
+---
+
+### Finding 4 — Science as stability filter (interpretation)
+
+> Science is not a truth generator. It is a stability filter for description.
+
+A(G) is context-independent — determined by generator structure alone.
+A_f(G | C) is context-dependent — the selection within A(G) under operative
+epistemic conditions. This is not relativism: the formal boundary A(G) is fixed;
+what varies is which subset of A(G) is operationally viable.
+
+---
+
+### Finding 5 — Emergent degrees of freedom as new compression axes (interpretation)
+
+Emergence = new stable compression axis entering A_f when coarser ε_C forces
+aggregation and a new collective observable achieves higher κ than the
+fine-grained description under C. Connects ARW scope-splitting to κ formally.
+Potential bridge: Q-EPO-02.
+
+---
+
+### Finding 6 — Time as exceptionally stable compression axis (interpretation)
+
+Time has high A_f stability across wide C because it is causally reproducible,
+compression-viable across complexity scales, and achieves predictive closure
+efficiently. Its appearance as a structural primitive is epistemic-operational,
+not ontological. Connects to Lorentz reconstruction problem in QG literature.
+
+---
+
+### Finding 7 — Q-EPO-02 partially answered: Cover-height as κ proxy
+
+**Status: partially answered (2026-05-07)**
+
+**Question:** Is compression viability (κ) formally related to existing ARW
+cover metrics? Is cover height the formal bridge?
+
+**Formal investigation:**
+
+Cover height is defined as:
+
+  h(b_i) = Σ_ε Σ_{C ∋ b_i} (|C| - 1)
+
+This measures cumulative group size across all ε scales — how persistently a
+point is co-described with other points across resolutions.
+
+Compression viability κ requires: a scope reduces system complexity without
+losing operative coherence, stably across the operative ε range of C.
+
+**Where the correspondence holds (locally):**
+
+Three structural alignments confirmed:
+
+1. Regime interior = high h = high κ: deep regime points are co-described
+   with many others across many ε — maximal compression efficiency
+2. Transition regions = low h = low κ: near ∂A(G), cover elements are small
+   and ε-sensitive — compression efficiency collapses. This is Z_cover(π,ε):
+   the region where Δ-stability collapses ε-dependently
+3. ε-persistence = compression robustness: h aggregates over all ε, measuring
+   robustness of compression under resolution variation — exactly what κ requires
+
+**Local proxy (confirmed):**
+
+  κ_local(b_i) ≈ h_norm(b_i) = h(b_i) / h_max
+
+This is immediately computable via the existing ARW pipeline (cover_observable_space.py).
+
+**Where the correspondence requires extension (globally):**
+
+h(b_i) measures compression within a single scope S. κ as an A_f criterion
+applies across the generator family {S_i}. The global bridge requires:
+
+  κ(G, C) ≈ E_λ[h_norm(φ(λ))]
+
+— the expectation of normalized cover height over all λ ∈ A(G), weighted by C.
+This is a new pipeline requirement: aggregation of h_norm across the scope family.
+
+**Result table:**
+
+| Level | Correspondence | Status |
+|---|---|---|
+| Local (single scope) | h_norm(b_i) ∝ κ_local | Formally grounded |
+| Global (generator family) | κ(G,C) ≈ E_λ[h_norm] | Hypothesis, not proven |
+| Operationalization | h_norm as κ-proxy | Immediately available |
+
+**Remaining open:** Formal proof of global correspondence; pipeline implementation
+for cross-scope h_norm aggregation; conditions under which h_norm is a tight vs.
+loose proxy for κ (monotone vs. non-monotone observables).
+
+---
+
+### Structural homologies with quadratic gravity literature (note)
+
+The session identified structural parallels between ARW/ART concepts and
+problems in the quadratic gravity literature — documented in
+`example_unification_theories_as_generators.md`. These are structural
+homologies, not physical confirmations.
+
+---
+
+### Documents produced this session
+
+- `docs/art_instantiations/generator_admissibility_taxonomy.md`
+  (hypothesis, revised: R → C, A_f(G|C), Q-GEN-04 added)
+- `docs/art_instantiations/epistemic_context_and_functional_admissibility.md`
+  (hypothesis, new: formal C, seven criteria, science as stability filter)
+- `docs/art_instantiations/example_unification_theories_as_generators.md`
+  (note, revised: literature anchors, structural homology section)
+
+### Open questions registered or updated this session
+
+- Q-GEN-01: Three-type taxonomy exhaustive? (open)
+- Q-GEN-02: Signature-first for Type III (partially answered)
+- Q-GEN-03: Formal topology of Λ; A_f/A_h boundary (partially answered)
+- Q-GEN-04: Minimal C for non-empty A_f per collapse type (new, open)
+- Q-EPO-01: Formal ordering of seven criteria (new, open)
+- Q-EPO-02: Cover-height as κ proxy (partially answered — see Finding 7)
+- Q-EPO-03: Relationship between C and collapse types (new, open)

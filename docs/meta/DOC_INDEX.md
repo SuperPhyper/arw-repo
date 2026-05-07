@@ -176,6 +176,9 @@ See `arw-doc-consistency` skill for usage rules.
 | docs/art_instantiations/arw_for_synergetics.md | hypothesis | ARW for synergetics | — | — |
 | docs/art_instantiations/arw_littman_bc_analysis.md | interpretation | BC structure in Littman–Metcalf method | — | ART instantiation for optics/photonics |
 | docs/art_instantiations/research_report_CASE-20260328-0010.md | working-definition | structural observable failure in social scopes | — | Links CASE-20260328-0010 |
+| docs/art_instantiations/generator_admissibility_taxonomy.md | art_instantiations | hypothesis | generator admissibility taxonomy, G=(Λ,Σ,φ,C), A(G), A_f(G\|C), A_h(G\|C), Type I/II/III collapse, signature-first generator inference | — | Core ART-layer generator formalism; depends on epistemic_context doc; Q-GEN-01–04 |
+| docs/art_instantiations/epistemic_context_and_functional_admissibility.md | art_instantiations | hypothesis | epistemic-operational context C, seven A_f criteria, compression viability κ, science as stability filter, time as compression axis | — | Formalizes C in G=(Λ,Σ,φ,C); Q-EPO-01–03 |
+| docs/art_instantiations/example_unification_theories_as_generators.md | art_instantiations | note | quadratic gravity as generator, A_h vs A_f in unification theories, structural homologies with QG literature | — | Illustrative; literature-anchored (Stelle, Buccio et al., Piva, Edelstein et al.); not a physics claim |
 
 ---
 
@@ -323,17 +326,4 @@ and their description documents. Summary of description `.md` files:
 | docs/notes/open_questions.md | working-definition | active open research questions (Q1–Q16+) | — | **Canonical; add new questions here** |
 | ~~docs/notes/open_questions_2026-03-18.md~~ | — | — | — | MOVED to archive/sessions/ 2026-03-29 (I-04) |
 | ~~docs/notes/open_questions_session_2026-03-18.md~~ | — | — | — | MOVED to archive/sessions/ 2026-03-29 (I-04) |
-| docs/advanced/operator_signatures_cross_domain.md | hypothesis | operator signatures across domains | — | MOVED from docs/notes/ 2026-03-29 (I-03) |
-| docs/notes/repo_weakpoints.md | working-definition | repository weak points, systematic assessment | — | — |
-| docs/notes/research_journal.md | working-definition | research journal (all sessions) | — | **Canonical; add new session findings here** |
-| docs/notes/research_journal_session_2026-03-18.md | note | session 2026-03-18 research journal | — | Archived; merged into research_journal.md |
-| docs/notes/social_bc_extraction_method.md | experiment-proposal | social BC extraction method | — | ART instantiation |
-| docs/notes/validation_program_signatures.md | experiment-proposal | operator signatures validation program | — | — |
-
----
-
-## Navigation Index
-
-The existing `docs/INDEX.md` serves as human-facing navigation.
-This file (DOC_INDEX.md) serves as the anti-pile-up registry — tracking canonical ownership
-of concepts, supersession chains, and open issues. Both should be maintained together.
+| docs/advanced/operator_signatures_cross_domain.md | hypothesis | operator signatures across domains | — | MOVED from doc
