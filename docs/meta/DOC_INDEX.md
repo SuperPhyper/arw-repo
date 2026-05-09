@@ -305,6 +305,10 @@ and their description documents. Summary of description `.md` files:
 | docs/meta/llm_memory_map.md | note | LLM memory map | — | — |
 | docs/meta/maintenance_checklist.md | working-definition | periodic repo maintenance checklist | — | Created 2026-03-29 |
 | docs/meta/repo_design.md | working-definition | repository design principles | — | — |
+| docs/meta/context_map/context_map_framework.md | working-definition | context map schema, scope tuple objects, cover objects, observable objects, partition objects, differential diagnosis index | — | Agent-optimised navigation; machine-readable notation; read before other context_map files |
+| docs/meta/context_map/context_map_falsification_bc.md | working-definition | falsification entries (F0–F4, F-gradient, Z_shared), falsification decision tree, BC taxonomy (6 classes), operator signatures S1–S5, observable BC structure notation | — | Agent-optimised; companion to context_map_framework.md |
+| docs/meta/context_map/context_map_pipeline.md | working-definition | pipeline DAG, all 11 pipeline modules (incl. stability_mask.py as planned), all 7 artifact types, case directory anatomy, guard rules GUARD-1–9 | — | Agent-optimised; stability_mask.py marked PLANNED (action E-1) |
+| docs/meta/context_map/context_map_transfer_emergence_cases.md | working-definition | transfer metrics (Phi, RCD, TBS_norm, PCI, SDI), emergence window analysis, all 14 case entries (4 active + 10 pending), assembled context_map.yaml (exemplary) | — | Agent-optimised; corrected from v0.1 (SIR BC class, case IDs, missing cases 0011/0012/0013); v0.2 2026-05-10 |
 
 ---
 
