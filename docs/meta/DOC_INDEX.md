@@ -341,3 +341,11 @@ and their description documents. Summary of description `.md` files:
 The existing `docs/INDEX.md` serves as human-facing navigation.
 This file (DOC_INDEX.md) serves as the anti-pile-up registry — tracking canonical ownership
 of concepts, supersession chains, and open issues. Both should be maintained together.
+
+---
+
+## Navigation Index
+
+The existing `docs/INDEX.md` serves as human-facing navigation.
+This file (DOC_INDEX.md) serves as the anti-pile-up registry — tracking canonical ownership
+of concepts, supersession chains, and open issues. Both should be maintained together.
