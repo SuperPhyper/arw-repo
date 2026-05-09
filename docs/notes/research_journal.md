@@ -1036,3 +1036,62 @@ homologies, not physical confirmations.
 - Q-EPO-01: Formal ordering of seven criteria (new, open)
 - Q-EPO-02: Cover-height as κ proxy (partially answered — see Finding 7)
 - Q-EPO-03: Relationship between C and collapse types (new, open)
+
+---
+
+## Session 2026-05-09: Scope failure as ontological projection
+
+**Context:** Conversational derivation from discussion of Bell inequalities,
+the 2022 Nobel Prize (Aspect, Clauser, Zeilinger), and ARW's structural role
+in epistemology. Starting point: whether ARW can offer a new perspective on
+the simulation thesis via Bell inequalities and temporal causality.
+
+### Finding 1 (interpretation)
+
+F-type failures are description-relative. The standard reaction — treating
+failure patterns at admissibility boundaries as ontological claims about the
+system beyond the boundary — is a projection error.
+
+The Bell inequality case is the primary example: the violation of Bell
+inequalities is an F2-failure of the LHV scope (S_LHV = bipartite system,
+joint measurement outcomes, Δ_LOCC). The standard interpretation "locality
+is disproven" projects beyond the admissibility boundary of S_LHV. The
+F2-failure tells us that no scope of the form S_LHV produces a stable
+product partition here. It does not characterise the system beyond that
+boundary.
+
+### Finding 2 (interpretation)
+
+Implicit admissibility boundaries are the structural enabler of model
+overreach. Without explicit boundary markers, scope claims accumulate
+beyond their valid range. Models become larger than their actual
+admissibility warrants — not through deliberate overreach, but because
+there is no structural signal marking where description ends.
+
+ARW's F-schema (F0–F4) and A_f / A_h distinction function as a projection
+filter: they mark where description ends without asserting what lies beyond.
+This is the minimal and most precise role of a meta-framework.
+
+### Finding 3 (interpretation)
+
+This is structurally distinct from epistemic ceilings
+(docs/advanced/epistemic_ceilings_as_scope_saturation.md), which concern
+internal cover exhaustion within a scope's admissibility region. The
+projection error concerns the boundary itself: failure at ∂A(S) misread
+as a positive claim about the region beyond ∂A(S).
+
+| | Epistemic ceiling | Ontological projection |
+|---|---|---|
+| Location | Inside A(S) | At / beyond ∂A(S) |
+| Mechanism | Cover exhausted | Failure pattern misread as external claim |
+| Resolution | Scope change | Boundary identification + declared silence |
+
+### Documents produced this session
+
+- `docs/notes/scope_failure_and_ontological_projection.md` (note, new)
+
+### Open questions registered this session
+
+- Q-PROJ-01: Can failure structure at the admissibility boundary constrain
+  the form of a successor scope — without projecting current scope content
+  beyond the boundary? (open)

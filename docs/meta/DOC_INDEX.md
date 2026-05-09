@@ -332,4 +332,12 @@ and their description documents. Summary of description `.md` files:
 | docs/notes/research_journal_session_2026-03-18.md | note | session 2026-03-18 research journal | — | Archived; merged into research_journal.md |
 | docs/notes/social_bc_extraction_method.md | experiment-proposal | social BC extraction method | — | ART instantiation |
 | docs/notes/validation_program_signatures.md | experiment-proposal | operator signatures validation program | — | — |
-| docs/notes/scope_failure_and_ontological_projection.md | note | scope failure as ontological projection, projection error at admissibility boundary, ARW as projection filter, implicit boundary enabling model overreach | — | Added 2026-05-09; depends on F-schema, A_f/A
+| docs/notes/scope_failure_and_ontological_projection.md | note | scope failure as ontological projection, projection error at admissibility boundary, ARW as projection filter, implicit boundary enabling model overreach | — | Added 2026-05-09; depends on F-schema, A_f/A_h, epistemic_ceilings, causality docs; Q-PROJ-01 registered |
+
+---
+
+## Navigation Index
+
+The existing `docs/INDEX.md` serves as human-facing navigation.
+This file (DOC_INDEX.md) serves as the anti-pile-up registry — tracking canonical ownership
+of concepts, supersession chains, and open issues. Both should be maintained together.

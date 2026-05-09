@@ -577,3 +577,37 @@ Status: open
 - **Note:** Distinct from the projection error (Section 7 of source doc):
   asks not what the system is beyond the boundary, but what a valid
   description beyond the boundary would need to structurally provide.
+
+**Q-PROJ-01 — Structural requirements on successor scopes from failure mode**
+- **Status:** open
+- **Question:** The failure structure at an admissibility boundary (F-type
+  mode, region of B, direction of approach) may carry partial information
+  about what a more complete parametrisation would need to provide. An F0
+  failure identifies an observable class that fails here — which implies a
+  structural requirement on any observable that would succeed here. Can ARW
+  generate such structural requirements systematically from the failure mode?
+  That is, can the description of where and how a scope fails constrain the
+  form of a successor scope — without projecting the current scope's content
+  beyond its boundary?
+- **Registered:** 2026-05-09
+- **Source:** docs/notes/scope_failure_and_ontological_projection.md
+- **Note:** Distinct from the projection error (Section 7 of source doc):
+  asks not what the system is beyond the boundary, but what a valid
+  description beyond the boundary would need to structurally provide.
+
+**Q-PROJ-01 — Structural requirements on successor scopes from failure mode**
+- **Status:** open
+- **Question:** The failure structure at an admissibility boundary (F-type
+  mode, region of B, direction of approach) may carry partial information
+  about what a more complete parametrisation would need to provide. An F0
+  failure identifies an observable class that fails here — which implies a
+  structural requirement on any observable that would succeed here. Can ARW
+  generate such structural requirements systematically from the failure mode?
+  That is, can the description of where and how a scope fails constrain the
+  form of a successor scope — without projecting the current scope's content
+  beyond its boundary?
+- **Registered:** 2026-05-09
+- **Source:** docs/notes/scope_failure_and_ontological_projection.md
+- **Note:** Distinct from the projection error (Section 7 of source doc):
+  asks not what the system is beyond the boundary, but what a valid
+  description beyond the boundary would need to structurally provide.
