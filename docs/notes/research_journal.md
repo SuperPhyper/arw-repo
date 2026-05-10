@@ -1095,3 +1095,138 @@ as a positive claim about the region beyond ∂A(S).
 - Q-PROJ-01: Can failure structure at the admissibility boundary constrain
   the form of a successor scope — without projecting current scope content
   beyond the boundary? (open)
+
+---
+
+## Session 2026-05-10: Context Map Integration and Skill Effectiveness Evaluation
+
+### Context
+
+Four markdown files implementing an agent-optimised context map notation
+(`<ID>: <type>∈<layer> | <relation> | <trigger→action>`) were imported from
+external preparation and integrated into `docs/meta/context_map/`. The files
+compress ARW scope/cover/observable objects, falsification entries (F0–F4 +
+F-gradient), pipeline DAG with GUARD rules, and the full case registry into
+machine-readable form intended to reduce navigation overhead for LLM agents
+working in the repo.
+
+Following integration, all four ARW skills (`arw-meta-guard`,
+`arw-repo-context`, `arw-doc-consistency`, `arw-observable-analysis`) were
+updated to reference the context map and packaged as `.skill` files.
+
+An 8-scenario eval was designed and run to test whether the updates produced
+correct agent behaviour. Prompts targeted known failure modes: GUARD citation
+errors, falsification ID usage, BC class mapping, ε-direction for F-gradient,
+and stability_mask handling.
+
+### Corrections applied during integration
+
+Before eval, the following errors were identified and corrected in the source files:
+
+| File | Error | Fix |
+|---|---|---|
+| `context_map_transfer_emergence_cases.md` | SIR BC class listed as FORCING | Corrected to AGGREGATION (population expectation operator) |
+| `context_map_transfer_emergence_cases.md` | Case IDs dated 20260429 | Corrected to 20260315 |
+| `context_map_transfer_emergence_cases.md` | Missing cases 0011/0012/0013 | Added |
+| `context_map_transfer_emergence_cases.md` | CASE-0003 BC class COUPLING+RESTRICTION | Corrected to RESTRICTION only |
+| `context_map_pipeline.md` | `stability_mask.py` described as existing module | Marked as PLANNED (action E-1) |
+| All four files | `layer: docs/index/` (non-existent directory) | Corrected to `layer: docs/meta/context_map/` |
+
+### Eval design
+
+Eight scenarios exercising the following dimensions:
+
+1. GUARD rule citation (correct GUARD number for a falsification ID error)
+2. Falsification ID enum completeness (F-gradient must be in the closed set)
+3. F0 vs. F-gradient differential diagnosis
+4. F-gradient ε-direction under descriptive crossover
+5. BC class mapping from operator signature
+6. Transfer distortion metric selection
+7. stability_mask.py status handling
+8. ¬-differential diagnosis (distinguishing adjacent F-types)
+
+Prompts were submitted manually; responses evaluated against ground truth.
+
+### Eval results (initial round)
+
+| Prompt | Initial result | Primary error |
+|---|---|---|
+| 1 | PASS | — |
+| 2 | PARTIAL | GUARD-4 cited instead of GUARD-2; F2 suggested instead of F3 |
+| 3 | PASS | — |
+| 4 | PARTIAL | ε-direction stated as "decrease ε" despite correct formula in same block |
+| 5 | PASS | — |
+| 6 | PASS | — |
+| 7 | PASS | — |
+| 8 | PASS | — |
+
+### Iterative fixes and rerun results
+
+**Round 1 fixes (context_map_falsification_bc.md):**
+- Added explicit `ε-direction: ↑ INCREASE ε above sup_x(σ_Δ) | ¬decrease` field to F-gradient entry
+- Added `actions_ranked_note` with primary/secondary/tertiary/last_resort labels
+- Added ¬-differential notes to all F-types (F0¬F-gradient¬F1, F1¬F1_BC¬F0, etc.)
+
+**Round 1 rerun results:**
+
+| Prompt | Rerun result | Remaining error |
+|---|---|---|
+| 2 | PARTIAL+ | GUARD-4 → GUARD-2 fixed; F2 persisted |
+| 4 | PARTIAL+ | stability_mask appeared in protocol; ε-direction still "decrease" |
+
+**Root cause identified:** `arw-observable-analysis/SKILL.md` contained two
+conflicting inline statements: `→ decrease ε` (line 156) and `adjust ε or L`
+(line 440 diagnostic step 4). These overrode the context map entry because
+they appeared closer to the agent's active reasoning context. The formula
+`sup_x σ_Δ(x) < ε` was written correctly but the action instruction contradicted
+it — a formula/action divergence the agent did not self-catch.
+
+**Round 2 fixes:**
+- `arw-observable-analysis/SKILL.md`: replaced both conflicting statements with
+  `INCREASE ε above sup_x(σ_Δ) [¬decrease]`
+- Added inline `ε-contradiction-check` at both sites:
+  `if_you_wrote_decrease_ε AND sup(σ_Δ)<ε in_same_block → CONTRADICTION | correct to ε↑`
+- `context_map_falsification_bc.md`: added `ε-contradiction-check` field to F-gradient entry
+
+**Round 2 rerun results:**
+
+| Prompt | Final result | Notes |
+|---|---|---|
+| 2 | PASS | GUARD-2 correct; F3 or F4 suggested (F3 is correct); context map cited for confirmation |
+| 4 | PASS | ε-direction correct; agent explicitly flags "Do not decrease ε — contradiction"; ε*(O,X_B) check included |
+
+### Finding 1 (methodology)
+
+Formula/action divergence is a systematic LLM failure mode in technical documentation.
+When a correct formula (`sup σ_Δ < ε`) and a contradicting action (`decrease ε`) appear
+in the same document, agents preferentially follow the action instruction — proximity to
+reasoning context dominates over logical consistency checking. The effective fix is not
+to remove the formula but to add an explicit contradiction-check co-located with the action.
+
+### Finding 2 (skill architecture)
+
+Inline skill text overrides context map references when the skill is loaded into active
+context. Updating only the context map is insufficient if the skill itself contains
+conflicting statements. Both layers must be consistent. Order of authority:
+`inline SKILL.md text > context map reference > general knowledge`.
+
+### Finding 3 (eval design)
+
+The ε-direction error (Prompt 4) was detectable only because the eval included a scenario
+where ε-direction was the operative decision variable. General skill-correctness evals
+that test only classification (F-type, BC class) will miss formula/action divergence errors.
+Eval scenarios should include at least one prompt per quantitative decision variable
+(ε, r, L, σ_Δ threshold) where the direction of adjustment is the ground truth.
+
+### Documents produced this session
+
+- `docs/meta/context_map/context_map_framework.md` (working-definition, new)
+- `docs/meta/context_map/context_map_falsification_bc.md` (working-definition, new)
+- `docs/meta/context_map/context_map_pipeline.md` (working-definition, new)
+- `docs/meta/context_map/context_map_transfer_emergence_cases.md` (working-definition, new, v0.2)
+
+### Open questions registered this session
+
+- Q-CTX-01: Does `stability_mask_exclusion` need to be the primary action listed
+  for F-gradient (before ε↑) in diagnostic workflows, or is ε↑ with a correct
+  ε*(O,X_B) check operationally equivalent? Currently unresolved in eval. (open)
