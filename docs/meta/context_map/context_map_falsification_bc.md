@@ -41,8 +41,10 @@ F4: failure∈falsification | θ*@sweep_boundary | true_transition_outside_B | �
 
 F-gradient: failure∈falsification | ¬F0∩Z_cover≠∅ | cause=high_|∇O|@x | →scope_refinement OR observable_replacement
     diagnostic: A0-A6_all_pass? yes→F-gradient | stability_mask(σ_Δ_field)
+    ε-direction: ↑ INCREASE ε above sup_x(σ_Δ) to satisfy I_ε lower bound | ¬decrease
     actions_ranked: [stability_mask_exclusion, ε↑, r↓, observable_replacement]
-    note: ε-dependent — Z_cover shrinks as ε↑
+    actions_ranked_note: stability_mask=primary | ε↑=secondary | r↓=tertiary | observable_replacement=last_resort
+    note: ε-dependent — Z_cover shrinks as ε↑ | F-gradient∩A_i_fail→reclassify_as_F0
 ```
 
 ### Falsification Decision Tree (compressed)
