@@ -19,25 +19,37 @@ Read that file first if schema notation is unfamiliar.
 F0: failure∈falsification | Z(π)≠∅∩X_B | A0-A6_violation | →observable_replacement | ¬F-gradient
     diagnostic: substrate_analysis(A0-A6) | empirical: σ_Δ↑@failure_region
     note: ε-independent — no ε choice recovers F0 region
+    ¬F-gradient: if_A0-A6_all_pass→not_F0 | high_σ_Δ_alone_is_insufficient_for_F0
+    ¬F1: F0_is_structural(substrate_fails) | F1_is_resolution(span<2ε) — independent_axes
 
 F1: failure∈falsification | |C_ε|=1@ε_working | span(π)<2ε OR ε≥ε* | →observable_replacement
     diagnostic: check_span_vs_2ε then check_topology | cf.F1_BC
     note: reduce_ε only if ε_new>sup(σ_Δ), else triggers Δ-instability
+    ¬F1_BC: F1=single_observable_insufficient | F1_BC=ALL_observables_insufficient→scope_rejection
+    ¬F0: F1_is_resolution_failure(span) | F0_is_substrate_failure(A0-A6) — check_substrate_first
 
 F1_BC: failure∈falsification | F1_for_all_π∈Π | BC_param_has_no_observable_effect | →scope_rejection
     diagnostic: F1_confirmed_across_full_Π | cf.F1
     note: only failure type triggering scope_rejection from observable_insufficiency
+    ¬F1: F1_BC_requires_F1_for_EVERY_π∈Π | single_F1_→_F1_not_F1_BC
+    ¬F3: F1_BC=observables_have_no_spread | F3=observables_have_spread_but_no_stable_plateau
 
 F2: failure∈falsification | θ*_unstable_under_Δ | cross-run_θ*_shift>tolerance | →scope_rejection
     diagnostic: repeat_runs_within_Δ | compare_θ*_distribution
+    ¬F3: F2=plateau_exists_but_θ*_shifts_across_runs | F3=no_plateau_at_all
+    ¬F4: F2=θ*_unstable_under_Δ(perturbation) | F4=θ*_at_B_edge(sweep_extent) — different_causes
 
 F3: failure∈falsification | no_plateau_in_N(ε)_for_all_π∈Π | I_ε=∅ | →scope_rejection
     diagnostic: check_sup(σ_Δ)_vs_ε* | if_sup(σ_Δ)≥ε*→no_valid_ε_exists
     note: collective failure — not resolvable by observable swap alone
+    ¬F2: F3=no_plateau_in_N(ε)_curve | F2=plateau_exists_but_θ*_drifts_under_Δ
+    ¬F1: F3=N(ε)_never_stabilises(for_any_π) | F1=N(ε)=1(cover_trivial_for_one_π)
 
 F4: failure∈falsification | θ*@sweep_boundary | true_transition_outside_B | →sweep_refinement
     diagnostic: θ*_proximity_to_B_edge | not_a_scope_failure
     note: scope may be entirely valid — extend_sweep before interpreting θ*
+    ¬F2: F4=θ*_at_B_boundary(artifact_of_sweep_range) | F2=θ*_unstable_under_Δ(within_B)
+    ¬scope_failure: F4_is_only_sweep_refinement | no_scope_rejection_from_F4_alone
 
 F-gradient: failure∈falsification | ¬F0∩Z_cover≠∅ | cause=high_|∇O|@x | →scope_refinement OR observable_replacement
     diagnostic: A0-A6_all_pass? yes→F-gradient | stability_mask(σ_Δ_field)
