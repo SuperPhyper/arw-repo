@@ -1,7 +1,7 @@
 ---
 status: working-definition
 layer: docs/meta/
-last_updated: 2026-05-01
+last_updated: 2026-05-13
 ---
 
 # DOC_INDEX — ARW/ART Documentation Index
@@ -337,6 +337,8 @@ and their description documents. Summary of description `.md` files:
 | docs/notes/social_bc_extraction_method.md | experiment-proposal | social BC extraction method | — | ART instantiation |
 | docs/notes/validation_program_signatures.md | experiment-proposal | operator signatures validation program | — | — |
 | docs/notes/scope_failure_and_ontological_projection.md | note | scope failure as ontological projection, projection error at admissibility boundary, ARW as projection filter, implicit boundary enabling model overreach | — | Added 2026-05-09; depends on F-schema, A_f/A_h, epistemic_ceilings, causality docs; Q-PROJ-01 registered |
+| docs/notes/arw_economic_regime_hypothesis.md | hypothesis | labor-capital coupling, Q indicator (K/G), economic regime stability, Q* threshold, H-ECON-01, automation as Dissipation BC, deregulation as Restriction BC removal, collective bargaining as Coupling BC | — | Added 2026-05-13; qualitative grounding 2026-05-08; candidate for ART instantiation; falsification conditions F-ECON-01–04; path to formalization in §8 |
+| docs/cognitive_architecture/simulation_revision_design_notes.md | note | labyrinth simulation revision, archetype library, local admissible policies, environment classes as substrate filters, scope-admissibility, F0-type transitions in RL context, policy separation requirement | — | Added 2026-05-13; design notes for CASE-0011/0012 simulation revision; environments as admissibility filters; archetype as persistent local admissibility structure |
 
 ---
 
