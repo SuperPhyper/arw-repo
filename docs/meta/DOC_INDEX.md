@@ -1,7 +1,7 @@
 ---
 status: working-definition
 layer: docs/meta/
-last_updated: 2026-05-13
+last_updated: 2026-05-20
 ---
 
 # DOC_INDEX — ARW/ART Documentation Index
@@ -147,6 +147,7 @@ See `arw-doc-consistency` skill for usage rules.
 | docs/advanced/causality_as_directed_observable_structure.md | working-definition | causality as scope-relative directed observable coupling, asymmetric induction, Δ-stable causal structure, causal admissibility conditions | — | Added 2026-05-01; extends scope_extended_definition.md; causality as descriptive property, not primitive system feature |
 | docs/advanced/invariance_as_scope_persistence.md | working-definition | invariance as scope-persistence, Noether/Einstein invariance in ARW context, Δ-stable partition, generalized invariance, scope-relative conservation | — | Added 2026-05-01; connects classical invariance theory to ARW; depends on causality_as_directed_observable_structure.md |
 | docs/advanced/epistemic_ceilings_as_scope_saturation.md | working-definition | epistemic ceilings as scope saturation, cover exhaustion C_ε, three structural causes (Π-narrowness, ε-mismatch, Δ-excess), ceiling diagnosis and resolution | — | Added 2026-05-01; depends on invariance_as_scope_persistence.md + causality_as_directed_observable_structure.md |
+| docs/advanced/arw_aggregation_limits_typological_observables.md | note | aggregation limits of typological observables, variance crossover problem, N* (crossover point), F1 at aggregation limit, Z_shared (heterogeneous scope), Aggregation Stability Measure (ASM), Variance Ratio Profile V(A), ecological fallacy as cross-level scope violation | — | General result; KHT used as illustration; applies to any discrete-type observable (MBTI, Big Five, institutional categories); added 2026-05-20 |
 
 ---
 
@@ -179,6 +180,12 @@ See `arw-doc-consistency` skill for usage rules.
 | docs/art_instantiations/generator_admissibility_taxonomy.md | art_instantiations | hypothesis | generator admissibility taxonomy, G=(Λ,Σ,φ,C), A(G), A_f(G\|C), A_h(G\|C), Type I/II/III collapse, signature-first generator inference | — | Core ART-layer generator formalism; depends on epistemic_context doc; Q-GEN-01–04 |
 | docs/art_instantiations/epistemic_context_and_functional_admissibility.md | art_instantiations | hypothesis | epistemic-operational context C, seven A_f criteria, compression viability κ, science as stability filter, time as compression axis | — | Formalizes C in G=(Λ,Σ,φ,C); Q-EPO-01–03 |
 | docs/art_instantiations/example_unification_theories_as_generators.md | art_instantiations | note | quadratic gravity as generator, A_h vs A_f in unification theories, structural homologies with QG literature | — | Illustrative; literature-anchored (Stelle, Buccio et al., Piva, Edelstein et al.); not a physics claim |
+| docs/art_instantiations/kht_architecture_index.md | working-definition | KHT Unified Architecture index, four-layer overview, layer summaries, causal direction | — | Entry point for KHT series; added 2026-05-20 |
+| docs/art_instantiations/kht_architecture_layer1.md | working-definition | KHT Layer 1: Operator–Modulator space, 32 symmetric O×M combinations, Layer 1 distance metric, formal null model | — | Part of kht_unified_architecture; added 2026-05-20 |
+| docs/art_instantiations/kht_architecture_layer2.md | working-definition | KHT Layer 2: Persistent profiles, biological BCs (Restriction + Dissipation), coverage criterion, 16 valid profiles, Ego/Shadow duality | — | Part of kht_unified_architecture; added 2026-05-20 |
+| docs/art_instantiations/kht_architecture_layer3.md | working-definition | KHT Layer 3: Dynamic regime transitions, four regimes (R1–R4), control parameters (τ,σ,ξ), social dynamics, Layer 1 distance between regimes | — | Part of kht_unified_architecture; added 2026-05-20 |
+| docs/art_instantiations/kht_architecture_layer4.md | working-definition | KHT Layer 4: AI context navigation simulation, computational instantiation of Layers 1–3, archetype library, regime simulator | — | Part of kht_unified_architecture; added 2026-05-20 |
+| docs/art_instantiations/kht_arw_analysis.md | note | ARW analysis of KHT, BC class diagnosis (Restriction+Dissipation+Coupling+Forcing), observable candidates O1–O4, scope tuple S_KHT_L3, F-gradient/F1/F0 conditions, tractability assessment | — | Prerequisite for any KHT-based ART case; relates to CASE-SOC1 and CASE-0010; added 2026-05-20 |
 
 ---
 
@@ -224,6 +231,7 @@ See `arw-doc-consistency` skill for usage rules.
 | File path | Status | Canonical concept(s) | Supersedes | Notes |
 |---|---|---|---|---|
 | experiments/labyrinth_three_scope_minimal_setup.md | experiment-proposal | minimal three-scope experiment, 9×9 labyrinth, encounter-window segmentation, Python pseudocode for S_online/S_sleep/S_observer, winner-takes-place revision, 5-step correspondence analysis, hyperparameter table | — | Execution-oriented; covers Phase 0–2 (3-phase checklist); starting position randomized in Zone R; zone structure is scaffold not object of study |
+| experiments/labyrinth_patch_op_mod_split.md | proposal | S_online operator/modulator weight split, w_op (5-dim content observables), w_mod (2-dim context observables), saliency-trigger-driven modulator update, archetype library as content-attention profiles | — | Patch to labyrinth_three_scope_minimal_setup.md; motivated by KHT Layer 4 operator/modulator distinction; scope: S_online internals only; added 2026-05-20 |
 | experiments/spring_mass_chain/ (scripts) | — | spring_mass_sweep.py + spring_mass_cover.py — simulation and cover analysis for CASE-20260430-0013 | — | Python scripts; not indexed as docs. See experiments/spring_mass_chain/README.md and cases/CASE-20260430-0013/ |
 | experiments/labyrinth_calibration/ (scripts) | — | calibrate_scope.py — scope calibration (Q1) and training convergence (Q2) for CASE-20260330-0012 labyrinth | — | Python script; not indexed as docs. See experiments/labyrinth_calibration/README.md |
 
@@ -339,6 +347,8 @@ and their description documents. Summary of description `.md` files:
 | docs/notes/scope_failure_and_ontological_projection.md | note | scope failure as ontological projection, projection error at admissibility boundary, ARW as projection filter, implicit boundary enabling model overreach | — | Added 2026-05-09; depends on F-schema, A_f/A_h, epistemic_ceilings, causality docs; Q-PROJ-01 registered |
 | docs/notes/arw_economic_regime_hypothesis.md | hypothesis | labor-capital coupling, Q indicator (K/G), economic regime stability, Q* threshold, H-ECON-01, automation as Dissipation BC, deregulation as Restriction BC removal, collective bargaining as Coupling BC | — | Added 2026-05-13; qualitative grounding 2026-05-08; candidate for ART instantiation; falsification conditions F-ECON-01–04; path to formalization in §8 |
 | docs/cognitive_architecture/simulation_revision_design_notes.md | note | labyrinth simulation revision, archetype library, local admissible policies, environment classes as substrate filters, scope-admissibility, F0-type transitions in RL context, policy separation requirement | — | Added 2026-05-13; design notes for CASE-0011/0012 simulation revision; environments as admissibility filters; archetype as persistent local admissibility structure |
+| docs/notes/arw_quantization_partition_stability.md | note | quantization as scope-relative partition stability, discrete descriptions as stable partitions under Δ at ε, four conditions for quantization (stability, non-triviality, observability, persistence), unification across physics/biology/psychology | — | Domain-neutral; KHT and physical quantization as illustrative examples; depends on arw_aggregation_limits_typological_observables.md; added 2026-05-20 |
+| docs/notes/kht_prescopal_substrate_hypotheses.md | hypothesis | KHT pre-scopal biological substrate hypotheses, operator independence (Ni/Si/Ne/Se), candidate neural substrates, dissociation evidence, reverse inference caveat, H1–H5 testable hypotheses | — | Part of kht_unified_architecture; explicitly hypothesis-grade; generates empirical questions, does not assert neurobiological facts; added 2026-05-20 |
 
 ---
 
