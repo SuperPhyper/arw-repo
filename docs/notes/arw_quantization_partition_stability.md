@@ -175,11 +175,316 @@ In ARW terms: the scope tuple (B_E, Δ_E, ε_E) at energy scale E defines a
 specific stable partition; the scope tuple at energy E' defines a different one.
 Renormalization is the map between these scopes.
 
+### 3.4 Condensed vs. Dilute Matter: Order from Coupling Density
+
+Condensed matter physics provides a further structural parallel that connects
+the stability of quantized descriptions to the coupling density of the system —
+and thereby to the aggregation limit problem addressed in
+`arw_aggregation_limits_typological_observables.md`.
+
+In condensed matter, collective order phenomena — crystal lattices,
+superconductivity, ferromagnetism — emerge when the interaction density between
+components is high enough that coherent collective modes become stable. The
+symmetry breaking is not externally imposed; it emerges from the coupling
+structure itself. Individual components do not "have" the ordered property;
+the order is **collectively emergent** — a property of the coupled system, not
+of any single element.
+
+In dilute matter, individual degrees of freedom dominate. Components interact
+too weakly to sustain collective order; the description remains statistical,
+not structural. No stable collective mode persists; the system is described
+by distributions rather than by discrete ordered states.
+
+The transition between these regimes is a **phase transition**, characterized
+by an order parameter that is zero in the disordered phase and takes a non-zero
+value in the ordered phase. Near the transition, critical fluctuations appear:
+high sensitivity to small perturbations, diverging correlation lengths, unstable
+class assignments. The system is near-critical — neither fully ordered nor fully
+disordered.
+
+**The structural parallel to partition stability:**
+
+```
+Condensed regime (high coupling density):
+  Collective modes stabilize → discrete order parameter
+  → quantized description is admissible and informative
+  → V(A) > 1: between-class variance exceeds within-class variance
+
+Phase transition (critical coupling density N*):
+  Order parameter → 0, critical fluctuations maximal
+  → partition boundary unstable, class assignments fluctuate
+  → V(A) = 1: crossover point, F-gradient region
+
+Dilute regime (low coupling density):
+  Individual degrees of freedom dominate → no stable collective mode
+  → quantized description dissolves into continuous distribution
+  → V(A) < 1: within-class variance exceeds between-class variance
+```
+
+The order parameter for typological descriptions is:
+
+```
+Ω(A) = σ²_B(A) − σ²_W(A)
+
+Ω > 0:  condensed phase — types are coherent, partition is stable
+Ω = 0:  phase transition — N* is exactly where Ω = 0
+Ω < 0:  dilute phase — types have "evaporated" into a continuous distribution
+```
+
+This is structurally a **continuous second-order phase transition**: the order
+parameter Ω decreases smoothly through zero rather than jumping discontinuously.
+The F-gradient regions in ARW — zones of elevated perturbation sensitivity near
+observable boundaries — are the typological analog of critical fluctuations near
+a phase transition. The system is near-critical: small contextual perturbations
+produce large shifts in class assignment, correlation lengths diverge (the
+behavior of one individual is highly predictive of their neighbors'), and the
+partition is temporarily unstable.
+
+**Coupling density as the control parameter:**
+
+In condensed matter, the control parameter for the phase transition is temperature
+(or equivalently, thermal fluctuation energy relative to interaction energy). Below
+the critical temperature T_c, the system is ordered; above it, disordered.
+
+For typological descriptions, the analog of temperature is **context
+heterogeneity** — the effective perturbation range Δ_eff(A) at aggregation
+level A. Below the critical aggregation level N* (low context heterogeneity),
+the typological partition is ordered; above N* (high context heterogeneity),
+it dissolves. N* plays the role of T_c: the critical point of the
+typological phase transition.
+
+The Variance Ratio Profile V(A) is then a **measurement of the order parameter**
+as a function of the control parameter. Its shape encodes the universality class
+of the phase transition — how rapidly order is lost as context heterogeneity
+increases, whether the transition is sharp or gradual, and whether the system
+has multi-scale ordered phases (non-monotone V(A)) analogous to
+re-entrant phase transitions in condensed matter.
+
+**Collective emergence and the individuality of types:**
+
+The condensed matter framing resolves a tension that is often implicit in
+typological systems: are types properties of individuals or of systems?
+
+The answer, under this framework, is structurally the same as in condensed matter:
+a type is not an intrinsic property of an individual — it is a stable collective
+mode of a cognitive system under specific scope conditions. A Cooper pair is not
+a property of individual electrons; it is a collective mode that emerges from
+electron-phonon coupling below T_c. Similarly, a persistent profile is not simply
+a property of a brain; it is a stable collective mode of coupled cognitive
+oscillators (Layer 1 modulators under Layer 2 biological boundary conditions)
+that emerges under specific developmental and contextual conditions.
+
+This does not dissolve the individual — the specific profile that emerges depends
+on the individual's biological boundary conditions (Layer 2 Restriction +
+Dissipation). But it locates the type at the correct level of description:
+not as a microscopic fact about neurons, but as a meso-scale collective order
+phenomenon, stable within a scope and subject to phase transition when scope
+conditions change.
+
+### 3.5 Formal Embedding of Physical Quantization in the ARW Framework
+
+The preceding sections have established structural parallels between physical
+quantization and the ARW partition stability framework. This section attempts
+the stronger claim: that physical quantization is a **formal special case** of
+ARW scope-relative partition stability — not merely analogous to it, but
+instantiating exactly its conditions.
+
+The embedding proceeds in three steps: formal assignment of physical objects
+to ARW objects; derivation of the quantization result from ARW conditions;
+and identification of what lies beyond the embedding.
+
+#### 3.5.1 Step 1 — Formal Assignment
+
+The ARW scope tuple S = (B, Π, Δ, ε) is assigned as follows for a quantum
+mechanical system with Hamiltonian H:
+
+```
+X   = Hilbert space ℋ of the system
+      (the full continuous state space of all possible wavefunctions)
+
+X_B = admissible subspace selected by B
+      = {ψ ∈ ℋ : ψ satisfies the physical boundary conditions}
+      e.g. square-integrable (⟨ψ|ψ⟩ < ∞),
+           single-valued, continuous, finite energy expectation
+
+Π   = set of observables = set of Hermitian operators {Ô₁, Ô₂, ...}
+      each operator Ôᵢ defines a partition of X_B into its eigenspaces
+
+Δ   = admissible perturbations of the physical system
+      = perturbations that do not violate the boundary conditions B
+      (small perturbations of the potential preserving
+       square-integrability and energy finiteness)
+
+ε   = measurement resolution
+      = minimum eigenvalue difference reliably distinguishable
+        by the measurement apparatus
+```
+
+#### 3.5.2 Step 2 — Quantization as ARW Partition Stability
+
+The **spectral theorem** for Hermitian operators states that any Hermitian
+operator Ô on a Hilbert space has a complete orthonormal set of eigenstates
+{|φₙ⟩} with real eigenvalues {λₙ}:
+
+```
+Ô|φₙ⟩ = λₙ|φₙ⟩
+```
+
+In ARW terms: the eigenstates {|φₙ⟩} are the stable classes of the partition
+induced by observable Ô on X_B. Their stability follows from two properties:
+
+**Orthogonality → class separation:**
+```
+⟨φₙ|φₘ⟩ = δₙₘ
+
+Eigenstates of different eigenvalues are orthogonal — they occupy
+non-overlapping regions of the Hilbert space. No admissible perturbation
+δ ∈ Δ that preserves B can continuously deform one eigenstate into another.
+The classes are separated by gaps that Δ cannot bridge.
+```
+
+**Hermiticity → real, stable eigenvalues:**
+```
+Real eigenvalues mean class labels are invariant under the adjoint
+operation — intrinsic to the partition, not artifacts of representation.
+This is the physical instance of ARW's requirement that the partition be
+invariant under Δ.
+```
+
+The spectral discreteness follows from B alone, not from the differential
+equation. Without B (without square-integrability), the spectrum is
+continuous. B selects X_B; within X_B, only eigenstates with discrete
+eigenvalues survive. Quantization is ARW partition stability applied to
+the Hilbert space setting.
+
+**Formal statement:**
+
+> The discrete spectrum {λₙ} of Ô on X_B is the stable partition of X_B
+> under observable Ô, admissible perturbations Δ, and resolution ε.
+> Physical quantization is the special case of ARW partition stability
+> where X is a Hilbert space, B consists of the physical boundary conditions,
+> and Δ consists of perturbations preserving B.
+
+#### 3.5.3 Step 3 — Observable-Relative Classification and Cover Height
+
+A state |ψ⟩ does not have a unique class assignment. It depends on which
+observable is applied — a direct instance of the ARW cover height structure.
+
+A state that is an eigenstate of the position operator x̂ is generally not
+an eigenstate of the momentum operator p̂. The same physical state belongs
+simultaneously to:
+- a definite position class under O_x
+- an indefinite class under O_p (spread across many momentum eigenstates)
+- a definite energy class under O_H if it is an energy eigenstate
+
+```
+Cover height h(|ψ⟩) = number of observables in Π under which |ψ⟩ has
+                       a well-defined, stable class assignment
+
+h(|φₙ⟩) > 1  when |φₙ⟩ is simultaneously an eigenstate of multiple
+              commuting observables (e.g. H, L², Lz for hydrogen)
+
+h(|ψ⟩) = 1   when |ψ⟩ is an eigenstate of only one observable in Π
+
+h(|ψ⟩) = 0   locally when |ψ⟩ is in an F-gradient region under all
+              observables simultaneously — an idealized limiting case
+```
+
+The commutation structure [Ô₁, Ô₂] = 0 iff simultaneous eigenstates exist
+is precisely the ARW condition for joint admissibility: commuting observables
+define compatible partitions; non-commuting observables define incompatible
+partitions where no state can simultaneously hold a stable class under both.
+Heisenberg's uncertainty principle is the ARW statement that for non-commuting
+observables, h(|ψ⟩) cannot equal 1 under both simultaneously.
+
+#### 3.5.4 Superposition, Interference, and Entanglement in ARW Terms
+
+With cover height in place, the three distinctively quantum phenomena admit
+ARW interpretations:
+
+**Superposition:**
+```
+|ψ⟩ = α|φ₁⟩ + β|φ₂⟩
+
+Under Ô (eigenstates |φ₁⟩, |φ₂⟩):
+  |ψ⟩ is in an F-gradient region — its class assignment under Ô is
+  unstable. Any measurement (δ_meas ∈ Δ_measurement) drives it into
+  one eigenstate with probabilities |α|² and |β|².
+
+Under a different Ô' that has |ψ⟩ as its eigenstate:
+  |ψ⟩ is in a stable class. h(|ψ⟩) ≥ 1 under Ô'.
+
+Superposition is observable-relative instability: F-gradient under Ô,
+potentially stable under Ô'. The measurement is a Δ-action that resolves
+the F-gradient by selecting a specific class.
+```
+
+**Interference:**
+```
+Destructive interference produces states with zero amplitude in certain
+regions — states that cannot survive as admissible elements of X_B under
+the given boundary conditions. Destructively interfering paths are excluded
+by B from X_B: they are inadmissible, not dynamically suppressed. The
+admissible subspace X_B is exactly the set of states that survive the
+interference structure imposed by B.
+```
+
+**Entanglement:**
+```
+An entangled state |ψ_AB⟩ ≠ |ψ_A⟩ ⊗ |ψ_B⟩ has a stable class under a
+joint observable Ô_AB on ℋ_A ⊗ ℋ_B, but the marginal states are not in
+stable classes under the individual observables Ô_A and Ô_B alone.
+
+In ARW terms: the composite scope S_AB has a valid stable partition for
+|ψ_AB⟩, but the sub-scopes S_A and S_B individually do not — the state is
+only classifiable at the joint scope level. This is a Z_shared condition:
+the partition does not decompose into independent sub-partitions for the
+subsystems. Entanglement marks exactly the states for which scope
+decomposition fails.
+```
+
+#### 3.5.5 What Lies Beyond the Embedding
+
+Three features of quantum mechanics have no ARW analog and are not claimed
+as special cases:
+
+**The linear structure of ℋ:** ARW does not require X to be a vector space.
+The superposition principle — that any linear combination of valid states
+is itself a valid state — is a specific algebraic property of quantum
+mechanics. The F-gradient interpretation of superposition works within the
+embedding, but ARW does not *generate* the superposition principle from its
+conditions.
+
+**The Born rule:** The probability interpretation |α|² is a domain-specific
+postulate. ARW describes which partitions are stable and how measurements
+resolve F-gradient regions; it does not predict the probability distribution
+over outcomes. The Born rule is additional structure the embedding does not
+generate.
+
+**Unitarity:** Quantum time evolution preserves inner products and is
+reversible. ARW regime transitions carry no such requirement. Unitarity is
+a specific dynamical constraint of quantum mechanics that lies beyond the
+scope of the partition stability framework.
+
+**Summary:**
+
+| Quantum mechanics | ARW embedding | Beyond embedding |
+|---|---|---|
+| Hilbert space ℋ | State space X | Linear structure of ℋ |
+| Physical boundary conditions | B selecting X_B | — |
+| Hermitian operator eigenstates | Stable partition classes of Ô | — |
+| Spectral discreteness | Partition stability under (B, Δ, ε) | — |
+| Commuting observables | Compatible partitions (joint admissibility) | — |
+| Uncertainty principle | Non-commuting observables: incompatible partitions, h < 2 | — |
+| Superposition | F-gradient region under Ô | Born rule for probabilities |
+| Measurement collapse | Δ_measurement resolving F-gradient | Born rule |
+| Destructive interference | States excluded by B from X_B | — |
+| Entanglement | Joint scope valid; sub-scopes Z_shared | — |
+| Time evolution | Regime dynamics under Δ | Unitarity |
+
 ---
 
 ## 4. Typological Classification as a Structurally Parallel Case
-
-### 4.1 The Formal Parallel
 
 Typological classification — psychological types, social categories, biological
 taxa — has the same formal structure as physical quantization under the
@@ -221,20 +526,18 @@ classes within that subspace are the "quantized" persistent profiles.
 
 The variance crossover problem (documented in
 `arw_aggregation_limits_typological_observables.md`) is the typological analog
-of a phase transition from quantized to continuous description.
+of a phase transition from quantized to continuous description — specifically,
+the transition from the condensed to the dilute regime described in §3.4.
 
 At aggregation level A < N*, the typological partition π is stable: class
 assignments are invariant under the admissible perturbations Δ of individual-level
-behavioral variation. The classes function as stable quantized states.
+behavioral variation. The system is in the condensed phase; types function as
+stable collective modes. The order parameter Ω(A) = σ²_B(A) − σ²_W(A) is positive.
 
 At A > N*, the effective perturbation range grows beyond what the class boundaries
-can contain: σ²_W > σ²_B, meaning the within-class variation exceeds the
-between-class variation. The partition is no longer stable under the effective Δ
-at this aggregation level. The "quantized" description dissolves — not because
-the classes were wrong, but because the scope changed: B, Δ, and ε are all
-implicitly different at the population level than at the individual level.
-
-In the four-condition framework:
+can contain. The system crosses into the dilute phase: Ω(A) < 0, the partition
+is no longer stable, and the "quantized" description dissolves into a continuous
+distribution. In the four-condition framework:
 
 ```
 Individual level:   (B_individual, Δ_individual, ε_individual)
@@ -412,21 +715,24 @@ KHT architectural features:
 
 ### 7.3 For the Variance Crossover
 
-The quantization framework reframes the variance crossover not as a statistical
-nuisance but as the **expected behavior of any quantized description at its
-decoherence scale**:
+The condensed/dilute matter framing (§3.4) reframes the variance crossover as
+the **expected behavior of any quantized description at its phase transition
+point**, rather than as a statistical nuisance or a failure of the typological
+model.
 
-N* is the aggregation scale at which the effective perturbation range Δ_eff(A)
-grows large enough to destabilize the typological partition. This is the
-typological analog of the decoherence scale in quantum mechanics — the scale
-above which quantum behavior (discrete interference patterns) gives way to
-classical behavior (continuous distributions).
+N* is the critical aggregation scale — the typological analog of the critical
+temperature T_c — at which the order parameter Ω(A) = σ²_B(A) − σ²_W(A)
+crosses zero and the system transitions from the condensed (ordered, discrete)
+to the dilute (disordered, continuous) descriptive phase. The Variance Ratio
+Profile V(A) is a measurement of this order parameter as a function of the
+control parameter (context heterogeneity / aggregation level).
 
-The Variance Ratio Profile V(A) is therefore a **decoherence curve** for
-typological descriptions: it tracks how quickly the quantized partition melts
-as the effective scope changes. V(A) = 1 at N* is the "decoherence threshold";
-above it, the classical (continuous, statistical) description is more
-appropriate than the quantized (discrete, typological) description.
+The F-gradient regions in ARW are the critical fluctuation zones near N*:
+the typological partition is near-unstable, class assignments are sensitive
+to small perturbations, and the system is near-critical. Above N*, the classical
+(continuous, statistical) description is more appropriate than the quantized
+(discrete, typological) one — not because the types are wrong, but because the
+scope has crossed into the dilute phase where collective order cannot be maintained.
 
 ---
 
@@ -434,7 +740,268 @@ appropriate than the quantized (discrete, typological) description.
 
 | ID | Question | Character | Priority |
 |---|---|---|---|
-| Q-QPS-1 | Is there a formal mapping between the four-condition framework (B, Δ, ε, X) and the mathematical structure of quantum mechanics (Hilbert space, operators, eigenvalues)? A precise mapping would strengthen the claim that physical quantization is a special case; its absence would clarify the limits of the analogy. | Formal | medium |
+| Q-QPS-1 | §3.5 provides a formal embedding of physical quantization into the ARW framework via the spectral theorem and cover height. The embedding identifies three irreducibly quantum features outside the framework (linearity, Born rule, unitarity). Open question: is the embedding extendable to quantum field theory and many-body systems, where the Hilbert space structure is significantly richer? | Formal | medium |
+| Q-QPS-2 | The resonance selection mechanism (§5) is stated qualitatively. Can it be formalized as a general principle — e.g. in terms of dynamical systems theory (attractors, basins, stability) — that applies across physical and typological cases without requiring domain-specific machinery? | Formal | high |
+| Q-QPS-3 | The "decoherence scale" interpretation of N* (§7.3) suggests a quantitative analog between the typological Variance Ratio Profile V(A) and physical decoherence rates. Is this analogy formally precise, or only structural? What would a precise formulation require? | Formal / Empirical | medium |
+| Q-QPS-4 | The framework claims that the stable partition is determined by (B, Δ, ε) and the dynamics, not by the observer. But in typological systems, the choice of observable O itself shapes which partition appears stable. Is O part of the scope specification, and if so, how does it interact with B, Δ, ε to determine the stable partition? | Conceptual | high |
+| Q-QPS-5 | Non-monotone V(A) profiles suggest multi-level quantization — a system that has stable discrete classes at both individual and institutional levels but not at intermediate levels. Is this structure predictable from the BC hierarchy of the system, or must it be discovered empirically? | Empirical | medium |
+| Q-QPS-6 | The framework treats the formation phase (Layer 2 Dissipation) as the process of crystallization into a stable partition. Is there a formal analog to the cooling rate in physical phase transitions — a rate of Hebbian consolidation that determines whether the system reaches a stable partition or remains in a metastable or amorphous state? | Formal / Empirical | medium |
+
+Typological classification — psychological types, social categories, biological
+taxa — has the same formal structure as physical quantization under the
+four-condition framework:
+
+| Element | Physical quantization | Typological classification |
+|---|---|---|
+| X | Continuous solution space (wavefunction, field) | Continuous cognitive / behavioral / phenotype space |
+| B | Normalizable, single-valued, finite-energy | Adult adaptation phase; stable context; coverage criterion |
+| Δ | Quantum fluctuations, thermal noise | Day-to-day behavioral variation; mild situational perturbation |
+| ε | Measurement resolution; detector grain | Observable resolution; typing instrument grain |
+| Stable partition π | Energy levels, orbital states | Persistent profiles, type classes |
+| "Quantized" classes | Discrete spectrum | 16 types (KHT) or k MBTI classes |
+
+The parallel is not metaphorical. The formal condition is identical: a continuous
+space, boundary conditions selecting a subspace, admissible perturbations defining
+stability, resolution defining grain. The stable partition under these conditions
+is the "quantized" description in both cases.
+
+### 4.2 The Coverage Criterion as a Boundary Condition
+
+In KHT Layer 2, the coverage criterion states that a valid persistent profile
+must provide minimal complete coverage of all modulator axes. This is a
+**boundary condition** on the profile space — it selects the admissible subspace
+X_B from the full 32-combination Layer 1 space.
+
+The 16 KHT types are then the stable classes of the Layer 1 operator–modulator
+space under:
+- B = coverage criterion (completeness of modulator axis representation)
+- Δ = day-to-day behavioral variation (admissible perturbations in the adaptation phase)
+- ε = typing instrument resolution
+
+This is not a coincidence of terminology. The coverage criterion plays exactly
+the role that the square-integrability condition plays in quantum mechanics: it
+selects the admissible subspace from a continuous solution space, and the stable
+classes within that subspace are the "quantized" persistent profiles.
+
+### 4.3 Variance Crossover as Loss of Partition Stability
+
+The variance crossover problem (documented in
+`arw_aggregation_limits_typological_observables.md`) is the typological analog
+of a phase transition from quantized to continuous description — specifically,
+the transition from the condensed to the dilute regime described in §3.4.
+
+At aggregation level A < N*, the typological partition π is stable: class
+assignments are invariant under the admissible perturbations Δ of individual-level
+behavioral variation. The system is in the condensed phase; types function as
+stable collective modes. The order parameter Ω(A) = σ²_B(A) − σ²_W(A) is positive.
+
+At A > N*, the effective perturbation range grows beyond what the class boundaries
+can contain. The system crosses into the dilute phase: Ω(A) < 0, the partition
+is no longer stable, and the "quantized" description dissolves into a continuous
+distribution. In the four-condition framework:
+
+```
+Individual level:   (B_individual, Δ_individual, ε_individual)
+                    → stable partition π (types are quantized)
+
+Population level:   (B_population, Δ_population, ε_population)
+                    → partition π is no longer stable
+                    → effective Δ_population >> Δ_individual
+                    → types "melt" — the quantization dissolves
+```
+
+The crossover N* is the aggregation level at which the effective perturbation
+range Δ_eff(A) grows large enough to destabilize the partition π. It is the
+"decoherence scale" of the typological description: above N*, thermal (contextual)
+noise exceeds the stability margin of the classes.
+
+---
+
+## 5. Resonance as the Selection Mechanism
+
+### 5.1 Why Some Partitions Are Stable and Others Are Not
+
+The four-condition framework characterizes *when* a partition is stable but does
+not explain *which* partitions survive. For both physical and typological
+quantization, the answer involves resonance:
+
+A partition class is stable because it corresponds to a **resonant mode** of
+the system under its boundary conditions — a configuration that the system
+naturally returns to after perturbation, because the boundary conditions and
+coupling structure reinforce it.
+
+In standing waves: the resonant modes are those where the boundary reflections
+constructively interfere. Other wavelengths destructively interfere and are
+suppressed.
+
+In atomic orbitals: the stable states are those where the electron wavefunction
+constructively interferes with itself around the nucleus. Non-integer orbital
+radii produce destructive interference and are not stable.
+
+In KHT Layer 1 (§3.5 of `kht_architecture_layer1.md`): the stable modulator
+configurations are those where the three modulator oscillators (T/F, I/E, J/P)
+reach a coupled resonant state under the operator's coupling structure. The 8
+modulator clusters are the stable synchronization attractors of this oscillator
+system — the configurations that survive under the biological boundary conditions
+and the coupling dynamics.
+
+### 5.2 Resonance Selects Admissible Classes
+
+The general principle:
+
+> A partition class C_i survives as a stable "quantized" state if and only if
+> C_i corresponds to a resonant configuration of the underlying dynamics under
+> the system's boundary conditions.
+
+Non-resonant configurations are suppressed — either by destructive interference
+(wave systems), by dissipation (oscillator systems), or by context heterogeneity
+(typological systems). The stable partition is the set of resonant modes.
+
+This connects the four-condition framework to the mechanism: B selects the
+admissible configurations; Δ defines the perturbation range; resonance within
+B under Δ determines which configurations are attractors; ε determines how finely
+these attractors can be resolved. The quantized classes are the attractors.
+
+---
+
+## 6. Scope-Relativity: "Quantized vs. Continuous" is Not an Ontological Claim
+
+### 6.1 The Same System Under Different Scopes
+
+The scope-relativity of quantization means that the question "is this system
+quantized?" is not well-posed without specifying the scope. A system that appears
+quantized under one (B, Δ, ε) may appear continuous under another.
+
+Physical examples:
+- A gas of molecules appears continuous (temperature, pressure) at macroscopic
+  scope; it appears discrete (individual molecular states) at microscopic scope.
+  Both descriptions are correct within their scope; neither is the "true" description.
+- A quantum harmonic oscillator has discrete energy levels at low temperature
+  (Δ_thermal << ℏω); at high temperature (Δ_thermal >> ℏω), many levels are
+  thermally occupied and the system behaves continuously.
+
+Typological examples:
+- KHT types are stable discrete classes at the individual scope (A < N*);
+  they dissolve into a continuous distribution at the population scope (A >> N*).
+- Political ideologies are stable discrete classes within a given historical
+  period (B = fixed institutional structure, Δ = short-term opinion shifts);
+  they dissolve and reform across longer timescales (B changes as institutions
+  change, Δ grows to include structural shifts).
+
+### 6.2 What This Is Not
+
+This framework does not claim:
+
+- **That reality is discrete.** The framework is about descriptions, not
+  about the metaphysical structure of reality. Whether the underlying X is
+  "really" continuous or discrete is a separate question that the framework
+  does not address.
+
+- **That all quantizations are equivalent.** Physical quantization (governed
+  by the Schrödinger equation and Hilbert space structure) has mathematical
+  properties — superposition, entanglement, interference — that typological
+  quantization does not. The structural parallel concerns the stability
+  condition, not the full mathematical framework.
+
+- **That quantization is arbitrary.** The stable partition under a given
+  (B, Δ, ε) is not chosen by the observer — it is determined by the dynamics
+  and boundary conditions. The scope is chosen; the stable partition is not.
+
+### 6.3 The Productive Version of the Claim
+
+The defensible and productive version of the unification claim is:
+
+> Physical quantization, biological speciation, typological classification,
+> and other forms of discrete description share a common formal structure:
+> a continuous state space, boundary conditions selecting an admissible
+> subspace, admissible perturbations defining stability, and resolution
+> defining grain. The stable partition under these conditions is the
+> "quantized" description. The conditions are domain-specific; the structure
+> is not.
+
+This is a claim about the **epistemology of classification**, not about the
+ontology of the classified systems. It explains why discrete descriptions
+recur across domains without asserting that domains are more similar than
+they are.
+
+---
+
+## 7. Implications
+
+### 7.1 For ARW
+
+The quantization framework provides a unifying interpretation of several
+ARW concepts:
+
+- **Regime partition**: the regimes of an ARW scope are the stable classes
+  of the state space under (B, Δ, ε). They are "quantized" states of the
+  system — not arbitrary divisions but the partitions that survive the
+  system's admissible dynamics.
+
+- **Observable range R(π)**: the range within which an observable is valid
+  is the range within which the stable partition is maintained. Outside R(π),
+  the partition dissolves — the observable enters an unstable region where
+  class assignments fluctuate under Δ.
+
+- **F-gradient regions**: these are the "soft" class boundaries — regions
+  where the partition is near-unstable, analogous to the region near a phase
+  transition where the ordered and disordered phases coexist. The F-gradient
+  is the typological analog of critical fluctuations near a phase boundary.
+
+- **Z_shared**: the scope transition where the entire partition structure
+  changes. This is the analog of a phase transition itself — not fluctuations
+  near the boundary but a qualitative change in which partition is stable.
+
+### 7.2 For KHT
+
+The quantization framework provides a principled explanation for several
+KHT architectural features:
+
+- **Why 16 types**: the 16 persistent profiles are the stable partition of
+  the Layer 1 O×M space under the coverage boundary condition and biological
+  Δ. They are not chosen; they are the resonant modes that survive the
+  biological scope conditions.
+
+- **Why the formation phase converges**: the formation phase is the process
+  by which the system's effective Δ decreases (Hebbian consolidation narrows
+  the perturbation range that the profile can withstand) until a stable
+  class crystallizes. It is the typological analog of cooling a physical
+  system below its phase transition temperature.
+
+- **Why regimes are discrete**: the four sides of the mind (R1–R4) are the
+  stable partitions of the cognitive state space under the regime-specific
+  (B, Δ, ε) conditions. The transitions between them are scope transitions
+  — moments when the effective (B, Δ, ε) changes fast enough to destabilize
+  the current partition.
+
+### 7.3 For the Variance Crossover
+
+The condensed/dilute matter framing (§3.4) reframes the variance crossover as
+the **expected behavior of any quantized description at its phase transition
+point**, rather than as a statistical nuisance or a failure of the typological
+model.
+
+N* is the critical aggregation scale — the typological analog of the critical
+temperature T_c — at which the order parameter Ω(A) = σ²_B(A) − σ²_W(A)
+crosses zero and the system transitions from the condensed (ordered, discrete)
+to the dilute (disordered, continuous) descriptive phase. The Variance Ratio
+Profile V(A) is a measurement of this order parameter as a function of the
+control parameter (context heterogeneity / aggregation level).
+
+The F-gradient regions in ARW are the critical fluctuation zones near N*:
+the typological partition is near-unstable, class assignments are sensitive
+to small perturbations, and the system is near-critical. Above N*, the classical
+(continuous, statistical) description is more appropriate than the quantized
+(discrete, typological) one — not because the types are wrong, but because the
+scope has crossed into the dilute phase where collective order cannot be maintained.
+
+---
+
+## 8. Open Questions
+
+| ID | Question | Character | Priority |
+|---|---|---|---|
+| Q-QPS-1 | §3.5 provides a formal embedding of physical quantization into the ARW framework via the spectral theorem and cover height. The embedding identifies three irreducibly quantum features outside the framework (linearity, Born rule, unitarity). Open question: is the embedding extendable to quantum field theory and many-body systems, where the Hilbert space structure is significantly richer? | Formal | medium |
 | Q-QPS-2 | The resonance selection mechanism (§5) is stated qualitatively. Can it be formalized as a general principle — e.g. in terms of dynamical systems theory (attractors, basins, stability) — that applies across physical and typological cases without requiring domain-specific machinery? | Formal | high |
 | Q-QPS-3 | The "decoherence scale" interpretation of N* (§7.3) suggests a quantitative analog between the typological Variance Ratio Profile V(A) and physical decoherence rates. Is this analogy formally precise, or only structural? What would a precise formulation require? | Formal / Empirical | medium |
 | Q-QPS-4 | The framework claims that the stable partition is determined by (B, Δ, ε) and the dynamics, not by the observer. But in typological systems, the choice of observable O itself shapes which partition appears stable. Is O part of the scope specification, and if so, how does it interact with B, Δ, ε to determine the stable partition? | Conceptual | high |
