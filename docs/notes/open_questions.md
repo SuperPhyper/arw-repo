@@ -26,6 +26,15 @@ But near regime boundaries, finer resolution may be needed to resolve
 the partition, while bulk states require less.
 Should ε be state-dependent? What is the consistent formulation?
 
+*Partial structural response (2026-04-29, Felder 2026):* σ_Δ(x) = sup_{δ∈Δ} |O(x+δ) − O(x)|
+is now a named pointwise quantity. The admissible resolution regime is defined as
+sup_x σ_Δ(x) < ε < ε*(O,X_B), where the sup is the binding constraint. This makes
+the *effective* ε requirement state-dependent in a specific sense: wherever σ_Δ(x) is
+large, the local stability requirement on ε tightens. However, this does not yield a
+formally state-dependent ε in the scope tuple — ε remains a global scalar. The question
+of whether and how to extend the scope tuple to allow ε: X_B → ℝ₊ remains open.
+Status: partially addressed via σ_Δ(x) — formal scope-tuple extension open
+
 **Q3 — Multiple ε for multiple observables**
 When Π = {π₁, π₂, ...}, each observable may have a natural resolution scale.
 What is the joint admissibility condition?
@@ -578,36 +587,23 @@ Status: open
   asks not what the system is beyond the boundary, but what a valid
   description beyond the boundary would need to structurally provide.
 
-**Q-PROJ-01 — Structural requirements on successor scopes from failure mode**
-- **Status:** open
-- **Question:** The failure structure at an admissibility boundary (F-type
-  mode, region of B, direction of approach) may carry partial information
-  about what a more complete parametrisation would need to provide. An F0
-  failure identifies an observable class that fails here — which implies a
-  structural requirement on any observable that would succeed here. Can ARW
-  generate such structural requirements systematically from the failure mode?
-  That is, can the description of where and how a scope fails constrain the
-  form of a successor scope — without projecting the current scope's content
-  beyond its boundary?
-- **Registered:** 2026-05-09
-- **Source:** docs/notes/scope_failure_and_ontological_projection.md
-- **Note:** Distinct from the projection error (Section 7 of source doc):
-  asks not what the system is beyond the boundary, but what a valid
-  description beyond the boundary would need to structurally provide.
+---
 
-**Q-PROJ-01 — Structural requirements on successor scopes from failure mode**
+## Diagnostic Workflow Ordering
+*(Added: session 2026-05-10)*
+
+**Q-CTX-01 — stability_mask_exclusion vs. ε↑ as primary F-gradient action**
 - **Status:** open
-- **Question:** The failure structure at an admissibility boundary (F-type
-  mode, region of B, direction of approach) may carry partial information
-  about what a more complete parametrisation would need to provide. An F0
-  failure identifies an observable class that fails here — which implies a
-  structural requirement on any observable that would succeed here. Can ARW
-  generate such structural requirements systematically from the failure mode?
-  That is, can the description of where and how a scope fails constrain the
-  form of a successor scope — without projecting the current scope's content
-  beyond its boundary?
-- **Registered:** 2026-05-09
-- **Source:** docs/notes/scope_failure_and_ontological_projection.md
-- **Note:** Distinct from the projection error (Section 7 of source doc):
-  asks not what the system is beyond the boundary, but what a valid
-  description beyond the boundary would need to structurally provide.
+- **Question:** Does `stability_mask_exclusion` need to be the primary action
+  listed for F-gradient (before ε↑) in diagnostic workflows, or is ε↑ with a
+  correct ε*(O,X_B) check operationally equivalent? In the eval run (2026-05-10),
+  both approaches produced correct downstream results, but the ordering question
+  was not resolved: a stability mask that excludes x where σ_Δ(x) ≥ ε preserves
+  the cover structure in the remaining region, while ε↑ expands the resolution
+  window globally — which may merge adjacent regimes. The two actions are not
+  interchangeable when the high-gradient region is interior to X_B (not at a
+  boundary).
+- **Registered:** 2026-05-10
+- **Source:** docs/notes/research_journal.md (Session 2026-05-10, Open questions);
+  docs/meta/context_map/context_map_falsification_bc.md (F-gradient entry)
+- **Related:** F-gradient falsification category (§3 of repo context); Q2 (state-dependent ε)
