@@ -282,12 +282,12 @@ The answer lies in the **BC class** — the type of structural constraint at wor
 
 | BC Class | Structural mechanism | Typical signature |
 |---|---|---|
-| Restriction | state space is bounded or filtered | threshold in parameter |
-| Coupling | subsystems are interdependent | synchronization, entrainment |
-| Symmetry Breaking | parameter change destroys a symmetry | bifurcation, hysteresis |
-| Dissipation | energy or information is lost over time | convergence to attractor |
-| Forcing | external input drives the system | periodic or irregular drive |
-| Aggregation | microscopic states are pooled | mean-field, coarse-graining |
+| Restriction | admissible subspace bounded (object-level); admissibility condition for all other relations (meta-level) | threshold in parameter; subspace boundary |
+| Coupling | unordered relation between components | synchronization, collective modes |
+| Symmetry Breaking | previously equivalent states become distinguishable | bifurcation, hysteresis |
+| Dissipation | ordered-continuation relation (R_D ⊆ X × X_≤); time is most common ordering | attractor formation; basin depth |
+| Forcing | directional inter-regime coupling (one regime organises another) | compatibility/incommensurability; decoupling/absorption |
+| Aggregation | description-level relation (fine → coarse grain) | mean-field, coarse-graining |
 
 BC classes are not additional assumptions. They are inferences from the scope tuple:
 if the scope is well-specified, the BC class that generated the partition is

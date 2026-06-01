@@ -150,7 +150,9 @@ In ODE form: `ẋ = f(x, t)` — a t-dependent operator on X.
 
 ### BC Class
 
-**Forcing**
+**Forcing** *(S3 captures the time-indexed special case; general Forcing is a
+directional inter-regime relation R_F: Regime_A → Adm(Regime_B). Updated 2026-05-30.
+See `bc_relational_structure.md` §2.3.)*
 
 ### Cross-Domain Examples
 
@@ -197,7 +199,11 @@ S4 (Dissipation) and S1 (Restriction). → See open question Q-DISS-01 below.
 
 ### BC Class
 
-**Dissipation**
+**Dissipation** *(S4 captures the time-indexed contraction special case; general
+Dissipation is an ordered-continuation relation R_D ⊆ X × X_≤ where ≤ is an
+ordering (time is most common; developmental stages, learning sequences also
+qualify). Attractors are secondary phenomena arising from ≤. Updated 2026-05-30.
+See `bc_relational_structure.md` §2.2.)*
 
 *Note: no active case in the repo covers this BC class yet. CASE-0003 (double pendulum)
 is classified as Restriction, not Dissipation. A dedicated Dissipation case is missing.*

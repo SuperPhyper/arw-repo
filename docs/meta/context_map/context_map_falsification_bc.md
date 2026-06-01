@@ -96,20 +96,28 @@ COUPLING: bc_class∈bc_taxonomy | operator=∘⊗ | param=κ(Kuramoto),K(SL),co
     observable_target: order_params(r_ss),sync_indices | Z(π)@transition
     cases: CASE-0001(Kuramoto),CASE-0002(MultiPendulum),CASE-0004(SL)
 
-RESTRICTION: bc_class∈bc_taxonomy | operator=π(projection) | param=E(pendulum),amplitude_limits
-    signature: constraint_on_state_space_or_energy | partition=energy_regime_boundary
+RESTRICTION: bc_class∈bc_taxonomy | operator=π(projection,object-level)+Adm(meta-level) | param=E(pendulum),amplitude_limits
+    signature: constraint_on_admissible_subspace | partition=energy_regime_boundary
+    meta_role: admissibility_condition_for_all_other_relations (see bc_relational_structure.md §3)
     observable_target: energy_based,frequency_content | Z(π)@constraint_boundary
     cases: CASE-0003(DoublePendulum)
+    updated: 2026-05-30 — added meta-relational character
 
-DISSIPATION: bc_class∈bc_taxonomy | operator=×(contraction) | param=γ(damping),viscosity,friction
-    signature: energy_loss | partition=amplitude_collapse_boundary
-    observable_target: amplitude_decay,variance | Z(π)@amplitude_zero
+DISSIPATION: bc_class∈bc_taxonomy | operator=ordered_continuation(R_D⊆X×X_≤) | param=τ(ordering_scale),sequence_horizon
+    signature: ordered_distinguishability_preservation | partition=attractor_basin_boundary
+    note: ordering ≤ is primary (time is most common case); energy_loss and attractor depth are secondary
+    failure_directions: weakening(→indistinguishability) | deepening(→single_attractor)
+    observable_target: recovery_time,zone_sharpness,basin_depth | Z(π)@attractor_disappears
     cases: CASE-0005(pending)
+    updated: 2026-05-30 — reformulated as ordered-continuation relation; energy_loss demoted to secondary
 
-FORCING: bc_class∈bc_taxonomy | operator=E[·|G](external_input) | param=Ω(freq),forcing_amplitude
-    signature: external_energy_injection | partition=resonance_boundary
-    observable_target: phase_locking,resonance_observables | Z(π)@resonance_onset
+FORCING: bc_class∈bc_taxonomy | operator=R_F(Regime_A→Adm(Regime_B),directional) | param=regime_compatibility,organiser_scale
+    signature: inter_regime_admissibility_relation | partition=compatibility_boundary
+    note: frequency/resonance is a special case; general form is directional inter-regime coupling
+    failure_directions: decoupling(organiser_loses_reach) | absorption(organised_loses_autonomy)
+    observable_target: regime_coherence,cross_regime_correlation | Z(π)@incommensurability_zone
     cases: CASE-0006(pending)
+    updated: 2026-05-30 — reformulated as directional inter-regime coupling; external_energy_injection demoted to special case
 
 AGGREGATION: bc_class∈bc_taxonomy | operator=E[·|G](population) | param=σ(freq_spread),pop_variance
     signature: statistical_aggregation_of_units | partition=collective_onset

@@ -19,12 +19,12 @@ It is the operational core of the ARW research hypothesis:
 
 | BC class | Primary partition type | Secondary (under combination) | Signature parameter |
 |---|---|---|---|
-| Restriction | Sequential | Binary (at extreme saturation) | Resource bound C |
+| Restriction | Sequential (object-level); meta: admissibility of all relations | Binary (at extreme saturation) | Saturation bound C |
 | Coupling | Sequential → Binary | Clustered (network topology) | Coupling strength κ |
 | Symmetry breaking | Binary (bifurcated) | Clustered (multiple broken symmetries) | Asymmetry magnitude h |
-| Dissipation | Multi-stable (basin structure) | Binary (high dissipation) | Dissipation rate γ |
-| Forcing | Sequential (resonance ladder) | Multi-stable (bistable forcing) | Forcing frequency Ω |
-| Aggregation | Hierarchical (coarsened) | Binary (strong aggregation) | Resolution loss ε_agg |
+| Dissipation | Multi-stable (ordered-continuation basins) | Binary (strong ordering → single attractor) | Ordering scale τ |
+| Forcing | Jointly-organised / incommensurable / dissolution / absorption | Depends on regime compatibility | Inter-regime compatibility condition |
+| Aggregation | Hierarchical (coarsened) | Binary (strong aggregation) | Resolution loss ε_agg; N* |
 
 ---
 

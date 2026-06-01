@@ -3,14 +3,21 @@ status: note
 layer: docs/notes/
 title: "Scope Failure and Ontological Projection"
 created: 2026-05-09
+last_updated: 2026-05-29
 depends_on:
   - docs/glossary/scope.md
   - docs/glossary/admissibility.md
   - docs/advanced/epistemic_ceilings_as_scope_saturation.md
   - docs/art_instantiations/epistemic_context_and_functional_admissibility.md
   - docs/advanced/causality_as_directed_observable_structure.md
+  - docs/bc_taxonomy/bc_failure_signatures.md
 open_questions:
-  - Q-PROJ-01
+  - Q-PROJ-01 (partially addressed in §9)
+update_notes: >
+  2026-05-29: Added §7 (BC failure signatures and projection error structure),
+  §8 (philosophical contexts beyond physics — consciousness, species, social scopes),
+  §9 (self-application of ARW, partial answer to Q-PROJ-01 via bc_failure_signatures).
+  Core argument (§1–6) unchanged.
 ---
 
 # Scope Failure and Ontological Projection
@@ -156,20 +163,125 @@ projected beyond the boundary under the appearance of being within it.
 
 ---
 
-## 7. Open Question
+## 7. BC Failure Signatures and the Structure of the Projection Error
 
-**Q-PROJ-01:** The failure structure at an admissibility boundary (the
-specific F-type mode, the region of B where it occurs, the direction
-of approach) may carry partial information about what a more complete
-parametrisation would need to provide. For example: an F0 failure
-(observable outside R(π)) identifies a structural class of observable
-that fails here — which implies a structural requirement on any
-observable that would succeed here. Can ARW generate such structural
-requirements systematically from the failure mode? That is, can the
-description of where and how a scope fails constrain the form of a
-successor scope — without projecting the current scope's content beyond
-its boundary?
+*(Added 2026-05-29 — integrates bc_failure_signatures.md developed in
+monograph session.)*
 
-This is distinct from the projection error: it asks not what the system
-is beyond the boundary, but what a valid description beyond the boundary
-would need to look like, given the failure structure.
+The projection error is not uniformly shaped. Its structure depends on
+which BC class is generating the regime being described. This has a
+concrete consequence: the specific form of the projection error can be
+predicted from the operative BC class.
+
+**Coupling BC:** The instability band at the coupling threshold (Z_shared)
+is the admissibility boundary. The projection error characteristic of
+coupling scopes is to read the instability as a claim about the system
+beyond the threshold — e.g., "the system becomes incoherent" rather than
+"the scope loses its ability to make zone assignments here." The failure is
+about the description, not the system.
+
+**Restriction BC:** The separatrix is a genuine F0 boundary — the observable
+loses its referent. The characteristic projection error is to treat the
+observable null (ω = 0 at the separatrix) as a statement about the system
+(the system "has no frequency") rather than about the scope (this observable
+class cannot be extended through this boundary).
+
+**Dissipation BC:** The failure is gradual (fragility increase). The
+projection error is to read increasing fragility as a statement about the
+system's "inherent instability" rather than about the attractor depth
+decreasing within the current scope's conditions.
+
+The general principle: the failure mode taxonomy (F0, F-gradient, Z_shared)
+describes scope properties at the boundary. The BC class determines which
+failure mode characteristically appears. Reading either as claims about the
+system beyond the boundary is the projection error in its BC-specific form.
+
+*See:* `docs/bc_taxonomy/bc_failure_signatures.md` for the full failure
+signature taxonomy by BC class.
+
+---
+
+## 8. Philosophical Contexts Beyond Physics
+
+*(Added 2026-05-29 — extends the worked example range for monograph Part IX.)*
+
+The Bell inequality example (§4) operates in physics, where admissibility
+boundaries are relatively well-defined. The projection error is equally
+prevalent in philosophical and social-scientific contexts, where
+admissibility boundaries are typically unmarked.
+
+**Consciousness and mental causation.** The question "what is consciousness
+really?" is frequently a dispute over admissibility conditions, not over the
+substrate. Different scopes — neurological, phenomenological, functionalist
+— have different Π and different Δ. Each encounters failure at its boundary
+and the characteristic projection error is to treat that failure as evidence
+about what consciousness "is" beyond the boundary of the failing scope.
+The hard problem of consciousness is, in ARW terms, a family of projection
+errors from scopes with incompatible admissibility conditions.
+
+**Species and natural kinds.** The species problem in biology — the
+proliferation of incompatible species concepts — is not resolved by finding
+the "real" species concept. Different species concepts are scopes with
+different observables (morphological, genetic, reproductive). Each fails at
+its boundary in characteristic ways; the failure patterns generate the
+appearance of contradictory facts about the same organisms. The productive
+question is not "which concept is correct?" but "what is the admissibility
+region of each, and where do they overlap?"
+
+**Social and institutional description.** Questions like "what is the
+real cause of organisational failure?" systematically project the failure
+signatures of the operative BC class (e.g., dissipation exhaustion
+described as "inherent instability," coupling failure described as "lack
+of leadership") onto the system beyond the scope's admissibility boundary.
+The description stops working; the failure pattern is reported as a finding
+about the system.
+
+The structural point across all these cases: making admissibility boundaries
+explicit converts apparent ontological disputes into tractable scope
+comparisons. The disagreement does not dissolve — different scopes remain
+valid in their respective regions — but it becomes the right kind of
+disagreement: about scope conditions, not about reality.
+
+---
+
+## 9. Self-Application and Q-PROJ-01 Update
+
+*(Added 2026-05-29 — addresses reflexivity and partial answer to Q-PROJ-01.)*
+
+**Self-application.** ARW itself is a description — a scope that describes
+scope structure. As such it has its own admissibility conditions: it requires
+that the system being described has enough coherence to have a describable
+BC structure at all. Below a certain pre-scopal threshold, the framework has
+no purchase. The projection error applies to ARW itself: treating the BC
+taxonomy as a view from nowhere — as unconditionally valid rather than
+scope-valid — would be the projection error at the meta-level. ARW's
+admissibility boundary is the condition under which the taxonomy's answers
+become unstable: when the same system admits multiple incompatible BC
+characterisations even after careful analysis, the taxonomy is approaching
+the edge of its own scope. This is diagnostic, not refutatory.
+
+**Q-PROJ-01: Partial answer.** The question — can failure structure
+constrain the form of a successor scope? — is now partially addressable via
+`bc_failure_signatures.md`.
+
+An F0 failure in a coupling-BC scope implies that any successor scope
+operating across the coupling threshold requires an observable that either:
+(a) does not use the collective-mode signal that fails at κ_c, or
+(b) explicitly models the instability band as part of its structure rather
+than as a measurement artefact.
+
+An F0 failure in a restriction-BC scope (separatrix crossing) implies that
+the successor scope requires an observable with a referent on both sides of
+the boundary — one that does not have a null point at the transition itself.
+
+The general form of the partial answer: the BC class of the failing scope
+constrains the observable class that a successor scope would need to use.
+The failure mode narrows the admissibility class of successor observables —
+without specifying which member of that class is appropriate. That
+specification still requires empirical access to the region beyond the
+boundary.
+
+This does not fully resolve Q-PROJ-01, which asks for a systematic
+procedure. But it replaces the question's open-ended form with a structured
+one: successor scope constraints are BC-class-specific, and the constraint
+is on the observable class, not on the boundary conditions.

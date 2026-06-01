@@ -91,37 +91,45 @@ Typical effects:
 
 ## Dissipation
 
-Loss of energy or system resources over time.
+Distinguishability preservation across an ordered continuation (R_D ⊆ X × X_≤,
+where ≤ is an ordering). Time is the most common ordering; developmental
+stages, learning sequences, and organisational histories also qualify.
+Energy loss and damping are the time-indexed special case. Attractors and
+attractor basins are secondary — they arise from the ordering, not the reverse.
+*(Updated 2026-05-30: ordered-continuation relation; see bc_relational_structure.md §2.2)*
 
 Examples:
 
-- friction
-- damping
-- resource decay
+- friction / damping (temporal ordering)
+- resource decay (resource-sequence ordering)
+- institutional inertia (historical ordering)
 
 Typical effects:
 
-- attractor formation
+- attractor formation (sustained distinguishability along ≤)
 - stabilization of specific regimes
-- suppression of oscillatory behavior
+- suppression of fine structure under strong ordering
 
 ---
 
 ## Forcing
 
-External input or driving forces acting on the system.
+Directional inter-regime coupling: one regime (organiser, R_A) determines
+part of the admissible structure of another (organised, R_B). Frequency/
+resonance and external energy injection are the time-indexed special cases.
+*(Updated 2026-05-30: inter-regime coupling; see bc_relational_structure.md §2.3)*
 
 Examples:
 
-- periodic forcing
-- environmental influence
-- external control signals
+- periodic external input (frequency special case)
+- institutional governance (one regime organising another)
+- environmental constraints (ecological regime organising species regime)
 
 Typical effects:
 
-- entrainment
-- phase locking
-- driven regime transitions
+- jointly-organised behaviour (compatible regimes)
+- incommensurability zone (incompatible regimes)
+- dissolution or absorption (failure modes)
 
 ---
 

@@ -1,6 +1,8 @@
 ---
-status: working-definition
+status: note
 layer: docs/advanced/
+last_updated: 2026-05-30
+superseded_partially_by: docs/bc_taxonomy/bc_relational_structure.md
 ---
 
 
@@ -211,6 +213,46 @@ This strengthens the connection between
 BC structure → operator language → regime formation.
 
 ---
+
+# 9. Reconciliation with Relational BC Structure (added 2026-05-30)
+
+The argument in §§3–6 and §8 operates at the **operator-decomposition level**:
+it describes how Forcing and Dissipation implementations are built from
+primitive operators combined with time. This analysis is correct at that level.
+
+A separate question — addressed in `bc_relational_structure.md` (2026-05-30)
+— is the **structural identity** of the BC classes as relation types. At this
+level, the analysis reaches a different conclusion:
+
+- **Dissipation** is an *ordered-continuation relation* (R_D ⊆ X × X_≤).
+  The ordering ≤ is the structural primitive, not time. Time-coupling (the
+  `time ⊗` operation in §4) is the temporal special case of this ordering.
+  The claim "Dissipation is a derived BC" holds at the operator-decomposition
+  level but not at the structural-identity level: as a relation type, it is
+  one of the five fundamental ways of organizing distinguishability.
+
+- **Forcing** is a *directional inter-regime relation* (R_F: Regime_A →
+  Adm(Regime_B)). The S3 signature (time-coupled product) in §3 captures
+  the temporal implementation. Non-temporal forcing (governance, scheduling,
+  normative organisation) is structurally the same BC class but not
+  decomposable as `time ⊗ multiplication ⊗ addition`.
+
+**Reconciliation:** The two analyses are complementary, not contradictory,
+but they address different questions:
+- §§3–6 of this document: *how are Forcing/Dissipation implementations constructed
+  from operator primitives?* (valid at the operator level)
+- `bc_relational_structure.md` §2.2–2.3: *what is the structural identity of
+  Forcing/Dissipation as BC classes?* (valid at the relational level)
+
+The core claim of §6 — "dynamic BCs should be interpreted as derived operator
+structures rather than primitive BC categories" — needs qualification:
+- At the **operator-implementation level**: correct for time-indexed cases
+- At the **structural-identity level**: incorrect; Forcing and Dissipation are
+  primitive relation types in the 5+1 relational taxonomy
+
+This document remains valid as an operator-decomposition analysis. Its status
+has been updated to `note` to reflect that the structural-identity claim is
+partially superseded. See `bc_relational_structure.md` for the current view.
 
 # 9. Outlook and Structural Implications
 

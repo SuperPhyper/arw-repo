@@ -2,10 +2,11 @@
 status: hypothesis
 layer: docs/art_instantiations/
 created: 2026-05-07
-last_updated: 2026-05-07
+last_updated: 2026-05-30
 depends_on:
   - docs/glossary/scope.md
   - docs/bc_taxonomy/boundary_condition_classes.md
+  - docs/bc_taxonomy/bc_relational_structure.md
   - docs/advanced/observable_decomposition.md
   - docs/art_instantiations/epistemic_context_and_functional_admissibility.md
 ---
@@ -51,9 +52,28 @@ under a specific parametrization of G.
 | Component | Definition | Role |
 |---|---|---|
 | **Λ** | Parametrization space of G — the set of all contexts in which G can be instantiated | Topological space; not necessarily metric or continuous |
-| **Σ = (P, D, K)** | Signature structure: P = present signatures ⊆ {S1–S5}, D ⊆ P = dominant, K ⊆ P×P = conflict relations | Determines collapse type |
+| **Σ** | Signature structure: persistence measure p : 2^BC → ℝ≥0 over all BC configurations (see below) | Determines collapse type; grounds cross-system transfer |
 | **φ: Λ → (B, Π)** | Partial instantiation map: G determines domain and observable class only | Preserves ARW/ART separation |
 | **C** | Epistemic-operational context: the totality of epistemic resources under which description remains stable | Provided by ART; contains R as special case — see `epistemic_context_and_functional_admissibility.md` |
+
+### Note on Σ — formal definition
+
+The earlier informal definition Σ = (P, D, K) (present / dominant / conflict)
+is superseded. Σ is now formalised as a persistence measure
+
+```
+Σ : 2^BC → ℝ≥0,    σ ↦ p(σ)
+```
+
+where p(σ) is the η-interval length over which BC configuration σ is
+simultaneously active and structurally coherent. Individual class presence,
+dominance ordering, and conflict structure are all recoverable from p.
+The (P, D, K) decomposition remains valid as a coarse summary but should
+not be used as the primary formal object.
+
+→ Full definition and open questions: `docs/advanced/bc_signature_persistence_and_dominance.md`
+
+---
 
 ### Note on C replacing R
 
@@ -295,19 +315,64 @@ Generator G
 
 ## Open Questions
 
-- **Q-GEN-01** (open): Is the three-type taxonomy exhaustive? Candidate gap:
-  non-autonomous generators may produce collapse geometries not captured.
+- **Q-GEN-01** (updated 2026-05-30): Is the three-type taxonomy exhaustive?
+  New candidate gap: **Symmetry Breaking has no S-signature** in the current
+  S1-S5 taxonomy. Type II currently assigns bifurcation points to S3 (Forcing),
+  but bifurcation is Symmetry Breaking's mechanism (degenerate states become
+  distinguishable), not Forcing (inter-regime coupling). A potential S6 signature
+  for Symmetry Breaking would require Type II to be split:
+  - **Type II-a** (Forcing incommensurability): inter-regime relation becomes
+    underdetermined, S3-dominant — resonance, competing inter-regime organizations
+  - **Type II-b** (Symmetry breaking bifurcation): degenerate solution branches
+    emerge, S6-dominant — bifurcation without regime incompatibility
+  See `bc_relational_structure.md` for the structural basis of this distinction.
 
 - **Q-GEN-02** (partially answered, 2026-05-07): Signature-first inference
   works for Type I and II. Type III requires conflict analysis of K.
+  *Update 2026-05-30:* K ≠ ∅ can now be given a structural characterization:
+  K ≠ ∅ arises when two relation types in G have mutually incompatible embedded
+  Restriction conditions (see `bc_relational_structure.md` §3). Type III is the
+  failure mode where the Restriction meta-condition cannot be simultaneously
+  satisfied for all active relation types. This makes Type III formally derivable
+  from the relational structure of G rather than requiring an ad hoc "conflict
+  analysis."
 
 - **Q-GEN-03** (partially answered, 2026-05-07): G = (Λ, Σ, φ, C) established.
   Open: formal topology conditions on Λ per collapse type; formal definition
   of A_f / A_h boundary independent of specific C.
+  *Update 2026-05-30:* A(G) can now be characterized as the intersection of all
+  embedded Restriction conditions: A(G) = ∩_τ Adm(R_τ) where τ ranges over all
+  relation types active in G. This gives A(G) a compositional structure: each
+  relation type contributes its own boundary condition, and A(G) is their
+  intersection. Type I collapse occurs when exactly one Adm(R_τ) boundary is
+  crossed; Type III when multiple are mutually exclusive.
 
-- **Q-GEN-04** (new, 2026-05-07): What is the minimal C that makes A_f(G | C)
-  non-empty for each collapse type? This would characterize the minimum epistemic
-  resources required to operationalize a generator of each type.
+- **Q-GEN-04** (open, 2026-05-07): What is the minimal C that makes A_f(G | C)
+  non-empty for each collapse type?
+  *Update 2026-05-30:* C = (O, Δ_C, ε_C, ρ, τ, σ, κ) is now interpretable as
+  the epistemic-level instantiation of the Restriction meta-relation. Specifically:
+  ε_C is an explicit resolution Restriction; Δ_C is a perturbation Restriction;
+  ρ is a resource-space Restriction; τ is the Restriction embedded in Dissipation
+  (effective memory horizon). Therefore A_f(G | C) = A(G) ∩ Adm_Restriction(C):
+  the functionally admissible region is the formally admissible region further
+  restricted by C's epistemic Restriction conditions.
+
+- **Q-GEN-05** (new, 2026-05-30): Does the Forcing reformulation as inter-regime
+  coupling change the identification of Type II canonical cases? Specifically:
+  the "ghost sector in quadratic gravity" example involves the gravitational
+  field self-coupling — is this better understood as Forcing (the metric's
+  self-organizing inter-regime coupling becoming incommensurable) or Symmetry
+  Breaking (degenerate vacuum sectors)? The distinction determines whether the
+  case is Type II-a or Type II-b under the proposed split.
+
+- **Q-GEN-06** (new, 2026-05-30): The Context tuple C and the Restriction
+  meta-relation are formally parallel. Is there a derivation of the minimum C
+  components from the five relation types? Hypothesis: the minimum C = (Δ_C, ε_C)
+  covers the Restriction conditions embedded in Coupling and Restriction directly;
+  ρ covers Restriction-on-Forcing; τ covers Restriction-on-Dissipation; N* covers
+  Restriction-on-Aggregation. If so, the seven C components are not independent
+  but map onto the five embedded Restriction conditions plus two observational
+  components (O, σ).
 
 ---
 

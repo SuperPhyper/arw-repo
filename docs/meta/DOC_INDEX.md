@@ -159,6 +159,9 @@ See `arw-doc-consistency` skill for usage rules.
 | docs/bc_taxonomy/boundary_condition_classes.md | working-definition | BC classes 1–6 (Coupling, Restriction, Forcing, Dissipation, Aggregation, Symmetry Breaking) | — | **Primary BC taxonomy reference** |
 | docs/bc_taxonomy/partition_types.md | working-definition | partition types | — | — |
 | docs/bc_taxonomy/transfer_distortion_metrics.md | working-definition | Φ, TBS_norm, RCD, PCI, SDI | — | **Source of truth for transfer metrics** |
+| docs/bc_taxonomy/bc_failure_signatures.md | note | BC failure signatures, onset trajectories, F0/F-gradient/Z_shared by class, multi-BC masking | — | Informs Part VI (monograph); complements boundary_condition_classes.md |
+| docs/bc_taxonomy/bc_relational_structure.md | hypothesis | BC classes as relation types, Restriction as meta-relation, Dissipation as temporal distinguishability, Forcing as inter-regime coupling, 5+1 taxonomy structure | — | Created 2026-05-30; formal companion to bc_bedrock_working_definition.md; informs Part IX §9.1 |
+| docs/notes/c_components_derivation_attempt.md | note | derivation attempt: C components from embedded Restrictions, mapping analysis, gap identification | — | Created 2026-05-30; addresses Q-GEN-06; depends on bc_relational_structure.md + epistemic_context_and_functional_admissibility.md |
 
 ---
 

@@ -42,12 +42,25 @@ structurally similar regime partitions across different systems.
 ## Class 1 — Restriction
 
 **Definition:**
-Constraints that bound a resource, capacity, or degree of freedom
-to a finite range or maximum value.
+Constraints that define the admissible subspace within which the system
+can operate — bounding resources, capacities, degrees of freedom, or the
+domains of other relations.
 
 ```
 B_restriction: f(x) ≤ C   for some resource function f and bound C
+               — or more generally —
+Adm(R_τ) ⊆ P  for any relation type τ active in the scope
 ```
+
+**Structural note (updated 2026-05-30):**
+Restriction has a dual role. At the object level, it constrains the
+admissible state space directly (the f(x) ≤ C form). At the meta level,
+it is the admissibility condition for each of the other five relation types:
+every Coupling, Dissipation, Forcing, Symmetry Breaking, and Aggregation BC
+embeds a Restriction that defines where that relation can operate. This
+meta-relational character is distinct from the object-level subspace
+constraint and is the deeper structural role of the class.
+See `bc_relational_structure.md` §3.
 
 **Mechanism:**
 As f(x) approaches C, certain strategies or trajectories become inadmissible.
@@ -150,23 +163,45 @@ stability and accessibility change asymmetrically.
 ## Class 4 — Dissipation
 
 **Definition:**
-Constraints that continuously remove energy, information, or resources
-from the system, driving it toward a contracted subset of state space.
+Constraints that organize distinguishability across ordered continuation:
+a relation R_D on the state space equipped with an ordering ≤ such that
+some regions preserve distinctions along the ordering (attractors) and
+others do not (repulsors).
 
 ```
-B_dissipation: d/dt f(x) < 0   for some Lyapunov-like function f
+R_D ⊆ X × X_≤   where (X, ≤) carries an ordering relation
+
+Attractor: region where d(x, x') is preserved for x' ≻ x along ≤
+Repulsor:  region where d(x, x') → 0 for x' ≻ x along ≤
 ```
+
+The ordering ≤ is most commonly time, but any ordered structure qualifies:
+developmental stages, learning sequences, organisational histories,
+evolutionary lineages. Attractors, attractor basins, and stability depth
+are **secondary** phenomena arising from the ordering — not the primitive
+definition.
+
+**Note (updated 2026-05-30):** The earlier formulation `d/dt f(x) < 0`
+captures the time-indexed special case only. The general structure is an
+ordered-continuation relation. Dissipation and Coupling are related but
+distinct: Coupling is an **unordered** relation between components;
+Dissipation is an **ordered** relation requiring ≤. This ordering is what
+makes τ (temporal or sequential horizon) the natural epistemic parameter for
+Dissipation. See `bc_relational_structure.md` §2.2.
 
 **Mechanism:**
-Dissipation contracts the effective state space over time.
-Without dissipation, trajectories may fill state space ergodically.
-With dissipation, they converge to lower-dimensional attracting structures.
-Regime partitions under dissipative BCs correspond to attractor basins.
+The ordering ≤ creates directional structure: what can be distinguished at
+position x along ≤ depends on what was distinguishable at earlier positions.
+Regions that sustain distinctions across the ordering form attractor basins;
+regions that do not are repulsors. Stronger ordering → fewer, deeper basins;
+weaker ordering → shallower basins and eventual indistinguishability.
 
 **Characteristic regime structure:**
-- Contracted partition: fewer effective regimes than the full state space supports
-- Attractor-basin structure: each regime class is the basin of an attractor
-- Stability depth: regimes are robust to perturbations (dissipation absorbs them)
+- Attractor-basin structure: each regime class is a region of sustained
+  distinguishability along the ordering
+- Stability depth: determined by how strongly the ordering preserves
+  distinctions against admissible perturbations
+- Fewer, deeper regimes under strong ordering; more, shallower under weak
 
 **Instantiations:**
 
@@ -186,39 +221,53 @@ Low dissipation → more regimes, shallower, more sensitive to perturbation.
 ## Class 5 — Forcing
 
 **Definition:**
-Constraints that inject external energy or information into the system
-at a specified frequency or rate, preventing relaxation to equilibrium.
+A directional inter-regime relation: one regime (organiser, R_A) determines
+part of the admissible structure of another regime (organised, R_B) through
+a coupling R_F ⊆ Regime_A × Regime_B.
 
 ```
-B_forcing: x receives external input F(t) with characteristic timescale τ_F
+R_F: Regime_A → constrains Adm(Regime_B)
+— directionality is essential: A organises B, not symmetrically —
 ```
+
+**Note (updated 2026-05-30):** The earlier formulation `x receives F(t)`
+captures the time-indexed frequency case. The general structure is a
+directional inter-regime relation that is not limited to external energy
+injection or periodic input. Frequency/resonance and entrainment are
+special cases arising when the organising regime operates with a characteristic
+timescale. Governance, scheduling, normative, and institutional forcing are
+equally valid instantiations of the same structural condition.
+
+Failure modes: (1) **decoupling** — R_A loses structural reach into R_B;
+(2) **absorption** — R_F strengthens until R_B loses organisational autonomy
+and is subsumed into R_A's structure. See `bc_failure_signatures.md` §4.
 
 **Mechanism:**
-Forcing drives the system away from its natural resting state.
-Regime structure is determined by the relationship between forcing
-frequency and natural system frequencies (resonance / entrainment).
-Different forcing regimes (sub-resonant, resonant, supra-resonant)
-produce qualitatively different partition structures.
+The admissible distinctions within R_B depend on the admissibility of R_F.
+Where the two regime organisations are compatible, coherent jointly-organised
+behaviour emerges. Where they are incompatible (frequency mismatch,
+organisational incommensurability), neither the "organised-by-A" nor the
+autonomous description holds stably.
 
 **Characteristic regime structure:**
-- Entrainment regimes: system locks to forcing frequency
-- Quasiperiodic regimes: near-resonant but not locked
-- Chaotic regimes: forcing breaks all stable orbits
-- The partition maps the (amplitude, frequency) parameter space
+- Jointly-organised regimes: structure jointly produced by R_A and R_B
+- Incommensurable zone: neither description holds (Z_shared or F-gradient)
+- Dissolution zone: R_A absent; R_B reverts to autonomous structure
+- Absorption zone: R_B's structure fully replaced by R_A's
 
 **Instantiations:**
 
 | System | Forcing BC | Effect |
 |---|---|---|
-| Pendulum (driven) | Driving amplitude A, frequency Ω | R_P1/R_P2/R_P3 partition in (A, Ω) space |
-| Kuramoto (external field) | Global phase forcing | Entrainment regime appears; R_K1 suppressed above forcing threshold |
-| Labyrinth (dynamic shifts) | Mid-episode BC changes | Forces unscheduled scope transitions; tests admissibility-loss detection |
-| Geopolitical | External crisis events | Scope-transition triggers — disrupts current regime stability |
+| Pendulum (driven) | Driving regime (Ω, A) organises pendulum dynamics | R_P1/R_P2/R_P3 partition in (A, Ω) — frequency case |
+| Kuramoto (external field) | Global phase regime organises oscillator population | Entrainment regime emerges; decoupled regime above threshold |
+| Labyrinth (dynamic shifts) | Operational context regime organises agent scope | Forces scope transitions; tests admissibility-loss detection |
+| Geopolitical | External crisis regime organises conflict dynamics | Scope-transition triggers — reorganises accessible conflict modes |
 
 **Signature in partition:**
-Resonance creates sharp partition boundaries in forcing parameter space.
-Forcing frequency is a primary BC parameter: the partition topology
-changes qualitatively as Ω crosses natural system frequencies.
+Partition topology changes qualitatively when the inter-regime compatibility
+condition changes — either because the organising regime's structure shifts
+or because the organised regime crosses an absorption/decoupling threshold.
 
 ---
 
@@ -282,9 +331,9 @@ most complex test case in the research program.
 
 | BC class | Formal form | Characteristic partition | Key parameter |
 |---|---|---|---|
-| Restriction | f(x) ≤ C | Stratified by resource level | Saturation bound C |
-| Coupling | \|xᵢ - xⱼ\| < κ | Incoherent → clustered → synchronized | Coupling strength κ |
+| Restriction | Adm(R_τ) ⊆ P (object: f(x) ≤ C; meta: admissibility of all other relations) | Stratified by resource/admissibility level | Saturation bound C; meta: scope of each other relation |
+| Coupling | R_C ⊆ X × X (unordered) | Incoherent → clustered → synchronized | Coupling strength κ |
 | Symmetry breaking | h(x) ≠ 0 | Bifurcated / asymmetric | Symmetry-breaking magnitude |
-| Dissipation | df/dt < 0 | Contracted, attractor-basin | Dissipation rate γ |
-| Forcing | F(t) external | Resonance / quasiperiodic / chaotic | Forcing frequency Ω |
-| Aggregation | Π_agg ⊂ Π_full | Coarsened, boundary-shifted | Resolution loss |
+| Dissipation | R_D ⊆ X × X_≤ (ordered continuation) | Attractor-basin; fewer/deeper with strong ordering | Ordering scale τ (time or sequence horizon) |
+| Forcing | R_F: Regime_A → Adm(Regime_B) (directional) | Jointly-organised / incommensurable / dissolution / absorption | Inter-regime compatibility; organiser scale |
+| Aggregation | Π_agg ⊂ Π_full | Coarsened, boundary-shifted | Resolution loss; N* |
