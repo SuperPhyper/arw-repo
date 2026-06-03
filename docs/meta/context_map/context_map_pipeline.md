@@ -47,7 +47,7 @@ stability_mask.py: module∈pipeline [PLANNED — action_item=E-1; not_yet_imple
     out=σ_Δ_field+binary_mask+stability_mask_summary.json
     computes=σ_Δ(b_i)=sup_δ|O(b_i+δ)-O(b_i)| | also=Lipschitz_bound_comparison
     trigger: σ_Δ≥ε@any_point → run_substrate_analysis(F0_vs_F-gradient)
-    cf.epsilon_kappa_map.py(gradient_proxy=conservative_approx_of_σ_Δ)
+    cf.epsilon_kappa_map.py(pointwise_proxy=optimistic@θ*,¬conservative[C1]—prefer_this_module's_direct_σ_Δ)
 
 epsilon_sweep.py: module∈pipeline | in=sweep_data+ε_range(auto_from_span)
     out=N(ε)_curve+plateau[ε_lo,ε_hi]+N*+ε_working_recommended
@@ -56,8 +56,8 @@ epsilon_sweep.py: module∈pipeline | in=sweep_data+ε_range(auto_from_span)
 
 epsilon_kappa_map.py: module∈pipeline | in=sweep_data+ε_range
     out=gradient_field_|∂O/∂κ|_over_(κ,ε)_space
-    role=Lipschitz_upper_bound_on_σ_Δ(Corollary1_approximation)
-    trigger: high_gradient_region → candidate_F-gradient | confirm_with=stability_mask.py
+    role=pointwise_σ_Δ_proxy(Corollary1_exact_only_for_local-max_L) | pointwise_under-reports_σ_Δ@θ*[C1_2026-06-02:one-sided_FN,optimistic]
+    trigger: high_gradient_region → candidate_F-gradient | confirm_with=stability_mask.py(direct_σ_Δ_or_local-max,¬pointwise@θ*)
 
 epsilon_multi_observable.py: module∈pipeline | in=sweep_data_all_π+ε_range
     out=per_π_N(ε)_curves+agreement_rate+consensus_plateau

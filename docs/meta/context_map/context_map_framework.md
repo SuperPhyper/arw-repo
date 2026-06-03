@@ -86,13 +86,13 @@ N(ε): metric∈cover | |C_ε|_as_fn_of_ε | plateau→I_ε | no_plateau→F3
 
 N*: invariant∈partition | stable_|C_ε|_in_plateau | written_to=Invariants.json | —
 
-σ_Δ: metric∈cover | sup_δ|O(x+δ)-O(x)| | >ε@x→Z_cover | bound=L·r[Corollary1]
+σ_Δ: metric∈cover | sup_δ|O(x+δ)-O(x)| | >ε@x→Z_cover | bound=L_localmax·r[Corollary1] | pointwise_proxy|∂O/∂κ|·r_under-reports@θ*[C1_2026-06-02:one-sided_FN]→use_direct_σ_Δ_near_transitions
 
 ε*: metric∈cover | min_ε_s.t.|C_ε|=1 | upper_bound_of_I_ε | connected→ε*=span/2
 
 I_ε: interval∈cover | sup(σ_Δ)<ε<ε* | empty→no_valid_scope | empirical=N(ε)_plateau
 
-Corollary1: concept∈cover | σ_Δ(x)≤L·r | gradient_proxy=|∇O|·r | computed_by=epsilon_kappa_map.py
+Corollary1: concept∈cover | σ_Δ(x)≤L·r (exact_for_L=local-max=max_{|δ|≤r}|∇O(x+δ)|) | pointwise_proxy=|∇O(x)|·r=faithful_in_bulk_but_FN@θ*[C1] | computed_by=epsilon_kappa_map.py | near_θ*→direct_σ_Δ_or_local-max
 ```
 
 ---
