@@ -110,11 +110,47 @@ def extract_observables_stub(result: dict) -> dict:
             "note": "Implement observable extractor for this system"}
 
 
+def extract_observables_sir_epidemic(result: dict) -> dict:
+    """SIR epidemic: primary observable I_peak; secondary R_final."""
+    if result.get("status") != "ok":
+        return {"observables": {}}
+    obs = {}
+    if result.get("I_peak")  is not None: obs["I_peak"]  = result["I_peak"]
+    if result.get("R_final") is not None: obs["R_final"] = result["R_final"]
+    return {"observables": obs, "default_primary": "I_peak"}
+
+
+def extract_observables_sir_growing(result: dict) -> dict:
+    """Growing-population SIR: primary g_max_percapita; secondary I_peak_frac, g_ratio.
+    (Added 2026-06-02: was missing -> fell back to stub -> empty observables -> no partition.)"""
+    if result.get("status") != "ok":
+        return {"observables": {}}
+    obs = {}
+    if result.get("g_max_percapita") is not None: obs["g_max_percapita"] = result["g_max_percapita"]
+    if result.get("I_peak_frac")     is not None: obs["I_peak_frac"]     = result["I_peak_frac"]
+    if result.get("g_ratio")         is not None: obs["g_ratio"]         = result["g_ratio"]
+    return {"observables": obs, "default_primary": "g_max_percapita"}
+
+
+def extract_observables_pendulum_gamma(result: dict) -> dict:
+    """Damped multi-link pendulum (gamma-sweep): primary var_rel; secondary energy_ss.
+    (Added 2026-06-02: was missing -> fell back to stub -> empty observables -> no partition.)"""
+    if result.get("status") != "ok":
+        return {"observables": {}}
+    obs = {}
+    if result.get("var_rel")   is not None: obs["var_rel"]   = result["var_rel"]
+    if result.get("energy_ss") is not None: obs["energy_ss"] = result["energy_ss"]
+    return {"observables": obs, "default_primary": "var_rel"}
+
+
 OBSERVABLE_MAP = {
     "kuramoto":               extract_observables_kuramoto,
     "pendulum":               extract_observables_pendulum,
     "double_pendulum":        extract_observables_double_pendulum,
     "stuart_landau_coupled":  extract_observables_stuart_landau_coupled,
+    "sir_epidemic":           extract_observables_sir_epidemic,
+    "sir_growing":            extract_observables_sir_growing,
+    "pendulum_gamma":         extract_observables_pendulum_gamma,
     "consensus":              extract_observables_stub,
     "meanfield":              extract_observables_stub,
     "labyrinth":              extract_observables_stub,

@@ -1,0 +1,88 @@
+# BCManifest — CASE-20260315-0007
+# System: SIR epidemic model
+# Primary BC: Aggregation
+# Pipeline-compatible format (rewritten 2026-06-02)
+
+schema_version: "0.2"
+id: "BCM-20260315-0007"
+case_id: "CASE-20260315-0007"
+system: "sir_epidemic"
+domain: "epidemiological"
+bc_class: "aggregation"
+
+bc_components:
+  - id: "bc_01"
+    class: "aggregation"
+    description: >
+      Primary BC. The SIR model is the quotient projection pi_SIR from
+      N individual micro-states onto 3 macro-compartments. This is the
+      canonical S1-quotient (Aggregation) operator.
+    primary: true
+    sweep_param: "beta"
+    fixed_params:
+      gamma_r: 0.1
+      S0: 0.99
+      I0: 0.01
+      R0: 0.0
+      T: 500
+    falsification:
+      - id: "fals_01"
+        condition: "I_peak constant across sweep"
+        severity: "scope_rejection"
+      - id: "fals_02"
+        condition: "beta* at sweep boundary"
+        severity: "sweep_refinement"
+    parameterization:
+      - name: "transmission_rate"
+        symbol: "beta"
+        domain: "[0.0, 0.5]"
+        meaning: >
+          Per-contact infection probability times contact rate. beta=0: no transmission.
+          beta > beta* = gamma_r/S0 ~= 0.101: epidemic threshold (R0=1 crossing).
+        implementation_hook:
+          type: "code_param"
+          reference: "pipeline.sweep::run_sir_epidemic(beta=...)"
+
+    resolution_plan:
+      epsilons: [0.05, 0.08, 0.10, 0.12, 0.15]
+      stability_window_criterion: >
+        Working epsilon=0.10 confirmed: N=2 plateau stable for eps in [0.08, 0.29],
+        width=0.21. Original eps=0.05 gave N=1 (F-gradient: max step 0.018 < eps).
+        8-point strategic sweep required for clean N=2 detection.
+
+    predicted_partition_effects:
+      qualitative:
+        - "Sub-threshold (beta < 0.101): I_peak ~= I(0) = 0.01 (no epidemic)"
+        - "Super-threshold (beta > 0.101): I_peak grows with beta (epidemic wave)"
+        - "R_final: zero below threshold, grows to ~0.99 at beta=0.5"
+      partition_type_prediction: "binary"
+      invariants_to_track:
+        - "regime_count"
+        - "transition_boundary"
+        - "I_peak_span"
+        - "N2_epsilon_window"
+
+    falsification_criteria:
+      - id: "fals_01"
+        statement: "I_peak constant across sweep — Aggregation BC has no observable effect"
+        measurable_test: "max(I_peak) - min(I_peak) < epsilon_working"
+        threshold: "0.10"
+        severity: "scope_rejection"
+      - id: "fals_02"
+        statement: "beta* at sweep boundary"
+        measurable_test: "theta_star at beta=0.0 or beta=0.5"
+        threshold: "boundary"
+        severity: "sweep_refinement"
+
+    perturbation_program:
+      sweeps:
+        - param: "beta"
+          values: [0.0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.2, 0.21, 0.22, 0.23, 0.24, 0.25, 0.26, 0.27, 0.28, 0.29, 0.3, 0.31, 0.32, 0.33, 0.34, 0.35, 0.36, 0.37, 0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.5]
+          description: "Transmission rate sweep; epidemic threshold at beta*=0.101"
+
+  - id: "bc_02"
+    class: "restriction"
+    description: >
+      Secondary BC. The constraint S+I+R=1 restricts the state space to a 2-simplex.
+      S1-selection (admissibility restriction).
+    primary: false

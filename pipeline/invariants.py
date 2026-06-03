@@ -131,10 +131,14 @@ def compute_invariants(case_dir: Path, in_subdir: str, out_subdir: str):
     # Compute sweep_range = [min, max] of the primary sweep parameter.
     # Required by pipeline.transfer for TBS_norm = |θ*/range_A − θ*/range_B|,
     # which is the normalised Transition Boundary Shift across incommensurable axes.
+    # extract_partition writes the point under "sweep_point"; raw sweep uses
+    # "_sweep_point". Accept either so sweep_range is never silently dropped.
+    def _point(r):
+        return r.get("sweep_point") or r.get("_sweep_point") or {}
     param_values = [
-        r.get("_sweep_point", {}).get(param)
+        _point(r).get(param)
         for r in annotated
-        if param and r.get("_sweep_point", {}).get(param) is not None
+        if param and _point(r).get(param) is not None
     ]
     if param_values:
         sweep_range = [round(float(min(param_values)), 6), round(float(max(param_values)), 6)]

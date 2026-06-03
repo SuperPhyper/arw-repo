@@ -148,9 +148,67 @@ def compute_local_plateau_width(r_values: list, kappa_center: float,
     }
 
 
+def compute_sigma_delta_windowed(r_values: list, delta_r: float) -> dict:
+    """
+    DIRECT perturbation spread on the sweep grid:
+        sigma_delta(kappa_i) = max_{ j : |kappa_j - kappa_i| <= delta_r } |O_j - O_i|
+
+    This is sup_{|delta|<=delta_r} |O(x+delta) - O(x)| restricted to available grid
+    points. It captures the worst-case local jump (e.g. across a bifurcation), which the
+    pointwise central-difference gradient `dr_dkappa` MISSES.
+
+    Validation C1 (2026-06-02, sigma_validation_c1/): the pointwise gradient proxy
+    |dO/dkappa|*r under-estimates sigma_delta at theta* by up to ~4x (pendulum separatrix)
+    to ~1e11x (pitchfork bifurcation), producing one-sided F-gradient FALSE NEGATIVES
+    (says "stable" where sigma_delta>=eps). The windowed sigma_delta below has no such
+    one-sided bias; the local-max Lipschitz bound max|O'|*r over the window (Corollary 1)
+    is reported too as a conservative envelope.
+
+    Returns per-kappa records and the kappa of maximum sigma_delta (an F-gradient locus
+    that may differ from the max pointwise-gradient locus).
+    """
+    pts = sorted(r_values, key=lambda x: x[0])
+    ks = [k for k, _ in pts]
+    os = [o for _, o in pts]
+    n = len(pts)
+    # local pointwise gradient magnitude at each grid point (central where possible)
+    gloc = [0.0] * n
+    for i in range(n):
+        lo = max(0, i - 1); hi = min(n - 1, i + 1)
+        dk = ks[hi] - ks[lo]
+        gloc[i] = abs((os[hi] - os[lo]) / dk) if dk > 0 else 0.0
+
+    records = []
+    for i in range(n):
+        sd = 0.0
+        gmax = 0.0
+        for j in range(n):
+            if abs(ks[j] - ks[i]) <= delta_r:
+                sd = max(sd, abs(os[j] - os[i]))
+                gmax = max(gmax, gloc[j])
+        proxy_point = gloc[i] * delta_r            # pipeline pointwise proxy
+        proxy_localmax = gmax * delta_r            # Corollary 1 local-max Lipschitz bound
+        records.append({
+            "kappa": round(ks[i], 4),
+            "sigma_delta": round(sd, 6),                       # DIRECT (use this)
+            "proxy_pointwise": round(proxy_point, 6),          # legacy proxy (biased at theta*)
+            "proxy_localmax": round(proxy_localmax, 6),        # conservative bound
+            "pointwise_underestimates": bool(sd > proxy_point * 1.05 and proxy_point >= 0),
+        })
+    imax = max(range(n), key=lambda i: records[i]["sigma_delta"]) if n else None
+    return {
+        "delta_r": delta_r,
+        "method": "windowed_max_abs_difference (direct sigma_delta on grid)",
+        "per_kappa": records,
+        "kappa_at_max_sigma_delta": records[imax]["kappa"] if imax is not None else None,
+        "max_sigma_delta": records[imax]["sigma_delta"] if imax is not None else None,
+        "n_points_pointwise_underestimates": sum(1 for r in records if r["pointwise_underestimates"]),
+    }
+
+
 def run_epsilon_kappa_map(case_dir: Path, kappa_points: int,
                           eps_min: float, eps_max: float, eps_steps: int,
-                          out_subdir: str):
+                          out_subdir: str, delta_r: float = None):
     scope_path  = case_dir / "ScopeSpec.yaml"
     record_path = case_dir / "CaseRecord.yaml"
 
@@ -266,6 +324,20 @@ def run_epsilon_kappa_map(case_dir: Path, kappa_points: int,
     else:
         max_grad = None
 
+    # Direct windowed sigma_delta (the C1 fix — replaces the pointwise gradient as the
+    # F-gradient / stability-mask estimator; see compute_sigma_delta_windowed docstring).
+    r_sorted_pairs = sorted(r_values, key=lambda x: x[0])
+    if delta_r is None:
+        steps = [r_sorted_pairs[i][0] - r_sorted_pairs[i-1][0] for i in range(1, len(r_sorted_pairs))]
+        delta_r = 2.0 * (float(np.median(steps)) if steps else 0.0)
+    sigma_delta = compute_sigma_delta_windowed(r_values, delta_r)
+    print(f"    Direct σ_Δ (windowed, Δr={delta_r:.4f}): max={sigma_delta['max_sigma_delta']:.4f} "
+          f"at κ≈{sigma_delta['kappa_at_max_sigma_delta']}")
+    nun = sigma_delta["n_points_pointwise_underestimates"]
+    if nun:
+        print(f"    ⚠ pointwise gradient under-estimates σ_Δ at {nun} κ-points "
+              f"(F-gradient false-negative risk near θ*; use σ_delta, not dr_dκ)")
+
     # Correlate local plateau width with gradient
     robustness_profile = []
     for la in local_analysis:
@@ -305,6 +377,7 @@ def run_epsilon_kappa_map(case_dir: Path, kappa_points: int,
         "global_map": global_map,
         "local_analysis": local_analysis,
         "observable_gradient": gradients,
+        "sigma_delta_windowed": sigma_delta,
         "robustness_profile": robustness_profile,
         "max_gradient": max_grad,
     }
@@ -321,6 +394,9 @@ def main():
     parser.add_argument("--eps-min",      type=float, default=0.001)
     parser.add_argument("--eps-max",      type=float, default=1.0)
     parser.add_argument("--eps-steps",    type=int,   default=60)
+    parser.add_argument("--delta-r",      type=float, default=None,
+                        help="Perturbation radius for direct windowed sigma_delta "
+                             "(default: 2x median kappa grid spacing).")
     parser.add_argument("--out",          dest="out_dir", default="results/partition")
     args = parser.parse_args()
 
@@ -330,7 +406,8 @@ def main():
         sys.exit(1)
 
     run_epsilon_kappa_map(case_dir, args.kappa_points,
-                          args.eps_min, args.eps_max, args.eps_steps, args.out_dir)
+                          args.eps_min, args.eps_max, args.eps_steps, args.out_dir,
+                          delta_r=args.delta_r)
 
 
 if __name__ == "__main__":

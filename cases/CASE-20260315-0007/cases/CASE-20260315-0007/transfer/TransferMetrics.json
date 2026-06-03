@@ -1,0 +1,59 @@
+{
+  "meta": {
+    "case_A": "CASE-20260315-0007",
+    "case_B": "CASE-20260311-0001",
+    "system_A": "sir_epidemic",
+    "system_B": "kuramoto"
+  },
+  "metrics": {
+    "RCD": {
+      "value": 2,
+      "N_A": 2,
+      "N_B": 4,
+      "interpretation": "significant_mismatch"
+    },
+    "TBS": {
+      "value": 0.091667,
+      "tbs_raw": 1.275,
+      "method": "normalised",
+      "theta_star_A": 0.2,
+      "theta_star_B": 1.475,
+      "sweep_range_A": [
+        0.0,
+        0.5
+      ],
+      "sweep_range_B": [
+        0.0,
+        3.0
+      ],
+      "interpretation": "moderate_shift"
+    },
+    "PCI": {
+      "value": 0.5,
+      "N_A": 2,
+      "N_B": 4,
+      "interpretation": "partial_compatibility",
+      "note": "Structural PCI approximation. Full PCI requires aligned annotated results."
+    },
+    "SDI": {
+      "value": 4,
+      "nodes_A": 2,
+      "nodes_B": 4,
+      "edges_A": 1,
+      "edges_B": 3,
+      "interpretation": "significant_distortion"
+    },
+    "Phi": {
+      "value": 0.5317,
+      "components": {
+        "PCI": 0.5,
+        "RCD_score": 0.5,
+        "SDI_score": 0.5,
+        "TBS_score": 0.816666
+      },
+      "interpretation": "inadmissible"
+    }
+  },
+  "phi_matched_epsilon": 0.5317,
+  "phi_matched_epsilon_note": "At matched eps=0.10, CASE-0001 still N=4 (confirmed from EpsilonSweep). Phi_matched = Phi_raw = 0.5317."
+}

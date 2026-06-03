@@ -1,0 +1,112 @@
+# CaseRecord — CASE-20260602-0014
+# System: SIR with growing population (rho-sweep)
+# Scope B: Dissipation-Growing in transfer_test_dissipation_growth
+# Created: 2026-06-02
+
+schema_version: "0.2"
+id: "CASE-20260602-0014"
+title: "Growing-Population SIR — Dissipation BC, rho-sweep (Scope B)"
+phase: "1"
+system: "sir_growing"
+status: "open"
+created_at: "2026-06-02"
+updated_at: "2026-06-02"
+
+description: >
+  SIR epidemic model with exponentially growing population N(t) = N0*exp(rho*t).
+  rho-sweep across [0.0, 0.50], 26 points linear.
+  Fixed beta=0.3, gamma_r=0.1, N0=10000.
+  Primary observable: g_max_percapita = max_t[(dI/dt)/N(t)] (locked 2026-06-02).
+  BC class: Dissipation (population dilution as S4 contraction on infected fraction).
+  Secondary BC: Aggregation (constitutive SIR quotient), Coupling (transmission term).
+  Analytical threshold: rho* = beta*s0 - gamma_r ~= 0.197.
+  ROLE: Scope B in transfer_test_dissipation_growth experiment.
+  Research question: does dimension-growing Dissipation constitute a BC-structural break
+  relative to dimension-constant Dissipation (CASE-0005)?
+
+artifacts:
+  scope_spec:
+    id: "SCOPE-20260602-0014"
+    path: "ScopeSpec.yaml"
+    status: "complete"
+  bc_manifest:
+    id: "BCM-20260602-0014"
+    path: "BCManifest.yaml"
+    status: "complete"
+  signature_first:
+    path: "ScopeSpec_signature_first.md"
+    status: "complete"
+    note: "Observable locked 2026-06-02 per signature-first protocol"
+  partition_result:
+    path: "results/partition/PartitionResult.json"
+    status: "complete"   # generated 2026-06-02; N=1 (single regime)
+  invariants:
+    path: "results/partition/Invariants.json"
+    status: "complete"   # sweep_range=[0.0,0.5], regime_count=1, theta_star=None
+  epsilon_sweep:
+    path: "results/partition/EpsilonSweep.json"
+    status: "complete"   # N collapses to 1 by eps~0.0146; multi-regime only at eps<=0.005
+
+go_nogo:
+  verdict: "no_go"
+  criterion: >
+    A non-trivial partition (N>=2) at the ScopeSpec working epsilon (0.05) with the
+    primary observable g_max_percapita.
+  decision: "no_go"
+  decision_date: "2026-06-02"
+  superseded_placeholder:
+    note: >
+      The previous verdict "go" (N=2, theta*=0.17, eps_working=0.00549, span/eps=3.3)
+      was a PLACEHOLDER computed before any pipeline run and at an epsilon (0.00549) that
+      does not match the ScopeSpec working_epsilon (0.05). It is WITHDRAWN. See
+      Simulationen/transfer_test_dissipation_growth/TEST3_RESULT.md.
+  decision_notes: >
+    F1 OBSERVABLE INSUFFICIENCY at the working epsilon. Actual pipeline run (2026-06-02):
+    g_max_percapita has span 0.018 over rho in [0,0.5]; working eps=0.05 >> span, so the
+    cover collapses to N=1 (no transition resolved). EpsilonSweep: N=1 for all eps>=~0.0146;
+    multiple regimes appear only at eps<=0.005, below a sigma_Delta-justified resolution.
+    transfer_v2 against CASE-0005 therefore returns TRIVIAL_PARTITION (nothing to transfer).
+    Falsification id: F1 (observable insufficiency, eps >= eps*(O,X)); severity:
+    observable_replacement (NOT scope_rejection). Recommended: switch primary observable to
+    the fibre-resolved g_ratio companion, or adopt a sigma_Delta-justified eps<=0.005 with a
+    stability mask.
+    NOTE: Q-REL-04 (the case's scientific purpose) was nonetheless RESOLVED this session via
+    the intrinsic dynamics of the closed (s,i) fraction system (structural break — new endemic
+    attractor via transcritical bifurcation), independent of this observable. See
+    Simulationen/transfer_test_dissipation_growth/QREL04_RESOLUTION.md.
+
+links:
+  related_cases:
+    - CASE-20260315-0005
+    - CASE-20260315-0007
+  transfer_experiment:
+    - experiments/transfer_test_dissipation_growth/
+  pre_registration:
+    - Simulationen/transfer_test_dissipation_growth/prediction_registration_dissipation_growth.md
+  observable_lock:
+    - Simulationen/transfer_test_dissipation_growth/design/observable_selection.md
+
+scientific_value:
+  primary: >
+    First dimension-growing Dissipation case in ARW/ART.
+    Tests whether fibre dimension growth along the order axis constitutes a
+    BC-structural break within the Dissipation class (Q-REL-04).
+  secondary: >
+    First use of g_max_percapita as a non-averaging Dissipation-primary observable
+    in an epidemic system. Establishes precedent for observable design in
+    dimension-growing systems.
+  open_questions:
+    - id: Q-REL-04
+      status: answered          # 2026-06-02
+      question: >
+        Is dimension growth along the order axis a BC-structural break within Dissipation,
+        or a reparametrisation of the stationary case?
+      answer: >
+        STRUCTURAL BREAK. Resolved via the intrinsic dynamics of the closed (s,i) fraction
+        system, not via the transfer metric Phi (Phi shown invalid for this question;
+        g_max_percapita F1-insufficient). The rho*(1-s) replenishment term creates a new
+        isolated stable endemic attractor via a transcritical bifurcation at rho*=beta-gamma_r;
+        the stationary case (rho=0) has only a degenerate line {i=0}. A new attractor is a
+        topological change a reparametrisation cannot produce; the regime partition gains a
+        regime. Scope: this instantiation. See QREL04_RESOLUTION.md (Simulationen) and
+        docs/notes/research_journal.md (Session 2026-06-02).

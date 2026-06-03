@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "case_A": "CASE-20260311-0001",
+    "case_B": "CASE-20260315-0007",
+    "system_A": "kuramoto",
+    "system_B": "sir_epidemic",
+    "epsilon_A": 0.09,
+    "epsilon_B": 0.1,
+    "eps_matched_doc": "eps_A=0.09 vs eps_B=0.10; RCD unchanged at matched eps per EpsilonSweep"
+  },
+  "metrics": {
+    "RCD": {
+      "value": 2,
+      "N_A": 4,
+      "N_B": 2,
+      "interpretation": "significant_mismatch"
+    },
+    "PCI": {
+      "value": 0.65,
+      "pci_A_to_B": 0.908,
+      "pci_B_to_A": 0.65,
+      "ari": 0.3506,
+      "method": "overlap_on_normalised_grid",
+      "grid_n": 1000,
+      "interpretation": "partial_compatibility",
+      "note": "Real overlap PCI from annotated_results; independent of regime count."
+    },
+    "TBS": {
+      "value": 0.091667,
+      "theta_star_norm_A": 0.4917,
+      "theta_star_norm_B": 0.4,
+      "window_band": [
+        0.0861,
+        0.1583
+      ],
+      "window_fragile": false,
+      "tbs_observable_intrinsic": 0.0667,
+      "interpretation": "moderate_shift",
+      "note": "TBS_norm is sweep-window dependent; window_band shows its range under +/-10-20% window cropping. tbs_observable_intrinsic is the window-robust companion (0.5-span crossing position)."
+    },
+    "topology": {
+      "value": 0.4167,
+      "count_score": 0.5,
+      "edge_score": 0.3333,
+      "N_A": 4,
+      "N_B": 2,
+      "edges_A": 3,
+      "edges_B": 1,
+      "note": "Regime-count + adjacency agreement, counted once (replaces collinear RCD+SDI of v1)."
+    },
+    "Phi": {
+      "value": 0.625,
+      "verdict": "partially_admissible",
+      "components": {
+        "PCI_real": 0.65,
+        "topology": 0.4167,
+        "TBS_score": 0.8167
+      },
+      "weights": {
+        "PCI": 0.55,
+        "topology": 0.25,
+        "TBS": 0.2
+      },
+      "flags": []
+    }
+  }
+}

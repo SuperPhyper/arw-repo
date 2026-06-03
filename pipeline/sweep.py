@@ -21,6 +21,7 @@ import argparse
 import json
 import sys
 import time
+from datetime import date
 from pathlib import Path
 
 try:
@@ -454,123 +455,405 @@ def run_double_pendulum(params: dict, sweep_point: dict, rng: np.random.Generato
     }
 
 
+def run_sir_epidemic(params: dict, sweep_point: dict, rng: np.random.Generator) -> dict:
+    """
+    ODE-based SIR epidemic model — pure numpy RK4 (no scipy dependency).
+    BC class: Aggregation (SIR is a quotient projection of N micro-states to 3 compartments).
+
+    dS/dt = -beta*S*I,  dI/dt = beta*S*I - gamma_r*I,  dR/dt = gamma_r*I
+
+    Primary observable: I_peak = max_t I(t)  (peak infected fraction)
+    Secondary: R_final = R(T) ~= R_infinity
+    """
+    beta    = float(sweep_point.get("beta", 0.1))
+    gamma_r = float(params.get("gamma_r", 0.1))
+    S0      = float(params.get("S0", 0.99))
+    I0      = float(params.get("I0", 0.01))
+    R0_ic   = float(params.get("R0", 0.0))
+    T       = float(params.get("T", 500.0))
+    dt      = float(params.get("dt", 0.1))
+
+    def f(y):
+        S, I, R = y
+        return np.array([-beta*S*I, beta*S*I - gamma_r*I, gamma_r*I])
+
+    y = np.array([S0, I0, R0_ic])
+    n_steps = int(T / dt)
+    I_peak = I0
+    for _ in range(n_steps):
+        k1 = f(y)
+        k2 = f(y + 0.5*dt*k1)
+        k3 = f(y + 0.5*dt*k2)
+        k4 = f(y + dt*k3)
+        y  = y + (dt/6.0)*(k1 + 2*k2 + 2*k3 + k4)
+        y  = np.clip(y, 0.0, 1.0)  # numerical safety
+        if y[1] > I_peak:
+            I_peak = y[1]
+
+    return {
+        "status":               "ok",
+        "beta":                 beta,
+        "gamma_r":              gamma_r,
+        "I_peak":               round(float(I_peak), 6),
+        "R_final":              round(float(y[2]), 6),
+        "beta_star_analytical": round(gamma_r / S0, 6),
+    }
+
+
+def run_pendulum_gamma(params: dict, sweep_point: dict, rng: np.random.Generator) -> dict:
+    """
+    Multi-link pendulum with gamma (damping) sweep — Dissipation BC case (CASE-0005).
+    Pure-numpy RK4 integrator (no scipy dependency).
+
+    State: y = (theta_1, theta_2, dtheta_1, dtheta_2)
+    Primary observable: var_rel = Var(theta_1 - theta_2) in steady state [T_trans, T]
+    Secondary observable: energy_ss = mean(0.5*(dtheta_1^2 + dtheta_2^2)) in steady state
+
+    BC class: Dissipation
+    Sweep parameter: gamma (joint damping coefficient)
+    Fixed: kappa (joint stiffness, above Coupling transition from CASE-0002)
+    """
+    gamma   = float(sweep_point.get("gamma", 0.5))
+    kappa   = float(params.get("kappa", 3.25))
+    m       = float(params.get("m", 1.0))
+    L       = float(params.get("L", 1.0))
+    g_grav  = 9.81
+    T_end   = float(params.get("T", 500.0))
+    T_trans = float(params.get("T_transient", 300.0))
+    dt      = float(params.get("dt", 0.02))
+    n_ic    = int(params.get("n_ic", 10))
+    seed    = int(sweep_point.get("seed", 42))
+
+    def pend_ode(y):
+        th1, th2, dth1, dth2 = y
+        delta = th2 - th1
+        den = 2 * m * L**2 * (2 - np.cos(delta)**2) + 1e-12
+        ddth1 = (
+            2 * m * L**2 * (dth2**2 * np.sin(delta) - 2 * g_grav / L * np.sin(th1))
+            + m * L**2 * (dth1**2 * np.sin(delta) * np.cos(delta)
+                          - g_grav / L * np.sin(th2) * np.cos(delta))
+            - kappa * (th1 - th2)
+            - gamma * dth1
+        ) / den
+        ddth2 = (
+            m * L**2 * (-dth1**2 * np.sin(delta)
+                        + 2 * g_grav / L * (np.sin(th1) * np.cos(delta) - np.sin(th2)))
+            + kappa * (th1 - th2)
+            - gamma * dth2
+        ) / den
+        return np.array([dth1, dth2, ddth1, ddth2])
+
+    rng_local = np.random.default_rng(seed)
+    ic_amp = 0.1
+
+    var_rels    = []
+    energy_vals = []
+    n_steps     = int(T_end / dt)
+    n_trans     = int(T_trans / dt)
+
+    for _ in range(n_ic):
+        y = rng_local.uniform(np.array([-ic_amp, -ic_amp, 0.0, 0.0]),
+                               np.array([ic_amp,  ic_amp,  0.0, 0.0]))
+        th1_ss_list  = []
+        th2_ss_list  = []
+        dth1_ss_list = []
+        dth2_ss_list = []
+        try:
+            for step in range(n_steps):
+                k1 = pend_ode(y)
+                k2 = pend_ode(y + 0.5 * dt * k1)
+                k3 = pend_ode(y + 0.5 * dt * k2)
+                k4 = pend_ode(y + dt * k3)
+                y  = y + (dt / 6.0) * (k1 + 2 * k2 + 2 * k3 + k4)
+                if step >= n_trans:
+                    th1_ss_list.append(y[0])
+                    th2_ss_list.append(y[1])
+                    dth1_ss_list.append(y[2])
+                    dth2_ss_list.append(y[3])
+        except Exception:
+            continue
+
+        if len(th1_ss_list) < 10:
+            continue
+        th1_ss  = np.array(th1_ss_list)
+        th2_ss  = np.array(th2_ss_list)
+        dth1_ss = np.array(dth1_ss_list)
+        dth2_ss = np.array(dth2_ss_list)
+        var_rels.append(float(np.var(th1_ss - th2_ss)))
+        energy_vals.append(float(np.mean(0.5 * (dth1_ss**2 + dth2_ss**2))))
+
+    if not var_rels:
+        return {"status": "error", "note": "All IC runs failed", "gamma": gamma, "kappa": kappa}
+
+    var_rel   = float(np.mean(var_rels))
+    energy_ss = float(np.mean(energy_vals))
+
+    regime_label, regime_id = ("coupling_dominated", 0) if var_rel > 0.05 else ("dissipation_dominated", 1)
+
+    return {
+        "status":        "ok",
+        "gamma":         gamma,
+        "kappa":         kappa,
+        "var_rel":       round(var_rel, 6),
+        "energy_ss":     round(energy_ss, 6),
+        "regime_label":  regime_label,
+        "regime_id":     regime_id,
+        "n_ic_used":     len(var_rels),
+    }
+
+
+def run_sir_growing(params: dict, sweep_point: dict, rng: np.random.Generator) -> dict:
+    """
+    ODE-based SIR epidemic model with growing population N(t) = N0*exp(rho*t).
+    BC class: Dissipation (population dilution acts as S4 contraction on infected fraction).
+
+    Equations (absolute counts):
+        dS/dt = rho*N - beta*S*I/N    (births replenish susceptibles)
+        dI/dt = beta*S*I/N - gamma_r*I
+        dR/dt = gamma_r*I
+        N(t) = S + I + R grows as N0*exp(rho*t)
+
+    Primary observable: g_max_percapita = max_t [(dI/dt) / N(t)]
+                      = max_t [i(t) * (beta*s(t) - gamma_r)]
+    Secondary (diagnostic): I_peak_frac = max_t [I(t)/N(t)]
+    Secondary (DEV-02 fibre-resolved companion): g_ratio = g(t@s=0.5) / g(t@s=0.9)
+                      per-capita velocity at a late vs early state landmark; non-collapsing
+                      readout across the order axis (population grows, so t-order = <=-order).
+
+    NOTE (camouflage, corrected 2026-06-02 — see transfer_test_dissipation_growth/
+    protocol_deviation_log.md DEV-01): g(t) reduces exactly to a function of the closed
+    fraction system (s,i): g = i*(beta*s - gamma_r). It carries NO absolute-count signal.
+    Camouflage (absorption of rho into an effective gamma_r) is avoided not by "absolute
+    counts" but by the rho*(1-s) replenishment term in ds/dt, which makes rho enter the
+    closed (s,i) system in two places. g_max is still a scalar collapse; g_ratio is the
+    fibre-resolved companion that can detect a break g_max would miss.
+
+    Analytical threshold: rho* = beta*s0 - gamma_r
+    """
+    rho     = float(sweep_point.get("rho", 0.0))
+    beta    = float(params.get("beta", 0.3))
+    gamma_r = float(params.get("gamma_r", 0.1))
+    N0      = float(params.get("N0", 10000.0))
+    I0      = float(params.get("I0", 100.0))
+    S0_abs  = float(params.get("S0", N0 - I0))
+    T       = float(params.get("T", 300.0))
+    dt      = float(params.get("dt", 0.1))
+
+    rng_local = np.random.default_rng(int(sweep_point.get("seed", 42)))
+
+    # IC perturbation range
+    ic_range_I = params.get("ic_range_I", [I0 * 0.5, I0 * 1.5])
+    n_runs = int(params.get("n_ic", 10))
+
+    g_max_list       = []
+    I_peak_frac_list = []
+    g_ratio_list     = []
+
+    for _ in range(n_runs):
+        I0_run = float(rng_local.uniform(ic_range_I[0], ic_range_I[1]))
+        S0_run = N0 - I0_run
+        R0_run = 0.0
+
+        # RK4 integration
+        y = np.array([S0_run, I0_run, R0_run])
+        n_steps = int(T / dt)
+        g_max_run    = -np.inf
+        I_peak_frac_run = I0_run / N0
+        # DEV-02 landmarks: g at first crossing of s=0.9 (early) and s=0.5 (late)
+        g_early = None
+        g_late  = None
+
+        try:
+            for _ in range(n_steps):
+                S, I, R = y
+                N = S + I + R
+                if N <= 0:
+                    break
+                s = S / N
+                i = I / N
+
+                def f(yv):
+                    Sv, Iv, Rv = yv
+                    Nv = Sv + Iv + Rv
+                    if Nv <= 0:
+                        return np.zeros(3)
+                    return np.array([
+                        rho * Nv - beta * Sv * Iv / Nv,
+                        beta * Sv * Iv / Nv - gamma_r * Iv,
+                        gamma_r * Iv,
+                    ])
+
+                k1 = f(y)
+                k2 = f(y + 0.5 * dt * k1)
+                k3 = f(y + 0.5 * dt * k2)
+                k4 = f(y + dt * k3)
+                y = y + (dt / 6.0) * (k1 + 2 * k2 + 2 * k3 + k4)
+                y = np.maximum(y, 0.0)  # numerical safety
+
+                S, I, R = y
+                N = S + I + R
+                if N <= 0:
+                    break
+
+                # Compute g(t) = (dI/dt) / N  =  i * (beta*s - gamma_r)
+                s_cur = S / N
+                i_cur = I / N
+                g_cur = i_cur * (beta * s_cur - gamma_r)
+
+                if g_cur > g_max_run:
+                    g_max_run = g_cur
+                if i_cur > I_peak_frac_run:
+                    I_peak_frac_run = i_cur
+
+                # DEV-02 fibre landmarks (s decreases during an epidemic)
+                if g_early is None and s_cur <= 0.9:
+                    g_early = g_cur
+                if g_late is None and s_cur <= 0.5:
+                    g_late = g_cur
+
+        except Exception:
+            continue
+
+        if np.isfinite(g_max_run):
+            g_max_list.append(g_max_run)
+            I_peak_frac_list.append(I_peak_frac_run)
+            # g_ratio = late/early per-capita velocity; 0 if late landmark never reached
+            if g_early is not None and g_early > 1e-12 and g_late is not None:
+                g_ratio_list.append(g_late / g_early)
+            else:
+                g_ratio_list.append(0.0)
+
+    if not g_max_list:
+        return {"status": "error", "note": "All IC runs failed", "rho": rho}
+
+    rho_star = beta * (S0_abs / N0) - gamma_r
+    regime_label = "epidemic_sustained" if rho < rho_star else "epidemic_suppressed"
+    regime_id    = 0 if rho < rho_star else 1
+
+    return {
+        "status":              "ok",
+        "rho":                 rho,
+        "g_max_percapita":     round(float(np.mean(g_max_list)), 8),
+        "I_peak_frac":         round(float(np.mean(I_peak_frac_list)), 6),
+        "g_ratio":             round(float(np.mean(g_ratio_list)), 6),
+        "rho_star_analytical": round(rho_star, 6),
+        "regime_label":        regime_label,
+        "regime_id":           regime_id,
+        "n_ic_used":           len(g_max_list),
+    }
+
+
 KERNEL_MAP = {
     "kuramoto":        run_kuramoto,
     "pendulum":        run_pendulum,
+    "pendulum_gamma":  run_pendulum_gamma,
     "double_pendulum": run_double_pendulum,
     "consensus":       run_consensus,
     "meanfield":       run_meanfield,
     "labyrinth":       run_labyrinth,
+    "sir_epidemic":    run_sir_epidemic,
+    "sir_growing":     run_sir_growing,
 }
 
 
-# ── Sweep Executor ───────────────────────────────────────────────────────────
+# ── Sweep runner ─────────────────────────────────────────────────────────────
+# Restored 2026-06-02: sweep.py had lost its __main__ runner, so sweeps could not
+# be (re)generated. Output format mirrors a working case
+# (cases/CASE-20260315-0007/results/raw/sweep_results.json) exactly:
+#   top dict {case_id, system, created_at, n_points, elapsed_s, sweep_design_note, results}
+#   each result = kernel output + "_sweep_index" + "_sweep_point" (param + _bc_id + _bc_class)
 
-def build_sweep_points(bc_components: list) -> list:
+def _primary_component(manifest: dict) -> dict:
+    comps = manifest.get("bc_components", [])
+    for c in comps:
+        if c.get("primary"):
+            return c
+    return comps[0] if comps else {}
+
+
+def _build_sweep_points(component: dict) -> list:
+    """Build sweep points from a primary bc_component's perturbation_program.
+
+    Supports explicit `values: [...]` (all current cases) and, as a fallback,
+    `range: [min, max]` + `n_points`.
     """
-    Expand BCManifest sweep specs into a flat list of sweep points.
-    Each point is a dict of {param_name: value, ...}.
-    Currently handles single-param sweeps; extend for multi-param grids.
-    """
-    points = []
-    for bc in bc_components:
-        sweeps = bc.get("perturbation_program", {}).get("sweeps", [])
-        for sweep in sweeps:
-            param  = sweep.get("param", "")
-            values = sweep.get("values", [])
-            for v in values:
-                points.append({param: v, "_bc_id": bc.get("id", ""), "_bc_class": bc.get("class", "")})
-    return points
+    bc_id    = component.get("id", "bc_01")
+    bc_class = component.get("class", "")
+    pp = component.get("perturbation_program", {})
+    sweeps = pp.get("sweeps", [])
+    if not sweeps:
+        raise ValueError("No perturbation_program.sweeps in primary bc_component")
+    sweep = sweeps[0]
+    param = sweep.get("param") or component.get("sweep_param")
+    if "values" in sweep and sweep["values"]:
+        values = list(sweep["values"])
+    elif "range" in sweep:
+        lo, hi = sweep["range"]
+        n = int(sweep.get("n_points", 26))
+        values = list(np.linspace(lo, hi, n))
+    else:
+        raise ValueError("sweep entry has neither 'values' nor 'range'")
+    return [{param: float(v), "_bc_id": bc_id, "_bc_class": bc_class} for v in values]
 
 
-def run_sweep(case_dir: Path, out_subdir: str, dry_run: bool = False):
-    bcm_path    = case_dir / "BCManifest.yaml"
-    scope_path  = case_dir / "ScopeSpec.yaml"
-    record_path = case_dir / "CaseRecord.yaml"
-
-    for p in [bcm_path, scope_path]:
-        if not p.exists():
-            print(f"ERROR: {p.name} not found in {case_dir}")
-            sys.exit(1)
-
-    bcm    = yaml.safe_load(bcm_path.read_text())
-    scope  = yaml.safe_load(scope_path.read_text())
-    record = yaml.safe_load(record_path.read_text()) if record_path.exists() else {}
-
-    system = record.get("system", "custom")
-    kernel = KERNEL_MAP.get(system)
-    if kernel is None:
-        print(f"ERROR: No kernel for system '{system}'. Available: {list(KERNEL_MAP.keys())}")
+def run_sweep(case_dir: Path, out_subdir: str = "results/raw", seed: int = 42) -> Path:
+    manifest_path = case_dir / "BCManifest.yaml"
+    if not manifest_path.exists():
+        print(f"ERROR: BCManifest.yaml not found at {manifest_path}")
         sys.exit(1)
+    manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
 
-    sweep_points = build_sweep_points(bcm.get("bc_components", []))
-    if not sweep_points:
-        print("ERROR: No sweep points found in BCManifest. Check bc_components[*].perturbation_program.sweeps")
+    system = manifest.get("system")
+    if system not in KERNEL_MAP:
+        print(f"ERROR: system '{system}' not in KERNEL_MAP {list(KERNEL_MAP)}")
         sys.exit(1)
+    kernel = KERNEL_MAP[system]
 
-    print(f"\nSweep: {case_dir.name}  |  system={system}  |  {len(sweep_points)} points")
-    print("─" * 50)
+    component    = _primary_component(manifest)
+    fixed_params = dict(component.get("fixed_params", {}))
+    sweep_points = _build_sweep_points(component)
 
-    if dry_run:
-        print("DRY RUN — sweep points:")
-        for i, pt in enumerate(sweep_points):
-            print(f"  [{i:03d}] {pt}")
-        return
+    rng = np.random.default_rng(seed)
+    t0 = time.time()
+    results = []
+    for idx, sp in enumerate(sweep_points):
+        r = kernel(fixed_params, sp, rng)
+        r["_sweep_index"] = idx
+        r["_sweep_point"] = sp
+        results.append(r)
+    elapsed = round(time.time() - t0, 3)
 
-    # Simulation parameters from ScopeSpec (use sensible defaults)
-    sim_params = scope.get("simulation_parameters", {})
-
+    out_dict = {
+        "case_id":           manifest.get("case_id", case_dir.name),
+        "system":            system,
+        "created_at":        date.today().isoformat(),
+        "n_points":          len(results),
+        "elapsed_s":         elapsed,
+        "sweep_design_note": f"{component.get('sweep_param', '')}-sweep via "
+                             f"perturbation_program ({len(results)} points)",
+        "results":           results,
+    }
     out_dir = case_dir / out_subdir
     out_dir.mkdir(parents=True, exist_ok=True)
-
-    results = []
-    rng = np.random.default_rng(0)
-
-    t0 = time.time()
-    for i, pt in enumerate(sweep_points):
-        print(f"  [{i+1:03d}/{len(sweep_points)}] {pt} ... ", end="", flush=True)
-        t_pt = time.time()
-        try:
-            result = kernel(sim_params, pt, rng)
-            result["_sweep_index"] = i
-            result["_sweep_point"] = pt
-            results.append(result)
-            print(f"done ({time.time()-t_pt:.2f}s)")
-        except Exception as e:
-            print(f"FAILED: {e}")
-            results.append({"_sweep_index": i, "_sweep_point": pt, "status": "failed", "error": str(e)})
-
-    elapsed = time.time() - t0
-    print(f"\n  Completed {len(sweep_points)} points in {elapsed:.1f}s")
-
-    # Write output
     out_path = out_dir / "sweep_results.json"
-    out_meta = {
-        "case_id":     record.get("id", case_dir.name),
-        "system":      system,
-        "created_at":  time.strftime("%Y-%m-%dT%H:%M:%S"),
-        "n_points":    len(sweep_points),
-        "elapsed_s":   round(elapsed, 2),
-        "results":     results,
-    }
-    out_path.write_text(json.dumps(out_meta, indent=2))
-    print(f"  Output: {out_path}")
-    print(f"\nNext step: python -m pipeline.extract_partition --case {case_dir} --in {out_subdir}")
+    out_path.write_text(json.dumps(out_dict, indent=2), encoding="utf-8")
+
+    n_ok = sum(1 for r in results if r.get("status") == "ok")
+    print(f"  sweep: {system} | {len(results)} points ({n_ok} ok) | {elapsed}s")
+    print(f"  -> {out_path}")
+    return out_path
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Run BC parameter sweep.")
-    parser.add_argument("--case",    required=True)
-    parser.add_argument("--out",     default="results/raw")
-    parser.add_argument("--dry-run", action="store_true")
-    args = parser.parse_args()
-
-    case_dir = REPO_ROOT / args.case if not Path(args.case).is_absolute() else Path(args.case)
-    if not case_dir.exists():
-        print(f"ERROR: Case not found: {case_dir}")
-        sys.exit(1)
-
-    run_sweep(case_dir, args.out, dry_run=args.dry_run)
+    ap = argparse.ArgumentParser(description="Run a BC parameter sweep for a case.")
+    ap.add_argument("--case", required=True, help="Path to case directory (contains BCManifest.yaml)")
+    ap.add_argument("--out", default="results/raw", help="Output subdir under the case (default results/raw)")
+    ap.add_argument("--seed", type=int, default=42)
+    args = ap.parse_args()
+    case_dir = Path(args.case)
+    if not case_dir.is_absolute():
+        case_dir = (Path.cwd() / case_dir)
+    run_sweep(case_dir, args.out, args.seed)
 
 
 if __name__ == "__main__":

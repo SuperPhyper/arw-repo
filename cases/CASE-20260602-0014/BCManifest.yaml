@@ -1,0 +1,109 @@
+# BCManifest — CASE-20260602-0014
+# System: SIR with growing population (rho-sweep)
+# Primary BC: Dissipation (dimension-growing fibre)
+# Created: 2026-06-02
+
+schema_version: "0.2"
+id: "BCM-20260602-0014"
+case_id: "CASE-20260602-0014"
+system: "sir_growing"
+domain: "epidemiological"
+bc_class: "dissipation"
+
+bc_components:
+  - id: "bc_01"
+    class: "dissipation"
+    description: >
+      Primary BC. The population growth rate rho acts as an S4 Dissipation operator on
+      the infected fraction: di/dt = i*(beta*s - gamma_r - rho). As rho increases,
+      the effective removal rate (gamma_r + rho) increases, contracting the infected
+      fraction toward zero. The denominator N(t) = N0*exp(rho*t) grows exponentially,
+      implementing a continuous dissipative drain on the observable g_max_percapita.
+      This is the dimension-growing Dissipation case: the fibre over the time axis
+      gains degrees of freedom (new susceptibles) as the epidemic evolves.
+    primary: true
+    sweep_param: "rho"
+    fixed_params:
+      beta: 0.3
+      gamma_r: 0.1
+      N0: 10000
+      I0: 100
+      S0: 9900
+      R0_ic: 0
+      T: 300
+      dt: 0.1
+    observable_key: "g_max_percapita"
+    observable_lock_date: "2026-06-02"
+    observable_lock_ref: >
+      Simulationen/transfer_test_dissipation_growth/design/observable_selection.md
+    falsification:
+      - id: "fals_01"
+        condition: "g_max_percapita constant across rho sweep"
+        severity: "scope_rejection"
+      - id: "fals_02"
+        condition: "rho* at sweep boundary"
+        severity: "sweep_refinement"
+    parameterization:
+      - name: "population_growth_rate"
+        symbol: "rho"
+        domain: "[0.0, 0.50]"
+        meaning: >
+          Population growth rate (births minus deaths, net). rho=0: standard SIR (CASE-0007 baseline).
+          rho > rho*: epidemic fraction fades (Dissipation dominates Coupling).
+          Analytical threshold: rho* = beta*s0 - gamma_r = 0.3*0.99 - 0.1 = 0.197.
+        implementation_hook:
+          type: "code_param"
+          reference: "pipeline.sweep::run_sir_growing(rho=...)"
+
+    resolution_plan:
+      epsilons: [0.03, 0.05, 0.08, 0.10]
+      stability_window_criterion: >
+        Working epsilon=0.05. Analytical rho* ~= 0.197 interior to sweep.
+        If F-gradient at eps=0.05 (as in CASE-0007), increase to eps=0.10.
+
+    predicted_partition_effects:
+      qualitative:
+        - "rho < rho*=0.197: R0_eff > 1, epidemic fraction grows, g_max_percapita HIGH"
+        - "rho > rho*=0.197: R0_eff < 1, epidemic fraction fades, g_max_percapita LOW"
+        - "Binary partition expected, analogous to CASE-0007 beta-sweep"
+      partition_type_prediction: "binary"
+      invariants_to_track:
+        - "regime_count"
+        - "transition_boundary"
+        - "g_max_percapita_span"
+        - "N2_epsilon_window"
+
+    falsification_criteria:
+      - id: "fals_01"
+        statement: "g_max_percapita constant across sweep — Dissipation dilution not observable"
+        measurable_test: "max(g_max_percapita) - min(g_max_percapita) < epsilon_working"
+        threshold: "0.05"
+        severity: "scope_rejection"
+      - id: "fals_02"
+        statement: "rho* at sweep boundary"
+        measurable_test: "theta_star at rho=0.0 or rho=0.50"
+        threshold: "boundary"
+        severity: "sweep_refinement"
+
+    perturbation_program:
+      sweeps:
+        - param: "rho"
+          values: [0.00, 0.02, 0.04, 0.06, 0.08, 0.10, 0.12, 0.14, 0.16, 0.18,
+                   0.20, 0.22, 0.24, 0.26, 0.28, 0.30, 0.32, 0.34, 0.36, 0.38,
+                   0.40, 0.42, 0.44, 0.46, 0.48, 0.50]
+          description: "Population growth rate sweep; epidemic threshold rho*~=0.197"
+
+  - id: "bc_02"
+    class: "aggregation"
+    description: >
+      Secondary BC (constitutive). The SIR model is itself the quotient projection
+      from N individual micro-states to 3 macro-compartments. This is inherited from
+      CASE-0007 and does not vary with the rho sweep.
+    primary: false
+
+  - id: "bc_03"
+    class: "coupling"
+    description: >
+      Secondary BC. The transmission term beta*S*I/N is an S2 coupling between
+      susceptible and infected compartments. Fixed beta=0.3 throughout sweep.
+    primary: false

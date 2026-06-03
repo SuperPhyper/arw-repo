@@ -1,0 +1,38 @@
+{
+  "case_id": "CASE-20260315-0007",
+  "system": "sir_epidemic",
+  "sweep_param": "beta",
+  "sweep_range": [
+    0.0,
+    0.5
+  ],
+  "regime_count": 2,
+  "adjacency_graph": {
+    "nodes": [
+      0,
+      1
+    ],
+    "edges": [
+      {
+        "from": 0,
+        "to": 1,
+        "param_midpoint": 0.2
+      }
+    ]
+  },
+  "persistence": 0.42,
+  "hysteresis_width": null,
+  "theta_star": 0.2,
+  "theta_star_note": "Transition at beta=(0.10+0.30)/2=0.20; analytical beta*=0.101, shifted by strategic sweep spacing (no points between 0.10 and 0.30 by design \u2014 see sweep_design_note in sweep_results.json).",
+  "theta_star_analytical": 0.101,
+  "predicted_count": 2,
+  "predicted_type": "binary",
+  "count_match": true,
+  "epsilon_working": 0.1,
+  "epsilon_note": "Updated from ScopeSpec 0.05 to 0.10. At eps=0.05 with fine 51-point sweep, I_peak gradient sigma_Delta < eps at all steps (F-gradient). eps=0.10 with 8 strategic points gives clean N=2. See audits/FailureAudit_Phase1.md.",
+  "epsilon_stability_width": 0.21,
+  "epsilon_stability_window": [
+    0.08,
+    0.29
+  ]
+}

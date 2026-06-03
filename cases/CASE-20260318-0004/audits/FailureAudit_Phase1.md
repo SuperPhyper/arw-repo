@@ -1,6 +1,8 @@
 ---
-status: complete
+status: working-definition
 layer: cases/CASE-20260318-0004/audits/
+date: 2026-03-18
+related_cases: [CASE-20260318-0004]
 ---
 
 # Failure Audit — Phase 1

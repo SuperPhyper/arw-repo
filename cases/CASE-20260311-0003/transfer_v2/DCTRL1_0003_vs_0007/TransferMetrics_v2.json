@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "case_A": "CASE-20260311-0003",
+    "case_B": "CASE-20260315-0007",
+    "system_A": "double_pendulum",
+    "system_B": "sir_epidemic",
+    "epsilon_A": 0.03,
+    "epsilon_B": 0.1,
+    "eps_matched_doc": "native eps: 0.03 vs 0.10; cross-system control, both N=2"
+  },
+  "metrics": {
+    "RCD": {
+      "value": 0,
+      "N_A": 2,
+      "N_B": 2,
+      "interpretation": "perfect_match"
+    },
+    "PCI": {
+      "value": 0.6,
+      "pci_A_to_B": 0.6,
+      "pci_B_to_A": 0.6,
+      "ari": 0.0388,
+      "method": "overlap_on_normalised_grid",
+      "grid_n": 1000,
+      "interpretation": "partial_compatibility",
+      "note": "Real overlap PCI from annotated_results; independent of regime count."
+    },
+    "TBS": {
+      "value": 0.128814,
+      "theta_star_norm_A": 0.2712,
+      "theta_star_norm_B": 0.4,
+      "window_band": [
+        0.0621,
+        0.2814
+      ],
+      "window_fragile": true,
+      "tbs_observable_intrinsic": 0.4475,
+      "interpretation": "moderate_shift",
+      "note": "TBS_norm is sweep-window dependent; window_band shows its range under +/-10-20% window cropping. tbs_observable_intrinsic is the window-robust companion (0.5-span crossing position)."
+    },
+    "topology": {
+      "value": 1.0,
+      "count_score": 1.0,
+      "edge_score": 1.0,
+      "N_A": 2,
+      "N_B": 2,
+      "edges_A": 1,
+      "edges_B": 1,
+      "note": "Regime-count + adjacency agreement, counted once (replaces collinear RCD+SDI of v1)."
+    },
+    "Phi": {
+      "value": 0.7285,
+      "verdict": "ambiguous_requires_inspection",
+      "components": {
+        "PCI_real": 0.6,
+        "topology": 1.0,
+        "TBS_score": 0.7424
+      },
+      "weights": {
+        "PCI": 0.55,
+        "topology": 0.25,
+        "TBS": 0.2
+      },
+      "flags": [
+        "N_CONFOUND: regime counts equal \u2014 legacy v1 Phi was inflated by count match; trust PCI_real for true overlap.",
+        "COMPONENT_DISAGREEMENT: real-overlap PCI and topology term diverge by >0.3 \u2014 single Phi is not a faithful summary.",
+        "TBS_WINDOW_FRAGILE: TBS_norm moves >0.1 under window cropping \u2014 boundary-shift verdict is sweep-window dependent."
+      ]
+    }
+  }
+}

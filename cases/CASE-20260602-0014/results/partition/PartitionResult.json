@@ -1,0 +1,469 @@
+{
+  "case_id": "CASE-20260602-0014",
+  "system": "sir_growing",
+  "epsilon": 0.01,
+  "method": "eps_clustering_bc_coupled",
+  "sweep_param": "rho",
+  "regime_count": 1,
+  "regime_labels": {
+    "0": "R0"
+  },
+  "regime_counts": {
+    "0": 26
+  },
+  "regime_observable_ranges": {
+    "0": {
+      "min": 0.002091,
+      "max": 0.020332
+    }
+  },
+  "transition_boundary": {
+    "param": "rho",
+    "transitions": [],
+    "theta_star": null
+  },
+  "annotated_results": [
+    {
+      "sweep_index": 0,
+      "sweep_point": {
+        "rho": 0.0,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.02033238,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.02033238,
+        "I_peak_frac": 0.304138,
+        "g_ratio": 1.151057
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 1,
+      "sweep_point": {
+        "rho": 0.02,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.02003955,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.02003955,
+        "I_peak_frac": 0.278262,
+        "g_ratio": 1.127768
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 2,
+      "sweep_point": {
+        "rho": 0.04,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.01972809,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.01972809,
+        "I_peak_frac": 0.25249,
+        "g_ratio": 1.088999
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 3,
+      "sweep_point": {
+        "rho": 0.06,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.01938807,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.01938807,
+        "I_peak_frac": 0.226706,
+        "g_ratio": 0.96488
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 4,
+      "sweep_point": {
+        "rho": 0.08,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.01899781,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.01899781,
+        "I_peak_frac": 0.200722,
+        "g_ratio": 0.0
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 5,
+      "sweep_point": {
+        "rho": 0.1,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.01850595,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.01850595,
+        "I_peak_frac": 0.174222,
+        "g_ratio": 0.0
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 6,
+      "sweep_point": {
+        "rho": 0.12,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.01777322,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.01777322,
+        "I_peak_frac": 0.146629,
+        "g_ratio": 0.0
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 7,
+      "sweep_point": {
+        "rho": 0.14,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.01633385,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.01633385,
+        "I_peak_frac": 0.116669,
+        "g_ratio": 0.0
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 8,
+      "sweep_point": {
+        "rho": 0.16,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.01312811,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.01312811,
+        "I_peak_frac": 0.08205,
+        "g_ratio": 0.0
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 9,
+      "sweep_point": {
+        "rho": 0.18,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.00766972,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.00766972,
+        "I_peak_frac": 0.042577,
+        "g_ratio": 0.0
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 10,
+      "sweep_point": {
+        "rho": 0.2,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.00215316,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.00215316,
+        "I_peak_frac": 0.010964,
+        "g_ratio": 0.0
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 11,
+      "sweep_point": {
+        "rho": 0.22,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.00214894,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.00214894,
+        "I_peak_frac": 0.010964,
+        "g_ratio": 0.0
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 12,
+      "sweep_point": {
+        "rho": 0.24,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.00214472,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.00214472,
+        "I_peak_frac": 0.010964,
+        "g_ratio": 0.0
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 13,
+      "sweep_point": {
+        "rho": 0.26,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.00214052,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.00214052,
+        "I_peak_frac": 0.010964,
+        "g_ratio": 0.0
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 14,
+      "sweep_point": {
+        "rho": 0.28,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.00213632,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.00213632,
+        "I_peak_frac": 0.010964,
+        "g_ratio": 0.0
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 15,
+      "sweep_point": {
+        "rho": 0.3,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.00213213,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.00213213,
+        "I_peak_frac": 0.010964,
+        "g_ratio": 0.0
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 16,
+      "sweep_point": {
+        "rho": 0.32,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.00212794,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.00212794,
+        "I_peak_frac": 0.010964,
+        "g_ratio": 0.0
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 17,
+      "sweep_point": {
+        "rho": 0.34,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.00212377,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.00212377,
+        "I_peak_frac": 0.010964,
+        "g_ratio": 0.0
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 18,
+      "sweep_point": {
+        "rho": 0.36,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.0021196,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.0021196,
+        "I_peak_frac": 0.010964,
+        "g_ratio": 0.0
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 19,
+      "sweep_point": {
+        "rho": 0.38,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.00211544,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.00211544,
+        "I_peak_frac": 0.010964,
+        "g_ratio": 0.0
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 20,
+      "sweep_point": {
+        "rho": 0.4,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.00211129,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.00211129,
+        "I_peak_frac": 0.010964,
+        "g_ratio": 0.0
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 21,
+      "sweep_point": {
+        "rho": 0.42,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.00210715,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.00210715,
+        "I_peak_frac": 0.010964,
+        "g_ratio": 0.0
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 22,
+      "sweep_point": {
+        "rho": 0.44,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.00210301,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.00210301,
+        "I_peak_frac": 0.010964,
+        "g_ratio": 0.0
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 23,
+      "sweep_point": {
+        "rho": 0.46,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.00209888,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.00209888,
+        "I_peak_frac": 0.010964,
+        "g_ratio": 0.0
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 24,
+      "sweep_point": {
+        "rho": 0.48,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.00209477,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.00209477,
+        "I_peak_frac": 0.010964,
+        "g_ratio": 0.0
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 25,
+      "sweep_point": {
+        "rho": 0.5,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.00209065,
+      "observable_name": "g_max_percapita",
+      "all_observables": {
+        "g_max_percapita": 0.00209065,
+        "I_peak_frac": 0.010964,
+        "g_ratio": 0.0
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    }
+  ]
+}

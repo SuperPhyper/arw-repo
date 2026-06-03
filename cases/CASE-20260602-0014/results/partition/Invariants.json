@@ -1,0 +1,22 @@
+{
+  "case_id": "CASE-20260602-0014",
+  "system": "sir_growing",
+  "sweep_param": "rho",
+  "sweep_range": [
+    0.0,
+    0.5
+  ],
+  "regime_count": 1,
+  "adjacency_graph": {
+    "nodes": [
+      0
+    ],
+    "edges": []
+  },
+  "persistence": 1.0,
+  "hysteresis_width": null,
+  "theta_star": null,
+  "predicted_count": null,
+  "predicted_type": null,
+  "count_match": null
+}

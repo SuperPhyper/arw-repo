@@ -166,9 +166,23 @@ Therefore the leading-order bound on σ_Δ(x) is:
 σ_Δ(x) ≤ |∂O/∂κ| · r + O(r²)
 ```
 
-This **formally justifies the gradient proxy** used in `pipeline/epsilon_kappa_map.py`:
-the field |∂O/∂κ| is the leading-order Lipschitz bound, and regions where |∂O/∂κ| · r ≥ ε
-are flagged as potential cover-stability failures.
+This justifies the gradient field |∂O/∂κ| as the **leading-order** Lipschitz bound.
+However — see the validation caveat below — the *pointwise* gradient is only the
+leading-order term and is **not** a faithful σ_Δ estimator near θ*.
+
+**Validation caveat (C1, 2026-06-02 — `Simulationen/sigma_validation_c1/`).**
+Direct measurement of σ_Δ(x) = sup_{|δ|≤r}|O(x+δ)−O(x)| against the *pointwise* proxy
+|∂O/∂κ|·r on analytically tractable observables (pendulum ω(E), pitchfork x_ss(μ)) shows:
+Corollary 1 holds exactly with the **local-max** Lipschitz L_local = max_{|d|≤r}|O'(x+d)|
+(σ_Δ ≤ L_local·r, 0 violations); but the **pointwise** gradient under-estimates σ_Δ at θ*
+by up to ~4× (pendulum separatrix) to ~10¹¹× (pitchfork bifurcation, where |∂O/∂κ|=0 on the
+flat branch while a perturbation reaches across the bifurcation). The bias is **one-sided**
+(F-gradient false negatives: "stable" reported where σ_Δ≥ε), clustered at θ*, growing with r.
+**Corrective:** use the **direct windowed σ_Δ** (max |O_j−O_i| over the Δ-window on the sweep
+grid) or the **local-max** L_local·r — both implemented in `pipeline/epsilon_kappa_map.py`
+(`compute_sigma_delta_windowed`, output field `sigma_delta_windowed`). The pointwise field
+`observable_gradient` is retained for backward comparison only and should not drive F-gradient
+verdicts near θ*.
 
 **Why cover stability fails at phase transitions.**
 At dynamical phase transitions (e.g. κ ≈ κ_c in Kuramoto, E ≈ E_sep in the conservative
@@ -196,16 +210,19 @@ M_stable(ε) := { x ∈ X : σ_Δ(x) < ε }
 
 Its complement M_unstable = X \ M_stable is the set of descriptively unreliable states.
 
-In the pipeline, the mask is approximated via the gradient proxy (Corollary 1):
+In the pipeline, the mask should be computed from the **direct windowed σ_Δ**
+(the C1-corrected estimator), not the pointwise gradient:
 
 ```
-M_stable_approx(ε) := { x : |∂O/∂κ| · r < ε }
+M_stable(ε)        := { x : σ_Δ_windowed(x) < ε }     # correct (use this)
+M_stable_proxy(ε)  := { x : |∂O/∂κ| · r < ε }          # leading-order, biased at θ* (one-sided)
 ```
 
-The exact stability mask (computing σ_Δ(x) directly by finite perturbation evaluation)
-is implemented in `pipeline/stability_mask.py`. This replaces the gradient proxy
-with the formally correct quantity and also outputs the Lipschitz bound field for
-comparison (see action item E-1/E-2 in the migration plan).
+`pipeline/epsilon_kappa_map.py::compute_sigma_delta_windowed` computes σ_Δ(x) directly as the
+max |O_j−O_i| over the Δ-window on the sweep grid (output field `sigma_delta_windowed`, with
+`proxy_pointwise`, `proxy_localmax`, and a per-point `pointwise_underestimates` flag). A
+standalone `pipeline/stability_mask.py` is **planned** (migration action E-1/E-2); until it
+exists, use the `sigma_delta_windowed` field. See the C1 validation caveat in §4.
 
 ---
 
@@ -243,12 +260,15 @@ The criterion has been empirically confirmed in two case studies in Felder 2026:
   Lorentzian formula 1.5σ; see CASE-0001 CaseRecord, D-1 update pending).
 
 - **CASE-20260311-0003 (Conservative Pendulum):** with observable ω(E,ω₀),
-  the cover-stability criterion recovers the separatrix E_sep = 2ω₀²
-  model-independently. Two instability ridges appear:
-  - Primary: E_sep = 2ω₀² (separatrix; L diverges → Z_shared)
-  - Secondary: E ≈ ω₀² (anharmonic crossover; L large but finite → F-gradient)
-  At ε = 0.05 both ridges merge into a single connected instability band
-  (~4% of parameter window).
+  the cover-stability criterion recovers the separatrix **E_sep = ω₀²**
+  model-independently (corrected 2026-06-02; the earlier value 2ω₀² was a bug —
+  separatrix at θ=π, θ̇=0 gives E = −ω₀²·cos(π) = +ω₀²; see
+  `Simulationen/bugfix_report_20260602_p0_esep.md`). There is a **single** instability
+  ridge at E_sep = ω₀² (L diverges → Z_shared / F-gradient with σ_Δ/ε ≈ 2.0 at the
+  separatrix). The previously claimed **secondary ridge at E ≈ ω₀²** does **not exist**:
+  under the buggy convention E_sep_old = 2ω₀², the position u = E/E_sep_old = ω₀²/(2ω₀²) = ½
+  was simply the true separatrix re-labelled. Re-measurement (Phase 1.3, 2026-06-02) finds
+  no secondary feature > 10% of the primary peak.
 
 ---
 

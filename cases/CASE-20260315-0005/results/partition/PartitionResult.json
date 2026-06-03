@@ -1,0 +1,535 @@
+{
+  "case_id": "CASE-20260315-0005",
+  "system": "pendulum_gamma",
+  "epsilon": 0.01,
+  "method": "eps_clustering_bc_coupled",
+  "sweep_param": "gamma",
+  "regime_count": 8,
+  "regime_labels": {
+    "0": "R0",
+    "1": "R1",
+    "2": "R2",
+    "3": "R3",
+    "4": "R4",
+    "5": "R5",
+    "6": "R6",
+    "7": "R7"
+  },
+  "regime_counts": {
+    "0": 1,
+    "1": 3,
+    "2": 1,
+    "3": 1,
+    "4": 1,
+    "5": 1,
+    "6": 1,
+    "7": 17
+  },
+  "regime_observable_ranges": {
+    "0": {
+      "min": 0.104549,
+      "max": 0.104549
+    },
+    "1": {
+      "min": 0.110399,
+      "max": 0.125522
+    },
+    "2": {
+      "min": 0.097704,
+      "max": 0.097704
+    },
+    "3": {
+      "min": 0.082162,
+      "max": 0.082162
+    },
+    "4": {
+      "min": 0.064258,
+      "max": 0.064258
+    },
+    "5": {
+      "min": 0.044546,
+      "max": 0.044546
+    },
+    "6": {
+      "min": 0.023427,
+      "max": 0.023427
+    },
+    "7": {
+      "min": 0.0,
+      "max": 0.001669
+    }
+  },
+  "transition_boundary": {
+    "param": "gamma",
+    "transitions": [
+      {
+        "from_regime": 0,
+        "to_regime": 1,
+        "param_before": 0.0,
+        "param_after": 0.2,
+        "theta_star": 0.1
+      },
+      {
+        "from_regime": 1,
+        "to_regime": 2,
+        "param_before": 0.6,
+        "param_after": 0.8,
+        "theta_star": 0.7
+      },
+      {
+        "from_regime": 2,
+        "to_regime": 3,
+        "param_before": 0.8,
+        "param_after": 1.0,
+        "theta_star": 0.9
+      },
+      {
+        "from_regime": 3,
+        "to_regime": 4,
+        "param_before": 1.0,
+        "param_after": 1.2,
+        "theta_star": 1.1
+      },
+      {
+        "from_regime": 4,
+        "to_regime": 5,
+        "param_before": 1.2,
+        "param_after": 1.4,
+        "theta_star": 1.2999999999999998
+      },
+      {
+        "from_regime": 5,
+        "to_regime": 6,
+        "param_before": 1.4,
+        "param_after": 1.6,
+        "theta_star": 1.5
+      },
+      {
+        "from_regime": 6,
+        "to_regime": 7,
+        "param_before": 1.6,
+        "param_after": 1.8,
+        "theta_star": 1.7000000000000002
+      }
+    ],
+    "theta_star": 0.1
+  },
+  "annotated_results": [
+    {
+      "sweep_index": 0,
+      "sweep_point": {
+        "gamma": 0.0,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.104549,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.104549,
+        "energy_ss": 0.406514
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 1,
+      "sweep_point": {
+        "gamma": 0.2,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.125522,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.125522,
+        "energy_ss": 0.504321
+      },
+      "regime_id": 1,
+      "regime_label": "R1"
+    },
+    {
+      "sweep_index": 2,
+      "sweep_point": {
+        "gamma": 0.4,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.119827,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.119827,
+        "energy_ss": 0.484644
+      },
+      "regime_id": 1,
+      "regime_label": "R1"
+    },
+    {
+      "sweep_index": 3,
+      "sweep_point": {
+        "gamma": 0.6,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.110399,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.110399,
+        "energy_ss": 0.452719
+      },
+      "regime_id": 1,
+      "regime_label": "R1"
+    },
+    {
+      "sweep_index": 4,
+      "sweep_point": {
+        "gamma": 0.8,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.097704,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.097704,
+        "energy_ss": 0.408156
+      },
+      "regime_id": 2,
+      "regime_label": "R2"
+    },
+    {
+      "sweep_index": 5,
+      "sweep_point": {
+        "gamma": 1.0,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.082162,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.082162,
+        "energy_ss": 0.351223
+      },
+      "regime_id": 3,
+      "regime_label": "R3"
+    },
+    {
+      "sweep_index": 6,
+      "sweep_point": {
+        "gamma": 1.2,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.064258,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.064258,
+        "energy_ss": 0.282243
+      },
+      "regime_id": 4,
+      "regime_label": "R4"
+    },
+    {
+      "sweep_index": 7,
+      "sweep_point": {
+        "gamma": 1.4,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.044546,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.044546,
+        "energy_ss": 0.201598
+      },
+      "regime_id": 5,
+      "regime_label": "R5"
+    },
+    {
+      "sweep_index": 8,
+      "sweep_point": {
+        "gamma": 1.6,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.023427,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.023427,
+        "energy_ss": 0.110211
+      },
+      "regime_id": 6,
+      "regime_label": "R6"
+    },
+    {
+      "sweep_index": 9,
+      "sweep_point": {
+        "gamma": 1.8,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.001669,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.001669,
+        "energy_ss": 0.00815
+      },
+      "regime_id": 7,
+      "regime_label": "R7"
+    },
+    {
+      "sweep_index": 10,
+      "sweep_point": {
+        "gamma": 2.0,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.0,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.0,
+        "energy_ss": 0.0
+      },
+      "regime_id": 7,
+      "regime_label": "R7"
+    },
+    {
+      "sweep_index": 11,
+      "sweep_point": {
+        "gamma": 2.2,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.0,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.0,
+        "energy_ss": 0.0
+      },
+      "regime_id": 7,
+      "regime_label": "R7"
+    },
+    {
+      "sweep_index": 12,
+      "sweep_point": {
+        "gamma": 2.4,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.0,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.0,
+        "energy_ss": 0.0
+      },
+      "regime_id": 7,
+      "regime_label": "R7"
+    },
+    {
+      "sweep_index": 13,
+      "sweep_point": {
+        "gamma": 2.6,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.0,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.0,
+        "energy_ss": 0.0
+      },
+      "regime_id": 7,
+      "regime_label": "R7"
+    },
+    {
+      "sweep_index": 14,
+      "sweep_point": {
+        "gamma": 2.8,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.0,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.0,
+        "energy_ss": 0.0
+      },
+      "regime_id": 7,
+      "regime_label": "R7"
+    },
+    {
+      "sweep_index": 15,
+      "sweep_point": {
+        "gamma": 3.0,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.0,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.0,
+        "energy_ss": 0.0
+      },
+      "regime_id": 7,
+      "regime_label": "R7"
+    },
+    {
+      "sweep_index": 16,
+      "sweep_point": {
+        "gamma": 3.2,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.0,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.0,
+        "energy_ss": 0.0
+      },
+      "regime_id": 7,
+      "regime_label": "R7"
+    },
+    {
+      "sweep_index": 17,
+      "sweep_point": {
+        "gamma": 3.4,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.0,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.0,
+        "energy_ss": 0.0
+      },
+      "regime_id": 7,
+      "regime_label": "R7"
+    },
+    {
+      "sweep_index": 18,
+      "sweep_point": {
+        "gamma": 3.6,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.0,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.0,
+        "energy_ss": 0.0
+      },
+      "regime_id": 7,
+      "regime_label": "R7"
+    },
+    {
+      "sweep_index": 19,
+      "sweep_point": {
+        "gamma": 3.8,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.0,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.0,
+        "energy_ss": 0.0
+      },
+      "regime_id": 7,
+      "regime_label": "R7"
+    },
+    {
+      "sweep_index": 20,
+      "sweep_point": {
+        "gamma": 4.0,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.0,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.0,
+        "energy_ss": 0.0
+      },
+      "regime_id": 7,
+      "regime_label": "R7"
+    },
+    {
+      "sweep_index": 21,
+      "sweep_point": {
+        "gamma": 4.2,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.0,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.0,
+        "energy_ss": 0.0
+      },
+      "regime_id": 7,
+      "regime_label": "R7"
+    },
+    {
+      "sweep_index": 22,
+      "sweep_point": {
+        "gamma": 4.4,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.0,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.0,
+        "energy_ss": 0.0
+      },
+      "regime_id": 7,
+      "regime_label": "R7"
+    },
+    {
+      "sweep_index": 23,
+      "sweep_point": {
+        "gamma": 4.6,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.0,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.0,
+        "energy_ss": 0.0
+      },
+      "regime_id": 7,
+      "regime_label": "R7"
+    },
+    {
+      "sweep_index": 24,
+      "sweep_point": {
+        "gamma": 4.8,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.0,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.0,
+        "energy_ss": 0.0
+      },
+      "regime_id": 7,
+      "regime_label": "R7"
+    },
+    {
+      "sweep_index": 25,
+      "sweep_point": {
+        "gamma": 5.0,
+        "_bc_id": "bc_01",
+        "_bc_class": "dissipation"
+      },
+      "observable": 0.0,
+      "observable_name": "var_rel",
+      "all_observables": {
+        "var_rel": 0.0,
+        "energy_ss": 0.0
+      },
+      "regime_id": 7,
+      "regime_label": "R7"
+    }
+  ]
+}

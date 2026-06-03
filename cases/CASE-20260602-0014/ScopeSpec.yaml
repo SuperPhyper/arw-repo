@@ -1,0 +1,90 @@
+# ScopeSpec — CASE-20260602-0014
+# System: SIR with growing population (rho-sweep)
+# BC Class: Dissipation (dimension-growing fibre)
+# Created: 2026-06-02
+
+schema_version: "0.2"
+id: "SCOPE-20260602-0014"
+case_id: "CASE-20260602-0014"
+system: "sir_growing"
+
+scope_tuple:
+  B:
+    description: >
+      SIR epidemic model with exponentially growing total population N(t) = N0*exp(rho*t).
+      State: (S, I, R) in absolute counts, S+I+R=N(t).
+      Equations: dS/dt = rho*N - beta*S*I/N; dI/dt = beta*S*I/N - gamma_r*I; dR/dt = gamma_r*I.
+      Fixed: beta=0.3, gamma_r=0.1, N0=10000, I0=100, S0=9900.
+      Analytical epidemic threshold: rho* = beta*s0 - gamma_r ~= 0.197 (interior of sweep).
+    state_space: "(S, I, R) in R+^3, S+I+R=N(t), N(t)=N0*exp(rho*t)"
+    fixed_params:
+      beta: 0.3
+      gamma_r: 0.1
+      N0: 10000
+      I0: 100
+      S0: 9900
+      T: 300
+    sweep_param: "rho"
+    sweep_range: [0.0, 0.5]
+
+  Pi:
+    - observable_key: g_max_percapita
+      description: >
+        Peak per-capita epidemic growth rate: max_{t in [0,T]} [(dI/dt) / N(t)].
+        Equivalent form: max_t [i(t) * (beta*s(t) - gamma_r)] where i=I/N, s=S/N.
+        BC structure: D*S4*R (Dissipation-primary). Observable LOCKED 2026-06-02.
+        Non-averaging: max = Restriction (S1), not Aggregation (S5). A6 not required.
+        Lock reference: Simulationen/transfer_test_dissipation_growth/design/observable_selection.md
+      primary: true
+      observable_sufficiency: pending
+      span_estimate: "~0.01 to ~0.10 across rho sweep (to be confirmed)"
+      lock_date: "2026-06-02"
+
+    - observable_key: I_peak_frac
+      description: >
+        Peak infected fraction: max_t [I(t)/N(t)].
+        DIAGNOSTIC ONLY — NOT used for regime partition.
+        Disqualified by structural camouflage: I(t)/N(t) = i(t) satisfies fixed-N SIR
+        with effective recovery (gamma_r + rho), absorbing dimension-growth signal.
+        See observable_selection.md §3.2 and §5.2 for disqualification record.
+      primary: false
+      observable_sufficiency: disqualified_camouflage
+      note: "Carried for diagnostic comparison to CASE-0007 only. Do not use for partition."
+
+  Delta:
+    description: >
+      Initial condition variation: I(0) in [50, 150] (nominal I0=100; +/-50%).
+      S(0) = N0 - I(0), R(0) = 0.
+      Ten independent runs per rho-value.
+    perturbation_type: initial_condition_noise
+    n_runs: 10
+    ic_range_I: [50, 150]
+
+  epsilon:
+    working_epsilon: 0.05
+    choice_note: >
+      Pre-estimate. Span of g_max_percapita TBD. If F-gradient at eps=0.05
+      (as in CASE-0007), increase to eps=0.08 or eps=0.10.
+    plateau_status: pending
+
+falsification:
+  - id: F1
+    condition: "span(g_max_percapita) < eps — Dissipation dilution has no observable effect"
+    severity: scope_rejection
+    action: "Verify beta fixed value; check rho range includes rho*"
+  - id: F2
+    condition: "rho* unstable across I(0) perturbation runs"
+    severity: scope_rejection
+    action: "Check N0; finite-size effects may blur threshold"
+  - id: F3
+    condition: "No robust eps plateau for g_max_percapita"
+    severity: scope_rejection
+    action: "Increase T; consider alternative observable r_early = log(i(T_e)/i0)/T_e"
+  - id: F4
+    condition: "rho* at sweep boundary (rho=0 or rho=0.5)"
+    severity: sweep_refinement
+    action: "Extend range; analytical rho*=0.197 should be well interior"
+
+observable_sufficiency:
+  g_max_percapita: pending
+  I_peak_frac: disqualified_camouflage

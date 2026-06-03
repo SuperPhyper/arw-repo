@@ -607,3 +607,97 @@ Status: open
 - **Source:** docs/notes/research_journal.md (Session 2026-05-10, Open questions);
   docs/meta/context_map/context_map_falsification_bc.md (F-gradient entry)
 - **Related:** F-gradient falsification category (§3 of repo context); Q2 (state-dependent ε)
+
+---
+
+## Transfer & Within-Class BC Structure
+*(Added: session 2026-06-02)*
+
+**Q-REL-04 — Does dimension growth constitute a BC-structural break within the Dissipation class?**
+- **Status:** **answered** (2026-06-02) — **STRUCTURAL BREAK, not a reparametrisation.**
+- **Question:** A dimension-growing order axis (population growth N(t)=N₀e^{ρt} feeding new
+  susceptibles) was conjectured to be either a genuine BC-structural break within the
+  Dissipation class or merely a reparametrisation of stationary Dissipation.
+- **Finding (answered):** Resolved via the intrinsic dynamics of the closed (s,i) fraction
+  system of the growing-population SIR (ds/dt = ρ(1−s) − βsi, di/dt = i(βs − γ_r − ρ)), **not**
+  via the transfer metric Φ. The ρ(1−s) replenishment term creates a new isolated stable
+  endemic attractor (s*,i*>0) via a transcritical bifurcation at ρ*=β−γ_r; the stationary
+  system (ρ=0) has only a degenerate line {i=0} with no endemic state. Creating a new isolated
+  attractor is a topological change of the phase portrait, which a reparametrisation cannot
+  produce. In ARW terms the regime partition **gains a regime** under dimension growth →
+  structural break. Scope: this instantiation (susceptible replenishment), not a universal
+  theorem about all dimension growth.
+- **Why not Φ:** the transfer metric was shown not to resolve even between-BC-class distance
+  (decoupling controls D-CTRL-1/2), and the locked observable g_max_percapita is F1-insufficient
+  at the working ε (span 0.018 ≪ ε=0.05 → N=1). The earlier Φ=1.0 "reparametrisation" result
+  was withdrawn (placeholder data + v1 metric defect).
+- **Registered:** 2026-06-02 (referenced earlier in the dissipation-growth pre-registration but
+  never previously entered here)
+- **Source:** docs/notes/research_journal.md (Session 2026-06-02); external Simulationen
+  workspace transfer_test_dissipation_growth/QREL04_RESOLUTION.md (+ qrel04_phase_portrait.png)
+- **Related:** transfer-metric defects (pipeline/transfer_v2.py); Q9 (scope transitions vs.
+  phase transitions)
+
+**Q-REL-05 — Does the transfer metric Φ carry any genuine BC-class distance signal?**
+- **Status:** open (raised by the same session)
+- **Question:** With the v1 PCI defect removed (overlap-based PCI in transfer_v2), same-class and
+  cross-class case pairs are still statistically indistinguishable in PCI_real once regime count
+  is controlled (D-CTRL-1). Is there *any* construction on the induced partition that recovers
+  BC-class distance, or must BC-class distance be measured on the operator signatures (S1–S5)
+  directly rather than on the partition?
+- **Registered:** 2026-06-02
+- **Source:** docs/notes/research_journal.md (Session 2026-06-02); Simulationen
+  DECOUPLING_CONTROLS_RESULTS.md
+
+---
+
+## BC-Class Relational Structure
+*(Added: session 2026-06-02)*
+
+**Q-REL-04 — Does a dimension-growing order axis constitute a genuine BC-structural break within the Dissipation class?**
+- **Status:** open
+- **Question:** When Aggregation acts over a dimension-growing index set (a partial order ≤
+  whose fibre gains degrees of freedom as it is traversed), does the resulting
+  Dissipation + growing-Aggregation combination constitute a genuine BC-structural break
+  relative to stationary Dissipation — or is it a reparametrisation within the same
+  BC class?
+
+  Formally: let D denote the Dissipation operator and A_N the Aggregation operator over
+  an index set of size N. In the **commuting case** (dimension-constant fibre, A2 holds),
+  A_T · D = D · A_T and the temporal aggregation in observables such as r_ss and PLV is
+  transparent to BC-class structure. In the **non-commuting case** (dimension-growing fibre),
+  A_{N(t)} · D ≠ D · A_{N(t)}, and the growing index set may introduce a structural
+  novelty not captured by the Dissipation class alone.
+
+  The question is whether this non-commutativity is:
+  (a) empirically detectable via a Φ gap between stationary and growing Dissipation systems, or
+  (b) absorbed by a reparametrisation (e.g. time-rescaling) leaving Φ unchanged.
+
+- **Empirical calibration:** The Φ metric has demonstrated sufficient resolution to test
+  this question:
+  - CASE-0004↔CASE-0001 (same Coupling class): Φ=0.9983 → same-class upper reference
+  - CASE-0001↔CASE-0007 (Coupling vs. Aggregation): Φ=0.5317 → cross-class lower reference
+  These two results establish the dynamic range of Φ as a BC-class distance probe.
+
+- **Proposed transfer test:** See `experiments/transfer/prediction_registration_dissipation_growth.md`
+  (Simulationen/transfer_test_dissipation_growth/). The test compares:
+  - Scope A: CASE-20260315-0005 (damped multi-pendulum, stationary Dissipation, dimension-constant fibre)
+  - Scope B: growing-population SIR variant (Dissipation, dimension-growing fibre; pipeline not yet run)
+  Registered prediction: Φ(stationary Dissipation ↔ growing Dissipation) < Φ(same-class baseline ≥ 0.85)
+  if dimension growth is a genuine BC-structural break.
+
+- **Open sub-questions:**
+  - (a) **Camouflage caveat:** If the growing fibre manifests as heterogeneity that temporal
+    averaging suppresses, Φ will produce a false-negative. A non-averaging observable over ≤
+    is a prerequisite for the test to be informative. The selection and validation of such an
+    observable is itself an open methodological question (see §3 of the pre-registration).
+  - (b) **Partial-order case beyond current apparatus:** The entire ARW pipeline is
+    architecturally single-axis (ε-sweep over one parameter). Multi-axis partial orders
+    with incomparable pairs cannot be reached by the current design. The current experiment
+    tests only the single-axis (monotone time) case and is silent about multi-axis
+    partial-order structure.
+
+- **Registered:** 2026-06-02
+- **Source:** Session 2026-06-02 (transfer analysis: CASE-0004↔0001 Φ=0.9983, CASE-0001↔0007 Φ=0.5317)
+- **Related:** Q_NEW_9 (BC class: system vs. scope property), Q_NEW_11 (Φ decomposition),
+  Q-NEW-COVER-1 (observable completeness), CASE-20260315-0005, CASE-20260315-0007

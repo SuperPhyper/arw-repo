@@ -1,0 +1,90 @@
+# BCManifest — CASE-20260315-0005
+# System: Multi-Link-Pendel with joint damping (gamma-sweep)
+# Primary BC: Dissipation
+# Pipeline-compatible format (created 2026-06-02)
+
+schema_version: "0.2"
+id: "BCM-20260315-0005"
+case_id: "CASE-20260315-0005"
+system: "pendulum_gamma"
+domain: "DS"
+bc_class: "dissipation"
+
+bc_components:
+  - id: "bc_01"
+    class: "dissipation"
+    description: >
+      Primary BC. Joint damping term -gamma*dtheta/dt is a linear velocity contraction
+      (S4 operator). At gamma > gamma*, dissipation dominates coupling and suppresses
+      cooperative motion. This is metric contraction — the canonical S4 signature.
+    primary: true
+    sweep_param: "gamma"
+    fixed_params:
+      kappa: 3.25
+      T: 500
+      T_transient: 300
+      n_ic: 10
+    falsification:
+      - id: "fals_01"
+        condition: "var_rel constant across gamma sweep"
+        severity: "scope_rejection"
+      - id: "fals_02"
+        condition: "gamma* at sweep boundary"
+        severity: "sweep_refinement"
+    parameterization:
+      - name: "joint_damping"
+        symbol: "gamma"
+        domain: "[0.0, 5.0]"
+        meaning: >
+          Joint damping coefficient. gamma=0: undamped (same as CASE-0002 at kappa=3.25).
+          gamma -> inf: overdamped, all motion suppressed. Transition gamma* where
+          dissipation dominates coupling energy injection.
+        implementation_hook:
+          type: "code_param"
+          reference: "pipeline.sweep::run_pendulum_gamma(gamma=...)"
+
+    resolution_plan:
+      epsilons: [0.03, 0.05, 0.08, 0.10, 0.15]
+      stability_window_criterion: >
+        Working epsilon=0.05 (conservative pre-estimate from CASE-0002 at eps=0.023).
+        Damping sweep expected to produce wider span than kappa-sweep. Confirm by
+        epsilon_sweep pipeline.
+
+    predicted_partition_effects:
+      qualitative:
+        - "Low gamma: coupling-dominated cooperative motion (high var_rel)"
+        - "High gamma: dissipation-dominated fixed-point (low var_rel -> 0)"
+        - "gamma* continuous crossover (no sharp bifurcation expected)"
+      partition_type_prediction: "binary"
+      invariants_to_track:
+        - "regime_count"
+        - "transition_boundary"
+        - "var_rel_span"
+        - "N2_epsilon_window"
+
+    falsification_criteria:
+      - id: "fals_01"
+        statement: "var_rel constant across gamma sweep — Dissipation BC has no observable effect"
+        measurable_test: "max(var_rel) - min(var_rel) < epsilon_working"
+        threshold: "0.05"
+        severity: "scope_rejection"
+      - id: "fals_02"
+        statement: "gamma* at sweep boundary (gamma=0 or gamma=5)"
+        measurable_test: "theta_star at boundary"
+        threshold: "boundary"
+        severity: "sweep_refinement"
+
+    perturbation_program:
+      sweeps:
+        - param: "gamma"
+          values: [0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0,
+                   2.2, 2.4, 2.6, 2.8, 3.0, 3.2, 3.4, 3.6, 3.8, 4.0,
+                   4.2, 4.4, 4.6, 4.8, 5.0]
+          description: "Joint damping sweep; transition expected at gamma* where dissipation dominates coupling"
+
+  - id: "bc_02"
+    class: "coupling"
+    description: >
+      Secondary BC. Coupling (kappa=3.25) remains structurally present throughout sweep.
+      The gamma-sweep probes how Dissipation progressively dominates the fixed Coupling.
+    primary: false

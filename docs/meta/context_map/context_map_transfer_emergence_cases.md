@@ -1,10 +1,18 @@
 ---
 status: working-definition
 layer: docs/meta/context_map/
-version: 0.2
+version: 0.3
 task: 4/4 — Transfer + Emergence + Cases (exemplary) + YAML assembly
 schema: context_map_framework.md §Schema
-updated: 2026-05-10
+updated: 2026-06-02
+changes_from_v0.2: >
+  Added "RIGOUR UPDATE (2026-06-02)" block to Transfer Metric Entries: v1 PCI
+  defect (structural proxy, collinear with N), pipeline/transfer_v2.py (real
+  overlap PCI), and the finding that Φ does NOT resolve BC-class distance
+  (decoupling controls D-CTRL-1/2). Added CASE-20260602-0014 and updated
+  CASE-20260315-0005 (both run 2026-06-02). Recorded dissipation-growth result:
+  TRIVIAL (F1 insufficiency), prior Φ=1.0 withdrawn, Q-REL-04 answered
+  (structural break, via intrinsic dynamics).
 changes_from_v0.1: >
   Fixed SIR BC class (FORCING→AGGREGATION). Fixed all pending case IDs
   (20260429→20260315). Added CASE-20260329-0011, CASE-20260330-0012,
@@ -65,6 +73,25 @@ CASE-0001↔CASE-0002: Φ=0.675 | partially_admissible | RCD=1,TBS_norm=0.167
 CASE-0001↔CASE-0003: Φ_raw=0.40,Φ_matched_ε≈0.95 | ε_mismatch_drives_divergence
 CASE-0001↔CASE-0004: Φ=pending | same_BC_class(Coupling) | first_same-class_cross-system
 CASE-0002↔CASE-0003: Φ=computed | see_transfer/pendulum_vs_kuramoto/
+```
+
+### RIGOUR UPDATE (2026-06-02) — transfer_v2, Φ caveats
+
+```
+v1_PCI_defect: transfer.py_PCI=structural_proxy(regime_count+edge_count)
+    NOT_real_overlap | collinear_with_RCD+SDI | ~90%_of_Φ_tracked_N
+    →use pipeline/transfer_v2.py (overlap-based PCI from annotated_results + ARI)
+Φ_does_NOT_resolve_BC_class_distance: proven by decoupling controls
+    D-CTRL-1(same_N,diff_BC: 0003↔0007)→Φ=0.729(not_low) | PCI_real≈0.60
+    D-CTRL-2(diff_N,same_BC: 0001↔0002)→directional_containment=0.833(admissible_coarsening)
+    same-class 0004↔0001 PCI_real=0.659 ≈ cross-class 0001↔0007 PCI_real=0.650
+    →v1 "monotonic Φ ordering = BC-distance" was a regime-count artifact
+    →Φ = normalised-axis partition-overlap filter, NOT a BC-class metric (see Q-REL-05)
+transfer_v2_guards: VOID(empty_annotated|missing_sweep_range|undocumented_ε_mismatch)
+    | TRIVIAL_PARTITION(N≤1) | N_CONFOUND_flag(RCD=0) | COMPONENT_DISAGREEMENT_flag
+dissipation_growth(CASE-0005↔CASE-0014): VOID→then TRIVIAL(CASE-0014 N=1)
+    g_max_percapita F1-insufficient@working_ε(span0.018≪ε0.05) | prior Φ=1.0 WITHDRAWN
+    Q-REL-04 RESOLVED by intrinsic dynamics (NOT Φ): STRUCTURAL_BREAK
 ```
 
 ---
@@ -157,6 +184,14 @@ CASE-20260318-0004: case∈cases | StuartLandau_2osc | BC=COUPLING | status=comp
 ```
 CASE-20260315-0005: case∈cases | Multi-Pendel+damping | BC=DISSIPATION | status=open | go_nogo=pending
     sweep=γ(damping_coefficient) | ScopeSpec_signature_first=present
+    UPDATE_2026-06-02: pipeline RUN | obs=var_rel | N=8@ε0.01 (N=1@working_ε0.05) | sweep_range=[0,5]
+    role=ScopeA(stationary_Dissipation) in transfer_test_dissipation_growth
+
+CASE-20260602-0014: case∈cases | SIR_growing_population | BC=DISSIPATION(dimension-growing) | status=open | go_nogo=no_go
+    sweep=ρ(pop_growth_rate)∈[0,0.5] | obs=g_max_percapita(primary,F1@working_ε)+g_ratio(DEV-02_companion)
+    pipeline RUN 2026-06-02: N=1@working_ε0.05 (span0.018≪ε) → F1_observable_insufficiency
+    role=ScopeB(growing_Dissipation) | prior go_nogo=go + Φ=1.0 WITHDRAWN(placeholder)
+    Q-REL-04=ANSWERED(structural_break, via intrinsic dynamics not Φ) | see research_journal 2026-06-02
 
 CASE-20260315-0006: case∈cases | Multi-Pendel+forcing | BC=FORCING | status=open | go_nogo=pending
     sweep=Ω(forcing_frequency) | ScopeSpec_signature_first=present

@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "case_A": "CASE-20260315-0005",
+    "case_B": "CASE-20260602-0014",
+    "system_A": "pendulum_gamma",
+    "system_B": "sir_growing"
+  },
+  "metrics": {
+    "RCD": {
+      "value": 0,
+      "N_A": 2,
+      "N_B": 2,
+      "interpretation": "perfect_match"
+    },
+    "TBS": {
+      "value": 0.0,
+      "tbs_raw": 1.53,
+      "method": "normalised",
+      "theta_star_A": 1.7,
+      "theta_star_B": 0.17,
+      "sweep_range_A": [
+        0.0,
+        5.0
+      ],
+      "sweep_range_B": [
+        0.0,
+        0.5
+      ],
+      "interpretation": "boundary_preserved"
+    },
+    "PCI": {
+      "value": 1.0,
+      "N_A": 2,
+      "N_B": 2,
+      "interpretation": "full_compatibility",
+      "note": "Structural PCI approximation. Full PCI requires aligned annotated results."
+    },
+    "SDI": {
+      "value": 0,
+      "nodes_A": 2,
+      "nodes_B": 2,
+      "edges_A": 0,
+      "edges_B": 0,
+      "interpretation": "identical_structure"
+    },
+    "Phi": {
+      "value": 1.0,
+      "components": {
+        "PCI": 1.0,
+        "RCD_score": 1.0,
+        "SDI_score": 1.0,
+        "TBS_score": 1.0
+      },
+      "interpretation": "highly_admissible"
+    }
+  }
+}

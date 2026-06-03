@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "case_A": "CASE-20260315-0005",
+    "case_B": "CASE-20260602-0014",
+    "system_A": "pendulum_gamma",
+    "system_B": "sir_growing",
+    "epsilon_A": 0.01,
+    "epsilon_B": 0.01,
+    "eps_matched_doc": "native eps; matching method"
+  },
+  "result": "TRIVIAL_PARTITION",
+  "regime_count_A": 8,
+  "regime_count_B": 1,
+  "trivial_reasons": [
+    "TRIVIAL[B]: regime_count=1 (<=1) at this eps \u2014 no transition to transfer; likely F1 observable insufficiency (span < eps)."
+  ],
+  "note": "A single-regime partition has no transition to transfer. This is not an admissible result and not a VOID input error \u2014 it signals that at least one observable does not resolve a transition at the chosen eps (F1: span < eps). Lower eps with a sigma_Delta-justified value, or replace the observable."
+}

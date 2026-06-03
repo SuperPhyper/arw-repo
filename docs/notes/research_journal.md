@@ -1230,3 +1230,77 @@ Eval scenarios should include at least one prompt per quantitative decision vari
 - Q-CTX-01: Does `stability_mask_exclusion` need to be the primary action listed
   for F-gradient (before ε↑) in diagnostic workflows, or is ε↑ with a correct
   ε*(O,X_B) check operationally equivalent? Currently unresolved in eval. (open)
+
+---
+
+## Session 2026-06-02: Transfer-metric rigour pass + Q-REL-04 resolved
+
+### Context
+
+A critical re-examination of the three transfer tests (CASE-0004↔0001, CASE-0001↔0007,
+and the Dissipation-Stationary↔Dissipation-Growing test) exposed defects in the transfer
+metric and produced a definitive resolution of Q-REL-04. Work performed against the
+external Simulationen workspace; the metric engine and pipeline fixes land in this repo.
+
+### Transfer metric Φ — defect and fix
+
+`pipeline/transfer.py` (v1) computed PCI as a structural proxy of regime count + adjacency
+edge count; it never read the per-point regime labels in `annotated_results`. PCI was thus
+collinear with RCD and SDI (whose node term is itself |N_A−N_B|), so ~90% of Φ's weight
+tracked the regime count N. A new non-destructive module `pipeline/transfer_v2.py` was added:
+
+- real overlap-based PCI from `annotated_results` on a common normalised BC axis (+ ARI);
+- RCD and adjacency folded into one topology term (no triple-counting of N);
+- TBS with a sweep-window-sensitivity band and an observable-intrinsic locator;
+- a mechanical validator returning VOID on empty `annotated_results`, missing `sweep_range`,
+  or an undocumented ε mismatch; and a TRIVIAL_PARTITION guard for N≤1.
+
+### Finding (claim): Φ does not resolve BC-class distance
+
+Recomputed with real overlap: same-class CASE-0004↔0001 PCI=0.659 vs cross-class
+CASE-0001↔0007 PCI=0.650 — statistically tied. Decoupling controls confirm it: D-CTRL-1
+(same N=2, different BC: CASE-0003↔0007) gives Φ=0.729 (not low); D-CTRL-2 (different N,
+same BC: CASE-0001↔0002) shows directional containment 0.833 (admissible coarsening — the
+one structural signal). The v1 "monotonic Φ ordering proves hierarchical BC-distance
+resolution" is a regime-count artifact. Φ is a normalised-axis partition-overlap filter,
+not a BC-class metric.
+
+### Finding (answered): Q-REL-04 — dimension growth is a STRUCTURAL BREAK
+
+The Dissipation-growth test's earlier Φ=1.0 ("reparametrisation, Q-REL-04 resolved") was
+withdrawn: both cases had empty partitions (placeholder data), and the locked observable
+`g_max_percapita` is F1-insufficient at the working ε (span 0.018 ≪ ε=0.05 → N=1). Φ cannot
+answer the question (it doesn't even resolve between-class distance). Resolved instead via
+the intrinsic dynamics of the closed (s,i) fraction system of the growing-population SIR:
+
+    ds/dt = ρ(1−s) − β s i ,   di/dt = i(β s − γ_r − ρ)
+
+Fixed-point/eigenvalue analysis: at ρ=0 a degenerate line {i=0} (no endemic state); for
+0<ρ<ρ*=β−γ_r the disease-free point becomes a saddle and a NEW isolated stable endemic
+attractor (s*,i*>0) appears via a transcritical bifurcation. Creating a new isolated
+attractor is a topological change of the phase portrait — impossible under a reparametrisation.
+Therefore dimension growth (susceptible replenishment) is a genuine BC-structural break within
+the Dissipation class: the regime partition gains a regime. This is the opposite of the
+withdrawn placeholder, and vindicates the camouflage analysis (the scalar observable masks
+the endemic structure). Scope: this instantiation, not a universal theorem.
+
+### Pipeline defects fixed (found while making the test runnable)
+
+| File | Defect | Fix |
+|---|---|---|
+| `pipeline/extract_partition.py` | OBSERVABLE_MAP lacked `sir_growing`, `pendulum_gamma` → empty observables → no partition | added both extractors |
+| `pipeline/sweep.py` | missing `__main__` sweep runner | restored (BCManifest-driven; output mirrors CASE-0007) |
+| `pipeline/invariants.py` | read `_sweep_point`; extract_partition writes `sweep_point` → `sweep_range` silently None → spurious VOID | accept both keys |
+
+### Documents
+
+- `pipeline/transfer_v2.py`, `pipeline/extract_partition.py`, `pipeline/sweep.py`,
+  `pipeline/invariants.py` (this repo)
+- Full analysis + phase portrait: external Simulationen workspace
+  (`transfer_test_dissipation_growth/QREL04_RESOLUTION.md`, `DECOUPLING_CONTROLS_RESULTS.md`,
+  `TEST3_RESULT.md`, `protocol_deviation_log.md`)
+
+### Open questions touched
+
+- Q-REL-04 → **answered** (structural break, by intrinsic dynamics). Registered in
+  open_questions.md this session.

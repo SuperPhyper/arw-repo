@@ -1,0 +1,169 @@
+{
+  "case_id": "CASE-20260315-0007",
+  "system": "sir_epidemic",
+  "epsilon": 0.1,
+  "method": "eps_clustering_bc_coupled",
+  "sweep_param": "beta",
+  "regime_count": 2,
+  "regime_labels": {
+    "0": "R0",
+    "1": "R1"
+  },
+  "regime_counts": {
+    "0": 4,
+    "1": 4
+  },
+  "regime_observable_ranges": {
+    "0": {
+      "min": 0.01,
+      "max": 0.01
+    },
+    "1": {
+      "min": 0.303811,
+      "max": 0.480114
+    }
+  },
+  "transition_boundary": {
+    "param": "beta",
+    "transitions": [
+      {
+        "from_regime": 0,
+        "to_regime": 1,
+        "param_before": 0.1,
+        "param_after": 0.3,
+        "theta_star": 0.2
+      }
+    ],
+    "theta_star": 0.2
+  },
+  "annotated_results": [
+    {
+      "sweep_index": 0,
+      "sweep_point": {
+        "beta": 0.01,
+        "_bc_id": "bc_01",
+        "_bc_class": "aggregation"
+      },
+      "observable": 0.01,
+      "observable_name": "I_peak",
+      "all_observables": {
+        "I_peak": 0.01,
+        "R_final": 0.011098
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 1,
+      "sweep_point": {
+        "beta": 0.04,
+        "_bc_id": "bc_01",
+        "_bc_class": "aggregation"
+      },
+      "observable": 0.01,
+      "observable_name": "I_peak",
+      "all_observables": {
+        "I_peak": 0.01,
+        "R_final": 0.016521
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 2,
+      "sweep_point": {
+        "beta": 0.07,
+        "_bc_id": "bc_01",
+        "_bc_class": "aggregation"
+      },
+      "observable": 0.01,
+      "observable_name": "I_peak",
+      "all_observables": {
+        "I_peak": 0.01,
+        "R_final": 0.031781
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 3,
+      "sweep_point": {
+        "beta": 0.1,
+        "_bc_id": "bc_01",
+        "_bc_class": "aggregation"
+      },
+      "observable": 0.01,
+      "observable_name": "I_peak",
+      "all_observables": {
+        "I_peak": 0.01,
+        "R_final": 0.134875
+      },
+      "regime_id": 0,
+      "regime_label": "R0"
+    },
+    {
+      "sweep_index": 4,
+      "sweep_point": {
+        "beta": 0.3,
+        "_bc_id": "bc_01",
+        "_bc_class": "aggregation"
+      },
+      "observable": 0.303811,
+      "observable_name": "I_peak",
+      "all_observables": {
+        "I_peak": 0.303811,
+        "R_final": 0.941203
+      },
+      "regime_id": 1,
+      "regime_label": "R1"
+    },
+    {
+      "sweep_index": 5,
+      "sweep_point": {
+        "beta": 0.37,
+        "_bc_id": "bc_01",
+        "_bc_class": "aggregation"
+      },
+      "observable": 0.378841,
+      "observable_name": "I_peak",
+      "all_observables": {
+        "I_peak": 0.378841,
+        "R_final": 0.972947
+      },
+      "regime_id": 1,
+      "regime_label": "R1"
+    },
+    {
+      "sweep_index": 6,
+      "sweep_point": {
+        "beta": 0.44,
+        "_bc_id": "bc_01",
+        "_bc_class": "aggregation"
+      },
+      "observable": 0.438282,
+      "observable_name": "I_peak",
+      "all_observables": {
+        "I_peak": 0.438282,
+        "R_final": 0.987138
+      },
+      "regime_id": 1,
+      "regime_label": "R1"
+    },
+    {
+      "sweep_index": 7,
+      "sweep_point": {
+        "beta": 0.5,
+        "_bc_id": "bc_01",
+        "_bc_class": "aggregation"
+      },
+      "observable": 0.480114,
+      "observable_name": "I_peak",
+      "all_observables": {
+        "I_peak": 0.480114,
+        "R_final": 0.993095
+      },
+      "regime_id": 1,
+      "regime_label": "R1"
+    }
+  ]
+}

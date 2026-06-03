@@ -1,0 +1,200 @@
+# ScopeSpec — CASE-20260315-0007
+# System: SIR epidemic model (beta-sweep)
+# BC Class: Aggregation
+# Canonical pipeline format (rewritten 2026-06-02 from CASE-20260315-0007_ScopeSpec.yaml)
+
+schema_version: "0.2"
+id: "SCOPE-20260315-0007"
+title: "SIR epidemic model — epidemic threshold under beta-sweep"
+status: "active"
+created_at: "2026-03-15"
+updated_at: "2026-06-02"
+system_domain: "epidemiological"
+
+X:
+  name: "SIR compartment state space"
+  type: "simplex"
+  structure:
+    topology: true
+    metric: "required"
+    measure: "optional"
+  state_coordinates:
+    - name: "S"
+      domain: "[0,1]"
+      description: "Susceptible fraction"
+    - name: "I"
+      domain: "[0,1]"
+      description: "Infected fraction"
+    - name: "R"
+      domain: "[0,1]"
+      description: "Recovered fraction"
+  notes: >
+    Joint state space (S,I,R) in [0,1]^3 with S+I+R=1 (2-simplex).
+    ODE model: dS/dt = -beta*S*I, dI/dt = beta*S*I - gamma_r*I, dR/dt = gamma_r*I.
+    Fixed params: gamma_r=0.1, S(0)=0.99, I(0)=0.01, R(0)=0.
+    The Aggregation BC is constitutive: SIR is a quotient projection of the
+    N-individual micro-state onto 3 macro-compartments.
+
+B:
+  description: >
+    SIR compartment model on a homogeneous population (N=10000).
+    State constraint: S+I+R=1 (admissible set is a 2-simplex).
+    Sweep parameter: beta in [0.0, 0.5] (transmission rate).
+    All other parameters fixed.
+  constraints:
+    - name: "simplex_constraint"
+      form: "equation"
+      expression: "S + I + R = 1"
+      notes: "Constitutive Restriction BC (secondary)"
+    - name: "sir_dynamics"
+      form: "equation"
+      expression: "dS/dt = -beta*S*I; dI/dt = beta*S*I - gamma_r*I; dR/dt = gamma_r*I"
+      notes: "Aggregation BC — quotient projection from micro-state"
+  admissible_set:
+    notation: "X_B"
+    membership_test: "S,I,R in [0,1] AND S+I+R=1 AND beta in [0.0, 0.5]"
+  boundary_condition_classes:
+    - class: "aggregation"
+      role: >
+        Primary BC. The SIR model IS the aggregation operator: it projects
+        N individual states onto 3 macro-compartments via the quotient map
+        pi_SIR: {0,1,2}^N -> [0,1]^3. This is a canonical S1-quotient operator.
+      primary: true
+    - class: "restriction"
+      role: >
+        Secondary BC. The constraint S+I+R=1 restricts the state space to the
+        2-simplex. This is an S1-selection BC (admissibility restriction).
+      primary: false
+
+Pi:
+  - id: "pi_01"
+    name: "Peak infected fraction (I_peak)"
+    observable_key: "I_peak"
+    primary: true
+    map:
+      domain: "X_B (full trajectory)"
+      codomain: "[0, 1]"
+      definition: >
+        I_peak = max_{t in [0, T]} I(t).
+        Sub-threshold (beta < beta*): I_peak ~= I(0) = 0.01 (no epidemic).
+        Super-threshold (beta > beta*): I_peak grows with beta to ~0.8 at beta=0.5.
+    distinguishability:
+      d_pi: "d_Ipeak(x,y) = |I_peak(x) - I_peak(y)|"
+      type: "metric"
+      units: "dimensionless (population fraction)"
+    resolution_floor: "0.001"
+    notes: >
+      Span across sweep: approx 0.79 (from 0.01 to ~0.80).
+      At epsilon=0.10: span/epsilon ~= 4.7 — sufficient (eps updated from 0.05; see FailureAudit).
+      Corresponds to I_max in pre-registration notation.
+
+  - id: "pi_02"
+    name: "Final recovered fraction (R_final)"
+    observable_key: "R_final"
+    primary: false
+    map:
+      domain: "X_B"
+      codomain: "[0, 1]"
+      definition: "R_final = R(T) at t=T (final state, approximates R_infinity)"
+    notes: >
+      Complementary to I_peak. Zero below threshold, positive above.
+      Secondary confirmation observable.
+
+Delta:
+  - id: "delta_01"
+    name: "Initial condition perturbation"
+    type: "ic_perturbation"
+    action:
+      on: "initial_conditions"
+      definition: >
+        I(0) drawn from [0.005, 0.02], S(0) = 1 - I(0), R(0) = 0.
+        N_runs = 10 independent runs per beta-value.
+    bounds:
+      magnitude: "I(0) in [0.005, 0.02]"
+      locality: "initial state"
+    admissibility_rationale: >
+      SIR has a globally attracting trajectory for each beta (deterministic ODE).
+      IC perturbation tests whether the regime assignment is IC-independent.
+      For a deterministic ODE, it is — unless near the threshold beta*.
+
+epsilon:
+  value: 0.10
+  interpretation: >
+    d_Ipeak(x,y) <= 0.05 means the two states are indistinguishable in their
+    epidemic severity. Well below the span of I_peak (~0.79), giving span/epsilon ~= 15.8.
+  tie_to_perturbations: >
+    epsilon=0.05 is chosen to be much smaller than the regime contrast
+    (I_peak ~= 0.01 sub-threshold vs ~0.5-0.8 super-threshold at moderate beta).
+    The perturbation dI(0) in [0.005, 0.02] produces delta_I_peak << 0.05 for
+    beta away from beta*, confirming Delta-stability.
+
+observable_sufficiency:
+  - observable_key: "I_peak"
+    sufficient: true
+    reason: >
+      span(I_peak) ~= 0.47 >> 2*epsilon = 0.20. I_peak clearly distinguishes
+      sub-threshold (near 0.01) from super-threshold (up to 0.80) regimes.
+  - observable_key: "R_final"
+    sufficient: true
+    reason: >
+      span(R_final) ~= 0.90 across sweep. Sufficient as secondary confirmation.
+
+expected_partition:
+  partition_type: "binary"
+  regime_count_predicted: 2
+  regimes:
+    - id: "R0"
+      name: "Sub-threshold — no epidemic"
+      signature: "I_peak ~= I(0) = 0.01"
+      bc_conditions: "beta < beta* ~= 0.101 (R0 < 1)"
+    - id: "R1"
+      name: "Super-threshold — epidemic"
+      signature: "I_peak >> I(0), grows with beta"
+      bc_conditions: "beta > beta* ~= 0.101 (R0 > 1)"
+
+falsification:
+  - id: "F1"
+    condition: "span(I_peak) < epsilon — Aggregation BC has no observable effect"
+    severity: "scope_rejection"
+    measurable_test: "max(I_peak) - min(I_peak) < 0.05"
+
+  - id: "F2"
+    condition: "beta* shifts under I(0) perturbation"
+    severity: "scope_rejection"
+    measurable_test: "beta* changes by more than 0.01 across 10 IC draws"
+
+  - id: "F3"
+    condition: "No robust epsilon plateau across all observables"
+    severity: "scope_rejection"
+    measurable_test: "epsilon_sweep shows no plateau of width > 0.3 for I_peak"
+
+  - id: "F4"
+    condition: "beta* at sweep boundary (beta=0 or beta=0.5)"
+    severity: "sweep_refinement"
+    measurable_test: "theta_star at beta in {0.0, 0.5}"
+
+comparability:
+  common_underlying_X: "population_collective_state"
+  transfer_targets:
+    - scope_id: "SCOPE-20260311-0001"
+      direction: "CASE-20260315-0007 -> CASE-20260311-0001"
+      structural_homology_claim: >
+        Both are binary partition cases (N=2 predicted). But BC classes differ:
+        Aggregation (SIR) vs Coupling (Kuramoto). Different primitive operators.
+        Low Phi expected (control experiment for monotonic metric validation).
+      expected_admissibility: "inadmissible or partially_admissible"
+
+provenance:
+  sources:
+    - type: "note"
+      ref: "cases/CASE-20260315-0007/CASE-20260315-0007_ScopeSpec.yaml"
+      pointer: "Original signature-first ScopeSpec"
+    - type: "note"
+      ref: "docs/bc_taxonomy/boundary_condition_classes.md"
+      pointer: "Aggregation BC definition"
+  owners:
+    - role: "ScopeFormalizer"
+      name: "session-2026-03-15"
+  links:
+    bc_manifest_id: "BCM-20260315-0007"
+    case_record_id: "CASE-20260315-0007"

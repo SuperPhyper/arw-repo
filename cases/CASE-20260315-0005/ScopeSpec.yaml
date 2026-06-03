@@ -1,0 +1,82 @@
+# ScopeSpec — CASE-20260315-0005
+# System: Multi-Link-Pendel with joint damping (gamma-sweep)
+# BC Class: Dissipation
+# Pipeline-compatible format (created 2026-06-02)
+
+schema_version: "0.2"
+id: "SCOPE-20260315-0005"
+case_id: "CASE-20260315-0005"
+system: "pendulum_gamma"
+
+scope_tuple:
+  B:
+    description: >
+      Multi-link pendulum (same geometry as CASE-20260311-0002) with
+      added uniform joint damping gamma at all joints.
+      Equations of motion: d²theta/dt² = f(theta, dtheta/dt; kappa) - gamma*dtheta/dt
+      Fixed kappa=3.25 (above Coupling transition from CASE-0002).
+      Admissible states: all joint-angle configurations in [-pi, pi]^n.
+    state_space: "theta in [-pi,pi]^n x R^n (joint angles + angular velocities)"
+    fixed_params:
+      kappa: 3.25
+      n_links: 2
+      T: 500
+      T_transient: 300
+    sweep_param: "gamma"
+    sweep_range: [0.0, 5.0]
+
+  Pi:
+    - observable_key: var_rel
+      description: >
+        Relative angular variance across joints, normalized by reference variance.
+        var_rel = Var(theta_1 - theta_2) measured in steady state [T_transient, T].
+        High for undamped cooperative motion (low gamma), low for overdamped suppression (high gamma).
+      primary: true
+      observable_sufficiency: sufficient
+      span_estimate: "0 to ~1.0 across gamma sweep (to be confirmed)"
+
+    - observable_key: lambda_proxy
+      description: >
+        Local Lyapunov proxy. Expected insufficient as in CASE-0002.
+      primary: false
+      observable_sufficiency: insufficient
+
+    - observable_key: energy_ss
+      description: >
+        Steady-state kinetic energy: E_kin = 0.5 * sum(dtheta_i^2).
+        Expected to decay monotonically with gamma.
+      primary: false
+      observable_sufficiency: pending
+
+  Delta:
+    description: >
+      Initial condition variation: theta(0) drawn uniformly from [-0.1, 0.1]^n,
+      dtheta(0) = 0. Ten independent runs per gamma-value.
+    perturbation_type: initial_condition_noise
+    n_runs: 10
+
+  epsilon:
+    working_epsilon: 0.05
+    choice_note: >
+      Conservative pre-estimate based on CASE-0002 eps_working=0.023.
+      Damping sweep expected wider span. To be confirmed by epsilon_sweep.
+    plateau_status: pending
+
+falsification:
+  - id: F1
+    condition: "span(var_rel) < eps for all gamma"
+    severity: scope_rejection
+  - id: F2
+    condition: "gamma* unstable across IC runs"
+    severity: scope_rejection
+  - id: F3
+    condition: "No robust eps plateau for var_rel"
+    severity: scope_rejection
+  - id: F4
+    condition: "gamma* at sweep boundary (gamma=0 or gamma=5)"
+    severity: sweep_refinement
+
+observable_sufficiency:
+  var_rel: sufficient
+  lambda_proxy: insufficient
+  energy_ss: pending

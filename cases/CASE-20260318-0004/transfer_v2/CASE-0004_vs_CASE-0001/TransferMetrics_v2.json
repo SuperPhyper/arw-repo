@@ -1,0 +1,70 @@
+{
+  "meta": {
+    "case_A": "CASE-20260318-0004",
+    "case_B": "CASE-20260311-0001",
+    "system_A": "stuart_landau_coupled",
+    "system_B": "kuramoto",
+    "epsilon_A": 0.09,
+    "epsilon_B": 0.09,
+    "eps_matched_doc": "both eps_working=0.09; matched"
+  },
+  "metrics": {
+    "RCD": {
+      "value": 0,
+      "N_A": 4,
+      "N_B": 4,
+      "interpretation": "perfect_match"
+    },
+    "PCI": {
+      "value": 0.659,
+      "pci_A_to_B": 0.659,
+      "pci_B_to_A": 0.735,
+      "ari": 0.1265,
+      "method": "overlap_on_normalised_grid",
+      "grid_n": 1000,
+      "interpretation": "partial_compatibility",
+      "note": "Real overlap PCI from annotated_results; independent of regime count."
+    },
+    "TBS": {
+      "value": 0.082576,
+      "theta_star_norm_A": 0.4091,
+      "theta_star_norm_B": 0.4917,
+      "window_band": [
+        0.077,
+        0.1432
+      ],
+      "window_fragile": false,
+      "tbs_observable_intrinsic": 0.1697,
+      "interpretation": "moderate_shift",
+      "note": "TBS_norm is sweep-window dependent; window_band shows its range under +/-10-20% window cropping. tbs_observable_intrinsic is the window-robust companion (0.5-span crossing position)."
+    },
+    "topology": {
+      "value": 1.0,
+      "count_score": 1.0,
+      "edge_score": 1.0,
+      "N_A": 4,
+      "N_B": 4,
+      "edges_A": 3,
+      "edges_B": 3,
+      "note": "Regime-count + adjacency agreement, counted once (replaces collinear RCD+SDI of v1)."
+    },
+    "Phi": {
+      "value": 0.7794,
+      "verdict": "ambiguous_requires_inspection",
+      "components": {
+        "PCI_real": 0.659,
+        "topology": 1.0,
+        "TBS_score": 0.8348
+      },
+      "weights": {
+        "PCI": 0.55,
+        "topology": 0.25,
+        "TBS": 0.2
+      },
+      "flags": [
+        "N_CONFOUND: regime counts equal \u2014 legacy v1 Phi was inflated by count match; trust PCI_real for true overlap.",
+        "COMPONENT_DISAGREEMENT: real-overlap PCI and topology term diverge by >0.3 \u2014 single Phi is not a faithful summary."
+      ]
+    }
+  }
+}

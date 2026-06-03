@@ -1,0 +1,68 @@
+# CaseRecord — CASE-20260315-0007
+# System: SIR epidemic model
+# Pipeline-compatible format (rewritten 2026-06-02)
+
+schema_version: "0.2"
+id: "CASE-20260315-0007"
+title: "SIR epidemic model — beta-sweep, Aggregation BC"
+phase: "1"
+system: "sir_epidemic"
+status: "complete"
+created_at: "2026-03-15"
+updated_at: "2026-06-02"
+
+description: >
+  ODE-based SIR epidemic model with beta-sweep across [0.0, 0.5] (51 points).
+  Primary observable: I_peak (peak infected fraction).
+  BC class: Aggregation (SIR as quotient projection from micro-states).
+  Analytical threshold: beta* = gamma_r/S(0) = 0.1/0.99 ~= 0.101.
+  First Aggregation-BC case and first EPI-domain case in the ARW/ART repo.
+  Control experiment for transfer metric monotonicity (vs CASE-0001, Coupling).
+
+artifacts:
+  scope_spec:
+    id: "SCOPE-20260315-0007"
+    path: "ScopeSpec.yaml"
+    status: "complete"
+
+  bc_manifest:
+    id: "BCM-20260315-0007"
+    path: "BCManifest.yaml"
+    status: "complete"
+
+  partition_result:
+    path: "results/partition/PartitionResult.json"
+    status: "complete"
+    note: "N=2, theta_star=0.20, eps=0.10. Strategic 8-point sweep after F-gradient finding at eps=0.05."
+
+  invariants:
+    path: "results/partition/Invariants.json"
+    status: "complete"
+    note: "sweep_range=[0.0,0.5], theta_star=0.20, eps=0.10, N2_window=[0.08,0.29], width=0.21."
+
+  epsilon_sweep:
+    path: "results/partition/EpsilonSweep.json"
+    status: "complete"
+    note: "N=2 plateau eps in [0.08,0.29], width=0.21."
+
+  failure_audit:
+    path: "audits/FailureAudit_Phase1.md"
+    status: "complete"
+    completed_date: "2026-06-02"
+    note: "F-gradient at eps=0.05 resolved by eps=0.10 + strategic 8-point sweep. F1-F4 not triggered."
+
+go_nogo:
+  criterion: >
+    N=2 partition with beta* in [0.09, 0.12] (interior of sweep, near analytical 0.101).
+    I_peak sufficient (span >> 2*epsilon=0.10). F1-F4 not triggered.
+  decision: "go"
+  decision_date: "2026-06-02"
+  decision_notes: >
+    N=2 confirmed at eps=0.10. theta_star=0.20 (interior). I_peak sufficient (span/eps=4.7).
+    F-gradient at original eps=0.05 resolved by redesigning sweep. F1-F4 not triggered.
+
+links:
+  related_cases:
+    - CASE-20260311-0001
+  transfer_experiment:
+    - experiments/transfer_test_0001_0007_aggregation/

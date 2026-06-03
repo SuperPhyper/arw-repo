@@ -1,0 +1,65 @@
+{
+  "case_id": "CASE-20260315-0005",
+  "system": "pendulum_gamma",
+  "sweep_param": "gamma",
+  "sweep_range": [
+    0.0,
+    5.0
+  ],
+  "regime_count": 8,
+  "adjacency_graph": {
+    "nodes": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "edges": [
+      {
+        "from": 0,
+        "to": 1,
+        "param_midpoint": 0.1
+      },
+      {
+        "from": 1,
+        "to": 2,
+        "param_midpoint": 0.7
+      },
+      {
+        "from": 2,
+        "to": 3,
+        "param_midpoint": 0.9
+      },
+      {
+        "from": 3,
+        "to": 4,
+        "param_midpoint": 1.1
+      },
+      {
+        "from": 4,
+        "to": 5,
+        "param_midpoint": 1.2999999999999998
+      },
+      {
+        "from": 5,
+        "to": 6,
+        "param_midpoint": 1.5
+      },
+      {
+        "from": 6,
+        "to": 7,
+        "param_midpoint": 1.7000000000000002
+      }
+    ]
+  },
+  "persistence": 0.72,
+  "hysteresis_width": null,
+  "theta_star": 0.1,
+  "predicted_count": null,
+  "predicted_type": null,
+  "count_match": null
+}
