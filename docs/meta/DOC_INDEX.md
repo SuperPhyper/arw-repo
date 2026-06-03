@@ -113,6 +113,7 @@ See `arw-doc-consistency` skill for usage rules.
 | docs/advanced/bc_extraction_method.md | experiment-proposal | BC extraction method | — | — |
 | docs/advanced/bc_operator_signatures_arw.md | working-definition | BC classes, operator signatures S1–S5, regime partitions | — | Full treatment; extends bc_taxonomy/ |
 | docs/advanced/bc_relative_observable_indistinguishability.md | working-definition | BC-relative observable indistinguishability | — | — |
+| docs/advanced/bc_signature_forward_derivation.md | claim | forward map operator structure → cover geometry; α=1/(β−1) theorem; β-exponent calculus (S5 lift +1, moment ×2); resolves Q-NEW-CROSS-2 (forward) | — | Forward complement of bc_signature_extraction_observables.md; keystone + β-rules numerically verified 2026-06-03 |
 | docs/advanced/bc_stratification_dynamic_subscopes.md | hypothesis | BC stratification, dynamic subscopes | — | — |
 | docs/advanced/cross_domain_signature_matrix.md | working-definition | cross-domain signature matrix | — | — |
 | docs/advanced/emergence_and_latent_degrees_of_freedom.md | working-definition | emergence and latent DoF | — | — |
