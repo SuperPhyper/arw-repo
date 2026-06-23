@@ -1,7 +1,7 @@
 ---
 status: working-definition
 layer: docs/advanced/
-last_updated: 2026-04-29
+last_updated: 2026-06-10
 depends_on:
   - docs/glossary/scope.md
   - docs/glossary/perturbation_spread.md
@@ -36,6 +36,15 @@ Two states x, y ∈ X_B are indistinguishable under scope S if:
 ```
 
 They are assigned to the same regime class: x ~_S y.
+
+**Note (INC-01 upgrade, 2026-06-10):** the pairwise relation above is not
+transitive and therefore does not by itself define a partition (sorites:
+chains of sub-ε steps connect distant states). Canonically, regimes are the
+path-connected components of the observable cover C_ε (Felder 2026); the
+relation |Π(x) − Π(y)| < ε defines adjacency *within* the cover. The shorthand
+x ~_S y is retained in this document for readability and is to be read through
+the cover construction. See `docs/glossary/scope.md` (ε section) and
+`docs/core/cover_stability_criterion.md`.
 
 ε is not a measurement precision — it is a **structural parameter of the scope**.
 It specifies what resolution the description *requires* to be meaningful,
@@ -411,6 +420,14 @@ The **binary stability mask** is {x : σ_Δ(x) < ε} — the set of states that
 satisfy the consistency condition pointwise. States outside the mask are
 partition boundary states. The mask is computed (approximately via gradient
 proxy) in `pipeline/epsilon_kappa_map.py` and (exactly) in `pipeline/stability_mask.py`.
+
+**Caveat (C1/C2 validation, 2026-06-02):** the pointwise gradient proxy
+|∂Π/∂κ|·r is faithful in the bulk (median ratio ≈ 1.01) but systematically
+**under-reports σ_Δ at transition points θ*** — one-sided false negatives
+(up to 4.3× at a separatrix). Near transitions, the stability mask must be
+computed from direct σ_Δ (sup over a δ-sample) or the local-max Lipschitz
+bound L = max_{|δ|≤r}|∇Π(x+δ)|, not from the pointwise gradient. Corollary 1
+(Felder 2026) is exact only with the local-max constant.
 
 Boundary states are the exception — and their density defines
 the "width" of regime boundaries.

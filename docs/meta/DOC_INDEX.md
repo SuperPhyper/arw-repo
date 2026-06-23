@@ -31,6 +31,7 @@ See `arw-doc-consistency` skill for usage rules.
 | I-07 | `README_session_2026-03-18.md` at repo root | UNARCHIVED SESSION ARTIFACT | Moved to `archive/sessions/` | 2026-03-29 |
 | I-08 | `docs/context_navigation/resonance_dialectic_context_navigation.md` | INFORMAL RESONANCE USAGE — 12 informal uses without formal ARW distinction | Added Section 13 (formal vs. informal resonance note) | 2026-03-29 |
 | I-09 | `schemas/ScopeSpec.yaml` — falsification severity field | F0 (`observable_replacement`) missing as valid severity value | Added F0 documentation to falsification block | 2026-03-29 |
+| I-10 | 5 orphan docs not in index (`bc_signature_extraction_observables`, `bc_signature_persistence_and_dominance`, `CASE-20260329-0011`, `CASE-20260330-0012`, `audit_report_2026-06-02`) | Files on disk with no DOC_INDEX entry | Registered all five in their layer tables | 2026-06-24 |
 
 ---
 
@@ -149,6 +150,8 @@ See `arw-doc-consistency` skill for usage rules.
 | docs/advanced/invariance_as_scope_persistence.md | working-definition | invariance as scope-persistence, Noether/Einstein invariance in ARW context, Δ-stable partition, generalized invariance, scope-relative conservation | — | Added 2026-05-01; connects classical invariance theory to ARW; depends on causality_as_directed_observable_structure.md |
 | docs/advanced/epistemic_ceilings_as_scope_saturation.md | working-definition | epistemic ceilings as scope saturation, cover exhaustion C_ε, three structural causes (Π-narrowness, ε-mismatch, Δ-excess), ceiling diagnosis and resolution | — | Added 2026-05-01; depends on invariance_as_scope_persistence.md + causality_as_directed_observable_structure.md |
 | docs/advanced/arw_aggregation_limits_typological_observables.md | note | aggregation limits of typological observables, variance crossover problem, N* (crossover point), F1 at aggregation limit, Z_shared (heterogeneous scope), Aggregation Stability Measure (ASM), Variance Ratio Profile V(A), ecological fallacy as cross-level scope violation | — | General result; KHT used as illustration; applies to any discrete-type observable (MBTI, Big Five, institutional categories); added 2026-05-20 |
+| docs/advanced/bc_signature_persistence_and_dominance.md | working-definition | generator signature Σ as persistence measure over BC configurations, persistence interval η_i, BC dominance, scale-free signature | — | Registered 2026-06-24 (was orphan, I-10); created 2026-05-30 |
+| docs/advanced/bc_signature_extraction_observables.md | working-definition | bottom-up BC signature Σ extraction from observable data without model equations, complement to bc_extraction_method.md | — | Registered 2026-06-24 (was orphan, I-10); created 2026-05-30 |
 
 ---
 
@@ -194,6 +197,7 @@ See `arw-doc-consistency` skill for usage rules.
 | docs/art_instantiations/kht_group_dynamics.md | hypothesis | KHT group dynamics, collective regime manifold Φ_G={(R_k,α_k)}, four collective regimes C-R1–C-R4, four stabilization mechanisms M1–M4 (Kuramoto coupling/external forcing/resonance/parameter shift), social phenomena as regime dynamics (polarization/groupthink/rigidity/innovation), κ_c as group-level N*, connection to CASE-20260328-0010 | — | Classical metastability only — explicitly NOT a quantum claim; depends on kht_state_notation + kht_arw_analysis; added 2026-05-22 |
 | docs/art_instantiations/kht_applications_clinical_cognitive.md | hypothesis | KHT clinical/cognitive hypotheses H-A through H-E: attractor binding strength → regime stability, creativity as threshold-gated R3, masking as operator-stable modulator shift, therapeutic change as threshold recalibration (T1–T4 mechanisms), developmental trajectory → profile stability; cross-hypothesis dependency ordering; shared measurement prerequisites | — | No diagnostic claims; no pathologization; hypotheses are falsifiable, not validated; depends on kht_state_notation + kht_architecture_layer2–3; added 2026-05-22 |
 | docs/art_instantiations/kht_doc_index.md | note | Session index for 14-doc KHT working cluster (Clusters A–D), reading order, key results per doc, dependency graph, repo layer assignments; companion to kht_architecture_index.md with broader scope | — | Covers extended set (state_notation, group_dynamics, applications, prescopal, ARW methodology) beyond 4-layer architecture index; added 2026-05-22 |
+| docs/art_instantiations/art_instantiation_lcc_nested_calibration.md | hypothesis | nested calibration (two-loop: lower=observables within fixed scope, upper=scope itself), calibration-obstruction typology, kinematics/dynamics factorization (ARW-level), cost-landscape topology, goal-metric construction, cooperation-will as boundary condition; low-carbon concrete (LCC) standard-update as worked instance | — | Imported 2026-06-24 from To-REPO; ART instantiation with one ARW-level contribution (§3); anchors to docs/notes/conflict_navigation_nested_calibration.md |
 
 ---
 
@@ -205,6 +209,7 @@ See `arw-doc-consistency` skill for usage rules.
 | docs/cognitive_architecture/bc_taxonomy_cognitive_modes.md | working-definition | BC taxonomy and cognitive modes | — | ⚠ See I-02: diverged copy also in context_navigation/ |
 | docs/cognitive_architecture/context_navigation_ai.md | working-definition | context navigation AI system map | — | ⚠ See I-02: diverged copy also in context_navigation/ |
 | docs/cognitive_architecture/modal_cognition.md | working-definition | modal cognition | — | ⚠ See I-02: diverged copy also in context_navigation/ |
+| docs/cognitive_architecture/agent_context_navigation_project_brief.md | experiment-proposal | existence test (vs confirmation test) for emergent low-dimensional mode structure, unlabeled salience, degrees-of-freedom surplus (anti-circularity), pre-registered evaluation, O3 read off from emergent geometry | — | Imported 2026-06-24 from To-REPO; tests KHT axis hypothesis outside MBTI context; depends on cognitive_architecture context-navigation docs |
 
 ---
 
@@ -309,6 +314,8 @@ and their description documents. Summary of description `.md` files:
 | File path | Status | Canonical concept(s) | Supersedes | Notes |
 |---|---|---|---|---|
 | docs/cases/CASE_TEMPLATE_signature_first.md | note | case template for signature-first pre-pipeline docs | — | Template; see docs/cases/README.md for TODO on motivational docs |
+| docs/cases/CASE-20260329-0011.md | working-definition | case motivation — Labyrinth agent Phase 1 (mode emergence, uniform Zone A) | — | Registered 2026-06-24 (was orphan, I-10); links cases/CASE-20260329-0011/ |
+| docs/cases/CASE-20260330-0012.md | experiment-proposal | case motivation — Labyrinth agent emergent modes (unstructured policy, ARW as observer) | — | Registered 2026-06-24 (was orphan, I-10); links cases/CASE-20260330-0012/ |
 
 ---
 
@@ -318,6 +325,7 @@ and their description documents. Summary of description `.md` files:
 |---|---|---|---|---|
 | docs/meta/LLM_CONTRIBUTION_CHARTER.md | working-definition | LLM contribution rules, repo governance | — | **Mandatory reading for LLM contributors** |
 | docs/meta/audit_report_2026-03-15.md | note | audit findings 2026-03-15 | — | Historical; not updated after that date |
+| docs/meta/audit_report_2026-06-02.md | note | audit findings 2026-06-02 (E_sep bug-fix propagation, gradient-proxy scope correction) | — | Registered 2026-06-24 (was orphan, I-10); historical |
 | docs/meta/llm_memory_map.md | note | LLM memory map | — | — |
 | docs/meta/maintenance_checklist.md | working-definition | periodic repo maintenance checklist | — | Created 2026-03-29 |
 | docs/meta/repo_design.md | working-definition | repository design principles | — | — |
@@ -333,6 +341,9 @@ and their description documents. Summary of description `.md` files:
 | File path | Status | Canonical concept(s) | Supersedes | Notes |
 |---|---|---|---|---|
 | docs/notes/aggregated_bc_structures.md | hypothesis | aggregated BC structures | — | — |
+| docs/notes/conflict_navigation_nested_calibration.md | note | conflict navigation as nested scope/observable calibration, two calibration loops on separated timescales (lower=observables, upper=scope), incentive erosion / fall-out precursor | — | Imported 2026-06-24 from To-REPO; exploratory generalization from calibration case toward conflict case; anchor for art_instantiation_lcc_nested_calibration.md |
+| docs/notes/facilitation_toolkit_tuning_or_framing.md | note | tuning vs framing distinction for multi-stakeholder sessions, shared-frame vs shared-will diagnosis, facilitation field guide | — | Imported 2026-06-24 from To-REPO; informal practitioner companion to nested-calibration material (not a formal definition); distilled from LCC process |
+| docs/notes/kht_operator_modulator_design_refinement.md | note | constituting basis τ*(=S/N)+aperture(=data class), GF(2)² with perception duality as parity, sequenced modulators, I/E=Bezug vs aperture=Datentyp, Type as context-local aggregation limit (WTA local / distribution global), branched-flow arm generation, V₄ as medium symmetry | — | Imported 2026-06-24 from To-REPO; consolidated design pass v4 over kht_architecture_layer1.md; Q-KHT-OM-1..9 |
 | docs/notes/arw_dsgrn_dialogue_plan.md | note | ARW ↔ DSGRN dialogue plan | — | See Q16 in open_questions.md |
 | docs/notes/arw_extended_Z_research_assignment.md | note | extended Z(π) research assignment | — | Links to advanced/extended_z_observable_necessity.md |
 | docs/notes/arw_iva_research_assignment.md | note | IVA research assignment | — | Links to advanced/iva_z_geometry.md |

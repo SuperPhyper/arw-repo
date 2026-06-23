@@ -205,7 +205,20 @@ observables — but it does not appear in the scope tuple S = (B, Π, Δ, ε).
 Does the structure of X belong to (a) B, (b) an independent meta-layer below S,
 or (c) the ART layer (domain-specific, not part of ARW-Core)?
 Reference: `docs/advanced/observable_decomposition.md` — S¹ embedding in r_ss.
-Status: open
+
+*Decision (2026-06-10, monograph audit repair WP-B3):* **(c) — the ART layer.**
+The structure of X is carried by the domain instantiation: each ScopeSpec /
+signature-first document declares the state-space structure its observables
+require (as the pre-scopal substrate conditions A0–A6 already do in practice).
+The scope tuple S = (B, Π, Δ, ε) remains unchanged; B keeps its frozen meaning
+(selection of X_B ⊆ X, not declaration of X's structure). Consequence: ARW-core
+statements are conditional on a well-defined X, and that conditionality is made
+explicit at the ART level, not absorbed into the tuple. Rationale: keeps
+ARW-core lean; avoids semantic overloading of B; matches existing practice in
+signature-first documents. Canonization path: note in `docs/glossary/scope.md`
+(scheduled with the INC-01 Čech-cover update) and Part VII V1 of the monograph.
+Status: answered (by architectural decision; formal meta-layer formulation
+remains available as future refinement if Part VII V2 requires it)
 
 **Q_NEW_2 — F0: integration into falsification schema**
 Using an observable outside its range R(π) is neither observable insufficiency (F1)
@@ -480,7 +493,14 @@ have a physical correlate — e.g. an anharmonic crossover, a mode coupling thre
 a soft mode — versus arising purely from the choice of observable and (ε, Δ)?
 Is the crossover always visible as a gradient discontinuity, or can it arise
 from a smooth but steep increase in |∇O|?
-Reference: Felder 2026 §6.2 (secondary ridge at E ≈ ω₀²); `docs/glossary/observable_range.md`.
+Reference: Felder 2026 §6.2; `docs/glossary/observable_range.md`.
+*Update 2026-06-10:* the original motivating instance — the pendulum "secondary ridge
+at E ≈ ω₀²" — was withdrawn 2026-06-02: it was the true separatrix under a wrong
+E_sep = 2ω₀² convention (bugfix report P-0; research_journal.md 2026-06-02). The
+question stands in general form, but there is currently **no confirmed empirical
+instance** of a pure descriptive crossover (σ_Δ ≥ ε within R(π) without a regime
+change). Identifying one is now part of the question; CASE-20260315-0008 (pitchfork,
+flat-side geometry) is a candidate system.
 Status: open
 
 **Q-NEW-CROSS-2 — Analytic Lipschitz constant for ARW observables**
@@ -637,6 +657,25 @@ Status: open
   workspace transfer_test_dissipation_growth/QREL04_RESOLUTION.md (+ qrel04_phase_portrait.png)
 - **Related:** transfer-metric defects (pipeline/transfer_v2.py); Q9 (scope transitions vs.
   phase transitions)
+- **Formal background (from the pre-registration):** the structural lever is the
+  non-commutativity of Aggregation over a dimension-growing index set with Dissipation:
+  in the dimension-constant case A_T · D = D · A_T (temporal aggregation transparent to
+  BC class); in the dimension-growing case A_{N(t)} · D ≠ D · A_{N(t)}. The intrinsic-dynamics
+  resolution confirms that this non-commutativity is structurally consequential
+  (new isolated attractor via transcritical bifurcation at ρ* = β − γ_r).
+- **Residual open sub-questions:**
+  - (a) *Camouflage / observable selection:* temporal averaging suppresses exactly the
+    heterogeneity that dimension growth introduces; a non-averaging observable over the
+    ordering ≤ is required for any partition-level detection of the break. Selection and
+    validation of such an observable remains open methodologically.
+  - (b) *Multi-axis partial orders:* the pipeline is architecturally single-axis (ε-sweep
+    over one parameter). Partial orders with incomparable pairs are outside the current
+    apparatus; the answered case covers only the single-axis (monotone time) instance.
+- **Note on a withdrawn duplicate (2026-06-10):** an earlier duplicate entry of Q-REL-04
+  ("BC-Class Relational Structure" section) carried status *open* and cited Φ=0.9983 /
+  Φ=0.5317 as calibration of Φ's "dynamic range" for BC-class distance. Those values were
+  v1-metric results; the v1 ordering was withdrawn as a regime-count artifact (see Q-REL-05
+  and research_journal.md 2026-06-02). The duplicate has been merged into this entry.
 
 **Q-REL-05 — Does the transfer metric Φ carry any genuine BC-class distance signal?**
 - **Status:** open (raised by the same session)
@@ -651,53 +690,7 @@ Status: open
 
 ---
 
-## BC-Class Relational Structure
-*(Added: session 2026-06-02)*
-
-**Q-REL-04 — Does a dimension-growing order axis constitute a genuine BC-structural break within the Dissipation class?**
-- **Status:** open
-- **Question:** When Aggregation acts over a dimension-growing index set (a partial order ≤
-  whose fibre gains degrees of freedom as it is traversed), does the resulting
-  Dissipation + growing-Aggregation combination constitute a genuine BC-structural break
-  relative to stationary Dissipation — or is it a reparametrisation within the same
-  BC class?
-
-  Formally: let D denote the Dissipation operator and A_N the Aggregation operator over
-  an index set of size N. In the **commuting case** (dimension-constant fibre, A2 holds),
-  A_T · D = D · A_T and the temporal aggregation in observables such as r_ss and PLV is
-  transparent to BC-class structure. In the **non-commuting case** (dimension-growing fibre),
-  A_{N(t)} · D ≠ D · A_{N(t)}, and the growing index set may introduce a structural
-  novelty not captured by the Dissipation class alone.
-
-  The question is whether this non-commutativity is:
-  (a) empirically detectable via a Φ gap between stationary and growing Dissipation systems, or
-  (b) absorbed by a reparametrisation (e.g. time-rescaling) leaving Φ unchanged.
-
-- **Empirical calibration:** The Φ metric has demonstrated sufficient resolution to test
-  this question:
-  - CASE-0004↔CASE-0001 (same Coupling class): Φ=0.9983 → same-class upper reference
-  - CASE-0001↔CASE-0007 (Coupling vs. Aggregation): Φ=0.5317 → cross-class lower reference
-  These two results establish the dynamic range of Φ as a BC-class distance probe.
-
-- **Proposed transfer test:** See `experiments/transfer/prediction_registration_dissipation_growth.md`
-  (Simulationen/transfer_test_dissipation_growth/). The test compares:
-  - Scope A: CASE-20260315-0005 (damped multi-pendulum, stationary Dissipation, dimension-constant fibre)
-  - Scope B: growing-population SIR variant (Dissipation, dimension-growing fibre; pipeline not yet run)
-  Registered prediction: Φ(stationary Dissipation ↔ growing Dissipation) < Φ(same-class baseline ≥ 0.85)
-  if dimension growth is a genuine BC-structural break.
-
-- **Open sub-questions:**
-  - (a) **Camouflage caveat:** If the growing fibre manifests as heterogeneity that temporal
-    averaging suppresses, Φ will produce a false-negative. A non-averaging observable over ≤
-    is a prerequisite for the test to be informative. The selection and validation of such an
-    observable is itself an open methodological question (see §3 of the pre-registration).
-  - (b) **Partial-order case beyond current apparatus:** The entire ARW pipeline is
-    architecturally single-axis (ε-sweep over one parameter). Multi-axis partial orders
-    with incomparable pairs cannot be reached by the current design. The current experiment
-    tests only the single-axis (monotone time) case and is silent about multi-axis
-    partial-order structure.
-
-- **Registered:** 2026-06-02
-- **Source:** Session 2026-06-02 (transfer analysis: CASE-0004↔0001 Φ=0.9983, CASE-0001↔0007 Φ=0.5317)
-- **Related:** Q_NEW_9 (BC class: system vs. scope property), Q_NEW_11 (Φ decomposition),
-  Q-NEW-COVER-1 (observable completeness), CASE-20260315-0005, CASE-20260315-0007
+*(Section "BC-Class Relational Structure" removed 2026-06-10: it contained a duplicate
+Q-REL-04 entry with stale status `open` and withdrawn v1-Φ calibration values. Its
+formal content and residual sub-questions are merged into the answered Q-REL-04 entry
+above; see also Q-REL-05.)*

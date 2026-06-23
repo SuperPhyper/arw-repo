@@ -49,9 +49,15 @@ PCI: metric∈transfer | |overlap(R_A,R_B)|/|union(R_A,R_B)|
     Jaccard_overlap_of_partition_regions | requires=aligned_regime_labels
     requires=shared_BC_parameterization_or_mapping
 
-SDI: metric∈transfer | 1 - |w_A-w_B|/max(w_A,w_B)
-    w=plateau_width(log_scale) | measures=resolution_robustness_similarity
-    SDI=1→identical_plateau_width | SDI→0→very_different_robustness
+SDI: metric∈transfer | graph_edit_distance(G_A,G_B)
+    G=regime_transition_graph(nodes=regimes,edges=admissible_transitions)
+    measures=transition_topology_change | SDI=0→identical_topology
+    SDI>0→transitions_added/removed
+    canonical=docs/bc_taxonomy/transfer_distortion_metrics.md+pipeline/transfer.py
+    NOTE(2026-06-10): earlier entry here defined SDI as plateau-width similarity
+    1-|w_A-w_B|/max(w_A,w_B) — drift (no canonical doc or pipeline code computes
+    it); removed. ε-plateau-width similarity remains an unnamed, unimplemented
+    candidate metric.
 
 admissibility_verdict: concept∈transfer | Φ→{highly_admissible,partially_admissible,inadmissible}
     written_to=TransferMetrics.json | closed_enum
