@@ -191,12 +191,13 @@ so no finite norm-bounded Δ can stabilize the cover there. This explains from f
 why the stability mask always fails at the transition (high-σ_Δ band = Z_shared).
 
 **Descriptive crossover.**
-Corollary 1 also explains the **secondary instability ridge** at E ≈ ω₀² in the
-conservative pendulum (CASE-20260311-0003): the anharmonic crossover produces a sharp
-increase in |∇O| without any dynamical phase transition. This is a **descriptive
-crossover** (Felder 2026 §6.2): σ_Δ(x) > ε within R(π), not due to substrate failure
-but due to high observable gradient. Classification: F-gradient (see
-`docs/glossary/observable_range.md`), not F0.
+A **descriptive crossover** is an F-gradient region (Felder 2026 §6.2): σ_Δ(x) > ε within
+R(π) because |∇O| is large, not because the substrate fails. Classification: F-gradient (see
+`docs/glossary/observable_range.md`), not F0. *(Correction 2026-06-02: an earlier draft cited a
+"secondary instability ridge at E ≈ ω₀²" in the conservative pendulum (CASE-20260311-0003) as a
+crossover distinct from the separatrix. That secondary ridge does not exist — under the buggy
+convention E_sep = 2ω₀² its position u = E/E_sep = ½ was the true separatrix re-labelled. The
+pendulum has a single F-gradient ridge, at the separatrix E_sep = ω₀²; see §7.)*
 
 ---
 

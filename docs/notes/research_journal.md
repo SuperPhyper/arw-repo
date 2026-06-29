@@ -794,6 +794,16 @@ the anharmonic crossover). It is a **descriptive crossover**: σ_Δ(x) ≫ ε du
 At ε = 0.05, the primary ridge (E_sep = 2ω₀²) and secondary ridge (E ≈ ω₀²) merge
 into a single connected instability band (~4% of parameter window).
 
+> **Correction (2026-06-02, P-0 bugfix — supersedes the ridge structure above):**
+> E_sep was mis-hardcoded as 2ω₀² in the pipeline; under the energy convention
+> E = ½θ̇² − ω₀²cosθ the separatrix is **E_sep = ω₀²**. The "secondary ridge at
+> E ≈ ω₀²" **does not exist** — it was the true separatrix re-labelled under the buggy
+> convention. The pendulum has a **single** F-gradient ridge, at the separatrix
+> (σ_Δ ≈ 0.61, σ_Δ/ε ≈ 2.0 at ε = 0.3; field self-similar in u = E/ω₀², one energy
+> scale). The F-gradient **category** introduced in this finding stands; only the
+> two-ridge structure is withdrawn. See `Simulationen/bugfix_report_20260602_p0_esep.md`;
+> canon corrected in `cover_stability_criterion.md` §4/§7 and `observable_range.md`.
+
 **Finding 3 — F1 criterion is topology-dependent (correction).**
 The shorthand `span(π) < 2ε → F1` is valid only when O(X_B) is a connected interval.
 The general condition is ε ≥ ε*(O,X_B), where ε*(O,X_B) is the cover-collapse

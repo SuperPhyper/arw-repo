@@ -1,6 +1,6 @@
 ---
 status: working-definition
-last_updated: 2026-04-29
+last_updated: 2026-06-29
 depends_on:
   - docs/glossary/scope.md
   - docs/glossary/perturbation_spread.md
@@ -153,13 +153,16 @@ A **descriptive crossover** (F-gradient region) differs structurally from an exc
   Determined by computing σ_Δ (or its Lipschitz upper bound |∇O|·r).
 
 **Empirical example (CASE-20260311-0003, Felder 2026 §6.2):**
-The conservative pendulum with observable ω(E,ω₀) exhibits:
-- Primary exclusion zone: E ≈ E_sep = 2ω₀² — the separatrix, where ω diverges (true Z(π))
-- Secondary descriptive crossover: E ≈ ω₀² — the anharmonic crossover, where |∂ω/∂E|
-  becomes large (σ_Δ ≈ 0.36 >> ε = 0.05), but ω remains well-defined (inside R(π))
-
-At ε = 0.05 the two zones merge into one connected instability band (~4% of parameter
-window). Only substrate analysis separates them conceptually.
+The conservative pendulum with observable ω(E,ω₀) exhibits a **single** descriptive-failure
+feature at the separatrix **E_sep = ω₀²** (corrected 2026-06-02; the earlier value 2ω₀² and
+the reported "secondary crossover at E ≈ ω₀²" were bug artifacts — that position was the true
+separatrix under the wrong E_sep = 2ω₀² convention; see
+`Simulationen/bugfix_report_20260602_p0_esep.md`). The substrate is sound here — ω → 0 is a
+finite limit, not a divergence — so this is **not** an F0 exclusion zone but an **F-gradient**
+descriptive crossover: |∂ω/∂E| becomes large at the separatrix (σ_Δ ≈ 0.61 >> ε = 0.3,
+σ_Δ/ε ≈ 2.0) while ω remains well-defined (inside R(π)). The frequency field is self-similar
+in u = E/ω₀² — one energy scale, not two; re-measurement (2026-06-02) finds no secondary
+feature above 10% of the primary peak.
 
 ---
 
@@ -210,13 +213,14 @@ Z(σ²(θ)) = Z_shared ∪ Z_wrap ∪ Z_multi
 ### ω(E, ω₀) (conservative pendulum frequency)
 
 ```
-R(ω) = X_B \ { E ≈ E_sep }           — ω well-defined away from separatrix
-Z(ω) = { E ≈ E_sep = 2ω₀² }          — ω diverges at separatrix
-Z_cover(ω, ε=0.05) = { E ≈ ω₀² }    — F-gradient: |∂ω/∂E| large at anharmonic crossover
+R(ω) = X_B                              — ω well-defined throughout; ω → 0 at the separatrix (finite limit)
+Z(ω) = ∅                                — no F0 exclusion: the substrate is sound everywhere
+Z_cover(ω, ε=0.3) = { E ≈ E_sep = ω₀² } — F-gradient: |∂ω/∂E| large at the separatrix (σ_Δ ≈ 0.61, σ_Δ/ε ≈ 2.0)
 ```
 
-Cover stability fails both at Z(ω) (F0) and at Z_cover (F-gradient) for typical
-ε values. See `docs/core/cover_stability_criterion.md` §7.
+Cover stability fails at Z_cover (F-gradient) — a single ridge coinciding with the
+analytic separatrix — not at an F0 exclusion zone. See
+`docs/core/cover_stability_criterion.md` §7.
 
 ---
 
