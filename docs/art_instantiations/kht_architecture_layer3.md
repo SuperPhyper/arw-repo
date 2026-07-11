@@ -294,6 +294,10 @@ The Resonance Mechanism is therefore not merely a social protocol — it is a
 through controlled R3 activations (rather than allowing uncontrolled R4 activations)
 and ensures that every dual-cluster tension is processed before collective closure.
 
+The structural reading of this protocol as a non-destructive dialectic — R3 mediation
+of a thesis–antithesis (dual) pair in place of R1 → R4 collapse — is developed in
+[kht_resonance_dialectic.md](kht_resonance_dialectic.md).
+
 ---
 
 ## 6. ARW Scope Structure for Layer 3

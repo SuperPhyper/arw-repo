@@ -247,3 +247,10 @@ A mode *resonates* with a context in the informal sense precisely because the un
 Coupling BC between context features and mode structure produces a stable regime under
 those conditions — the formal sense. Resonance-as-admissibility and resonance-as-coupling-mechanism
 describe the same phenomenon at different levels of description.
+
+**KHT integration:** The mediation target of §6–7 (a mode jointly admissible for two
+opposed perspectives) is sharpened to a maximin criterion and grounded in the KHT
+Layer 1 duality geometry in
+[docs/art_instantiations/kht_resonance_dialectic.md](../art_instantiations/kht_resonance_dialectic.md),
+which identifies the KHT Resonance Mechanism as the procedural synthesis step of the
+dialectic.

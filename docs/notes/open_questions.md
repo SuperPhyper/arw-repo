@@ -392,6 +392,23 @@ profile across BC parameter sweep with mode_dist coverage height profile.
 See `docs/notes/research_journal.md` Session 2026-03-29.
 Status: partially_answered — operationalization proposed; awaits experimental confirmation
 
+*Second, independent partial resolution (2026-07-08, `mode_scope_regime_audit.md` §2.6):*
+χ_mode is formally derived as the derivative of soft regime-cell occupancy
+(p_i(c) = softmax_i(-β·d_i(c))) with respect to context_load, giving
+χ_mode(c) = ∂p_i(c)/∂c. Bottom-up BC structure: **R⁴·A·Approx** (more Restriction-heavy
+than r_ss/var_rel, and — like lambda_proxy — carries an Approximation component from the
+finite-difference estimator). The local Lipschitz constant at a two-class decision boundary
+is L(c*) ≈ (β/4)·max|∂d_i/∂c|; a naive finite-difference estimator reproduces the C1
+structure (2026-06-02 σ_Δ-proxy correction) exactly — one-sided underestimation as the
+transition sharpens (L(c*)_true/χ_mode^FD ≈ h/w). The local-max estimator
+χ_mode^LM(c) := sup_{h'≤r} |p_i(c+h') − p_i(c)|/h' is proposed as the correction, by direct
+analogy with Corollary 1. This is a **separate candidate operationalization from the
+2026-03-29 mode-switch-rate proxy above** — not a refinement of it. Both remain open until
+tested against trajectory data; they are not yet known to agree or disagree empirically.
+Status: partially_answered — two independent candidate operationalizations now exist
+(mode-switch-rate, 2026-03-29; χ_mode^LM softmax-occupancy derivative, 2026-07-08);
+neither has been empirically validated against trained-agent trajectory data.
+
 **Q-CNS-07 — BC class of a mode: stable under change of observation set?**
 Is the BC class of a mode R_m stable under changes to the observation set Π?
 If we observe the agent with different observables, does the same mode appear
@@ -446,6 +463,16 @@ Practical implication: consolidation effects require multiple cycles to be visib
 single-shot post-consolidation testing is insufficient to evaluate the mechanism.
 See `docs/notes/research_journal.md` Session 2026-03-29.
 Status: partially_answered — hypothesis and measurement protocol defined; awaits experiment
+
+**Q-CNS-06a — Should β (softmax assignment temperature) be added to B_emergent?**
+χ_mode^LM's local Lipschitz constant L(c*) ≈ (β/4)·max|∂d_i/∂c| depends on β, the softmax
+temperature of the regime-assignment procedure, independently of system dynamics — unlike
+κ_c or E_sep, this divergence is governed by the assignment procedure itself, not enforced
+by the underlying dynamics (not a Z_shared-in-the-K1-sense divergence). β is not currently
+part of `B_emergent` in `context_navigation_emergent_modes_experiment.md`.
+Source: `docs/context_navigation/mode_scope_regime_audit.md` §2.6.
+Priority: medium.
+Status: open
 
 ---
 
@@ -694,3 +721,96 @@ Status: open
 Q-REL-04 entry with stale status `open` and withdrawn v1-Φ calibration values. Its
 formal content and residual sub-questions are merged into the answered Q-REL-04 entry
 above; see also Q-REL-05.)*
+
+---
+
+## Scope-Component Conflict Typology
+*(Added: session 2026-07-11, from docs/notes/scope_component_conflict_typology.md)*
+
+**Q_NEW_A — Does "aggregation level" map onto ε alone, or is scale-equivocation a compound (ε + Π) conflict?**
+Prerequisite for the typology's ε-conflict row (§1) to be considered well-defined.
+A worked case (capital growth vs. productivity, §6 of the source note) suggests the
+answer is case-dependent: pure ε only when aggregation changes resolution on a fixed
+projection; Π-conflict when new codetermining variables enter the projection itself;
+B-conflict when a different generator entirely produces the same observable label.
+One confirmed case is not sufficient to close this.
+Source: `docs/notes/scope_component_conflict_typology.md` §2.
+Status: open
+
+**Q_NEW_B — Can prediction 2 (§3 of the source note) be operationalized on a documented controversy?**
+Needs a real controversy with published positions from ≥2 schools sharing ≥2 observables,
+to test whether the hardest disagreements concentrate on Δ (admissible-perturbation
+windows) rather than Π (which observables).
+Source: `docs/notes/scope_component_conflict_typology.md` §3.
+Status: open
+
+**Q_NEW_C — Is the four-type conflict classification exhaustive, or do mixed conflicts dominate empirically?**
+If mixed conflicts dominate, the typology functions as a decomposition basis rather
+than a partition of controversies.
+Source: `docs/notes/scope_component_conflict_typology.md` §1/§6.
+Status: open
+
+**Q_NEW_D — Does the typology transfer outside economics?**
+The typology is stated at ARW level (domain-neutral); untested outside the originating
+economic-schools instance, e.g. against a natural-science priority dispute.
+Source: `docs/notes/scope_component_conflict_typology.md` §4.
+Status: open
+
+---
+
+## J-Space / Regime-Occupancy Signature
+*(Added: session 2026-07-11, from docs/related_fields/j_space_arw_signature_hypothesis.md)*
+
+**Q-REL-06 — Does an occupancy-based χ_mode^J show the predicted finite-difference bias at task-transition points?**
+Applied to this project's own agent at within-context sweep resolution (c = position in
+context). Prediction: χ_mode^J peaks at genuine topic/task transitions, and a naive
+finite-difference estimate exhibits the same one-sided underestimation bias as χ_mode
+(§2.6 of `mode_scope_regime_audit.md`), requiring the local-max correction χ_mode^LM.
+Only testable once the Emergent Modes Experiment produces trajectory data; no access to
+Anthropic's internal J-Lens tooling exists to test this against the source finding directly.
+Source: `docs/related_fields/j_space_arw_signature_hypothesis.md` §5.
+Priority: medium.
+Status: open
+
+**Q-REL-07 — Can "online occupancy signature" be principledly distinguished from "static representation geometry" in third-party interpretability reporting generally?**
+Motivated by an initial informal framing that conflated Anthropic's J-Space (online,
+per-forward-pass) with static embedding geometry (see source note §2/§3 for the correction).
+Source: `docs/related_fields/j_space_arw_signature_hypothesis.md` §8.
+Priority: low.
+Status: open
+
+*(Note: these were originally proposed as Q-REL-01/02 in the source note; renumbered on
+import 2026-07-11 to avoid a collision with the pre-existing Q-REL-01/02 in
+`docs/bc_taxonomy/bc_relational_structure.md`, an unrelated Σ-persistence topic. The repo
+now has three independent Q-REL sub-series — 01–03, 04–05, 06–07 — from different import
+sessions; check `docs/meta/DOC_INDEX.md` / grep before assigning further Q-REL numbers.)*
+
+---
+
+## Scope-Family Flow / RG-Analogue Audit
+*(Added: session 2026-07-11, from docs/notes/scope_family_flow_and_kuramoto_limit_audit.md)*
+
+**Q-INV-03 — Does the ε-induced scope family 𝒮_α(b) carry a directed flow structure under δ?**
+**Status: resolved (definitional).** `bc_relative_observable_indistinguishability.md`
+defines N_α^δ(b) as a genuine metric ball, so nesting is automatic
+(δ₁ < δ₂ ⟹ N_α^{δ₁}(b) ⊆ N_α^{δ₂}(b)) and Δ_α O(b;δ) is monotone non-decreasing in δ,
+guaranteeing a well-defined directed limit at δ → sup I_α(b). If d_α is a genuine metric,
+the family is additionally sub-additive under composition (containment, not exact
+semigroup composition) — the same epistemic status real RG flows have away from a fixed
+point. Feeds into Q-INV-02 as a partial answer (see that entry's annotation in
+`docs/advanced/invariance_as_scope_persistence.md`).
+Source: `docs/notes/scope_family_flow_and_kuramoto_limit_audit.md` §3.
+Status: resolved
+
+**Q-INV-04 — Does the δ → sup I_α(b) collapse limit coincide with the N → ∞ Emergent-Aggregation limit?**
+Theoretically motivated via finite-size scaling (the Lipschitz blow-up L(κ)→∞ at κ_c,
+already established for CASE-0001, is the same underlying divergence responsible for
+finite-N transition-window narrowing in critical-phenomena theory) but empirically
+untested — CASE-20260311-0001 fixes N=500 with no N-sweep in the current data. Proposed
+test: extend CASE-0001 (or a variant) with an N-sweep (N ∈ {50,100,200,500,1000,2000})
+around κ_c ≈ 1.475, compare finite-N transition width Δκ(N) scaling against I_α(κ)
+narrowing scaling. If confirmed: would reframe RG universality as an internal special
+case of ARW scope-invariance rather than an external analogy (speculative, conditional —
+see source note §7 for the full, explicitly-flagged-as-not-established consequence chain).
+Source: `docs/notes/scope_family_flow_and_kuramoto_limit_audit.md` §4.
+Status: open

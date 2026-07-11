@@ -258,3 +258,13 @@ invariance across a whole class of scope transformations simultaneously —
 analogous to a group-theoretic treatment of symmetry. What is the
 appropriate mathematical structure for this generalisation, and does it
 connect to existing invariance theory in dynamical systems or topology?
+
+*Partial answer (2026-07-11, `docs/notes/scope_family_flow_and_kuramoto_limit_audit.md`
+§3):* for the ε-induced scope family 𝒮_α(b), nesting under δ is definitional
+(δ₁ < δ₂ ⟹ N_α^{δ₁}(b) ⊆ N_α^{δ₂}(b)) and Δ_α O(b;δ) is monotone non-decreasing in δ,
+guaranteeing a well-defined directed limit. If d_α is a genuine metric the family is also
+sub-additive under composition — the same epistemic status real RG flows have away from a
+fixed point. This suggests the appropriate structure may be a directed/net (inverse-limit)
+system rather than a literally group-theoretic one; still open whether this generalizes
+beyond the δ-family case, and whether it coincides with the N→∞ aggregation limit
+(see Q-INV-04, same source note, open).

@@ -5,6 +5,8 @@ depends_on:
   - docs/glossary/scope.md
   - docs/advanced/observable_decomposition.md
   - docs/bc_taxonomy/boundary_condition_classes.md
+  - docs/core/cover_stability_criterion.md
+  - docs/context_navigation/context_navigation_emergent_modes_experiment.md
 supersedes_claims_in:
   - docs/context_navigation/context_navigation_model_spec.md
   - docs/context_navigation/admissibility_and_mode_selection.md
@@ -258,6 +260,108 @@ BC class?). This is Q_NEW_9 in its general form, still open.
 
 ---
 
+## 2.6 χ_mode — Formal Derivation and Local-Max Correction (Q-CNS-06)
+
+**Definition.** Building on the regime-cell reading of "mode" (§1.3) and the
+revised salience formulation (§2.2), the minimal fluctuation observable for
+cognitive mode transitions is the derivative of regime-cell occupancy with
+respect to context_load. Occupancy is a soft assignment of `action_dist`
+(see `context_navigation_emergent_modes_experiment.md` §2.1) to regime
+centroids:
+
+```
+p_i(c) = softmax_i(-β · d_i(c)),   d_i(c) = dist(action_dist(c), μ_i)
+χ_mode(c) := ∂p_i(c) / ∂c
+```
+
+This is the cognitive-architecture instance of χ = ∂r_ss/∂κ
+(Q_NEW_12, `arw-observable-analysis` skill, consequence K6). Both are
+fluctuation observables (class ∉ E) built as the derivative of an
+aggregation-class observable with respect to the sweep parameter, and
+both are expected to peak at the transition point (θ* / zone boundary)
+rather than being computable as a class-E stationary mean. Resolving the
+finite-difference bias below for χ_mode directly informs Q_NEW_12 in the
+physical case portfolio, and vice versa — this is a signature-level
+transfer candidate between the cognitive and physical case lines
+(cf. monograph transfer chapter, WP-A5).
+
+**Bottom-up decomposition.**
+
+1. `action_dist`: Aggregation (ensemble mean over window) ∘ Restriction³
+   (zone / episode / action-space window)
+2. Centroid distance / softmax assignment: Restriction (projection onto
+   regime centroids)
+3. Simplex normalization: Restriction (scaling)
+4. Derivative w.r.t. context_load: **Approximation** (finite difference
+   in any pipeline implementation, not an exact continuum operation)
+
+BC structure notation: **R⁴·A·Approx**
+
+This differs from `r_ss` (R³·A·D) and `var_rel` (R³·A²·S) both in being
+more Restriction-heavy and, critically, in carrying the same Approximation
+component as `lambda_proxy` — the component already known to produce
+structural insufficiency near regime boundaries (A6.1/A6.2 violations).
+
+**Local Lipschitz constant.** For a two-class softmax at the decision
+boundary (p_i ≈ 0.5):
+
+```
+∂p_i/∂c = -β · p_i·(1-p_i) · ∂d_i/∂c
+L(c*) ≈ (β/4) · max|∂d_i/∂c|
+```
+
+Unlike κ_c or E_sep, this divergence is not enforced by system dynamics
+(Z_shared in the K1 sense) — it is governed by β, the softmax temperature
+of the regime-assignment procedure itself. β is not currently part of
+`B_emergent` in `context_navigation_emergent_modes_experiment.md` and
+should be added as an explicit boundary constraint if χ_mode is adopted
+as an observable for S_emergent.
+
+**Finite-difference bias (parallel to C1/C2).** For a naive
+finite-difference estimator with step h, against a true transition of
+width w and total jump Δp:
+
+```
+χ_mode^FD(c) = [p_i(c+h) − p_i(c)] / h ≈ Δp/h     when h ≥ w
+L(c*)_true / χ_mode^FD ≈ h/w
+```
+
+This reproduces the C1 structure (2026-06-02 σ_Δ-proxy correction,
+`arw-repo-context` skill §8) exactly: as training sharpens the behavioral
+zone boundary (w → 0) at fixed sampling resolution h, the naive estimator
+increasingly under-reports the true divergence — a one-sided false
+negative at precisely the point where the observable is meant to be
+most sensitive.
+
+**Local-max correction.**
+
+```
+χ_mode^LM(c) := sup_{h' ≤ r} | p_i(c+h') − p_i(c) | / h'
+```
+
+This is the discrete analog of Corollary 1's local-max Lipschitz constant
+L(x) = max_{|δ|≤r}|∇O(x+δ)|. It converges toward the true divergence as
+data resolution improves, rather than saturating at Δp_max/h.
+
+**Stability condition.**
+
+```
+(β/4) · max|∂d_i/∂c| · r < ε
+```
+
+The cognitive-specific extension of Corollary 1's L·r < ε: the admissible
+resolution region for χ_mode depends jointly on Δ (context_load
+perturbation bound r), ε, and β (assignment temperature) — a degree of
+freedom absent from the physical cases.
+
+**Pipeline implication.** If χ_mode is estimated from trajectory data, use
+the sup-over-secants estimator χ_mode^LM, not the naive finite-difference
+form — otherwise the same bias corrected for σ_Δ on 2026-06-02 reappears
+one level up, in the mode-assignment observable rather than the raw
+system observable.
+
+---
+
 ## 3. Documents Requiring Revision
 
 The following documents contain formulations that conflict with
@@ -282,7 +386,8 @@ should be added to docs/notes/open_questions.md.
 
 | ID | Question | Priority |
 |---|---|---|
-| Q-CNS-06 | What is the minimal fluctuation observable for cognitive mode transitions? Does it show a Z_shared peak at transition points? | high |
+| Q-CNS-06 | What is the minimal fluctuation observable for cognitive mode transitions? Does it show a Z_shared peak at transition points? — **Partially resolved** (§2.6): χ_mode defined and decomposed (R⁴·A·Approx); local-max correction χ_mode^LM derived by analogy with Corollary 1. Two independent candidate operationalizations now exist (2026-03-29 mode-switch-rate proxy; 2026-07-08 χ_mode^LM) — not yet reconciled. Open: empirical validation that either shows the predicted peak in trained-agent trajectory data. Cross-references Q_NEW_12 (physical case) as a shared signature-level transfer problem. | high |
+| Q-CNS-06a | Should β (softmax assignment temperature) be added to `B_emergent` as an explicit boundary constraint, given it governs L(c*) independently of system dynamics? | medium |
 | Q-CNS-07 | Is the BC class of a mode R_m stable under change of observation set Π? (cognitive instance of Q_NEW_9) | medium |
 | Q-CNS-08 | What is the empirical signature of a scope transition (S_global failure) vs. a regime transition (mode switch) in behavioral data? | high |
 | Q-CNS-09 | Does consolidation produce asymptotic partition sharpening (as predicted by dissipation analysis), or is there a faster mechanism? | medium |
@@ -318,3 +423,20 @@ the revised framework and do not require change:
 | Mode switching | Regime transition within S_global. Not a scope transition. |
 | Consolidation | Asymptotic dissipation toward stable partition. Limit process, not mechanism. |
 | BC class of mode | Sub-scope property of R_m. Grounded in S_global partition. |
+| χ_mode | Fluctuation observable ∂p(R_i\|context_load)/∂c. R⁴·A·Approx. Cognitive instance of Q_NEW_12; requires local-max estimator (§2.6), not naive finite difference. |
+
+---
+
+## Maintenance History
+
+- **2026-07-08 (merged into repo 2026-07-11):** Added §2.6 (χ_mode — formal derivation and
+  local-max correction, Q-CNS-06). Decomposed χ_mode bottom-up (R⁴·A·Approx), derived local
+  Lipschitz constant L(c*) ≈ (β/4)·max|∂d_i/∂c| for the softmax regime-assignment case, showed
+  the finite-difference bias reproduces the C1 structure (2026-06-02 σ_Δ-proxy correction) via
+  L(c*)_true/χ_mode^FD ≈ h/w, and derived the local-max estimator χ_mode^LM by analogy with
+  Corollary 1. Flagged β as a candidate addition to `B_emergent`. Updated §4 (Q-CNS-06 status,
+  new Q-CNS-06a), §6 (summary row), and front-matter `depends_on`. Imported from a session note
+  reconstructed offline (no live repo access at drafting time); reconciled against the existing
+  Q-CNS-06 entry in `docs/notes/open_questions.md`, which already carried an independent
+  2026-03-29 partial answer (mode-switch-rate proxy) — both are recorded as separate candidate
+  operationalizations rather than one superseding the other.
