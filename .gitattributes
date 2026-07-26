@@ -1,0 +1,28 @@
+# Line-ending normalization.
+#
+# Added 2026-07-26 after a hygiene pass found 14 case artifacts in cases/ showing
+# ~9,000 lines of diff that were entirely CRLF-vs-LF noise: `git diff --ignore-all-space`
+# reported zero real changes in all of them. Without this file the working tree is
+# rewritten with CRLF on every Windows/OneDrive checkout, and real pipeline output
+# changes become impossible to see in review.
+#
+# Text files are stored LF in the repository and checked out LF.
+
+* text=auto eol=lf
+
+# Explicit text types (belt and braces — these are the formats the repo reviews)
+*.md    text eol=lf
+*.json  text eol=lf
+*.yaml  text eol=lf
+*.yml   text eol=lf
+*.py    text eol=lf
+*.csv   text eol=lf
+*.mmd   text eol=lf
+*.html  text eol=lf
+
+# Binary — never touch
+*.png   binary
+*.pdf   binary
+*.npz   binary
+*.pyc   binary
+*.skill binary
