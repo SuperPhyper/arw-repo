@@ -87,6 +87,19 @@ can be substantially smaller than ½·span(O), and the shorthand produces
 separated by a gap larger than ε would pass the span check but already have a
 trivial cover.
 
+**Generalization (2026-07-18, monograph Part VII V3.1):** cover triviality
+(ε ≥ ε*) is the sharpest *special case* of F1, not its general criterion.
+The general form is **claim-relative**: F1 obtains when the ε-partition the
+observable induces fails to refine the claimed structure — a claimed
+three-regime structure returned as two regimes is F1 with N > 1, though the
+cover is non-trivial. The pipeline tests the total-collapse form directly;
+claim-relative insufficiency requires a declared expected partition
+(signature-first documents supply one). Companion disambiguation: an
+A6-level substrate failure splits into *A6-invalidity* (estimator has no
+licensed referent under its declared test Q_6 ≤ τ_6) → **F0**, versus
+*A6-valid but unresolving at ε* → **F1** — the finite-time Lyapunov
+estimator is the second case (derivably insufficient, not referent-free).
+
 **For typical ARW observables** (monotone, unimodal image): the two formulations
 agree. The distinction matters for multi-modal or fragmented observable images.
 

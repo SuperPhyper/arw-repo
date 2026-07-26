@@ -73,6 +73,31 @@ What transfer claims are lost at the projection boundary is an open question
 robustness — it is a meta-level parameter used to *define* Σ, not a parameter
 that appears in any individual scope.
 
+**η fixed to the ε-axis (2026-07-17, from monograph Part VII V4.5).** The
+functional relation is now declared:
+
+```
+η = −log(ε / ε₀)
+```
+
+with a per-instantiation reference scale ε₀ (usual choices: observable span,
+characteristic scale, first-merge resolution). Increasing η is refining
+resolution; η is dimensionless whatever the units of ε (a bare −log ε would
+take the logarithm of a dimensioned quantity and would not be comparable
+across observables with different units). Persistence-interval lengths are
+comparable across systems only once each has declared its ε₀ — the
+declaration is part of the instantiation, and Q-SIG-02's observer-dependence
+question now includes the ε₀ choice explicitly.
+
+**Domain and normalisation (2026-07-17).** Σ is carried on the **observed
+configuration family** K_G ⊆ 2^BC — the configurations attaining a non-empty
+persistence interval — not the full power set (mostly-zero at 2^6 = 64
+entries), and the signature is the **pair** (Σ̄_G, P_G^max): the normalised
+profile Σ̄_G : K_G → [0,1], σ ↦ p(σ)/P_G^max, together with the peak absolute
+persistence P_G^max in η-units. The profile says *which* configurations
+dominate; P_G^max says *how robustly* — normalisation alone would call a
+ten-decade persistence and a razor-thin one identical.
+
 ---
 
 ## 2. Individual BC Persistence
@@ -190,17 +215,30 @@ This remains an open question (→ Q-SIG-04).
 
 ## 6. Transfer Compatibility via Σ
 
-Two generators G and G' have **compatible signatures** to degree d if:
+> **SUPERSEDED FORM (kept for the record).** The original compatibility
+> degree,
+> d(Σ, Σ') = 1 − (1/Z) Σ_{σ ⊆ BC ∩ BC'} |p(σ) − p'(σ)| / max(p(σ), p'(σ)),
+> had three defects found during the monograph Part VII formalisation
+> (2026-07-17): despite the symbol d it is a *similarity* (1 = match), it
+> compares only the **shared** classes — configurations one system realises
+> and the other does not are silently dropped, though they are exactly the
+> disagreement — and its per-term max-normalisation double-normalises
+> already-normalised profiles.
+
+**Canonical signature distance (2026-07-17, = monograph Part VII V4.7):**
+extend Σ̄_A, Σ̄_B by zero to the union K = K_A ∪ K_B of observed
+configuration families; then
 
 ```
-d(Σ, Σ') = 1 − (1/Z) Σ_{σ ⊆ BC ∩ BC'} |p(σ) − p'(σ)| / max(p(σ), p'(σ))
+d_Σ(Σ_A, Σ_B) = (1/|K|) Σ_{σ ∈ K} | Σ̄_A(σ) − Σ̄_B(σ) |   ∈ [0, 1]
 ```
 
-where BC ∩ BC' is the set of shared active BC classes and Z normalises over
-all non-empty subsets of BC ∩ BC'.
-
-d = 1: perfect signature match — same persistence profile over all shared
-BC configurations. d = 0: no shared structure in persistence.
+— a genuine distance (0 = match), defined on everything either system
+realises, and mean-normalised so it does not grow with |K|. It is
+complemented by the peak ratio P_A^max / P_B^max as the robustness-scale
+check the profile normalisation discards. Two signatures **agree** iff
+d_Σ ≤ τ_Σ and the peak ratio lies within a declared band (τ_Σ and the band
+are calibration conventions, not natural constants).
 
 **Relation to the old transfer metrics.** RCD, TBS_norm, PCI, SDI
 (transfer_distortion_metrics.md) measure partition-level consequences of Σ.

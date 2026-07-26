@@ -396,14 +396,21 @@ A 1D κ-sweep is insufficient to characterize a 2D Z(π).
 
 ## 8. Open Questions
 
+> **Renumbering note (2026-07-14):** this table originally used the prefix `Q-EXT-…`,
+> which collided with the independent Q-EXT-01–03 series of
+> `docs/advanced/bc_signature_extraction_observables.md` (Σ extraction from observables).
+> Decision 2026-07-14 (Rico): the extraction series keeps `Q-EXT`; this document's
+> questions are renumbered to `Q-ZOBS` (Z-observable necessity). Content unchanged.
+> Prefix registered in `docs/notes/open_questions.md`.
+
 | ID | Question | Priority |
 |---|---|---|
-| Q-EXT-01 | Formal proof that BC class independence implies violation axis independence | high |
-| Q-EXT-02 | Are there degenerate multi-BC systems where dim(Z) < n_BC − 1? | high |
-| Q-EXT-03 | Do non-E observables (fluctuation, coupling) have their own Z(π)? What is their structure? | medium |
-| Q-EXT-04 | Does the theorem extend to observables that are composites of E and non-E? | medium |
-| Q-EXT-05 | Can Z(π) be non-connected? (Two disjoint failure regions for a single observable) | low |
-| Q-EXT-06 | Empirical validation: real-world multi-BC system dataset with known regime structure | high |
+| Q-ZOBS-01 | Formal proof that BC class independence implies violation axis independence | high |
+| Q-ZOBS-02 | Are there degenerate multi-BC systems where dim(Z) < n_BC − 1? | high |
+| Q-ZOBS-03 | Do non-E observables (fluctuation, coupling) have their own Z(π)? What is their structure? | medium |
+| Q-ZOBS-04 | Does the theorem extend to observables that are composites of E and non-E? | medium |
+| Q-ZOBS-05 | Can Z(π) be non-connected? (Two disjoint failure regions for a single observable) | low |
+| Q-ZOBS-06 | Empirical validation: real-world multi-BC system dataset with known regime structure | high |
 
 ---
 
@@ -421,7 +428,7 @@ docs/notes/research_journal.md
 └── Session 2026-03-28: Extended Z(π) theorem — H1/H2/H3 formalized
 
 docs/notes/open_questions.md
-└── Q-EXT-01 through Q-EXT-06 (merge from above)
+└── Q-ZOBS-01 through Q-ZOBS-06 (merge from above)
 ```
 
 ---
@@ -500,7 +507,7 @@ dim(Z(π)) correlates with n_BC_active across three cases:
 ### Finding 3 [hypothesis → theorem candidate]
 H2: dim(Z(π)) ≥ max(0, |BC_active| − 1)
 Proof sketch provided in docs/advanced/extended_z_observable_necessity.md.
-Status: requires formal proof of violation axis independence. See Q-EXT-01.
+Status: requires formal proof of violation axis independence. See Q-ZOBS-01.
 
 ### Finding 4 [claim]
 H3 confirmed constructively: for each system, at least one non-E observable
@@ -513,8 +520,8 @@ not dim_Z=0. Reason: Symmetry Breaking BC generates an extended failure half-lin
 (the entire broken-symmetry phase), unlike the point-like ergodicity failure
 of Coupling BC (Kuramoto). This suggests BC class matters, not just n_BC count.
 Refinement needed: H2 lower bound is tight only when the dominating BC is Coupling.
-See Q-EXT-02.
+See Q-ZOBS-02.
 
-### Open questions registered: Q-EXT-01 through Q-EXT-06
+### Open questions registered: Q-ZOBS-01 through Q-ZOBS-06
 ### References: CASE-0001, CASE-0008, CASE-20260328-0010
 ```

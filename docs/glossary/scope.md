@@ -142,6 +142,22 @@ additionally be stable under Δ (cover stability; see
 The pairwise relation d_Π(x, y) ≤ ε defines adjacency *within* the cover;
 it is not itself the equivalence that yields regimes.
 
+**Operative form of the cover (clarification 2026-07-17, per monograph
+Part VII V1.2).** "Cover" above admits three readings — the family of
+ε-neighbourhoods, their union space, or their nerve — and the construction
+every pipeline case actually computes is a fourth, unambiguous one: the
+**ε-adjacency graph** G_ε on the sampled sweep (nodes = sweep samples,
+edge between consecutive samples iff their observable increment is ≤ ε);
+regimes are the connected components of G_ε. The Čech-cover language is the
+continuum idealisation of this graph; the graph is the operative definition.
+Two consequences are explicit: (i) the regimes so defined are regimes of the
+observable image *along the swept path*, not of the full state space — the
+general construction (components under an admissible-transition relation) is
+open, Q_NEW_25; (ii) the collapse threshold ε* is a property of the sweep
+(observable, sampled path, descriptive metric), written ε*(O, **b**), not of
+the full state space X. The frozen tuple semantics (B, Π, Δ, ε) are
+untouched by this clarification.
+
 Resolution therefore determines:
 
 - which state differences are detectable

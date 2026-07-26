@@ -169,6 +169,21 @@ A failed dialectic (collapse to one pole) is the transfer-inadmissible case.
 > objective for resonance-dialectic mediation. It is not yet operationalized against
 > a case. See Open Questions Q-RD-1, Q-RD-2.
 
+**Two readings of the min (added 2026-07-26).** The expression above is ambiguous in
+a way that Q-RD-1 does not capture. Q-RD-1 varies the *aggregation form* (maximin vs.
+Nash product) while holding fixed what is aggregated. A second, orthogonal axis
+concerns what the minimum ranges over:
+
+| Reading | min ranges over | Character | Failure mode |
+|---|---|---|---|
+| **Fairness** | the participating parties | distributive: no party's admissibility is sent to zero | strategically manipulable — a party's dissatisfaction is self-reported and unverifiable outside a facilitated setting |
+| **Robustness** | the candidate world-models the parties hold | Wald-type minimax under model uncertainty: select the description that stays admissible under every candidate dynamics | conservative — may select a description so weak that it constrains nothing |
+
+At the individual (§6.1) and group (§6.2) levels the two coincide in practice,
+because a facilitated setting supplies a check on both. They come apart at the
+discursive level (§6.3), where no such check exists. Which reading is intended is
+open — Q-RD-5 (fairness) and Q-RD-6 (robustness).
+
 ---
 
 ## 6. Levels of Application
@@ -202,6 +217,80 @@ forcing premature lock-in.
 This level is the natural site for empirical grounding via the social cases
 (CASE-20260328-0010, German school system multi-actor regime; CASE-20260315-SOC1,
 shame interaction regime).
+
+### 6.3 Discursive (added 2026-07-25)
+
+A third level, brought in from a working thesis drafted separately: the dialectic
+applied not to a person's dual configuration or a group's faction structure, but to
+the **shared vocabulary a public discourse runs on**. The thesis's own formulation:
+Resonance Dialectic describes the identification, explication, and joint
+reorganization of semantic description nodes — communication read as change in the
+structure of a shared description space rather than as transfer of information.
+
+Three claims, at descending confidence:
+
+**(a) The ambiguity node.** Terms that carry public argument — *supply security*,
+*sustainability*, *risk*, *innovation* — have no single determinate sense. They serve
+as attachment points between differently organized world-models, and it is precisely
+that openness that lets parties with incompatible fine-grained models speak to each
+other at all. In ARW terms this is not vagueness but a **realization class**: the
+public term is the coarse level, each party's elaboration the fine one, and the
+ambiguity is the diameter of the set of elaborations compatible with the shared label
+(`docs/notes/scale_gap_ambiguity_audit_stability.md` §2, instance added there §5).
+The consequence is a genuine double bind rather than a defect: the same quantity that
+makes the term communicable makes it unable to constrain anyone's actual position.
+Explication is the cascade-closed strengthening that would bind it, and it is
+expensive — which is why it is refused, usually legitimately. The signal reading of
+§4 of that note therefore does **not** transfer to public language without a separate
+argument about cost.
+
+**(b) Drift as structural, not accidental.** If (a) holds, scope drift in shared
+vocabulary is not a failure of discipline to be corrected but the standing cost of the
+openness that makes the vocabulary usable. This reframes the existing preventive tool
+(`docs/notes/shared_term_reflex_check.md`) — the two-question reflex is not a fix for
+drift but a way of noticing which drift is currently load-bearing.
+
+**(c) Linkage over membership.** The thesis's strongest structural claim: world-models
+differ less in *which* terms they contain than in *how* those terms are linked. This
+one does not fit the existing conflict typology and is registered as an open question
+against it — see `docs/notes/scope_component_conflict_typology.md` §8 (Q_NEW_E). It is
+listed here as the source of that question, not as a KHT result.
+
+> **Sharpening (2026-07-26).** The linkage in (c) has since been given a determinate
+> reading in the note that owns it (§8.1 there): it is not a semantic relation between
+> terms but the **co-stability profile induced by a generator hypothesis**. Differing
+> background assumptions about the dynamics yield differing σ_Δ-profiles over the same
+> Π, hence differing verdicts about which projections hold an ε-plateau — and they do
+> so *independently of factual correctness at the time of the dispute*, because the
+> assumptions are hypotheses about the map, not claims already refuted. What this adds
+> here is the KHT-relevant consequence, taken up in §5 and Q-RD-6: if the parties'
+> elaborations are generator hypotheses rather than preferences, the min in the maximin
+> criterion has a second possible domain. The ARW-level claim itself remains owned by
+> the typology note.
+
+**Level discipline.** (a) and (c) are ARW-level, domain-neutral claims and are owned
+by the notes cited above, not by this document; they appear here because this is where
+Resonance Dialectic is defined and the reader needs the thread. What is KHT-specific
+at this level is only the mediation reading: a discourse that reorganizes its shared
+nodes is doing R3 exploration on a collective description space, and a discourse that
+resolves ambiguity by disqualifying one elaboration is doing C-R4 — which is
+Π-monopolization (typology note §7) seen from the KHT side. Whether the maximin
+criterion of §5 has a discursive form is open (Q-RD-5, Q-RD-6).
+
+**Why the discursive level splits the criterion (2026-07-26).** §6.1 and §6.2 both
+presuppose something §6.3 does not have: an instance that can check a claimed
+constraint. A facilitator can test whether a reported limit is real; a public
+discourse has no such position. Under the fairness reading of §5 this is fatal — the
+criterion rewards whoever most credibly asserts that a mediating description is
+inadmissible for them, and the result is veto inflation rather than maximin. Under the
+robustness reading it is not, for two reasons: the minimum ranges over candidate
+dynamics rather than over people, so the objection recorded in Q-RD-5 that "the set of
+parties is not fixed" does not arise; and a generator hypothesis, unlike a preference,
+commits its holder to predictions that later perturbations can contradict. That is a
+weaker check than a facilitator, but it is not nothing, and it is the same
+prediction-commitment test that the typology note proposes as its Δ-conflict
+discriminator (Q_NEW_F there). Which of the two readings is the right one for
+discursive mediation is the substance of Q-RD-6.
 
 ---
 
@@ -252,6 +341,24 @@ dialectic.
 | Q-RD-2 | Can the R3-mediation pathway be expressed as an explicit (τ, σ, ξ) trajectory? This is the KHT-specific form of the existing Q-L3-4 (kht_architecture_layer3.md §7). | medium |
 | Q-RD-3 | At the group level, what boundary-condition manipulation reliably keeps coupling near K_c (shared resonance) without crossing into C-R1 premature lock-in or C-R4 collapse? Relates to Q-CROSS-4 (κ_c ↔ N*). | medium |
 | Q-RD-4 | Does individual Shadow integration (H-D/T4) show the same maximin structure as group mediation, or are the two levels only analogically related? | low |
+| Q-RD-5 | **(fairness axis)** Does the maximin criterion (§5) have a discursive form under the *fairness* reading — is a reorganized shared description space (§6.3) the argmax of min-admissibility over the parties' elaborations? Known obstacle (2026-07-26): the parties are not fixed, and outside a facilitated setting a claimed inadmissibility is self-reported and unverifiable, so the criterion is strategically manipulable. | medium |
+| Q-RD-6 | **(robustness axis, added 2026-07-26)** Is the min in §5 better read as ranging over the parties' *generator hypotheses* rather than over the parties — i.e. as a Wald-type minimax under model uncertainty, selecting the description that stays admissible under every candidate dynamics? This dissolves Q-RD-5's obstacle but risks selecting descriptions too weak to constrain anything. Orthogonal to Q-RD-1, which varies the aggregation form, not the domain of the minimum. Depends on the generator reading of linkage in `docs/notes/scope_component_conflict_typology.md` §8.1. | medium |
+
+> **Registration note (2026-07-25).** Q-RD-1–4 were listed in this table and in the
+> DOC_INDEX row for this file, but were never entered in
+> `docs/notes/open_questions.md` — the same argued-but-unregistered drift previously
+> found for Q-SIG and Q-EXT. All five are registered there as of this date. The
+> ARW-level questions raised by §6.3 are deliberately *not* given Q-RD IDs: they
+> belong to the notes that own them (Q_NEW_E in the conflict typology; the Q-STR
+> cluster in the scale-gap note).
+
+> **Revision note (2026-07-26).** Q-RD-5 as first stated bundled two independent
+> questions: which *aggregation* the criterion uses, and what the minimum ranges
+> over. The second was split off as Q-RD-6. The trigger was the sharpening of the
+> linkage claim in `docs/notes/scope_component_conflict_typology.md` §8.1 — once a
+> party's elaboration is read as a generator hypothesis rather than a position, the
+> min acquires a second candidate domain. The ARW-level part of that revision
+> (including the new Q_NEW_F on the Δ-conflict row) stays with the typology note.
 
 ---
 

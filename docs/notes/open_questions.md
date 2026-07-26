@@ -546,14 +546,16 @@ Status: open
 **Q-GEN-01 — Exhaustiveness of the three-type generator admissibility taxonomy**
 - **Status:** open
 - **Question:** Is the three-type generator admissibility taxonomy exhaustive?
-  Candidate gap: non-autonomous generators may produce collapse geometries not
-  captured by Type I, II, or III.
+  Candidate gap: non-autonomous generators may produce failure geometries not
+  captured by Type I, II, or III. *(Terminology: types renamed 2026-07-17 —
+  domain-boundary failure / branch-selection failure / joint-constraint
+  incompatibility; see generator_admissibility_taxonomy.md.)*
 - **Registered:** 2026-05-07
 - **Source:** docs/art_instantiations/generator_admissibility_taxonomy.md
 
-**Q-GEN-02 — Signature-first inference for generator collapse type**
+**Q-GEN-02 — Signature-first inference for generator failure type**
 - **Status:** partially answered (2026-05-07)
-- **Question:** Can generator collapse type be inferred purely from operator
+- **Question:** Can generator failure type be inferred purely from operator
   signatures (S1–S5)?
 - **Partial answer:** Yes for Type I (S1/S2/S4/S5 dominant) and Type II
   (S3 dominant). No for Type III — requires explicit conflict analysis of K.
@@ -565,16 +567,52 @@ Status: open
 - **Question:** What is the correct ARW formalization of the generator G?
 - **Partial answer:** G = (Λ, Σ, φ, C). φ: Λ → (B, Π) partial instantiation.
   A(G) and A_f(G | C) formally defined.
-- **Remaining open:** Formal topology conditions on Λ per collapse type;
+- **Remaining open:** Formal topology conditions on Λ per failure type;
   formal A_f / A_h boundary independent of specific C.
 - **Source:** docs/art_instantiations/generator_admissibility_taxonomy.md
 
-**Q-GEN-04 — Minimal C for non-empty A_f per collapse type**
+**Q-GEN-04 — Minimal C for non-empty A_f per failure type**
 - **Status:** open
 - **Question:** What is the minimal C that makes A_f(G | C) non-empty for
-  each generator collapse type?
+  each generator failure type?
 - **Registered:** 2026-05-07
 - **Source:** docs/art_instantiations/generator_admissibility_taxonomy.md
+
+**Q-GEN-05 — Forcing vs. Symmetry Breaking in Type II canonical cases**
+- **Status:** open
+- **Question:** Does the Forcing reformulation as inter-regime coupling change
+  the identification of Type II canonical cases (e.g. ghost sector in quadratic
+  gravity: Forcing incommensurability, Type II-a, or degenerate vacuum sectors,
+  Type II-b under the proposed split)?
+- **Registered:** in source doc 2026-05-30; registered here 2026-07-17 (late —
+  found unregistered during the ID-collision sweep of the Part VI revision
+  session; the pulse §5 prefix map claimed Q-GEN-01–04)
+- **Source:** docs/art_instantiations/generator_admissibility_taxonomy.md
+
+**Q-GEN-06 — Derivation of minimum C components from the five relation types**
+- **Status:** partially answered (see docs/notes/c_components_derivation_attempt.md:
+  C is not arbitrary; sub-questions Q-GEN-06a/06b remain open there)
+- **Question:** Is there a derivation of the minimum C components from the five
+  relation types (C and the Restriction meta-relation being formally parallel)?
+- **Registered:** in source doc 2026-05-30; registered here 2026-07-17 (late,
+  same sweep as Q-GEN-05)
+- **Source:** docs/art_instantiations/generator_admissibility_taxonomy.md;
+  docs/notes/c_components_derivation_attempt.md
+
+**Q-GEN-07 — Structural sub-typing of Type II (branch-selection failure)**
+- **Status:** open
+- **Question:** Type II groups heterogeneous phenomena — mathematical
+  non-uniqueness, coexisting stable attractors, epistemic undecidability,
+  normative underdetermination — unified only by the external-selection-criterion
+  feature. Do these divide along structural lines? Two candidate axes exist:
+  the operator-side S3/S6 split already proposed under Q-GEN-01 (Type II-a
+  Forcing incommensurability vs. II-b Symmetry-Breaking bifurcation), and the
+  interpretive-side axis above (mathematical / attractor / epistemic /
+  normative). Are the two axes aligned, orthogonal, or reducible?
+- **Registered:** 2026-07-17 (from monograph Part VI §6.2, external-review
+  revision; terminology per the same-day failure-type rename)
+- **Source:** monograph Part VI §6.2; docs/art_instantiations/generator_admissibility_taxonomy.md
+  (Q-GEN-01 update 2026-05-30)
 
 ---
 
@@ -584,7 +622,7 @@ Status: open
 **Q-EPO-01 — Formal ordering of the seven A_f criteria**
 - **Status:** open
 - **Question:** Can the seven A_f criteria be formally ordered by strength?
-  Is there a minimal sufficient subset per collapse type?
+  Is there a minimal sufficient subset per failure type?
 - **Registered:** 2026-05-07
 - **Source:** docs/art_instantiations/epistemic_context_and_functional_admissibility.md
 
@@ -609,10 +647,10 @@ Status: open
 - **Source:** docs/art_instantiations/epistemic_context_and_functional_admissibility.md;
   session finding documented in docs/notes/research_journal.md (session 2026-05-07)
 
-**Q-EPO-03 — Relationship between C and the three generator collapse types**
+**Q-EPO-03 — Relationship between C and the three generator failure types**
 - **Status:** open
 - **Question:** What is the formal relationship between C and the three
-  generator collapse types? Does each type impose a characteristic structure
+  generator failure types? Does each type impose a characteristic structure
   on the minimum C for non-empty A_f?
 - **Registered:** 2026-05-07
 - **Source:** docs/art_instantiations/epistemic_context_and_functional_admissibility.md
@@ -705,15 +743,50 @@ Status: open
   and research_journal.md 2026-06-02). The duplicate has been merged into this entry.
 
 **Q-REL-05 — Does the transfer metric Φ carry any genuine BC-class distance signal?**
-- **Status:** open (raised by the same session)
+- **Status:** open, expected to resolve negatively (reformulated 2026-07-11 per the
+  WP-A3 decision, `docs/notes/decision_note_WP-A3_transfer_reframing_2026-07-02.md`) — this
+  is a deliberate change from a previously neutral "open" framing. **Partitions are
+  many-to-one outputs of their generators**: distinct BC structures can produce
+  near-identical partitions on normalised axes, so no partition-level construction can *in
+  principle* recover BC-class distance. The expectation of a negative resolution should be
+  stated as such (not left neutral) wherever this question is cited, per the decision note.
+  Empirical confirmation would still require the answer below to remain "no" under further
+  testing — this is a stated expectation grounded in the information-theoretic argument, not
+  a proof; it should be revised back to neutral if a counter-construction is ever found.
 - **Question:** With the v1 PCI defect removed (overlap-based PCI in transfer_v2), same-class and
   cross-class case pairs are still statistically indistinguishable in PCI_real once regime count
   is controlled (D-CTRL-1). Is there *any* construction on the induced partition that recovers
   BC-class distance, or must BC-class distance be measured on the operator signatures (S1–S5)
   directly rather than on the partition?
+- **Path forward (WP-A5, proposed 2026-07-02, not yet built):** a signature-comparison
+  artifact (working name `SignatureTransfer.json`) alongside `TransferMetrics.json`, making
+  transfer a two-stage workflow — Stage 1 partition filter (Φ and companions, necessary
+  condition only), Stage 2 signature comparison (Σ-level evidence, the structural claim).
+  This would make Q-REL-05 empirically testable inside the pipeline rather than only
+  argued from the D-CTRL results. Not yet implemented in this repo as of 2026-07-11.
 - **Registered:** 2026-06-02
 - **Source:** docs/notes/research_journal.md (Session 2026-06-02); Simulationen
-  DECOUPLING_CONTROLS_RESULTS.md
+  DECOUPLING_CONTROLS_RESULTS.md; reformulated 2026-07-11 per
+  `docs/notes/decision_note_WP-A3_transfer_reframing_2026-07-02.md`
+
+**Q-REL-08 — Canonical normalization for TBS_norm**
+- **Status:** open
+- **Question:** TBS_norm normalizes θ* by the *explored* sweep range, which is
+  a design choice of the case, not a property of the system: widening a sweep
+  moves the same threshold to a smaller fraction without any structural change.
+  Is there a canonical or functionally grounded reference range — candidates:
+  natural domain of the control parameter, characteristic scale, position of
+  the first structural singularity, empirically reachable range, dimensionless
+  control parameter — that makes TBS_norm comparable across independently
+  designed sweeps? Until resolved, the sweep-window sensitivity band
+  (transfer_v2) mitigates but does not remove the range dependence.
+- **Registered:** 2026-07-17 (from the monograph Part VI external-review
+  revision; the reviewer's sweep-enlargement objection is the operative
+  counterexample). Numbered in the transfer-findings Q-REL sub-series (04–05);
+  the three-origin fragility of the Q-REL prefix is known — consolidation
+  pending per pulse §5.
+- **Source:** monograph Part VI §6.3 + docs/notes/part_VI_revision_spec_external_review_2026-07-17.md
+  (book workspace); docs/bc_taxonomy/transfer_distortion_metrics.md (Metric 2)
 
 ---
 
@@ -814,3 +887,557 @@ case of ARW scope-invariance rather than an external analogy (speculative, condi
 see source note §7 for the full, explicitly-flagged-as-not-established consequence chain).
 Source: `docs/notes/scope_family_flow_and_kuramoto_limit_audit.md` §4.
 Status: open
+
+---
+
+## Σ Extraction from Observables (Q-EXT)
+*(Prefix registered 2026-07-14. The questions were posed 2026-05-30 in
+`docs/advanced/bc_signature_extraction_observables.md` but never registered here —
+which allowed a silent collision: `docs/advanced/extended_z_observable_necessity.md`
+independently used Q-EXT-01–06 for unrelated Z(π) questions. Decision 2026-07-14
+(Rico): the extraction series keeps Q-EXT; the Z-observable series is renumbered
+Q-ZOBS, see below.)*
+
+**Q-EXT-01 — Can operator signatures be reliably distinguished in cover height profiles without model equations?**
+- **Status:** open — first empirical evidence positive (Coupling vs. Restriction discriminant
+  profiles separate cleanly in two clean systems; see `experiments/sigma_extraction_bc_signatures.md`).
+- **Source:** `docs/advanced/bc_signature_extraction_observables.md`;
+  `experiments/sigma_extraction_kuramoto_noise.md` (noise-robustness proposal);
+  validation programme: `experiments/sigma_extraction_validation_plan.md` (imported 2026-07-14).
+
+**Q-EXT-02 — What are the minimum data requirements for stable Σ extraction (sweep density, observable count)?**
+- **Status:** open — Level-1 tasks of the validation plan (sparse ARW-case sweeps, n=12–26)
+  are designed to bound this.
+- **Source:** as Q-EXT-01.
+
+**Q-EXT-03 — Σ stability under observable choice: does a different observable on the same system yield the same Σ?**
+- **Status:** open — overlaps with Q_NEW_9/Q_NEW_11 (observable-BC vs system-BC); the planned
+  Φ_obs test (WP-D3: CASE-0001 with r_ss vs. σ²(θ)) bears on it.
+- **Source:** `docs/advanced/bc_signature_extraction_observables.md` §"multiple observables".
+
+---
+
+## Z-Observable Necessity (Q-ZOBS)
+*(Renumbered 2026-07-14 from a colliding Q-EXT-01–06 series. Canonical table with all six
+questions and priorities: `docs/advanced/extended_z_observable_necessity.md` §8. All open.
+Registered here as a prefix reservation; extend the source document, not this entry.)*
+
+---
+
+## Qualitative Scope-Signature Abstraction (Q-QSC)
+*(Prefix registered 2026-07-14 on import of `docs/advanced/qualitative_scope_signature_abstraction.md`
+(Kaffeehaus session 2026-07-11). Collision check: prefix previously unused.)*
+
+**Q-QSC-01 — Does a qualitatively-assigned BC signature survive contact with a formal pipeline case for the same system?**
+- **Status:** open. Candidate test: minimal toy model of gravity-driven channel flow
+  (qanat structure); check whether bottom-up extraction returns R·D as QSA predicted without data.
+- **Source:** `docs/advanced/qualitative_scope_signature_abstraction.md`.
+
+**Q-QSC-02 — Does QSA signature-equivalence predict successful engineering transfer, or only surface resemblance?**
+- **Status:** open. First informal case: qanat-derived passive cooling vs. Mulden-Rigolen
+  retention (both R·D) from the source session.
+- **Source:** as Q-QSC-01; relates to `docs/notes/cross_scope_causal_construction.md`
+  (label matching ≠ generator matching) and, via the two-stage transfer criterion,
+  to Q-REL-05.
+
+---
+
+## Part VII Formalisation Round (registered 2026-07-17)
+
+*(Source: monograph Part VII external-review revision; repo-side reconciliation
+session 2026-07-17. Q_NEW numbering continues after Q_NEW_19–23, which are
+claimed by `docs/advanced/admissible_resolution_lower_bound.md` — collision
+check done.)*
+
+**Q_NEW_24 — Should the falsification severity enum be split into claim-impact and repair-action axes?**
+- **Status:** open (schema question; enum is a frozen repository convention, GUARD-3)
+- **Question:** The severity enum {observable_replacement, sweep_refinement,
+  scope_rejection} names licensed repair actions, but fuses *claim impact*
+  (local / observable-class / scope-level) with *recommended action* — a
+  high-impact failure can still be repaired by an observable swap. Should the
+  schema carry event type × claim impact × action as separate fields?
+- **Registered:** 2026-07-17, deferred rather than silently adopted in
+  monograph Part VII V3.1.
+- **Source:** monograph Part VII V3.1; schemas/ (GUARD-2/3).
+
+**Q_NEW_25 — General regime construction beyond the 1D sweep: admissible-transition relation and attributed transition graph**
+- **Status:** open
+- **Question:** The operative regime construction (ε-adjacency graph on an
+  ordered sweep) defines regimes of the observable image along the swept path
+  only. The general notion — components under an *admissible-transition
+  relation* (δ-reachability under Δ) on the full effective domain — is not
+  constructed. Its metric-level counterpart is the Δ-induced or **attributed**
+  transition graph (edges carrying ε_merge, hysteresis, order of contact α,
+  signature type, BC label), which is also the condition for SDI to carry
+  information independent of regime count (WP-A4 amendment 2026-07-17).
+  Sub-questions: value-coincident distinct basins; multi-dimensional
+  observable images; image-connectivity vs. state-space admissibility.
+- **Registered:** 2026-07-17.
+- **Source:** monograph Part VII V1.2 (scope limit) + V4.2 (SDI disposition);
+  `docs/bc_taxonomy/transfer_distortion_metrics.md` (SDI section).
+
+---
+
+## Σ Persistence / Signature Structure (Q-SIG)
+*(Prefix registered 2026-07-17. The questions were posed in
+`docs/advanced/bc_signature_persistence_and_dominance.md` (2026-05-30 cluster)
+but never registered here — same failure mode as Q-GEN-05/06 and Q-EXT.
+Numbering starts at 02 in the source doc; there is no Q-SIG-01 — recorded
+as-is, do not reuse 01 without checking the source doc first.)*
+
+**Q-SIG-02 — Intrinsicness of η_i**
+- **Status:** open
+- **Question:** Is the persistence interval of a BC class intrinsic to the
+  generator, or dependent on the full constellation of active classes (and on
+  the observer-declared reference scale ε₀ in η = −log(ε/ε₀))?
+- **Source:** docs/advanced/bc_signature_persistence_and_dominance.md §7.
+
+**Q-SIG-03 — Monotonicity of persistence intervals**
+- **Status:** open
+- **Question:** Is each class's activity a single η-interval, or can a class
+  deactivate and re-activate across resolution?
+- **Source:** docs/advanced/bc_signature_persistence_and_dominance.md §7.
+
+**Q-SIG-04 — Restriction as meta-BC in the persistence measure**
+- **Status:** open
+- **Question:** Does Restriction enter the persistence measure as a class, or
+  define its domain?
+- **Source:** docs/advanced/bc_signature_persistence_and_dominance.md §7.
+
+**Q-SIG-05 — Projection loss for Σ read in projected space**
+- **Status:** open
+- **Question:** What transfer claims are lost when Σ is read only in the
+  observable's projected space?
+- **Source:** docs/advanced/bc_signature_persistence_and_dominance.md §7.
+
+**Q_NEW_26 — Computing assignment instability χ_{Δ,ε}**
+- **Status:** open (implementation gap)
+- **Question:** The exact boundary-state indicator χ_{Δ,ε}(x) = 1[∃δ ∈ Δ :
+  r_ε(T_δ x) ≠ r_ε(x)] (monograph Part VII Def 6a) is computed nowhere: all
+  pipeline stability masks use the σ_Δ proxy, whose reliability degrades near
+  boundaries — exactly where χ matters. What is the cheapest faithful
+  estimator of χ (perturbed re-partitioning per δ-sample? perturbed-graph
+  component comparison C(G_ε^δ) vs C(G_ε)?), and how far does the σ-mask
+  diverge from the χ-mask on the reference cases? Also carries the τ_∂
+  boundary-fraction criterion for F-gradient, which is currently
+  σ-estimated.
+- **Registered:** 2026-07-18.
+- **Source:** monograph Part VII V2.3/V3.1 (round-3 revision);
+  docs/glossary/perturbation_spread.md.
+
+---
+
+## Outlook — Abstraction Chains (registered 2026-07-18)
+
+*(Source: docs/notes/transfer_deflation_and_abstraction_chains.md §4, imported
+2026-07-18 from the monograph workspace during Part IX drafting. Its §6
+registration block was written 2026-07-02 but never executed — same failure
+mode as Q-GEN-05/06, Q-EXT, Q-SIG. Collision check: Q_NEW_19–23 claimed by
+admissible_resolution_lower_bound.md; 24–26 taken.)*
+
+**Q_NEW_27 — Where does the necessity of the abstraction chain sit?**
+- **Status:** open
+- **Question:** "A deep chaining of abstraction arises necessarily" — candidate
+  loci: (a) boundedness of any finite describer (cognition); (b) a property of
+  description/representation as such; (c) temporally organized dynamics under a
+  finite-capacity bound, proposed as the *common root* of (a) and (b). (c)
+  needs an independent dynamical anchor to avoid survivorship-circularity and
+  self-reference to ARW's own persistence notion (σ_Δ, ε). Fallback: the
+  necessity claim may be false; then abstraction chains are an empirical
+  regularity, not a structural consequence. Decides whether the ARW outlook is
+  about cognition-under-time, representation-in-general, or a dynamical
+  substrate beneath both.
+- **Registered:** 2026-07-18.
+- **Source:** docs/notes/transfer_deflation_and_abstraction_chains.md §4;
+  monograph Part IX §9.2.5 (prose) + §9.4 (formal limits) + §9.1 (ID listing).
+
+---
+
+## Vertical Transfer — Inductive Strengthening and Scale-Gap Ambiguity (Q-STR, registered 2026-07-25)
+
+*(Source: docs/notes/inductive_strengthening_cascade_closure.md §6 and
+docs/notes/scale_gap_ambiguity_audit_stability.md §6, both drafted offline and
+imported as a pair 2026-07-25. Collision check performed on import: the `Q-STR-`
+prefix was unused across open_questions.md and docs/notes/ — no collision, unlike
+the Q-REL-01/02 case. The cluster concerns the **resolution axis of a single
+system** (vertical structure), and is deliberately not merged with the horizontal
+system-to-system transfer cluster Q-REL-01–05.)*
+
+**Q-STR-01 — Existence of a cascade-closed strengthening**
+- **Status:** open
+- **Question:** Given a scope family {S_ρ = (B, Π_ρ, Δ, ρ)} and a claim C(ρ) that
+  holds at each resolution but does not reproduce itself across the cascade, under
+  what conditions on the family and on C does a strictly stronger C′ ⇒ C exist that
+  *is* cascade-closed? The move is folklore in mathematics (strengthening the
+  induction hypothesis); what ARW would add is the condition for its availability.
+- **Registered:** 2026-07-25.
+- **Source:** docs/notes/inductive_strengthening_cascade_closure.md §3.
+
+**Q-STR-02 — Minimality of the strengthening**
+- **Status:** open
+- **Question:** Is there a least strengthening — minimal added projective load on
+  Π_ρ — and is it unique up to descriptive equivalence? Bears directly on whether
+  "strengthen the claim" is an actionable repair or only a post-hoc description of
+  successful proofs.
+- **Registered:** 2026-07-25.
+- **Source:** docs/notes/inductive_strengthening_cascade_closure.md §4, §6.
+
+**Q-STR-03 — Cascade closure vs. Σ-persistence**
+- **Status:** open
+- **Question:** Is cascade closure a special case of generator invariance over a
+  scope family — i.e. vertical transfer read as Σ-invariance along the ε-axis? If
+  so, the Σ machinery already carries it and Q-STR-01/02 collapse into the
+  Q-REL-01–03 cluster. If not, the resolution axis needs its own persistence notion
+  distinct from Σ. Related but **not merged**: Q-REL-01–03.
+- **Registered:** 2026-07-25.
+- **Source:** docs/notes/inductive_strengthening_cascade_closure.md §6.
+
+**Q-STR-04 — Is audit stability equivalent to cascade closure?**
+- **Status:** open (stated as a conjecture in the source, not a result)
+- **Question:** A description is *audit-stable* over [ρ₂, ρ₁] if the realization-class
+  diameter Amb(C; ρ₁→ρ) ≤ ε for every intermediate ρ — verification commutes with
+  resolution change. Conjecture: audit stability over a range is equivalent to the
+  existence of a cascade-closed strengthening whose per-scale content is verifiable
+  within Π_ρ. Neither direction is proved.
+- **Registered:** 2026-07-25.
+- **Source:** docs/notes/scale_gap_ambiguity_audit_stability.md §3.
+
+**Q-STR-05 — Conditions under which strengthening refusal is a signal**
+- **Status:** open
+- **Question:** Adopting a cascade-closed strengthening is a costly self-binding: it
+  forfeits the option value of the realization class. Under what assumptions on cost
+  distribution and common knowledge does *unexplained refusal* to strengthen separate
+  gap-exploiting describers from load-constrained ones? Likely imports standard
+  costly-signaling structure; the open part is what, if anything, is ARW-specific
+  beyond the formulation of the signal's content.
+- **Registered:** 2026-07-25.
+- **Source:** docs/notes/scale_gap_ambiguity_audit_stability.md §4.
+
+**Q-STR-06 — Measuring Amb, and whether N* bounds it**
+- **Status:** open
+- **Question:** Can Amb(C; ρ₁→ρ₂) be estimated in pipeline terms — sampling the
+  realization class under B and computing the d_Π-diameter at ρ₂? And does the
+  aggregation-limits machinery bound it? Checked on import: the variance crossover
+  N* of `docs/advanced/arw_aggregation_limits_typological_observables.md` is a
+  variance-exchange point, **not** a realization-class diameter, so no bound is
+  inherited; whether σ²_W at fixed class assignment bounds Amb for
+  aggregate-vs-individual instances is the open part.
+- **Registered:** 2026-07-25.
+- **Source:** docs/notes/scale_gap_ambiguity_audit_stability.md §5, §6.
+
+---
+
+## Semantic Description Spaces — Linkage and Discursive Mediation (registered 2026-07-25)
+
+*(Source: the Resonanzdialektik working thesis, folded in 2026-07-25 as extensions
+rather than as a new document — `docs/art_instantiations/kht_resonance_dialectic.md`
+§6.3 and `docs/notes/scope_component_conflict_typology.md` §8. Collision check:
+Q_NEW_E was free; Q_NEW_A–D belong to the typology note. Level discipline: Q_NEW_E is
+ARW-level and owned by the typology note; Q-RD-5 is KHT-level and owned by the
+resonance-dialectic doc.)*
+
+*(Extended 2026-07-26 — stability revision. Q_NEW_F and Q-RD-6 added; Q_NEW_E and
+Q-RD-5 revised. Collision check: both IDs were free. Level discipline unchanged and
+enforced across the split: the generator/co-stability reading of linkage and the
+Δ-conflict discriminator are ARW-level and stay with the typology note (Q_NEW_E,
+Q_NEW_F); only the consequence for the mediation objective is KHT-level and carries a
+Q-RD ID (Q-RD-6). Sources: `docs/notes/scope_component_conflict_typology.md` §8.1 and
+`docs/art_instantiations/kht_resonance_dialectic.md` §5, §6.3.)*
+
+**Q_NEW_E — Can a linkage disagreement be placed by a tuple-component typology?**
+- **Status:** open (revised 2026-07-26)
+- **Question:** Two parties share B, Π, Δ and ε, each grants the other's account the
+  status of a description, and they still disagree — the difference lying in how the
+  shared terms constrain one another. The scope tuple has no slot for relational
+  structure over Π, so such a disagreement is invisible to a tuple-component typology
+  by construction. Is the linkage difference irreducible, and where does it live?
+- **Candidate answer (2026-07-26, §8.1 of the source):** the linkage is the
+  **co-stability profile induced by a generator hypothesis**. σ_Δ is tuple-internal
+  only for pure state functions; for the asymptotic observables this repository uses
+  (r_ss, var_rel, lambda_proxy) O is defined through the dynamics, so σ_Δ requires the
+  tuple *plus* a generator. Parties differing only in assumed dynamics therefore get
+  different stability verdicts over one Π without either miscomputing. Computable form:
+  a graph over Π with edges weighted by overlap of X_stab(π) = {x ∈ X_B : σ_Δ^π(x) < ε}.
+  This selects the generator level (Σ) over the Q_NEW_25 transition graph, and does not
+  route through S1–S5. Open part: whether two generator variants over one tuple produce
+  distinguishable graphs on a worked case.
+- **Cheapest negative outcome (revised):** not "B-conflict in disguise" as first stated,
+  but **Δ-conflict in disguise** — see Q_NEW_F. If the prediction-commitment
+  discriminator cannot be applied because parties adjust predictions post hoc, the two
+  are operationally identical and Q_NEW_E and Q_NEW_F close negatively together.
+- **Bears on:** Q_NEW_C (exhaustiveness of the classification). If irreducible, the
+  typology is a projection of controversies rather than a partition of them.
+- **Depended on by:** Q-COM-02 (discursive branch points as the locus where two
+  generator hypotheses diverge); Q-RD-6 (whether the mediation objective's minimum
+  ranges over generator hypotheses rather than over parties).
+- **Registered:** 2026-07-25; revised 2026-07-26.
+- **Source:** docs/notes/scope_component_conflict_typology.md §8, §8.1.
+
+**Q_NEW_F — Does the Δ-conflict row conflate a normative and an underdetermined type?**
+- **Status:** open
+- **Question:** The Δ-conflict row of the typology (§1) is described as "the genuinely
+  normative dispute", surviving disambiguation completely. A generator conflict in the
+  sense of Q_NEW_E issues the same verdict ("this perturbation is absorbable /
+  regime-violating") but arrives at it by hypothesising the map rather than stipulating
+  the input — and is therefore *not* normative but **underdetermined**: decidable by
+  evidence, though only after the perturbation has occurred. Since the phenomenology is
+  identical, the diagnostic cannot currently separate them. Proposed discriminator:
+  does the position commit its holder to a prediction that an observed perturbation
+  could contradict? Yes → generator conflict; no → Δ-conflict.
+- **Known weakness:** the discriminator is sharp only where the prediction is fixed ex
+  ante, which in live controversy it rarely is. This is the joint on which both this
+  question and Q_NEW_E fail together.
+- **Bears on:** Q_NEW_C, Q_NEW_E; and on the resolution column of the §1 table, which
+  is currently wrong for any case of the second type.
+- **Depended on by:** Q-COM-02 (whether a branch point is locatable in live discourse
+  by this discriminator, without either party articulating its generator).
+- **Registered:** 2026-07-26.
+- **Source:** docs/notes/scope_component_conflict_typology.md §8.1.
+
+**Q-RD-1 — Is maximin the correct mediation objective?**
+- **Status:** open (priority: high)
+- **Question:** Is the maximin joint-admissibility criterion the right objective, or
+  does empirical mediation behaviour fit a different aggregation (e.g. Nash product
+  of admissibilities)? Needs a case with two measurable perspectives.
+- **Registered:** 2026-07-25 (stated in the source document 2026-06-29; see note).
+- **Source:** docs/art_instantiations/kht_resonance_dialectic.md §5, §9.
+
+**Q-RD-2 — Explicit (τ, σ, ξ) trajectory for the R3-mediation pathway?**
+- **Status:** open (priority: medium)
+- **Question:** Can the mediation pathway be expressed as an explicit control-parameter
+  trajectory? KHT-specific form of Q-L3-4.
+- **Registered:** 2026-07-25 (stated 2026-06-29).
+- **Source:** docs/art_instantiations/kht_resonance_dialectic.md §9;
+  kht_architecture_layer3.md §7.
+
+**Q-RD-3 — Which boundary-condition manipulation holds coupling near K_c?**
+- **Status:** open (priority: medium)
+- **Question:** At the group level, what manipulation reliably sustains shared
+  resonance without crossing into premature lock-in or collapse? Relates to the
+  κ_c ↔ N* correspondence.
+- **Registered:** 2026-07-25 (stated 2026-06-29).
+- **Source:** docs/art_instantiations/kht_resonance_dialectic.md §9.
+
+**Q-RD-4 — Same structure at the individual level, or only analogy?**
+- **Status:** open (priority: low)
+- **Question:** Does individual Shadow integration show the same maximin structure as
+  group mediation, or are the two levels only analogically related?
+- **Registered:** 2026-07-25 (stated 2026-06-29).
+- **Source:** docs/art_instantiations/kht_resonance_dialectic.md §9.
+
+**Q-RD-5 — Does maximin have a discursive form under the *fairness* reading?**
+- **Status:** open (priority: medium; scope narrowed 2026-07-26)
+- **Question:** Is a reorganized shared description space the argmax of
+  min-admissibility over the parties' elaborations, with the minimum ranging over the
+  *parties*?
+- **Known obstacle (2026-07-26):** the individual and group levels supply a facilitator
+  who can check whether a claimed inadmissibility is real; the discursive level does
+  not. Self-reported and unverifiable inadmissibility makes the criterion strategically
+  manipulable — it rewards assertion, producing veto inflation rather than maximin. The
+  "parties are not fixed" objection originally recorded here is secondary to this one.
+- **Registered:** 2026-07-25; narrowed 2026-07-26 when the robustness axis was split
+  off as Q-RD-6.
+- **Source:** docs/art_instantiations/kht_resonance_dialectic.md §5, §6.3, §9.
+
+**Q-RD-6 — Does the minimum range over parties or over generator hypotheses?**
+- **Status:** open (priority: medium)
+- **Question:** If the parties' elaborations are read as generator hypotheses (Q_NEW_E,
+  2026-07-26) rather than as positions or preferences, the min in
+  m* = argmax_m min(R(m, x_A), R(m, x_B)) acquires a second candidate domain: candidate
+  *dynamics* rather than participants. On that reading the criterion is a Wald-type
+  minimax under model uncertainty — select the description that stays admissible under
+  every candidate generator. Which reading is correct for discursive mediation?
+- **What the robustness reading buys:** the "parties are not fixed" objection in Q-RD-5
+  does not arise, and a generator hypothesis (unlike a preference) commits its holder to
+  predictions that later perturbations can contradict — the same prediction-commitment
+  check as Q_NEW_F, and a partial substitute for the missing facilitator.
+- **What it costs:** conservatism. A description robust to every candidate dynamics may
+  be too weak to constrain anything, which is the discursive analogue of a maximally
+  gap-ambiguous coarse description (Q-STR-04/06).
+- **Relation to Q-RD-1:** orthogonal. Q-RD-1 varies the aggregation form (maximin vs.
+  Nash product) holding the domain fixed; this varies the domain holding the form fixed.
+- **Registered:** 2026-07-26.
+- **Source:** docs/art_instantiations/kht_resonance_dialectic.md §5, §6.3, §9;
+  docs/notes/scope_component_conflict_typology.md §8.1.
+
+*Registration-drift note: Q-RD-1–4 were listed in their source document and in its
+DOC_INDEX row from 2026-06-29 but never entered here — the same failure mode recorded
+for Q-SIG, Q-EXT and Q_NEW_27. Found and corrected 2026-07-25.*
+
+---
+
+## Sleep Scope — Perturbative Consolidation (Q-SLP)
+
+*Registered 2026-07-26 on import of
+`docs/context_navigation/sleep_as_perturbative_description_consolidation.md`.
+**Not** the same series as Q-SL-01–04 in `docs/context_navigation/agent_sleep_scope.md`,
+which concern the effectiveness-based consolidation rule this note proposes replacing.
+The one-character prefix difference is a known near-collision — see DOC_INDEX I-12.*
+
+**Q-SLP-01 — What makes an internally generated perturbation admissible?**
+- **Status:** open (priority: high)
+- **Question:** By what rule does the agent generate Δ_replay, the internal
+  perturbation set over the encounter buffer, and what makes a generated
+  perturbation admissible rather than arbitrary?
+- **Why it is load-bearing:** the whole persistence criterion σ_Δ(D) < ε is only as
+  meaningful as Δ_replay is principled. An arbitrarily narrow Δ_replay makes every
+  description persistent and the criterion vacuous; an arbitrarily wide one makes
+  every description fail. This is the note's weakest joint and should be attacked
+  before the discriminating experiment (§9) is worth running.
+- **Registered:** 2026-07-26.
+- **Source:** docs/context_navigation/sleep_as_perturbative_description_consolidation.md §4, §10.
+
+**Q-SLP-02 — How is Δ-robustness operationalized for a symbolic archetype?**
+- **Status:** open (priority: high)
+- **Question:** σ_Δ presupposes a distance d_Π on the descriptive space. For an
+  archetype that is a symbolic structure rather than a point in ℝⁿ, what supplies
+  d_Π? What is the relation between Δ-robustness and admissibility volume?
+- **Registered:** 2026-07-26.
+- **Source:** docs/context_navigation/sleep_as_perturbative_description_consolidation.md §4, §10.
+
+**Q-SLP-03 — Frequency or survival rate, and is the ordering axis a scope family?**
+- **Status:** open (priority: medium)
+- **Question:** Do archetypes arise from encounter frequency or from survival rate
+  under variation? And is the consolidation-cycle ordering axis a scope family in
+  the sense of `docs/notes/scope_family_flow_and_kuramoto_limit_audit.md` §2, or only
+  formally analogous? The first half is decided by the §9 experiment; the second is not.
+- **Registered:** 2026-07-26.
+- **Source:** docs/context_navigation/sleep_as_perturbative_description_consolidation.md §3.1, §10.
+
+---
+
+## Architectural Aesthetics (Q-AES)
+
+*Registered 2026-07-26 on import of
+`docs/notes/architectural_aesthetics_scope_dependent_description_persistence.md`.
+Prefix was unused.*
+
+**Q-AES-01 — Can the active scope be determined independently of the judgment it explains?**
+- **Status:** open (priority: high)
+- **Question:** Can an observer's active scope be fixed independently of the aesthetic
+  judgment it is invoked to explain — e.g. by assigning the task before eliciting the
+  judgment?
+- **Why it gates the note:** without this, scope-relative beauty explains every observed
+  preference post hoc and forbids nothing. The source note is deliberately held at
+  `note` rather than `hypothesis` for exactly this reason, and this question is the
+  route out.
+- **Registered:** 2026-07-26.
+- **Source:** docs/notes/architectural_aesthetics_scope_dependent_description_persistence.md §9.1, §10.
+
+**Q-AES-02 — Does the Δ-constraint mechanism outperform fluency accounts?**
+- **Status:** open (priority: medium)
+- **Question:** Does reading the environment as a constraint on Δ (suppressing the
+  perturbations under which the active scope's observables would fail) predict
+  preference better than familiarity, processing-fluency, status-signalling or
+  prospect-refuge accounts? Secondarily: do KHT operator profiles predict environmental
+  preference in the direction the source note's §5 implies?
+- **Registered:** 2026-07-26.
+- **Source:** docs/notes/architectural_aesthetics_scope_dependent_description_persistence.md §3, §5, §9.2, §10.
+
+---
+
+## Communicative Branching Points (Q-COM)
+
+*Registered 2026-07-26 on import of
+`docs/notes/communicative_branching_points_nuclear_discourse.md`. Prefix was unused.
+Both questions are checks on whether that note earns separate existence from
+`docs/art_instantiations/kht_resonance_dialectic.md` §6.3 and
+`docs/notes/scope_component_conflict_typology.md` §8/§8.1 (Q_NEW_E/Q_NEW_F).*
+
+**Q-COM-01 — Is marking a branch point cheaper than explicating an elaboration?**
+- **Status:** open (priority: medium)
+- **Question:** §6.3 of kht_resonance_dialectic.md establishes that explicating an
+  ambiguity node is expensive and that refusing it is usually legitimate. The
+  cartography strategy asks only that the *location* of the branch be marked, not that
+  either party explicate its own elaboration. Is that actually cheaper?
+- **Consequence either way:** if yes, cartography survives the cost objection that
+  defeats explication and is a distinct strategy. If no, the source note collapses into
+  §6.3 and should be merged and superseded.
+- **Registered:** 2026-07-26.
+- **Source:** docs/notes/communicative_branching_points_nuclear_discourse.md §5, §9.
+
+**Q-COM-02 — Is a branch point locatable without either party articulating its generator?**
+- **Status:** open (priority: medium)
+- **Question:** Under the generator reading of `scope_component_conflict_typology.md`
+  §8.1, a branch point is where two generator hypotheses over a shared tuple begin to
+  produce different σ_Δ-profiles. Can it be located in live discourse via the
+  prediction-commitment discriminator of Q_NEW_F, without either party stating its
+  generator?
+- **Known obstacle:** the ex-ante limitation recorded in §8.1 applies here in full — the
+  discriminator is sharp only where predictions are fixed in advance, which in live
+  controversy they rarely are. If that defeats it, Q-COM-02 closes negatively together
+  with Q_NEW_E/Q_NEW_F rather than independently.
+- **Registered:** 2026-07-26.
+- **Source:** docs/notes/communicative_branching_points_nuclear_discourse.md §5, §9;
+  docs/notes/scope_component_conflict_typology.md §8.1.
+
+---
+
+## Scope-Constructing Agent Architecture (registered 2026-07-26)
+
+*(Source: `docs/context_navigation/scope_constructing_agent_architecture.md`, an
+alternative formulation of the Context Navigation architecture filed the same day.
+Collision check: the Q-SCA prefix was unused; Q-SL-*, Q-SLP-*, Q-OL-* and Q-CNS-* are
+the adjacent series in this area — see DOC_INDEX I-12 for the Q-SL/Q-SLP near-collision.
+Level discipline: these are ART-level questions about an agent architecture. The
+ARW-level question they lean on, Q_NEW_E, stays with the conflict-typology note; Q-SCA-03
+and Q-SCA-05 are the links back, not relocations.)*
+
+**Q-SCA-01 — Is scope-varied recapitulation more than data augmentation?**
+- **Status:** open (priority: high)
+- **Question:** Does re-organizing a stored encounter under controlled variation of its
+  scope, e′ = ℛ(e; δB, δΠ, δε, δw), produce modes whose stability domain 𝒫_m is *wider*
+  than the perturbation envelope encountered during training — extrapolative rather than
+  interpolative robustness? Or is the effect entirely accounted for by the additional
+  effective sample count?
+- **Decisive measurement:** the 𝒫_m width comparison between arms C1 (identical episodic
+  replay) and C2 (scope-varied recapitulation), matched on **gradient steps, not episode
+  count**. If C2 tracks the training envelope rather than exceeding it, the construct is
+  augmentation with extra vocabulary and the source document should be superseded rather
+  than repaired.
+- **Registered:** 2026-07-26.
+- **Source:** docs/context_navigation/scope_constructing_agent_architecture.md §8, §14, §15.
+
+**Q-SCA-02 — Which reconstruction level suffices for signature extraction?**
+- **Status:** open (priority: medium)
+- **Question:** Counterfactual reconstruction can run at four levels — actual environment
+  simulation, a learned world model, symbolic/relational reconstruction, or internal
+  activation reconstruction. The architecture assumes full simulation is unnecessary.
+  Untested.
+- **Registered:** 2026-07-26.
+- **Source:** docs/context_navigation/scope_constructing_agent_architecture.md §9.2.
+
+**Q-SCA-03 — Is R_m the same construction as X_stab(π) at a different level?**
+- **Status:** open (priority: medium)
+- **Question:** The mode stability profile R_m(δ) = Pr(admissible navigation | m, δ) is
+  proposed as the mode-level analogue of the observable co-stability domain
+  X_stab(π) = {x ∈ X_B : σ_Δ^π(x) < ε}. Are these formally the same construction one level
+  apart, or only analogous? Note the domains differ: X_stab lives in X_B, 𝒫_m in Δ.
+- **Bears on:** whether an ART result here transfers back to the ARW-level Q_NEW_E.
+- **Registered:** 2026-07-26.
+- **Source:** docs/context_navigation/scope_constructing_agent_architecture.md §10;
+  docs/notes/scope_component_conflict_typology.md §8.1.
+
+**Q-SCA-04 — Is the intermediate mode the R3 mediation pathway?**
+- **Status:** open (priority: medium)
+- **Question:** Is m_{A/B}, the functional intermediate configuration during a
+  weight-driven mode transition, the same mechanism as controlled R3 activation in
+  `kht_resonance_dialectic.md` §4, or a distinct agent-level phenomenon that resembles it?
+- **Registered:** 2026-07-26.
+- **Source:** docs/context_navigation/scope_constructing_agent_architecture.md §12.
+
+**Q-SCA-05 — Learned structure over Π vs. assumed structure over Π**
+- **Status:** open (priority: high)
+- **Question:** The weight field w is a *learned* structure over Π; a generator hypothesis
+  (Q_NEW_E) is an *assumed* one. Neither has a slot in S = (B, Π, Δ, ε). Are they the same
+  object, such that a multi-agent population exchanging description packages is an ART
+  instantiation of the linkage question — or does the learned case lack the property that
+  makes the ARW case tuple-invisible?
+- **Why it matters:** §13 of the source document is the first setting in which the
+  robustness reading of the maximin criterion (Q-RD-6) and the prediction-commitment
+  discriminator (Q_NEW_F) become checkable in simulation, because unlike in discourse the
+  environment resolves a prediction within an episode. If the discriminator fails there,
+  it will not work in discourse either.
+- **Bears on:** Q_NEW_E, Q_NEW_F, Q-RD-6.
+- **Registered:** 2026-07-26.
+- **Source:** docs/context_navigation/scope_constructing_agent_architecture.md §0.1, §13.

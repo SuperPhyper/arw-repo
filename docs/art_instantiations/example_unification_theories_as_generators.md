@@ -33,7 +33,7 @@ explicitly. The generator taxonomy provides vocabulary for this gap.
 - **Λ**: spacetime geometries parametrized by matter distribution, curvature,
   and cosmological constant
 - **Σ**: dominant S2 (metric coupling) and S4 (geodesic contraction via curvature)
-- **Collapse type: Type I** — sharp admissibility boundaries at geometric
+- **Failure type: Type I (domain-boundary failure)** — sharp admissibility boundaries at geometric
   singularities (Schwarzschild radius, cosmological singularities) and at the
   boundary of the semi-classical approximation
 - **A_f(G_GR)**: well-characterized for weak-field and cosmological regimes;
@@ -45,16 +45,18 @@ explicitly. The generator taxonomy provides vocabulary for this gap.
   energy scales
 - **Σ**: dominant S5 (expectation as projection / measurement), S2 (field
   coupling), S3 (time evolution)
-- **Collapse type: Type II** — solution space collapse at UV divergences,
-  vacuum degeneracy, gauge redundancy; solutions are branch-dependent without
-  renormalization or gauge fixing
+- **Failure type: Type II (branch-selection failure)** — uniqueness lost at UV
+  divergences, vacuum degeneracy, gauge redundancy; solutions are
+  branch-dependent without renormalization or gauge fixing
 - **A_f(G_QFT)**: well-characterized within renormalization windows; breaks
   down at gravitational coupling strengths
 
-**Structural observation:** G_GR and G_QFT have different dominant collapse
+**Structural observation:** G_GR and G_QFT have different dominant failure
 types. A unification attempt must construct a generator G' whose A(G') contains
 both A_f(G_GR) and A_f(G_QFT) as sub-regions — without introducing a new
-Type III consistency collapse between their respective signature structures.
+Type III joint-constraint incompatibility between their respective signature
+structures. *(Terminology per the 2026-07-17 rename; see
+generator_admissibility_taxonomy.md.)*
 
 ---
 
@@ -302,5 +304,5 @@ Physical claims follow the cited literature. The ARW/ART mapping is structural
 re-interpretation only — it is not attributed to the cited authors.
 
 Candidate for promotion to `hypothesis` once the generator taxonomy itself
-reaches `working-definition` status and at least one collapse type is validated
+reaches `working-definition` status and at least one failure type is validated
 against an ARW case.

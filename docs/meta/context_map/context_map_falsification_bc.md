@@ -74,6 +74,27 @@ unexpected_result OR plateau_failure
           → θ*@B_edge? → F4→sweep_refinement
 ```
 
+AMENDMENT-2026-07-18: decision_order_revised(monograph VII V3.2) |
+    new_order: F0 → F4 → F1 → F3 → F2 → F-gradient |
+    rationale: θ*@edge_has_no_reliable_estimate ⇒ F2_uninterpretable_before_F4 |
+    F1_generalized: claim_relative(ε-partition_fails_to_refine_R_claim) |
+        total_collapse(ε≥ε*)=special_case(pipeline_tests_this_form) |
+    F-gradient_mass: fraction μ(χ=1)/μ(X_B)>τ_∂ (χ=assignment_instability,
+        σ=proxy; χ_not_computed→Q_NEW_26) |
+    A6_split: invalidity→F0 | valid_but_unresolving@ε→F1 |
+    F2_tests: Var>τ_var OR range>τ_range (not_equivalent; case_declares) |
+    AMENDMENT-2026-07-18b: χ_sweep_form(component_identity: C_ε^δ(x_j)≢C_ε(x_j),
+        NOT r_ε(T_δx) — undefined off sweep nodes) |
+        σ↔χ_error_relation=uncharacterised(both directions possible; C1
+        one-sidedness concerns gradient→σ only) → Q_NEW_26 |
+        never_lower_ε = proxy-based_pipeline_convention, NOT χ-theorem
+        (ε changes partition ⇒ χ-effect not guaranteed monotone;
+        ε-repairs within selected plateau + verify by recomputation) |
+        λ_T_typing: finite-time Lyapunov = own observable (referent=λ_T@T,
+        A6 tests λ_T stability → can pass → F1 for claimed structure;
+        read as λ_∞ estimator without passing convergence test → F0) |
+    tree_above=historical_until_next_map_regeneration
+
 ### Severity Cross-Reference
 
 ```

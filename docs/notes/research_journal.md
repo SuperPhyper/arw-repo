@@ -1314,3 +1314,565 @@ the endemic structure). Scope: this instantiation, not a universal theorem.
 
 - Q-REL-04 → **answered** (structural break, by intrinsic dynamics). Registered in
   open_questions.md this session.
+
+---
+
+## Session 2026-07-17: Generator failure-type rename + Q registrations (monograph Part VI revision)
+
+**Context.** An external review of monograph Part VI (transfer chapter) was triaged in the
+book workspace (`docs/notes/part_VI_revision_spec_external_review_2026-07-17.md` there).
+Decisions by Rico (D1/D2/D5) executed book-side same day; this session propagates the
+repo-side consequences.
+
+### Finding 1 — Collapse-type names renamed (decision, Rico 2026-07-17)
+
+The three generator admissibility types are renamed (numbering unchanged):
+
+| Old | New |
+|---|---|
+| Type I — Boundary Collapse | Type I — Domain-Boundary Failure |
+| Type II — Solution Space Collapse | Type II — Branch-Selection Failure |
+| Type III — Consistency Collapse | Type III — Joint-Constraint Incompatibility |
+
+Umbrella term: *failure type* (was *collapse type*). Rationale (claim): in Type II the
+solution space grows/branches — uniqueness fails, not the space; in Type III "internally
+inconsistent" overstated joint unsatisfiability under specific activations. Applied to:
+`generator_admissibility_taxonomy.md` (canonical, with terminology note + old names as
+one-cycle aliases), `example_unification_theories_as_generators.md`,
+`epistemic_context_and_functional_admissibility.md` (Q-EPO wording),
+`open_questions.md` (Q-GEN-01–04 wording), DOC_INDEX row. Historical journal/audit
+entries left untouched.
+
+### Finding 2 — Type I epistemic caveat added (working hypothesis)
+
+Book-side Newton analysis (Part VI §6.2): the ε-independent structural boundary must be
+distinguished from graded ε-dependent practical degradation, and the boundary may not be
+encoded in G itself — identifiable only from the successor generator (retrospective
+identifiability). Added as explicit caveat to the taxonomy doc's Type I section;
+status: working hypothesis, no Q-ID yet.
+
+### Finding 3 — ID-collision sweep result (process)
+
+Pulse §5 claimed Q-GEN-01–04; the taxonomy doc had already assigned Q-GEN-05/06
+(2026-05-30) without registering them in `open_questions.md`. Both now registered (late).
+New: **Q-GEN-07** (structural sub-typing of Type II — interpretive axis vs. the Q-GEN-01
+S3/S6 operator axis) and **Q-REL-08** (canonical normalization for TBS_norm; limitation
+note added to `transfer_distortion_metrics.md` Metric 2). Pulse §5 prefix map is stale
+(also missing Q-EXT/Q-ZOBS/Q-QSC registered 2026-07-14) — pulse refresh due.
+
+### Documents
+
+- `docs/art_instantiations/generator_admissibility_taxonomy.md` (rename + caveat, last_updated bumped)
+- `docs/art_instantiations/example_unification_theories_as_generators.md` (rename)
+- `docs/art_instantiations/epistemic_context_and_functional_admissibility.md` (rename in Q-EPO block)
+- `docs/notes/open_questions.md` (Q-GEN wording; Q-GEN-05/06 late registration; Q-GEN-07, Q-REL-08 new)
+- `docs/bc_taxonomy/transfer_distortion_metrics.md` (TBS_norm limitation, Q-REL-08)
+- `docs/meta/DOC_INDEX.md` (taxonomy row updated)
+- Book workspace: `part_VI_draft_v1.md`, `part_VII_draft_v1.md` (V4.3 weights note),
+  revision spec + forward-reference ledger (see spec §7 execution log)
+
+### Open questions touched
+
+- Q-GEN-05, Q-GEN-06: registered late (found unregistered)
+- Q-GEN-07: new, open
+- Q-REL-08: new, open
+- Q-REL-05 / WP-A3 framing: unchanged (external review independently endorses it)
+
+---
+
+## Session 2026-07-17 (2): Part VII formalisation — repo reconciliation
+
+**Context.** Monograph Part VII went through two external review rounds and an
+external revision session; the resulting text (imported to the book workspace
+same day) made formal decisions the repo did not yet reflect. This session
+reconciles the repo. Book-side spec:
+book workspace `docs/notes/part_VII_revision_spec_external_review_2026-07-17.md` §7–8.
+
+### Finding 1 — SDI is trivially collinear with RCD in the 1D-sweep tier (claim, constructive)
+
+The sweep-form transition graph is forced to a path on N nodes (regimes are
+contiguous runs of an ordered sweep), so GED(path(N_A), path(N_B)) is a
+deterministic monotone function of |N_A − N_B|. Not empirical — by
+construction. Disposition (WP-A4 amendment, recorded in the repair plan):
+w₄ = 0 in Φ by default; SDI reported unnormalised as diagnostic; enable only
+against an attributed transition graph or a constructed Δ-induced graph
+(→ Q_NEW_25). WP-A4 acceptance criterion extended: per-metric
+independent-information requirement.
+
+### Finding 2 — d(Σ,Σ') §6 superseded (claim)
+
+The persistence doc's compatibility degree was a similarity (1 = match)
+computed only on shared classes, dropping exactly the configurations where
+systems disagree. Canonical now: d_Σ = mean |Σ̄_A − Σ̄_B| over K_A ∪ K_B
+(zero-extension), in [0, 1], 0 = match; peak ratio P_A^max/P_B^max as
+robustness-scale check; thresholds τ_Σ + band are calibration conventions.
+Also fixed: η = −log(ε/ε₀) with declared per-instantiation ε₀ (dimensionless);
+Σ carried as pair (Σ̄_G, P_G^max) on observed family K_G.
+
+### Finding 3 — Metric doc v2 sync executed
+
+`transfer_distortion_metrics.md`: TBS notation corrected to two-step θ̂* form
+(old θ*/range assumed b_min = 0; transfer_v2.py computed the correct form all
+along); PCI max-overlap correspondence rule + directed-overlap-score reading +
+ARI companion; SDI constructive-triviality note; Φ section rewritten to the
+v2 clamped convex form with N_max, w₄ = 0 default, transfer_v2.py channel
+mapping (0.55/0.25/0.20), decision-score status, three-way verdict band.
+
+### Finding 4 — Glossary updates per monograph decisions D1/D2
+
+`scope.md`: operative cover = ε-adjacency graph G_ε on the sampled sweep
+(Čech language = continuum idealisation); regimes are sweep-path regimes;
+ε*(O, **b**) sweep-relative; frozen tuple semantics untouched.
+`perturbation_spread.md`: general action form σ_Δ(x) = sup d(O(T_δ x), O(x))
+canonical (additive = vector-space instance, Felder 2026 unchanged as that
+instance); global condition refined to bulk-sup + boundary-mass pair with
+τ_∂, tied to F-gradient (crossing constitutes the event).
+
+### Registrations
+
+- Q_NEW_24 (severity impact/action split — schema question, deferred in VII
+  V3.1), Q_NEW_25 (general admissible-transition regime construction +
+  attributed transition graph). Collision check: Q_NEW_19–23 already claimed
+  by admissible_resolution_lower_bound.md.
+- Q-SIG prefix registered (Q-SIG-02–05, posed 2026-05-30 in the persistence
+  doc, never registered — same failure mode as Q-GEN-05/06 and Q-EXT; note:
+  no Q-SIG-01 exists).
+- CASE-20260602-0014 CaseRecord verified: go_nogo = no_go with F1 entry and
+  superseded_placeholder already recorded — book CITE and repo agree.
+
+### Documents
+
+- docs/bc_taxonomy/transfer_distortion_metrics.md (four sections)
+- docs/advanced/bc_signature_persistence_and_dominance.md (§1 symbols, §6)
+- docs/glossary/scope.md, docs/glossary/perturbation_spread.md
+- docs/notes/arw_audit_repair_plan_2026-06-10.md (WP-A4 amendment)
+- docs/notes/open_questions.md (Q_NEW_24/25, Q-SIG section)
+- docs/meta/DOC_INDEX.md (two rows updated)
+
+### Open questions touched
+
+- Q_NEW_24, Q_NEW_25: new, open. Q-SIG-02–05: registered late.
+- Q-REL-05 / Q-REL-08: unchanged, referenced.
+- Note for next pulse refresh: §5 prefix map now needs Q-SIG, Q_NEW range
+  through 25; τ-conventions (τ_θ, τ_ε, τ_∂, τ_Φ, τ_Σ, τ_β) named in VII —
+  case artifacts must declare values where cited.
+
+---
+
+## Session 2026-07-18: Part VII round-3 revision — typing pass + repo reconciliation
+
+**Context.** Third external review round of monograph Part VII: no architecture
+objections, remaining issues are type conflicts between levels. All four
+decisions (Rico) as recommended; book edits + repo reconciliation same night.
+Spec: book workspace `docs/notes/part_VII_revision_spec_round3_2026-07-18.md`.
+
+### Findings (claims unless noted)
+
+1. **σ ≠ χ.** Observable spread σ_Δ does not imply regime-assignment change.
+   New: assignment instability χ_{Δ,ε} (Def 6a) *defines* boundary states and
+   the F-gradient mass (as a fraction, μ(χ=1)/μ(X_B) > τ_∂); σ demoted to
+   computable proxy. χ computed nowhere → **Q_NEW_26** (implementation gap).
+   Perturbation actions now typed per observable support: T_{δ,π} : U_π(X) →
+   U_π(X). Repo: perturbation_spread.md updated (incl. fraction fix of the
+   2026-07-17 addendum).
+2. **F-schema amendments** (decision D2): F1 generalized to claim-relative
+   insufficiency (ε ≥ ε* total collapse = special case, the form the pipeline
+   tests); decision order revised to F0 → F4 → F1 → F3 → F2 → F-gradient
+   (edge-θ* makes F2 uninterpretable before F4); F2 dual tests (Var vs range,
+   not equivalent); A6 split: invalidity → F0, valid-but-unresolving → F1
+   (Lyapunov stays F1, derivably insufficient). Repo: observable_range.md
+   generalization note; context_map_falsification_bc.md AMENDMENT block
+   (tree historical until regeneration); skills to pick up at refresh.
+3. **R(π) split:** R_0 (intrinsic, pre-scopal) vs R_Δ (Δ-robust,
+   scope-relative); P_B ⊆ P typing fix; R_eff = R_0 ∩ R_Δ ∩ P_B.
+4. **ε* closed form:** ε*(O, **b**) = max adjacent gap; plateau sequence from
+   the gap multiset; half-open plateau convention [g_(k), g_(k+1)).
+5. **PCI operative form aligned:** point-weighted containment, both
+   directions + strict min as scalar (transfer_v2.py had it; Def 9 and the
+   metric doc now say it); Φ scalar is symmetric — containment reading lives
+   in the directional pair, arrow refers to the reading.
+6. **α-theorem renamed** "local sweep-cover scaling" (β > 1 branch only);
+   β < 1 grid-pinning split off as a diagnostic rule (cusp signature); c_±
+   coefficients and per-wing monotonicity already in from round 2.
+7. Book-side: scope-variation taxonomy (V1.4; "resolution artifact" →
+   resolution-induced transition), h(b) operational definition (normalised,
+   ∈[0,1]), TBS single-primary-boundary validity note, N_max + active-weight
+   normalisation, V4 epistemic-status box, descriptive-emergence recoverability
+   wording, ART-as-architecture note, repo-language removed from visible text.
+
+### Documents
+
+- Book: part_VII_draft_v1.md (round-3 pass), part_VI_draft_v1.md (β ≤ 1
+  lumping fix in §6.4 formula line)
+- Repo: docs/glossary/perturbation_spread.md, docs/glossary/observable_range.md,
+  docs/meta/context_map/context_map_falsification_bc.md (amendment),
+  docs/bc_taxonomy/transfer_distortion_metrics.md (PCI alignment),
+  docs/notes/open_questions.md (Q_NEW_26)
+
+### Open questions touched
+
+- Q_NEW_26: new (χ implementation gap). Q_NEW_24/25, Q-SIG, Q-REL-08:
+  referenced, unchanged.
+- Next pulse refresh additionally: F-schema amendment, Q_NEW range through 26,
+  σ/χ distinction for arw-meta-guard §6 + arw-repo-context §3 + context maps.
+
+### Addendum (2026-07-18, round 4 — three closing corrections)
+
+Round-4 review accepted the round-3 pass (PCI/Φ, V5/V6 "gelungen") with three
+remaining corrections, all executed same day:
+
+1. **λ_T typed as its own observable.** The A6 conflict is resolved by
+   typing, not by verdict: λ_T's referent is the finite-time exponent at
+   declared horizon T; its A6 tests λ_T-stability (can pass) → F1 for the
+   claimed structure, derivable a priori. Read as a λ_∞ estimator without a
+   passing convergence test → F0. (V2.1 + V3.1 disambiguation updated.)
+2. **χ sweep-form.** r_ε(T_δ x) was undefined (perturbed points need not be
+   sweep nodes; r_ε exists only on nodes). Canonical: χ_{Δ,ε}(x_j) =
+   1[∃δ: C_ε^δ(x_j) ≢ C_ε(x_j)] — component identity of the same node
+   across unperturbed/perturbed graphs, up to boundary-sample tolerance.
+   (Def 6a + perturbation_spread.md corrected.)
+3. **σ→χ honesty + F-gradient ε-logic.** The σ↔χ error relation is
+   uncharacterised (both directions possible; C1's one-sidedness concerns
+   gradient→σ only) — folded into Q_NEW_26. "Never lower ε" reclassified as
+   proxy-based pipeline convention, not a χ-theorem; ε-repairs constrained
+   to the selected plateau + verified by recomputation. V1.3 lower bound
+   labelled operational (σ-proxy). Context map: AMENDMENT-2026-07-18b.
+
+Reviewer's optional Φ(S_A→S_B) notation change declined (semantics now
+explicit in text; notation kept for continuity). Remaining task per
+reviewer: linguistic trimming (WP-F4), not mathematics.
+
+---
+
+## Session 2026-07-25: Vertical Transfer — Q-STR Cluster Imported
+
+**Context:** Two notes drafted offline (uploaded by Rico) imported as a pair:
+`inductive_strengthening_cascade_closure.md` and
+`scale_gap_ambiguity_audit_stability.md`. The pair arrived attached to a lay
+outreach text pairing the Wirecard collapse with the Wang–Zahl Kakeya proof,
+under consideration for the monograph's narrative track.
+
+**Finding 1 — A third repair move, not currently in the framework** [claim]
+ARW formalizes two responses to descriptive failure: scope reduction (shrink
+obligations) and observable replacement (swap π after F0/F1). Both weaken or
+change the description. The notes name a third that *strengthens* it: replace C
+by C′ ⇒ C chosen so C′ reproduces itself across an ε-cascade where C does not.
+Cost: higher projective load on Π_ρ at every scale. Gain: closure along the
+resolution axis without per-scale re-derivation. Explicitly the inverse of scope
+reduction — a framework knowing only reduction predicts the wrong repair for
+cascade-closure failures.
+
+**Finding 2 — The cluster is vertical, and is not the Φ machinery** [claim]
+The ε-cascade {S_ρ = (B, Π_ρ, Δ, ρ)} varies resolution on *one* system. Existing
+transfer machinery (Φ, PCI, TBS_norm, Σ) is horizontal — between systems. The
+two are kept separate: Q-STR-03 asks whether cascade closure reduces to
+Σ-invariance along ε, and until that is answered the Q-STR and Q-REL clusters
+are not merged.
+
+**Finding 3 — Relation to the plateau family is open, not settled** [interpretation]
+The ε-cascade runs along the same axis on which V1.3 / `epsilon_and_scope_
+resolution.md` define stability plateaus {I_ε^(1), …, I_ε^(k)}. Plateaus are the
+*partition-level* structure of that axis; cascade closure is a *claim-level*
+property of it. Neither is known to determine the other. This matters for the
+monograph: the descriptive half of the Wirecard structure ("each level internally
+consistent, nothing carries across the level boundary") is already covered by the
+plateau family plus V1.4's resolution-induced transition; the repair half
+(strengthening, audit stability) is not.
+
+**Finding 4 — N* does not bound Amb** [claim, from import check]
+The companion note conjectured that the variance-crossover machinery of
+`arw_aggregation_limits_typological_observables.md` might bound the
+realization-class diameter Amb. Checked on import: N* is the aggregation level at
+which within- and between-class variance exchange magnitude — not a diameter. No
+bound is inherited. Recorded as the open part of Q-STR-06 rather than
+cross-referenced as settled.
+
+**Finding 5 — Refusal to strengthen is a candidate signal** [hypothesis]
+Because cascade closure carries real projective load, volunteering it is a costly
+self-binding: it forfeits the option value of the realization class. Unexplained
+refusal is then evidence the gap is load-bearing for the refusing party. Inverts
+the audit posture — instead of hunting falsehood at the coarse scale (where there
+is none), ask for the strengthening and read the response. Conditions under which
+this separates gap-exploiters from the load-constrained: Q-STR-05.
+
+**Registration.** Q-STR- prefix collision-grepped against `open_questions.md` and
+`docs/notes/` before use — unused, no collision (contrast Q-REL-01/02, 2026-07-11).
+Q-STR-01–06 registered. Both DOC_INDEX rows added. A notation guard was added to
+the first note on import: its ρ is the canonical resolution threshold ε renamed
+for family-index legibility, *not* a fifth scope-tuple component.
+
+**Status discipline.** Both remain `status: note`. Q-STR-04 is stated as a
+conjecture in its source and is registered as such. Wang–Zahl is a literature
+anchor only (Fields Medal to Hong Wang, ICM Philadelphia, 23 July 2026; Zahl is
+co-author of the proof, not co-recipient) — not an ART instantiation, no case
+artifacts implied.
+
+---
+
+## Session 2026-07-25 (II): Resonanzdialektik Thesis — Folded In, Not Filed
+
+**Context:** A working thesis on Resonanzdialektik as reorganization of semantic
+description spaces (uploaded by Rico) assessed against the existing cluster:
+conflict typology, shared-term reflex check, cross-scope causal construction,
+three facilitation notes, kht_resonance_dialectic. Deliberately handled as
+extensions to three existing documents rather than a new one; the name stays,
+per Rico — it is established in KHT.
+
+**Finding 1 — Most of the thesis is already covered** [claim]
+The ambiguity node is the same-B/same-Π reflex check seen from the other side,
+and the conflict typology already classifies the resulting disputes. What the
+thesis adds at that point is a name and a *positive* reading: the existing tools
+treat drift purely as a hazard to flag.
+
+**Finding 2 — The ambiguity node is a realization class** [claim]
+"Ambiguity is both precondition and problem" is not in the repo — except, as of
+this morning, in `scale_gap_ambiguity_audit_stability.md`. The two are the same
+formal object on different substrate: the public term is the coarse level, each
+party's elaboration the fine one, and Amb is the diameter of the compatible set.
+Communication works because Amb is large; it constrains nobody for the same
+reason. Explication is a cascade-closed strengthening and is therefore costly.
+**Consequence for the earlier note:** this makes the *legitimate-refusal* branch
+of its §4 the normal case rather than the exception, which is a real constraint
+on the signal reading — recorded in that note's §5 so §4 is not applied to
+public language without a cost argument.
+
+**Finding 3 — Linkage over membership does not fit the typology** [claim]
+The thesis's strongest structural claim: world-models differ less in which terms
+they contain than in how those terms are linked. Same B, Π, Δ, ε; no
+Π-monopolization; still a disagreement. The scope tuple has no slot for
+relational structure over Π, so this is invisible to a tuple-component typology
+*by construction* — stronger and more checkable than "the typology is
+incomplete". Registered as Q_NEW_E against Q_NEW_C; candidate homes are Σ or the
+transition graph Q_NEW_25 declares missing. The cheap negative outcome
+(B-conflict in disguise) is named first as the thing to test for.
+
+**Finding 4 — Q-RD-1–4 were never registered** [observation]
+Cited in the DOC_INDEX row for kht_resonance_dialectic.md since 2026-06-29 and
+listed in that file's §9, but absent from open_questions.md — the same drift
+already recorded for Q-SIG, Q-EXT and Q_NEW_27. Registered this session, with
+Q-RD-5 added for the discursive form of the maximin criterion.
+
+**Level discipline.** §6.3 of the KHT doc carries the thread but does not own the
+domain-neutral claims: those belong to the typology note (Q_NEW_E) and the
+scale-gap note (§5). Monograph: nothing added, by decision — the material is
+note-grade and §9.2's five-part arc is closed.
+
+---
+
+## Session 2026-07-26: World-models as generator hypotheses — the stability revision
+
+**Trigger.** Continuation of the 2026-07-25 (II) session. Rico's correction to the
+linkage claim of that session: the point about world-models is that *varying basic
+assumptions produce differently stable projections* — initially independent of
+factual correctness. The previous framing had located the difference in what terms
+*mean*; this locates it in what *stays put under perturbation*, which is machinery
+the repository already has.
+
+**Finding 1 — σ_Δ is not tuple-internal** [claim]
+σ_Δ(x) = sup_{δ∈Δ} |O(x+δ) − O(x)| appears determined by (Π, Δ) and a state. That
+holds only for pure state functions. The observables actually in use — r_ss,
+var_rel, lambda_proxy — are steady-state or asymptotic: O is defined through the
+dynamics. σ_Δ therefore requires the tuple **plus a generator**. This is the
+mechanism the 2026-07-25 linkage claim was missing: two parties holding B, Π, Δ, ε
+fixed and differing only in assumed dynamics obtain different σ_Δ-profiles over X_B,
+hence different verdicts on which projections carry an ε-plateau, with neither
+miscomputing and neither refuted at the time of dispute.
+
+**Finding 2 — A world-model is a generator hypothesis** [claim]
+Consequence of 1. The "same nodes, different topology" formulation of the previous
+session is then not a primitive but the observable shadow of the generator. Made
+computable as a co-stability graph over Π with edges weighted by overlap of
+X_stab(π) = {x ∈ X_B : σ_Δ^π(x) < ε}. This selects the Σ candidate home over the
+Q_NEW_25 transition graph, on a stronger argument than the conditional stated on
+2026-07-25 ("if linkage differences are signature differences") and without routing
+through S1–S5. Measurement caveat carried over: near θ* the mask must use direct σ_Δ
+or the local-max Lipschitz bound, not the pointwise gradient proxy (C1/C2,
+2026-06-02), or edges appear spuriously.
+
+**Finding 3 — Misclassification, not absence** [claim]
+Sharper than the 2026-07-25 statement that the typology "cannot place" such a case:
+it *does* place it, wrongly and systematically, in the **Δ-conflict** row. Both types
+issue the same verdict; the Δ-conflict stipulates the input, the generator conflict
+hypothesises the map. So the §1 resolution column ("the genuinely normative dispute")
+is wrong for the second type, which is not normative but underdetermined — decidable
+by evidence, only later. Discriminator proposed: does the position commit to a
+prediction an observed perturbation could contradict? Registered as **Q_NEW_F**,
+separately from Q_NEW_E because it attacks an existing table row rather than the
+completeness of the table.
+
+**Finding 4 — Revised cheap negative** [observation]
+The negative outcome named on 2026-07-25 was "B-conflict in disguise". The more
+likely and more damaging one is **Δ-conflict in disguise**: if parties adjust
+predictions post hoc, the discriminator of Finding 3 cannot be applied, the two types
+are operationally identical, and Q_NEW_E and Q_NEW_F close negatively together. This
+is the weakest joint in the revision and is recorded as such in both the note and the
+question entries.
+
+**Finding 5 — Q-RD-5 bundled two questions** [observation]
+The maximin criterion (kht_resonance_dialectic.md §5) is ambiguous on an axis Q-RD-1
+does not cover. Q-RD-1 varies the *aggregation form* (maximin vs. Nash product); the
+second axis is what the minimum *ranges over* — parties (fairness reading) or their
+generator hypotheses (robustness reading, Wald-type minimax under model uncertainty).
+The two coincide at the individual and group levels because a facilitator supplies a
+check; they come apart at the discursive level, which has none. Under the fairness
+reading the discursive criterion is strategically manipulable (veto inflation, since
+claimed inadmissibility is self-reported); under the robustness reading it is not,
+because the min ranges over dynamics rather than people and a generator hypothesis
+commits its holder to contradictable predictions. Split off as **Q-RD-6**; Q-RD-5
+narrowed to the fairness axis.
+
+**Level discipline.** The generator/co-stability reading and the Δ-conflict
+discriminator are ARW-level and stay with `scope_component_conflict_typology.md`
+(§8.1, Q_NEW_E/Q_NEW_F). Only the consequence for the mediation objective is
+KHT-level and carries a Q-RD ID. `kht_resonance_dialectic.md` §6.3 gets a sharpening
+box that points at the note rather than restating its claim.
+
+**Status.** Argued, not tested. No case has been run with two generator variants over
+a shared tuple; until one has, the co-stability graph is a construction proposal.
+Monograph untouched.
+
+---
+
+## Session 2026-07-26 (II): To-REPO import batch — three notes, ten stale files
+
+**Trigger.** Rico staged a To-REPO batch (15 `.md` + 1 asset) for triage. This is a
+housekeeping session; no new formal claim was produced, but two structural findings
+came out of the triage itself and are recorded because they are recurring.
+
+**Triage result.** Ten of fifteen files were already in the repo, and in every
+non-identical case the *repo* copy was the superset — the To-REPO copies were
+leftovers from the 2026-07-11 and 2026-07-25 batches that were never cleared. One
+further file (`Resonanzdialektik_Beschreibungsknoten_Arbeitsthese.md`) had been
+absorbed into `kht_resonance_dialectic.md` §6.3 on 2026-07-25 with no standalone repo
+file, by design, and so also had no import action. All fourteen moved to
+`To-REPO/_imported/` with a reconciliation table.
+
+**Finding 1 — the staging folder had no clear-down step** [open-question → resolved procedurally]
+Prior import sessions imported *from* To-REPO but never removed what they imported, so
+every subsequent session re-triaged the same files and had to re-derive that they were
+stale. The `-1` duplicate pair recorded as a hazard on 2026-07-11 is a symptom of the
+same thing: files accumulate in the queue and get reconstructed rather than looked up.
+Fixed by convention rather than by rule: `To-REPO/_imported/` now holds processed
+files with a README stating where each one's live version is. Anything left at the top
+level of `To-REPO/` is by definition unprocessed.
+
+**Finding 2 — near-collision in the Q-SL prefix** [claim]
+`agent_sleep_scope.md` holds Q-SL-01–04. The note imported this session needed a sleep
+series and took Q-SLP-01–03. A prefix-level grep for `Q-SL` matches both, so the two
+series are not separable by the collision check the guard skill prescribes, which
+greps for exact ID strings but not for prefix containment. Recorded as DOC_INDEX I-12
+rather than renamed, because Q-SL-01–04 are cited elsewhere. Generalization worth
+noting: the ID-collision procedure adopted 2026-07-11 catches exact reuse but not
+prefix shadowing.
+
+**Imports.**
+
+1. `docs/context_navigation/sleep_as_perturbative_description_consolidation.md`
+   [hypothesis] — sleep read as falsification rather than optimization: replay
+   perturbs a stored encounter rather than reconstructing it, and consolidation
+   selects on σ_Δ(D) < ε rather than on `progress_rate`. Companion to
+   `agent_sleep_scope.md`, which it does not supersede. Added on import: the σ_Δ
+   formalization of §4, and §9 — the two rules disagree on archetypes that are
+   *effective but fragile*, which makes them experimentally separable with no new
+   instrumentation. Weakest joint is Δ_replay: the criterion is only as principled as
+   the internal perturbation set (Q-SLP-01).
+
+2. `docs/notes/architectural_aesthetics_scope_dependent_description_persistence.md`
+   [note] — beauty as scope-relative compatibility between an environment and the
+   descriptions an observer's active scope runs on, with the environment read as a
+   constraint on Δ. Held at `note` deliberately: §9 records that the claim as stated
+   is near-unfalsifiable (active scope is attributable post hoc; fluency and
+   familiarity accounts are not excluded). Q-AES-01 is the gate.
+
+3. `docs/notes/communicative_branching_points_nuclear_discourse.md` [note] —
+   translated and renamed from a German session note on the Nuklearia communication
+   strategy. Filed with an explicit §0 delimitation: the branching-point claim itself
+   is already owned by `kht_resonance_dialectic.md` §6.3 and
+   `scope_component_conflict_typology.md` §8/§8.1, and this note carries only the
+   worked discursive instance, the cartography framing, the literature anchors, and
+   the latent-assumption warning. Q-COM-01 is the check that would merge it back into
+   §6.3 if the cartography framing turns out not to be cheaper than explication.
+
+**Not imported.** CDS manifesto, two variants of the Veritasium-style narrative arc,
+and the CDS logo moved to `To-REPO/related materials/` — outreach, not repo artifacts.
+Noted there that the *substance* of the narrative arc is now carried by import 1, which
+is the source of truth if the two ever disagree.
+
+**Housekeeping.** DOC_INDEX gained three rows plus I-11 (its own closing section was
+duplicated verbatim; second copy removed) and I-12 (above). Seven open questions
+registered across three previously unused prefixes. No case, schema, pipeline module
+or monograph content touched.
+
+**Addendum (same session) — reconciliation with three notes imported the same day**
+
+`communicative_branching_points_nuclear_discourse.md`,
+`architectural_aesthetics_scope_dependent_description_persistence.md` and
+`sleep_as_perturbative_description_consolidation.md` were imported on 2026-07-26 in
+a separate pass. All three are correctly registered (DOC_INDEX rows present,
+Q-COM-01/02, Q-AES-01/02, Q-SLP-01–03 all in open_questions.md, near-collision I-12
+recorded for Q-SL-* vs Q-SLP-*). No repairs needed. Two things were added:
+
+**Back-references.** The nuclear-discourse note consumes §8.1 and Q_NEW_F but the
+reference was one-way. §8.1 now has a "Downstream" paragraph and Q_NEW_E/Q_NEW_F
+carry "Depended on by" lines. This is the same one-way-link pattern that produced
+the Q-RD registration drift; caught early here.
+
+**Finding 6 — three independent sources of σ_Δ variation** [observation]
+Read together, the three same-day notes and §8.1 make σ_Δ vary from three different
+places: the admitted perturbation set (Δ — the classical route, and the one the
+typology's Δ-conflict row already covers); the *environment*, which suppresses
+perturbations and thereby lowers σ_Δ for the observables an active scope runs on
+(aesthetics note §3); and the *generator*, through which an asymptotic observable is
+defined (§8.1). Only the third is invisible to the scope tuple. Nobody had noticed
+the pattern because the three notes were drafted independently. Recorded in §8.1
+rather than in a new document — a fourth note on σ_Δ variation is exactly the
+pile-up the DOC_INDEX exists to prevent. If Q_NEW_F is pursued, this three-way
+distinction is what the Δ-conflict row will have to carry.
+
+**Addendum 2 (same session) — scope-constructing agent architecture filed**
+
+A session sketch proposing a context-navigation agent whose learning target is
+description construction rather than action selection was mapped section by section
+against the nine existing context-navigation documents before anything was written.
+
+**Finding 7 — most of the sketch was already specified, and more operationally**
+[observation]
+Encounter field, weight field w with update rule and normalization, w_in/w_out as
+first-class protocol fields, saliency triggers and grading, encounter protocol,
+archetype library and matching, modes as reduced scopes, salience as a mode-ecology
+property, three-layer memory, the labyrinth setup and its H1–H4 hypotheses — all
+present, several at a higher level of operational detail than the sketch. An earlier
+read in this session had called the dynamic weight field new; that was wrong
+(`agent_online_scope.md` §4 specifies it).
+
+**Finding 8 — five elements have no predecessor** [claim]
+(1) Recapitulation as controlled *scope* variation, e′ = ℛ(e; δB, δΠ, δε, δw). The
+existing sleep phase does not replay at all — it compares recorded protocols by
+progress_rate; the new sleep note replays under δ ∈ Δ_replay but to measure σ_Δ of a
+description. Neither varies the scope. (2) Mode merge/split/prune inside the
+consolidation phase — `agent_sleep_scope.md` §4.3 explicitly defers exactly this to
+post-hoc S_observer analysis. (3) The mode stability profile R_m(δ), which is σ_Δ one
+level up from the observable. (4) Multi-agent description packages and migration —
+grep confirmed zero multi-agent material anywhere in context_navigation/ or
+cognitive_architecture/. (5) Functional intermediate modes m_{A/B}.
+
+**Filing decision.** Not distributed as four extensions to existing files, which was
+the anti-pile-up default, but filed as a standing alternative formulation at Rico's
+direction — the reframing is held superior in its core idea, and the sketch's formal
+deviations were drift errors rather than positions. The document carries the same
+posture as the sleep note: alternative, not replacement, promotable only on a
+discriminating experiment.
+
+**Notation drift caught on import** [observation]
+The sketch transposed Π and Δ (Π glossed as perturbations, Δ as a stability horizon)
+and listed the active observable as a fifth tuple component. Both corrected and
+recorded in §0.1 of the new document rather than silently fixed. Notable that the
+sketch used the *correct* semantics throughout its substantive sections — only the
+legend was wrong, which is how this drift survives review.
+
+**Cross-level consequence.** §13 (multi-agent) is the first setting where the
+robustness reading of the maximin criterion (Q-RD-6) and the prediction-commitment
+discriminator (Q_NEW_F) become checkable, because the environment resolves a
+prediction within an episode. Registered as Q-SCA-05. If the discriminator fails in
+simulation it will not work in discourse — which makes the agent work a test bed for
+this morning's ARW-level revision rather than a separate track.

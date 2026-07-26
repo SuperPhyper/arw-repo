@@ -204,15 +204,17 @@ The connection:
 ## Open Questions
 
 - **Q-EPO-01** (open): Can the seven criteria be formally ordered by strength?
-  Is there a minimal subset sufficient for A_f under specific collapse types?
+  Is there a minimal subset sufficient for A_f under specific failure types?
+  *(Terminology: "collapse types" renamed to "failure types" 2026-07-17; see
+  generator_admissibility_taxonomy.md.)*
 
 - **Q-EPO-02** (open): Is compression viability (κ) formally related to
   existing ARW cover metrics? Cover height measures multiscale persistence —
   this may be the formal bridge to κ.
 
 - **Q-EPO-03** (open): What is the formal relationship between C and the
-  three generator collapse types? Does each collapse type impose a
+  three generator failure types? Does each failure type impose a
   characteristic structure on the minimum C required for non-empty A_f?
 
 - **Q-GEN-04** (registered in generator_admissibility_taxonomy.md): What is
-  the minimal C that makes A_f(G | C) non-empty for each collapse type?
+  the minimal C that makes A_f(G | C) non-empty for each failure type?

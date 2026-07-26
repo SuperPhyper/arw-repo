@@ -24,6 +24,74 @@ that the scope is required to tolerate.
 *Source: Felder (2026), Definition 4. Previously implicit in ARW as the
 "ε–Δ consistency condition" — now a named, formal quantity.*
 
+**General (action) form — canonical as of 2026-07-17 (monograph Part VII
+V2.3, decision D2).** The additive form above presupposes a linear state
+space. The general definition writes each δ ∈ Δ as an admissible
+perturbation **action** T_δ : X → X and takes a metric d on the descriptive
+space D_π:
+
+```
+σ_Δ(x) := sup_{δ ∈ Δ} d( O(T_δ x), O(x) )
+```
+
+Manifolds, graphs, discrete configurations, probability distributions, and
+institutional configurations all admit perturbations without admitting
+addition; T_δ x = x + δ on a vector space is the special case, and Felder
+(2026) Definition 4 is that additive instance. Every current pipeline case
+is additive, so no computed value changes; the general form is what makes
+the framework's domain-neutrality claim formally hold.
+
+**Global condition refined (2026-07-17, sharpened 2026-07-18).** The bare
+global bound sup_{x∈X} σ_Δ(x) < ε would forbid every perturbation-sensitive
+transition state — yet boundary states are exactly what the framework
+defines and measures. The canonical pair is the **bulk supremum plus bounded
+boundary layer**, the layer stated as a *fraction* (comparable across
+scopes) and on the assignment-instability indicator (below):
+
+```
+sup_{x ∈ X_bulk} σ_Δ(x) < ε     and     μ({ x ∈ X_B : χ_{Δ,ε}(x) = 1 }) / μ(X_B) ≤ τ_∂
+```
+
+for a declared boundary-mass tolerance τ_∂ (μ(X_B) finite and positive;
+discrete sweeps: fraction of assignment-unstable samples). Below τ_∂ the
+layer is a diagnostic regime boundary; its *crossing* of τ_∂ constitutes an
+F-gradient event. §2 below and `cover_stability_criterion.md` should be
+read with this refinement; their sup_{x∈X} form is the idealised statement.
+
+**σ vs. χ — spread is not assignment instability (2026-07-18, sweep-form
+corrected same day; monograph Part VII Def 6a).** σ_Δ measures how far the
+descriptive value can move; the **assignment instability** measures whether
+the *regime assignment* changes. Since the partition is defined only on the
+sweep nodes, χ is defined there, by component identity across the
+unperturbed and perturbed adjacency graphs:
+
+```
+χ_{Δ,ε}(x_j) = 1  iff  ∃ δ ∈ Δ : C_ε^δ(x_j) ≢ C_ε(x_j)
+```
+
+where C_ε(x_j) is x_j's component in G_ε, C_ε^δ(x_j) its component in the
+perturbed graph G_ε^δ (edges on values perturbed by T_{δ,π}), and ≡ is
+component identity as sample sets up to the declared boundary-sample
+tolerance. (A state-space form r_ε(T_δ x) would be undefined — a perturbed
+point need not be a sweep node, and the general regime construction is open,
+Q_NEW_25.) A partition boundary state is defined by χ = 1, not by large σ.
+The two differ in both directions: a value can move 2ε inside a wide regime
+(large σ, χ = 0); at an assignment edge a small motion flips the component
+(small σ, χ = 1). σ-based masks remain the **implemented proxy**, but the
+σ↔χ error relation is **not yet characterised** — both false positives and
+false negatives are possible; the documented one-sided failure (C1) concerns
+the pointwise-gradient approximation *to σ*, not σ→χ. **Implementation
+gap:** χ is computed nowhere in the pipeline; computing it and
+characterising the σ↔χ divergence are one registered question (Q_NEW_26).
+Consequence for repairs: the "never lower ε" direction rule is a
+**proxy-based pipeline convention**, not a theorem about χ — ε changes the
+partition itself, so its effect on the exact boundary fraction is not
+guaranteed monotone; ε-repairs stay within the selected plateau and are
+verified by recomputation. Support typing: perturbations act per observable
+on its support, T_{δ,π} : U_π(X) → U_π(X) (states, trajectory segments,
+ensembles, measures, datasets); the induced action is part of the
+observable's substrate declaration.
+
 ---
 
 ## Role in the ARW Framework

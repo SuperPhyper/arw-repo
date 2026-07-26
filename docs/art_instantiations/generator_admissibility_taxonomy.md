@@ -2,7 +2,7 @@
 status: hypothesis
 layer: docs/art_instantiations/
 created: 2026-05-07
-last_updated: 2026-05-30
+last_updated: 2026-07-17
 depends_on:
   - docs/glossary/scope.md
   - docs/bc_taxonomy/boundary_condition_classes.md
@@ -52,7 +52,7 @@ under a specific parametrization of G.
 | Component | Definition | Role |
 |---|---|---|
 | **Λ** | Parametrization space of G — the set of all contexts in which G can be instantiated | Topological space; not necessarily metric or continuous |
-| **Σ** | Signature structure: persistence measure p : 2^BC → ℝ≥0 over all BC configurations (see below) | Determines collapse type; grounds cross-system transfer |
+| **Σ** | Signature structure: persistence measure p : 2^BC → ℝ≥0 over all BC configurations (see below) | Determines failure type; grounds cross-system transfer |
 | **φ: Λ → (B, Π)** | Partial instantiation map: G determines domain and observable class only | Preserves ARW/ART separation |
 | **C** | Epistemic-operational context: the totality of epistemic resources under which description remains stable | Provided by ART; contains R as special case — see `epistemic_context_and_functional_admissibility.md` |
 
@@ -146,9 +146,21 @@ transfer stability).
 
 ---
 
-## Three Generator Admissibility Collapse Types
+## Three Generator Admissibility Failure Types
 
-### Type I — Boundary Collapse
+> **Terminology note (2026-07-17).** The three types were renamed during the
+> monograph Part VI revision (external-review response): *Boundary Collapse* →
+> **Domain-Boundary Failure**, *Solution Space Collapse* → **Branch-Selection
+> Failure**, *Consistency Collapse* → **Joint-Constraint Incompatibility**.
+> Rationale: in Type II the solution space grows or branches — what fails is
+> uniqueness/selection, not the space; in Type III "internally inconsistent"
+> overstated the condition, which is joint unsatisfiability of constraints
+> under specific activations, not facial logical contradiction. The umbrella
+> term is now *failure type* (formerly *failure type*). Old names remain as
+> aliases for one maintenance cycle; Type I/II/III numbering is unchanged.
+> Book-side canonical statement: monograph Part VI §6.2.
+
+### Type I — Domain-Boundary Failure *(formerly: Boundary Collapse)*
 
 **Definition:** Admissibility is lost sharply at a boundary in Λ. The boundary
 is structurally determined by G, independent of observable or resolution choice.
@@ -165,7 +177,16 @@ typically empty or confined to the boundary neighborhood. The boundary does
 not depend on C — it is generator-structural.
 
 **Characteristic signature:** Single dominant signature S1, S2, S4, or S5.
-Collapse is ε-independent.
+The failure is ε-independent.
+
+**Epistemic caveat (2026-07-17, from monograph Part VI §6.2):** the
+ε-independent structural boundary must be distinguished from the graded,
+ε-dependent *practical* degradation that typically precedes it (canonical
+instance: Newtonian mechanics in v/c). The boundary may not be encoded in G
+itself — in the Newtonian case it is identifiable only from the successor
+generator. Working hypothesis: Type I boundaries are in general only
+retrospectively identifiable, i.e. from a generator that encodes the boundary
+as structure. Not yet registered as its own Q-ID; see monograph Part VI §6.2.
 
 **Canonical examples:** Hamiltonians at phase transitions; free energy
 functionals at changes in minimum structure; Ginzburg-Landau at T_c;
@@ -173,7 +194,7 @@ EFT at its cutoff boundary.
 
 ---
 
-### Type II — Solution Space Collapse
+### Type II — Branch-Selection Failure *(formerly: Solution Space Collapse)*
 
 **Definition:** Admissibility is lost not at a parameter boundary of G, but
 in the solution structure of G. The generator remains well-defined; solutions
@@ -200,11 +221,14 @@ ghost sectors in quadratic gravity.
 
 ---
 
-### Type III — Consistency Collapse
+### Type III — Joint-Constraint Incompatibility *(formerly: Consistency Collapse)*
 
-**Definition:** Admissibility is lost because G itself becomes internally
-inconsistent. Collapse arises from incompleteness, contradictions, or
-overdetermination within G's formal structure.
+**Definition:** Admissibility is lost because G's constraints become jointly
+unsatisfiable under specific activations — through incompleteness,
+contradiction, or overdetermination within G's formal structure. The
+constraints need not be facially contradictory; each may be locally
+reasonable, failing only when particular combinations of conditions call on
+them at once.
 
 **Mechanism:** G encodes structural constraints that conflict or overdetermine
 the admissible state space. No consistent scope family can be instantiated in
@@ -214,7 +238,7 @@ the affected region.
 Λ itself has inconsistent structure there. ∂A(G) is gradual and
 context-dependent.
 
-**A_f / A_h under C:** Collapse occurs within A_h itself — some sub-regions
+**A_f / A_h under C:** The failure occurs within A_h itself — some sub-regions
 remain hypothetically describable while others do not. Recovery requires
 revision of G. Under C, Type III may be partially masked if C restricts
 attention to sub-regions of Λ where the conflict is not active — but this
@@ -233,10 +257,10 @@ not established collapse).
 
 ## Comparison Table
 
-| Property | Type I — Boundary | Type II — Solution Space | Type III — Consistency |
+| Property | Type I — Domain-Boundary | Type II — Branch-Selection | Type III — Joint-Constraint |
 |---|---|---|---|
-| Collapse location | ∂A(G) in Λ | Interior of Λ | Internal structure of G |
-| Generator coherent at collapse? | Yes | Yes | Partial |
+| Failure location | ∂A(G) in Λ | Interior of Λ | Internal structure of G |
+| Generator coherent at failure? | Yes | Yes | Partial |
 | ε-dependent? | No | Partially | Context-dependent |
 | C-dependent? | No | Partially (branch selection) | Yes — C can suppress but not resolve |
 | A_f / A_h boundary | Sharp, at ∂A(G) | Interior bifurcation | Gradual, within A_h |
@@ -249,7 +273,7 @@ not established collapse).
 
 ## Signature Inference for Generator Type (Q-GEN-02, partially answered)
 
-| Dominant signature | Inferred collapse type | Characteristic geometry |
+| Dominant signature | Inferred failure type | Characteristic geometry |
 |---|---|---|
 | S1 (Projection/Selection) | Type I | Discrete sector transitions |
 | S2 (Coupling) | Type I | Critical coupling threshold |
@@ -301,7 +325,7 @@ Generator G
 
 1. **Identify G** — what formal object generates the scope family?
 2. **Read Σ** — identify P, D, K from governing equations using S1–S5
-3. **Infer collapse type** — use signature inference table above
+3. **Infer failure type** — use signature inference table above
 4. **Specify C** — define the epistemic-operational context: available
    observables, Δ-class, ε, resources, reproducibility requirements
    (see `epistemic_context_and_functional_admissibility.md`)
@@ -338,7 +362,7 @@ Generator G
   analysis."
 
 - **Q-GEN-03** (partially answered, 2026-05-07): G = (Λ, Σ, φ, C) established.
-  Open: formal topology conditions on Λ per collapse type; formal definition
+  Open: formal topology conditions on Λ per failure type; formal definition
   of A_f / A_h boundary independent of specific C.
   *Update 2026-05-30:* A(G) can now be characterized as the intersection of all
   embedded Restriction conditions: A(G) = ∩_τ Adm(R_τ) where τ ranges over all
@@ -348,7 +372,7 @@ Generator G
   crossed; Type III when multiple are mutually exclusive.
 
 - **Q-GEN-04** (open, 2026-05-07): What is the minimal C that makes A_f(G | C)
-  non-empty for each collapse type?
+  non-empty for each failure type?
   *Update 2026-05-30:* C = (O, Δ_C, ε_C, ρ, τ, σ, κ) is now interpretable as
   the epistemic-level instantiation of the Restriction meta-relation. Specifically:
   ε_C is an explicit resolution Restriction; Δ_C is a perturbation Restriction;
@@ -378,7 +402,7 @@ Generator G
 
 ## Validation Cases (candidate)
 
-| Collapse type | Candidate case | Expected evidence |
+| Failure type | Candidate case | Expected evidence |
 |---|---|---|
 | Type I | CASE-20260315-0008 (Pitchfork, μ-sweep) | Sharp A(G) boundary at μ = 0 |
 | Type II | CASE-20260311-0003 (Doppelpendel, E-sweep) | Interior collapse at E_sep |
