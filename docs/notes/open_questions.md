@@ -1441,3 +1441,540 @@ and Q-SCA-05 are the links back, not relocations.)*
 - **Bears on:** Q_NEW_E, Q_NEW_F, Q-RD-6.
 - **Registered:** 2026-07-26.
 - **Source:** docs/context_navigation/scope_constructing_agent_architecture.md §0.1, §13.
+
+*(Q-SCA-06 to -09 registered 2026-07-29 from
+`docs/cognitive_architecture/planning_admissible_scope_agent_design.md`. Collision
+check run against `open_questions.md` and all of `docs/`: 06–09 were unused in the
+Q-SCA prefix, as were the candidate prefixes Q-PLAN, Q-HOR and Q-CVH. Same ART level
+as 01–05.)*
+
+**Q-SCA-06 — Does the agent know its own remaining load-bearing capacity?**
+Split into three parts, because the three answers have different consequences. The
+internal quantity is a hazard estimated from a description's current margin to its
+own failure threshold; the external quantity is the rollout horizon measured on
+controlled material.
+
+**Q-SCA-06a — Calibration**
+- **Status:** open (priority: medium)
+- **Question:** Does a predicted hazard of ~0.2 correspond to an observed failure rate
+  of ~0.2 under the controlled offline test? Required for the theoretical claim, not
+  for selection.
+- **Registered:** 2026-07-29.
+- **Source:** planning_admissible_scope_agent_design.md §1.1, §9.
+
+**Q-SCA-06b — Ranking**
+- **Status:** open — first measurement taken 2026-07-29, **underdetermined** (priority: high)
+- **Question:** Does the hazard estimate order descriptions by their later measured
+  rollout horizon *beyond what the present residual already orders*? Ranking alone
+  suffices for selection.
+- **First measurement:** Spearman −0.688 for the hazard, −0.665 for the
+  present-residual control, partial correlation small and sign-inconsistent across
+  seeds. **Not evidence against the layer:** the world used had a rollout horizon of
+  1–6 steps, so the target quantity has no dynamic range and the question cannot be
+  resolved there. See Q-SCA-10.
+- **Registered:** 2026-07-29.
+- **Source:** planning_admissible_scope_agent_design.md §8.2;
+  Simulationen/kontextnavigation_minimal/persistence.py (external).
+
+**Q-SCA-06c — Generalisation**
+- **Status:** open (priority: medium)
+- **Question:** Does the prediction survive new regimes, other perturbation magnitudes,
+  and BC-preserving transfer — or is it in-sample only?
+- **Registered:** 2026-07-29.
+- **Source:** planning_admissible_scope_agent_design.md §9.
+
+**Q-SCA-07 — Can a slower upper loop set ε where a single loop cannot?**
+- **Status:** open (priority: high)
+- **Question:** A single-timescale self-set resolution provably fails: over a swept
+  constant the agent either invents descriptions in a world that never changes or
+  stops noticing a real regime change, with no value passing both. Does the nested
+  construction — lower loop calibrating observables within a scope, upper loop
+  calibrating the scope, on separated timescales — escape this? Candidate information
+  source: cross-description contrast, which exists only because a library exists.
+- **Bears on:** docs/notes/conflict_navigation_nested_calibration.md;
+  docs/notes/kht_reconciliation_scope_constructing.md §4.1.
+- **Registered:** 2026-07-29.
+- **Source:** planning_admissible_scope_agent_design.md §7.5, §4.
+
+**Q-SCA-08 — Does the three-way projection tension generate mode structure?**
+- **Status:** open (priority: medium)
+- **Question:** Closure under iteration pushes a projection wider, expressibility of B
+  pushes it onto particular components, rollout search cost pushes it narrower. Do
+  regimes resolving that tension differently generate the mode structure, or does one
+  pressure dominate and reduce it to a capacity limit?
+- **Method constraint:** all three quantities on the same runs, added one at a time
+  with a measured delta.
+- **Registered:** 2026-07-29.
+- **Source:** planning_admissible_scope_agent_design.md §5.
+
+**Q-SCA-09 — Does perturbation survival volume predict rollout persistence?**
+- **Status:** open (priority: medium)
+- **Question:** V_Δ(D) = ∫ R_D(η) dη is censoring-free and closer to the ARW notion of
+  stability; the rollout horizon is in time units and is what planning admissibility
+  needs. Are they the same property of a description under two measurements, or two
+  properties? If the same, one offline reference suffices and the existing
+  recapitulation stability profile over an η-grid is most of it.
+- **Registered:** 2026-07-29.
+- **Source:** planning_admissible_scope_agent_design.md §1.4.
+
+**Q-SCA-10 — What dynamic range must a world have for Q-SCA-06 to be answerable?**
+- **Status:** open (priority: high)
+- **Question:** Measured requirement rather than a hypothesis: the rollout horizon must
+  vary by at least an order of magnitude across descriptions and situations before a
+  horizon-prediction test has any power. An action-driven random walk does not meet
+  this (measured horizon 1–6 steps). Which generator families do, and should a world's
+  horizon distribution be measured *before* an agent is run in it, as the salience
+  check now precedes every transfer sweep?
+- **Registered:** 2026-07-29.
+- **Source:** planning_admissible_scope_agent_design.md §8.3.
+
+---
+
+## Switch Minimization as Description Criterion (registered 2026-07-27)
+
+*(Source: `docs/context_navigation/switch_minimization_criterion.md`. Collision check:
+the Q-PAR prefix was unused repo-wide; the adjacent series in this area are Q-SCA-*
+(scope-constructing architecture), Q-SL-*/Q-SLP-* (sleep scope) and Q-CNS-*. Level
+discipline: these are ART-level questions about an agent architecture and its
+measurement; the ARW-level quantities they lean on — σ_Δ, ε*(O,X), I_ε — stay with
+`docs/glossary/perturbation_spread.md` and `docs/advanced/epsilon_and_scope_resolution.md`.)*
+
+**Q-PAR-01 — Do the agent's and the observer's partitions coincide?**
+- **Status:** open (priority: high)
+- **Question:** Does the agent's context partition under ε_agent (`THETA_SAL` in the WP1
+  implementation, the deviation threshold in observation space) coincide with the
+  observer's behavioural partition under ε_observer (the L1 threshold on `action_dist` /
+  `obs_mean`)? The two thresholds live in different spaces on different observables.
+- **Why it matters:** if they disagree, "the agent's modes" and "the measured regimes" are
+  different objects, and every correspondence analysis in this experiment series needs an
+  explicit translation step. Agent-level analogue of Q-SCA-03.
+- **Registered:** 2026-07-27.
+- **Source:** docs/context_navigation/switch_minimization_criterion.md §2.1.
+
+**Q-PAR-02 — Is the online switch rate a consistent estimator of offline persistence?**
+- **Status:** open (priority: high)
+- **Question:** At fixed ε, is the observed switch rate a consistent estimator of the
+  offline persistence criterion σ_Δ(D) < ε of
+  `sleep_as_perturbative_description_consolidation.md` §4? The online rate samples whatever
+  Δ the environment happened to deliver; the offline criterion perturbs actively.
+- **Decisive measurement:** where the two disagree, which one predicts transfer to held-out
+  labyrinth topologies. This sharpens the discriminating experiment of that document's §9.
+- **Registered:** 2026-07-27.
+- **Source:** docs/context_navigation/switch_minimization_criterion.md §5.
+
+**Q-PAR-03 — Two candidate causes of a wide stability domain**
+- **Status:** open (priority: high)
+- **Question:** Under a parsimony objective, a wide 𝒫_m has two candidate causes — the
+  objective itself, which directly rewards descriptions that survive perturbation, and
+  scope-varied recapitulation. Can they be separated by measuring 𝒫_m width in arms
+  C0/C1/C2 at identical objective, ε_agent and λ — or does the objective saturate the
+  effect and make Q-SCA-01 untestable in this environment?
+- **Why it matters:** without this control, C2 can win the §14 comparison of
+  `scope_constructing_agent_architecture.md` for a reason that has nothing to do with
+  recapitulation.
+- **Bears on:** Q-SCA-01.
+- **Registered:** 2026-07-27.
+- **Source:** docs/context_navigation/switch_minimization_criterion.md §7.
+
+**Q-PAR-04 — Which salience does a parsimony criterion minimize?**
+- **Status:** open (priority: medium)
+- **Question:** Does parsimony pressure on the active-description deviation ŝ also reduce
+  mode-competition salience S(c) = Var_m(F_m(c)) as defined in `salience_mode_ecology.md`
+  §5? The two are different quantities: the first is a property of the active description
+  alone, the second of the whole ecology, and the second is not computed anywhere in the
+  implementation.
+- **Why it matters:** if they move oppositely, "minimizing salience" is ambiguous and every
+  report must name its target explicitly.
+- **Registered:** 2026-07-27.
+- **Source:** docs/context_navigation/switch_minimization_criterion.md §9.
+
+**Q-PAR-05 — Is the criterion a description-length criterion?**
+- **Status:** open (priority: medium)
+- **Question:** Is switch minimization under an admissibility constraint an MDL-type
+  criterion — mode count plus switch cost traded against residual deviation — and if so,
+  does the λ-plateau correspond to a code-length minimum?
+- **Why it matters:** if the correspondence holds it supplies an external, non-hypothesis
+  calibration for λ and removes the last free parameter from the construction.
+- **Registered:** 2026-07-27.
+- **Source:** docs/context_navigation/switch_minimization_criterion.md §12.
+
+---
+
+## ARW-level: Observable Information and BC-Responsiveness (registered 2026-07-27)
+
+*(Source: `docs/notes/observable_information_and_bc_responsiveness.md`. Collision check:
+Q_NEW_A–F are in use, G was free; Q-OBS and Q-SELF were also free but the Q_NEW_* series
+is where the ARW-level questions live, so this stays there rather than opening a prefix.
+Level discipline: ARW-level. The ART-level consequences are Q-PAR-* and Q-SCA-* with the
+agent documents.)*
+
+**Q_NEW_G — What condition does entail BC-responsiveness, and can a system compute it about itself?**
+- **Status:** open (priority: high)
+- **Established first (not the question):** observable information — non-trivial cover
+  plus Δ-stability, `docs/core/observable_information.md` — does **not** entail that the
+  observable responds to B. An observable that reads the describing system rather than the
+  described one satisfies both conditions maximally (σ_Δ = 0 exactly) while producing an
+  identical image on every admissible B, which is the F1_BC condition. Demonstrated by
+  construction; see §1 of the source note.
+- **Question:** what is the minimal *additional* condition that does entail
+  BC-responsiveness — and is there a formulation computable by a system that cannot
+  observe its own boundary conditions? F1_BC supplies the semantics but is defined by
+  comparing O(X_B) across B, which an agent under the anti-circularity commitment of the
+  existence test cannot do.
+- **Two candidate answers, of unequal standing (revised same day):**
+  (a) a non-zero, **clustered** failure rate — a description that never breaks carries no
+  partition. Implemented and measured: necessary, and demonstrably *not* sufficient, since
+  the descriptions fail at ordinary rates, so a non-zero floor removes a degenerate corner
+  without creating BC-responsiveness. (The accompanying separation figures are subject to
+  the measurement audit and are not load-bearing here.)
+  (b) a **cross-encounter level contrast** — if BC information sits in a channel's level
+  across contexts rather than its variation within one, BC-responsiveness is computable by
+  comparing stored encounters, which the protocol buffer already supports and the offline
+  phase currently does not do. Untested.
+- **The sharpened form of the question:** can *any* within-context statistic suffice, or is
+  BC-responsiveness only ever computable by comparison across contexts?
+- **Why it matters:** this is the lower bound that `switch_minimization_criterion.md`
+  (C-PAR) lacks. C-PAR states an upper bound on the failure rate; alone it pushes toward
+  descriptions that never break, which §3 of the source note identifies as descriptions of
+  the describing system. The two-sided form `0 < failure rate < parsimony bound` is
+  structurally the same as `sup_x σ_Δ(x) < ε < ε*(O,X)`.
+- **Measured instance (corrected twice the same day):** the first reading attributed a
+  substrate-separation failure to self-directed descriptions; the self-share numbers did
+  not support that (0.20–0.58 across conditions against a 0.31 chance level, lowest in the
+  mixed condition). A subsequent measurement audit then found that the separation ratio
+  itself was defective in three successive versions — circular, saturated, wrong grain —
+  so no separation verdict from those runs is usable in either direction, and the agent
+  turns out to navigate ~10× better than chance. **The question does not rest on that
+  ratio.** What does support it: median substrate separability |d| = 0.23 over
+  the selected compositions, 14 of 32 negligible, every `DIFF` composition at |d| ≈ 0, and
+  `cost_here` — the most substrate-diagnostic channel in the environment — absent from
+  every surviving description because it is *constant within* each substrate. The failure
+  survived heavy-tailed exploration, four selection criteria, adaptation, critical periods
+  and value replay, all of which are within-window criteria.
+- **Bears on:** Q-SLP-01 (an arbitrarily narrow Δ_replay makes every description
+  persistent — the same class of self-confirming criterion), Q-PAR-02, Q-PAR-04.
+- **Registered:** 2026-07-27.
+- **Source:** docs/notes/observable_information_and_bc_responsiveness.md §1, §4, §7.
+
+---
+
+## MINDS Generalization — Coordination Protocol Beyond Facilitation (Q-MINDS, registered 2026-07-31)
+
+*(Source: `docs/notes/minds_generalization_beyond_facilitation.md`. Collision check: no
+Q-MINDS ID existed anywhere in `docs/` before registration. Level discipline: ART-level
+(Resonance Dialectics / KHT family); the maximin criterion itself stays owned by
+`kht_resonance_dialectic.md` — Q-MINDS-02 is deliberately routed through Q-RD-6 rather
+than duplicating it.)*
+
+**Q-MINDS-01 — Does a MINDS-based meta-controller improve multi-agent coordination over voting/averaging baselines?**
+- **Status:** open (priority: high — cheapest operational test of the generalization claim)
+- **Question:** implement the MINDS diagnostic set (friction diagnosis, shared-term
+  check, synthesis test) as a coordination layer over a small LLM-agent ensemble.
+  Does it outperform voting/averaging baselines at (a) detecting ontology conflicts
+  (agents using the same term differently, or working from divergent task
+  descriptions) and (b) preventing false consensus (a minority agent carrying a
+  critical constraint gets overruled)?
+- **Why it matters:** a negative result confines MINDS to domains with human-like
+  conversational dynamics and demotes the note's "full transfer" claims to analogy;
+  a positive result makes the toolkit an operative CDS artifact beyond facilitation.
+- **Registered:** 2026-07-31.
+- **Source:** docs/notes/minds_generalization_beyond_facilitation.md §4 (domain 1), §6.
+
+**Q-MINDS-02 — For non-human parties, does the Synthesis Test's maximin coincide with the Q-RD-6 robustness reading?**
+- **Status:** open
+- **Question:** when "parties" are constraint carriers (datasets, services, coupled
+  subsystems) rather than persons, the party-minimum and the generator-hypothesis
+  minimum of Q-RD-6 may coincide or diverge. Which is it — and if they diverge, which
+  minimum does the Synthesis Test actually operationalize?
+- **Why it matters:** the generalization claim rests on the maximin objective being
+  well-defined without human parties; this is exactly the reference-class question
+  Q-RD-6 already poses, extended to the non-human case.
+- **Bears on:** Q-RD-1, Q-RD-5, Q-RD-6.
+- **Registered:** 2026-07-31.
+- **Source:** docs/notes/minds_generalization_beyond_facilitation.md §2, §5.
+
+**Q-MINDS-03 — What scope-level criterion separates a non-substitutable constraint from a strong preference?**
+- **Status:** open
+- **Question:** the whole protocol hinges on "non-substitutable" constraints
+  (viability conditions) being distinguishable from preferences. Candidate
+  criterion: a constraint is non-substitutable iff its violation moves the
+  system out of X_B (boundary violation) rather than to a different admissible
+  point within X_B. Does this hold up, and is it decidable in practice for
+  the candidate domains?
+- **Why it matters:** without such a criterion, "every party must survive into
+  the solution" is unfalsifiable — any component can be declared a viability
+  condition post hoc.
+- **Registered:** 2026-07-31.
+- **Source:** docs/notes/minds_generalization_beyond_facilitation.md §3.
+
+**Q-MINDS-04 — Is there a minimal modular kernel for domains without conversational dynamics?**
+- **Status:** open
+- **Question:** the ecology/infrastructure case suggests only {Anchor, Coverage,
+  Synthesis, Scope} transfer where no conversational dynamics exist. Is this the
+  minimal kernel, and what exactly is lost when the conversational diagnostics
+  (readiness read, in-session tracking, mediation arc) drop out?
+- **Why it matters:** determines whether MINDS decomposes into a
+  domain-independent core plus a conversational layer, or whether the
+  conversational layer is load-bearing for the whole protocol.
+- **Registered:** 2026-07-31.
+- **Source:** docs/notes/minds_generalization_beyond_facilitation.md §4 (domain 8), §7.
+
+---
+
+## Total Description Space D(S) — Fibration Reading of the Cover Construction (registered 2026-08-01)
+
+*(Source: `docs/notes/total_description_space.md`; ownership transferred 2026-08-01
+to its same-day successor `docs/notes/scope_fibration.md` (rename + extension after
+external review). Collision check: Q-DSP prefix
+grepped against open_questions.md and all of docs/ — free. Level discipline: all four
+questions are ARW-level and owned by the source note. Delimited against the semantic
+"description spaces" cluster (Q_NEW_E/F, Q-RD-5/6), which is unrelated. Extends the
+partially resolved Q4 (ARW ↔ TDA correspondence, see docs/core/observable_information.md).)*
+
+**Q-DSP-01 — Do the four directions of D(S) commute where they overlap?**
+- **Status:** partially_answered (2026-08-01)
+- **Answer (ε–Δ pair, paper derivation in scope_fibration.md §5a):** the Δ-direction
+  always induces well-defined component maps after an ε-shift of 2σ̄ = 2·sup σ_Δ
+  (triangle inequality on edges) — a 2σ̄-interleaving in the persistence-theory
+  sense. Strict (unshifted) well-definedness holds iff no pairwise increment lies
+  in (ε − 2σ̄, ε + 2σ̄] — a gap condition identified with the pipeline's robust
+  ε-plateau criterion. Once maps are well-defined, commutativity is automatic (all
+  maps descend from the identity on the sample index set). Open part: coherent
+  composition of π- and B-morphisms with the ε–Δ pair.
+- **Empirical checks (2026-08-01, scope_fibration.md §5b, two runs):** seed-swap
+  tests on the Kuramoto v2 2D field. Run 1 (112 checks): c* ≤ 2σ̄ held 112/112 —
+  read as implementation validation (bound follows from the triangle inequality);
+  strict-descent violations strongly enriched at, and in this run confined to,
+  the independently known transition band (all within 0.15 of the analytic line;
+  baseline 9.8%). Run 2 (local edge-wise gap condition, 1,852,996 edge checks):
+  risky cell (gap satisfied ∧ descent violated) exactly 0, with both classes
+  heavily populated; P(violated | gap violated) = 0.043 (sound but conservative
+  flag; necessity never claimed). Status: analytically established,
+  computationally instantiated, empirically consistent — not "validated".
+  Runs 3–4 (same day): 1D CASE-0001 rerun with DECLARED Δ — strict descent
+  20/20 on the registered plateau interior (ε = 0.09, 0.134), marginal at the
+  plateau edge (0.066: 10/20), off-plateau violations localized near registered
+  regime boundaries; risky gap cell again 0. Blind reconstruction: line
+  recovered from violations alone (slope within 6.4%), nulls decisively beaten —
+  but NO added localization power over direct σ_Δ / |ΔO| thresholding
+  (instrumental claim bounded; architectural claim untouched). Note promoted
+  note → hypothesis 2026-08-01 (external-review condition met).
+- **Question (original):** Is the fiber assignment (B, π, Δ, ε) ↦ regime structure well-defined
+  as a single object — specifically, does ε-coarsening after Δ-perturbation agree
+  with Δ-perturbation after ε-coarsening at the component level?
+- **Why it matters:** precondition for D(S) being one object rather than four
+  unrelated parameter studies; gate for note → hypothesis promotion.
+- **Registered:** 2026-08-01.
+- **Source:** docs/notes/total_description_space.md §2, §7.
+
+**Q-DSP-02 — Does the no-complete-invariant result apply literally to D(S)?**
+- **Status:** open
+- **Question:** Does the (ε, Δ)-bidirection of D(S) satisfy the hypotheses of
+  multidimensional persistence (Carlsson & Zomorodian 2009), so that the
+  no-complete-discrete-invariant theorem applies to ARW's total description space
+  literally rather than as an analogy?
+- **Why it matters:** if literal, ARW's central stance (conditions strengthen claims)
+  acquires a limitative-theorem backing: no unconditioned global summary of D(S)
+  exists. If only analogical, the claim must be stated with declared disanalogies.
+- **Registered:** 2026-08-01.
+- **Source:** docs/notes/total_description_space.md §4.
+
+**Q-DSP-03 — Are the falsification categories exactly the degeneracy types of D(S)?**
+- **Status:** open
+- **Question:** Is the F0/F1/F-gradient/F2/F3/F4/scope-transition/Z_shared table a
+  complete classification of the ways a fiber of D(S) can fail to exist or be
+  well-defined — or does the fibration reading predict failure modes not yet in the
+  schema?
+- **Why it matters:** would relocate the falsification schema from operational
+  checklist to derived classification; a predicted-but-unlisted failure mode would
+  be a genuine discovery channel.
+- **Registered:** 2026-08-01.
+- **Source:** docs/notes/total_description_space.md §3.
+
+**Q-DSP-04 — Do the π- and B-directions filter or only reindex?**
+- **Status:** open (reframed 2026-08-01 by scope_fibration.md §2b: in categorical
+  language the heterogeneity of morphism types is not an anomaly; the question
+  becomes which cross-type composition laws hold in D(S))
+- **Question:** ε and Δ-radius nest naturally (filtration-like); π and B change the
+  base space of the cover construction instead. Do they admit any filtration-like
+  structure (e.g. via observable refinement or B-restriction chains), or is D(S)
+  irreducibly a fibered object with exactly two filtered directions?
+- **Why it matters:** determines the correct mathematical home of D(S)
+  (multi-filtration vs. fibration over a parameter space) and hence which existing
+  results can be imported.
+- **Registered:** 2026-08-01.
+- **Source:** docs/notes/total_description_space.md §2, §6.
+
+**Q-DSP-05 — Is the categorical packaging of D(S) conservative?**
+- **Status:** open
+- **Question:** §2b of `docs/notes/scope_fibration.md` recasts the four directions
+  as four morphism types (ε-coarsening, Δ-stability action, π-observable change,
+  B-restriction), making D(S) a small category. Is this packaging pure notation
+  over the operational definitions, or does it impose additional constraints
+  (e.g. forced composition laws for the partial Δ-maps)?
+- **Why it matters:** if conservative, the categorical vocabulary is safe as
+  language and may be used monograph-side without new proof obligations. If not,
+  every imposed constraint is a falsifiable prediction and must be registered as
+  such before the vocabulary is used. Guard stated in scope_fibration.md §2b.
+- **Registered:** 2026-08-01.
+- **Source:** docs/notes/scope_fibration.md §2b, §6.
+
+---
+
+## Description-Centric Evaluation
+
+**Q-EVAL-01 — Can descriptive advance be measured objectively?**
+- **Status:** open
+- **Question:** Given two competing descriptions of the same phenomenon, can it be
+  determined by measurement — not judgment — whether one constitutes a genuine advance
+  over the other? Concretely: can the eight dimensions of
+  `docs/notes/evaluating_descriptions_not_authors.md` §4 (or a corrected subset) be
+  scored such that independent evaluators converge, and such that the score is not
+  gameable in the Goodhart sense (§7 of that note)?
+- **Why it matters:** if yes, research evaluation can shift from author/venue proxies
+  to description-level metrics — the note's central proposal. If no, the note remains
+  a heuristic checklist. For the ARW-internal subset (explicit scope, operationality,
+  falsifiability, robustness; partially transferability) this is already a concrete
+  measurement task, not a philosophical one.
+- **Registered:** 2026-08-03.
+- **Source:** docs/notes/evaluating_descriptions_not_authors.md §9.
+
+**Q-EVAL-02 — Does any existing metascience programme take descriptions as objects?**
+- **Status:** open
+- **Question:** The reproducibility movement, registered reports, MDL, and
+  falsificationism each institutionalize one or two of the eight dimensions. Does any
+  existing programme evaluate *descriptions as objects* — rather than papers, authors,
+  or isolated claims? The §8 delimitation in the source note is an unverified
+  literature claim and must not be cited as a novelty argument until checked.
+- **Why it matters:** determines whether the note proposes a new discipline or joins
+  an existing one; also determines the honest framing for any monograph or outreach
+  use of the idea.
+- **Registered:** 2026-08-03.
+- **Source:** docs/notes/evaluating_descriptions_not_authors.md §8.
+
+---
+
+## EWS Discrimination Study — Feasibility and Δ on Observational Data (registered 2026-08-04)
+
+*(Source: `docs/notes/ews_discriminator_test_protocol.md` and
+`docs/notes/ews_stage1_review_epsilon_vs_delta.md`. Collision check: Q-EWS prefix
+grepped against open_questions.md and all of docs/ — free.)*
+
+**Q-EWS-01 — Can Δ be declared for observational time series from measurement
+structure alone?**
+- **Status:** answered (negative, 2026-08-04) — with a correction to the question
+- **Answer:** No, and not for the contingent reason first recorded. Stage 1 on the
+  Cascade packages found no numerical precision in EML or Supporting Information;
+  the manufacturer datasheet for the declared configuration (YSI 6600 V2-4, ROX
+  6150, Chl 6025) *does* publish accuracy and resolution. But those figures
+  constrain only the **instrument contribution** to ε — they do not determine the
+  operational ε (a mapping rule is still required: truth-referenced ε=0.2 vs
+  pairwise ε=0.4 for pH; reading-dependent ε(x) for DO; plus drift, aggregation
+  and preprocessing), and they say nothing about **Δ**. Δ is
+  the admissible perturbation class, a modelling commitment about which variations
+  count as the same system state; no instrument documentation can supply it. The
+  distinction is invisible in simulation (where Δ is injected) and became visible
+  only on observational data.
+- **Corollary (bias direction, conditional):** *if* σ_Δ is defined
+  inclusion-monotonically (supremum radius/diameter over Δ — which the repo's
+  canonical σ_Δ(x) = sup_{δ∈Δ}|O(x+δ)−O(x)| is), then narrowing Δ can only
+  reduce or preserve σ_Δ, making σ_Δ < ε easier and yielding more stability
+  verdicts — **anti-conservative** for H1. A distributional σ_Δ variant would not
+  inherit this and must re-derive it. "Err upward" is bounded: an arbitrarily wide
+  Δ tests a different claim. Clean form: declared family Δ_min ⊆ … ⊆ Δ_max with
+  verdict stability required across it (Q-EWS-04).
+- **Registered:** 2026-08-04.
+
+**Q-EWS-02 — Does alarm coherence across observables discriminate genuine
+transitions from descriptive artifacts (H1)?**
+- **Status:** open, untested (the Cascade run stopped at feasibility)
+- **Blocker found 2026-08-04 (two parts):** (i) with chlorophyll unsupported for
+  the absolute-concentration projection and model-derived metabolism excluded for
+  process error, the admissible response set is raw DO %sat and raw pH — at n = 2
+  the *graded* coherence discriminator degenerates into pairwise unanimity
+  (logically testable, but without redundancy or partial coherence); (ii) more
+  decisively, DO and pH are not independent measurement-error channels — same
+  sondes, shared logging, deployment, weekly rotation and preprocessing incl. the
+  documented mean-shift correction, so common-mode instrument error propagates
+  into both. A test of H1 needs ≥ 3 response observables (mathematical minimum for
+  a non-trivial majority), ≥ 4 recommended for robustness (k=3 of 4 tolerates one
+  failure), on **independent measurement channels**, plus a same-apparatus
+  labelled negative (the reference *system* — not a forcing variable such as
+  temperature, which is a covariate control only).
+- **Registered:** 2026-08-04.
+
+**Q-EWS-03 — Does the coherence rule add value over single-observable EWS, plain
+σ_Δ thresholding, and multivariate EWS (H2)?**
+- **Status:** open, untested (gated behind Q-EWS-02)
+- **Registered:** 2026-08-04.
+
+**Q-EWS-04 — What is the admissible form of a Δ declaration for observational data?**
+- **Status:** open
+- **Question:** Given that Δ is a modelling commitment rather than a measured
+  quantity, what makes one declaration defensible and another circular? Candidate:
+  declare a *family* of Δ values spanning the plausible range and require the
+  verdict to be stable across the whole family, reporting a verdict that flips
+  inside the family as the finding rather than selecting the favourable member.
+- **Why it matters:** every future application of ARW to observational rather than
+  simulated data faces this; without it, σ_Δ has no observational counterpart and
+  the falsification schema cannot be applied outside simulation.
+- **Registered:** 2026-08-04.
+- **Source:** docs/notes/ews_stage1_review_epsilon_vs_delta.md §2, §5.
+
+**Q-EWS-05 — What is the mapping rule from instrument specification to operational ε?**
+- **Status:** open
+- **Question:** A datasheet accuracy figure constrains the instrument component of
+  ε but does not fix it. Open sub-questions: truth-referenced (ε = spec) versus
+  pairwise-compatibility (ε = 2·spec) interpretation; reading-dependent accuracy
+  giving ε(x) as a function versus a declared scalar collapse; and the
+  contributions the specification does not cover at all — calibration drift
+  between instrument rotations, temporal aggregation, and documented preprocessing
+  (outlier removal, missing-day rules, mean-shift correction across instrument
+  changes). Additionally: any observable-side standardization (e.g. annual
+  z-scoring of pH) makes the induced ε data-derived and therefore circular under
+  preregistration — such transforms must be excluded or the raw scale used.
+- **Why it matters:** without this rule, "ε from the instrument" is an
+  underdetermined claim, and the ε-plateau machinery has no defensible
+  observational anchor.
+- **Registered:** 2026-08-04.
+- **Source:** docs/notes/ews_stage1_review_epsilon_vs_delta.md §2.1, §2.2, §6.
+
+---
+
+## Description Atlas — Form of the Vollraum and Obstruction Types (registered 2026-08-04)
+
+*(Source: `docs/notes/description_atlas_programme.md`. Collision check: Q-DSP-01–05
+in use per the 2026-08-04 pulse registry; 06/07 free. Continues the Q-DSP series
+because the atlas is the form D(S) takes, not a separate object.)*
+
+**Q-DSP-06 — Is the atlas an adequate form for the Vollraum description?**
+- **Status:** open
+- **Question:** If the no-complete-invariant argument holds (Q-DSP-02), a global
+  summary of D(S) is unavailable and the description must take the form of charts
+  (regions of constant fiber) plus transition data plus obstructions. Is that form
+  adequate — or does it discard structure that the no-complete-invariant result
+  does not actually force us to discard?
+- **Why it matters:** decides what a *completed* D(S) description would look like,
+  and therefore what the whole programme is aiming at. If the atlas form is lossy
+  beyond what is forced, the target is wrong.
+- **Registered:** 2026-08-04.
+- **Source:** description_atlas_programme.md §1, §2.
+
+**Q-DSP-07 — Does a topological obstruction type exist, distinct from the metric one?**
+- **Status:** open
+- **Question:** The falsification schema recognises only a metric mode of
+  Δ-failure (σ_Δ ≥ ε on a set exceeding τ_∂). The atlas reading predicts a
+  **topological** mode: assignment not single-valued around a loop (χ ≠ 0 on a
+  circuit where |∇O| stays finite) — monodromy rather than steepness. Candidate
+  instance: the sign change of adiabatic electronic state labels around a conical
+  intersection. Is this a genuinely distinct obstruction type, or is every
+  candidate reducible to the metric mode under a suitable observable choice?
+- **Why it matters:** a confirmed type T would be the first case in which the
+  fibration reading **adds a category** to the falsification schema rather than
+  re-describing it. Reduction of all candidates to type M is a real negative
+  result about the fibration's added structure.
+- **Related:** Q_NEW_26 (χ computed nowhere; σ_Δ is its proxy — a topological
+  obstruction is precisely a case where the proxy cannot work in principle, not
+  merely in practice).
+- **Registered:** 2026-08-04.
+- **Source:** description_atlas_programme.md §5, §8.

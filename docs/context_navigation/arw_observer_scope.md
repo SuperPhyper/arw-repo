@@ -12,6 +12,12 @@ depends_on:
 
 # ARW Observer Scope — Behavioral Observables and Regime Detection
 
+> **F1 notation.** The `span(π) ≷ 2ε` form used in this document is the
+> connected-image shorthand for the general criterion `ε ≷ ε*(O, X_B)` (cover
+> collapse). Valid where the observable image is a connected interval; for
+> multi-modal or fragmented images use ε*(O,X_B) directly. Canonical schema:
+> [../core/falsification_schema.md](../core/falsification_schema.md) §F1. *(Pointer added 2026-08-04, F1-shorthand decision, option b.)*
+
 ## Purpose
 
 This document defines the **ARW observation scope** for the Emergent Modes

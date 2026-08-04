@@ -1,6 +1,7 @@
 ---
-status: experiment-proposal
+status: superseded
 layer: docs/cognitive_architecture/
+superseded_by: docs/cognitive_architecture/agent_context_navigation_project_brief_v2.md
 title: "Agent Context Navigation — Existence Test for Emergent Modulator Structure (Project Brief)"
 created: 2026-06-11
 depends_on:
@@ -21,6 +22,15 @@ note: >
 ---
 
 # Agent Context Navigation — Project Brief: The Existence Test
+
+> **Superseded 2026-07-27** by
+> [`agent_context_navigation_project_brief_v2.md`](agent_context_navigation_project_brief_v2.md).
+> v2 corrects an inference-direction error in this document: the agent and the
+> human are different scopes with different B, so no outcome of the agent
+> experiment decides KHT for humans. The three-outcome table below (§4.4) and
+> the standing commitment "run so that KHT can lose" short-circuited that
+> distinction. Design sections are unchanged in v2; what changed is what the
+> outcomes mean. Kept for the record; cite v2.
 
 ## 1. Purpose and Epistemic Role
 

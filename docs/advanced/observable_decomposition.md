@@ -1023,8 +1023,13 @@ F0: R(π) ∩ B ≠ B  (observable outside its range)
 ```
 
 Distinction:
-- Observable insufficiency (F1): span(π) < 2ε — too little spread
+- Observable insufficiency (F1): ε ≥ ε*(O, X_B) — the cover collapses to a single
+  component at the working resolution. (`span(π) < 2ε` is the shorthand, valid only
+  for a connected observable image.)
 - F0: pre-scopal substrate breaks down — structural unreliability
+
+Full schema and the pairwise discriminations:
+[docs/core/falsification_schema.md](../core/falsification_schema.md).
 
 ### 3. Latent degrees of freedom as extension candidates
 

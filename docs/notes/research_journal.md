@@ -1876,3 +1876,1025 @@ discriminator (Q_NEW_F) become checkable, because the environment resolves a
 prediction within an episode. Registered as Q-SCA-05. If the discriminator fails in
 simulation it will not work in discourse — which makes the agent work a test bed for
 this morning's ARW-level revision rather than a separate track.
+
+---
+
+## Session 2026-07-27: Scope-constructing agent — built, measured, and the gate it does not pass
+
+**What was built** [observation]
+A new agent in `Simulationen/labyrinth_scope_constructing/` (7 modules, numpy only, no
+PPO), constructed from `scope_constructing_agent_architecture.md` rather than by
+extending the WP1 stack. Deliberately *not* inherited from the WP1 environment: the
+10-dimensional observation vector, three of whose dimensions (`d_nav`, `d_stuck`,
+`d_time`) are variants of global distance-to-exit and were built to correspond to the
+three prescribed modes of the earlier design. Only wall layouts and cost maps were
+reused. The description layer is a pool of 109 compositions over 16 primitive channels;
+which four of them a mode uses is learned.
+
+**Salience redefined as prediction failure** [claim]
+The WP1 signal measures deviation from a stored context centroid, and the agent can
+drive that to zero by pulling the reference onto the observation — the degenerate
+minimizer was its own coverage-failure fallback. Here the reference is a *prediction of
+the next field*, which cannot be made trivially true except by predicting. The
+degeneracy is closed by construction rather than by a guard rule.
+
+**Three mechanism findings, all negative or redirecting** [observation]
+(1) *Dark room.* Rewarding prediction-error reduction at the action level made the agent
+predictable by becoming passive: error 0.031→0.017, switch rate 4.1→1.1, and final
+distance to the exit *worsening* 17.1→21.2 over 150 episodes. Removing the term reversed
+the distance trend. How well a description predicts is the description layer's business;
+in the action reward it is a level confusion with a degenerate optimum.
+(2) *Selection blindness.* Under a habitual-variability criterion the agent never once
+selected the exit cue into any description across 200 episodes — not for lack of range
+(0.82) but because the cue is near-constant most of the time, habitual spread 0.047
+against 0.44 for the tactile channels. An intrinsic criterion built on habitual
+variability is blind to rarely-but-decisively informative channels by construction. Same
+shape of problem as Q-SLP-01: a self-confirming criterion.
+(3) *Ceiling test found no ceiling.* Pinning the gradient observable into every
+description — innate privilege, used as a control and not as a fix — left the goal rate
+exactly where it was (0.073 → 0.073). The two mechanisms that did raise cue uptake
+(adaptation, failure-recruitment) had the *worst* competence. So the cue was never the
+binding constraint.
+
+**Action-conditioned forward model — forced by the developmental staging** [claim]
+Staging sensory and motor access (six cumulative stages, self-paced on description
+stability) broke the earliest stage completely: with only proprioception online, every
+description was forced to contain the action channels, and predicting one's own next
+action means predicting one's own Q values and exploration noise. Error sat at 0.30 and
+the library saturated at the mode cap inside 25 episodes. The predictor is now
+conditioned on the operation taken. Notable methodologically: the defect was invisible at
+full sensory access, where the tactile channels masked it.
+
+**Value replay: approach improves, arrival does not** [observation]
+A reverse value sweep over stored encounters (hippocampal replay analogue) was predicted
+to move competence and did not: goal rate 0.070 → 0.067. What moved, consistently in two
+seeds: near-miss rate 0.17 → 0.25, switch rate roughly halved, and the exit cue finally
+entering descriptions (0 modes → 1–2) *without any change to the selection criterion* —
+better value estimates lead the agent where the cue varies, so the same criterion sees it.
+A 40-episode probe had appeared to double the goal rate; that was 2 versus 4 arrivals.
+Recorded because the wrong reading came from an insensitive measure.
+
+**The separation gate does not pass, and exploration does not change that** [observation]
+*(Verdict withdrawn — see "Second correction: the separation measurement itself" at the
+end of this entry. The ratio quoted below came from a saturated quantity; the gate is
+unmeasured, not failed.)*
+Heavy-tailed exploration (run-and-tumble, power-law run lengths, matched on the fraction
+of steps under exploratory control) plus substrate mixing across the four base layouts.
+220 episodes: ε-greedy median r = 1.010 (share r>1 = 0.625), run-and-tumble median
+r = 1.006 (0.500); pass needs 1.2 and 0.70. Modes are *indifferent* to substrate.
+Counting the channels behind the surviving descriptions appeared to explain why: 14 of 20
+slots are proprioceptive or interoceptive. *(Withdrawn later the same session — see the
+correction at the end of this entry. The count was condition-specific and the causal
+attribution did not survive measurement.)* A description built on "what my body just did" predicts
+equally well in all four substrates, and the selection criterion rewards predictability —
+the body is the most predictable thing available. Per brief v2 §4.1 this is a design
+iteration, not a result.
+
+**Measurement defect caught and fixed** [observation]
+The separation matrix was first built on mean prediction error per (mode, substrate) —
+nearly circular, since prediction error is what the switch criterion selects on, so a
+mode is active where it predicts well by construction. A 60-episode run duly "passed" at
+median r = 2.14 with 31 modes, most long dead. Rebuilt on displacement rate, an efficacy
+quantity independent of the selection criterion, counting only modes alive in the final
+library. This is the same class of error as the v1 PCI defect: a metric that measures the
+mechanism that produced it.
+
+**KHT reconciliation** [interpretation]
+`kht_reconciliation_scope_constructing.md`. The reason for the KHT link is *strengthened*
+— the most direct contamination route (three mode-shaped distance observables) is gone.
+WP3's apparatus largely does not survive: E2, the decision-relevant criterion, is not
+computable, because the new agent has no weight vector and no context centroid. A1–A4
+become more directly measurable and less dependent on post-hoc factor analysis; A5 and A9
+move from silent to arguably reachable. And an unplanned structural correspondence: the
+agent's composition operators are KHT's operators, while ε_agent, the selector and λ are
+its modulators — but all three are **exogenous**, so the build runs one modulator cluster
+per run and can only find operator-side structure. That is a clean structural explanation
+for mode counts of 6–14 that never collapse.
+
+**Status, stated plainly** [observation]
+Under WP3's gates with substituted quantities the current data is Gate 0/1: no
+low-dimensional organization demonstrated, no separation, competence flat at ~7%. The
+instrument was rebuilt; there is no reading. Several sessions of mechanism findings have
+not moved the existence question, and brief v2 §9 exists to make that sayable.
+
+**Registered:** Q-PAR-01–05 (prefix was unused repo-wide). Documents imported:
+`scope_constructing_agent_implementability.md`, `switch_minimization_criterion.md`,
+`kht_reconciliation_scope_constructing.md`, plus
+`agent_context_navigation_project_brief_v2.md` — the repo had held only the superseded v1.
+WP3 deliberately not imported: its own freeze protocol makes import the act of freezing,
+and it is still `frozen: false`.
+
+**Addendum — the gate failure is a theory result, not a data result** [claim]
+The separation failure was read once more and turned out to be about the framework rather
+than about the agent. Counting channels: 11 of 20 description slots are held by `act_*`
+and `time_left`, which cannot distinguish substrates *even in principle*. *(This count
+and the causal reading built on it are withdrawn — see the correction below.)* Those
+observables satisfy `observable_information.md` in full — non-trivial cover, and
+σ_Δ = 0 exactly, since the perturbation channel perturbs the system and not the agent's
+own record — while producing an identical image on every boundary condition. So
+observable information, the necessary condition for scope validity, does not exclude the
+F1_BC condition. The two are independent, and one line of construction shows it.
+
+This cannot arise in the physical cases, where every observable is applied to the system.
+It arises the moment the describing system is inside the world it describes, which is the
+first structural difference between the cognitive strand and the physics cases with
+consequences for the ARW apparatus rather than only for interpretation.
+
+Generalized: a criterion evaluated on a description's *own* behaviour selects for
+whatever the criterion finds easiest, and "easiest" is a property of the describing
+system. Three instances now on record — Q-SLP-01 (a narrow Δ_replay makes everything
+persistent), habitual variability (blind to rarely-decisive channels), and persistence
+itself (selects the describing system). Filed as a class, because the fixes are not
+interchangeable.
+
+The prescriptive consequence: C-PAR is an upper bound on the failure rate and needs a
+lower one, since a description that never breaks carries no partition. Two-sided form
+`0 < failure rate < parsimony bound`, structurally the same as
+`sup_x σ_Δ(x) < ε < ε*(O,X)`. C-PAR's own degeneracy analysis found the upper failure
+mode and missed this one — it asked how the agent could cheat the count to zero, not what
+happens when the count reaches zero legitimately. Registered as Q_NEW_G, the first
+ARW-level question to come out of the agent strand rather than the physical cases.
+Document: `observable_information_and_bc_responsiveness.md`.
+
+**Correction to the addendum, same session** [observation]
+The causal story in the addendum above did not survive measurement and is withdrawn. The
+"11 of 20 slots are BC-unresponsive" figure was from a single 120-episode single-substrate
+run and was presented as general. Measured across four conditions the self-directed share
+is 0.20–0.58 (chance level 0.31), and in the mixed-substrate condition — the only one in
+which the separation ratio means anything — descriptions are 67 % exteroceptive while
+separation "fails" identically at r ≈ 1.013 — a figure later found to come from a
+saturated quantity and withdrawn. What carries this correction is the self-share alone:
+it is *lowest* in the condition the original claim needed it highest in.
+
+What replaced it is better founded. Taking the 32 compositions the surviving descriptions
+use and evaluating each under a fixed random walker in all four substrates: median
+substrate separability |d| = 0.23, 14 of 32 below 0.2, every `DIFF` composition at
+|d| ≈ 0.00–0.06 (a windowed difference under a symmetric walk carries no substrate
+information at all, yet several were selected) — and `cost_here`, the most
+substrate-diagnostic channel in the environment by construction, absent from every
+surviving description. It is absent *because it is constant within* three of the four
+substrates: its within-window spread is near zero, so every selection criterion in the
+implementation discards it, while the substrate information sits in its *level*
+(0.4 / 0.3 / gradient / barriers).
+
+Generalized, and this is the finding: **a criterion computed from statistics within a
+context is structurally blind to differences between contexts, because a BC difference
+presents itself as a difference of levels across contexts the describing system never
+sees side by side.** That is why nothing helped — heavy-tailed exploration, adaptation,
+critical periods, value replay and four selection criteria are all within-window
+criteria, so the five attempts were the same attempt five times.
+
+Consequence for the proposed repair: the failure-rate floor (§7.1 of the note,
+implemented as `--fail-floor`) is necessary but demonstrably not sufficient — the failing
+descriptions fail at ordinary rates. The proxy the measurement calls for is a
+cross-encounter *level* contrast (§7.2), which the protocol buffer already supports and
+which `fit_and_score` currently precludes by evaluating every window independently.
+The floor was then implemented and run (`--fail-floor 0.10`, 200 episodes, mixed
+substrates): separation still fails at median r 1.029 versus 1.013 without it, the
+self-directed share *rose* from 0.20 to 0.40, and the constraint rejected every proposed
+variant in 335 cases and fell back to the unfiltered pool — so it was largely inoperative.
+Recorded as a negative with a caveat: the fallback behaviour needs fixing before the
+number means much. It is not the mechanism.
+
+C1 (observable information does not
+entail BC-responsiveness, by construction) is untouched by any of this; C2 is downgraded
+to an unsupported conjecture; C3 is the measured claim.
+
+Methodological note for the record: the wrong reading came from generalizing a channel
+count taken in one condition, and it was caught only because the same count was recomputed
+in the condition the gate is measured in. Both the original claim and its correction are
+kept visible in the note rather than edited away.
+
+**Second correction: the separation measurement itself, three times over** [observation]
+Prompted by Rico's remark that the design of admissible trajectories may be *the* central
+lever in designing a learning environment. Checking the substrates against that standard
+turned into an audit of the measurement, and the audit went further than the substrates.
+
+*The substrates.* In terms of admissible trajectories the four inherited layouts are two
+kinds: corridor and halfwall make some trajectories impossible (~9 % blocked cells,
+uniform cost), open and costpath make all possible but some expensive (0 % blocked,
+structured cost). Within each pair the difference is quantitative. `halfwall` was a
+distinct class in the old design only because it blocks *movement but not vision* — and
+this agent has no vision channel, so the distinction that defined it does not exist for
+it. Substrate classes inherited from an observation space that was then deleted. Grouping
+the four into two moved the ratio barely (1.003 → 1.007, 1.015 → 1.073), which is what
+sent the check one level deeper.
+
+*The measurement.* Three quantities, three distinct defects. Mean prediction error is
+**circular** — it is what the switch criterion selects on, so a mode is active where it
+predicts well by construction. Displacement rate is **saturated** — blocked cells are only
+~9 % of the grid, so mature modes sit at 0.92–0.96 everywhere, home and away, and a ratio
+of two near-identical numbers is 1.0 by arithmetic. Per-step progress is at the **wrong
+grain** — dominated by the long tail of milling steps; every mode averaged 0.49–0.51.
+
+*The reading that was nearly published.* That third result invited "the agent does not
+navigate at all". Checked against an actual random walker in the same four substrates
+first: random reaches the exit in 0.7 % of episodes and comes within five cells in 3.0 %;
+the agent manages 5.0–7.3 % and 29–36 %, closest approach 14–16 against 31.3. It navigates
+about ten times better than chance. The competence was real the whole time and no
+per-step quantity could see it.
+
+*What the corrected measure shows.* At episode grain — per episode, the mode that carried
+it and that episode's closest approach — the values are no longer pinned near 1.0: they
+range 0.73–1.86 across three seeds, one pass and two fails, with only 2–5 modes clearing
+the minimum sample out of 180 episodes. Real but badly underpowered. **No separation
+verdict is claimed in either direction.** Every earlier "the gate does not pass" statement
+was reading an artifact, and those statements are now marked as such wherever they appear.
+
+*What survives independently.* C1 (a construction). The composition-separability
+measurement behind C3 (Cohen's d over substrates under a fixed random walker — it never
+used the gate). The channel counts. The substrate-redundancy finding above. Q_NEW_G does
+not rest on the ratio.
+
+*The pattern, recorded because it is the third time* [interpretation]
+Four quantities, three defects, every one found by checking rather than by the data
+announcing it — and two of the three would have been written up as findings otherwise.
+The recurring error has one shape: choosing a quantity because it is *independent of the
+selection criterion*, and not also checking that it has *dynamic range at the grain being
+measured*. Independence and informativeness are separate properties and only the first was
+ever verified. Worth adding to the pre-commit habits alongside the existing guard rules:
+before a ratio is reported, state the range of its numerator and denominator.
+
+## Session 2026-07-29: Persistence as a carried state variable — and the falsifier that fired
+
+**Six measurement criteria retired in one week** [observation]
+Separation on prediction error (circular), on displacement rate (saturated), on
+per-step progress (wrong grain), the phantom→goal gradient (uncontrolled), the
+one-mode "pass" (degenerate), and the absolute threshold `median r ≥ 1.2` (no valid
+null — the one-description arm returns 1.55 on one layout and 0.81 on another instead
+of 1.0). Replaced by a within-substrate relabelling null, which the degenerate arm
+reproduces to excess 0.000 on all five seeds. Two further defects were found in
+measures written during the same week: a one-sided sum of noise reported as a
+transfer cost, and a rollout horizon compared against a one-step threshold.
+**The recurring shape:** a criterion evaluated with the quantity its own selection
+process produces. The rule adopted — every criterion ships with a null construction
+and a degenerate arm on which the null must be exactly recovered.
+
+**Absorption: why a regime difference must not be locally readable** [claim]
+`two_band` distinguished its substrates by a feature. The feature was present (AUC
+0.89 against a median candidate of 0.013) and selection recruited it (ranks 0 and 1 of
+109). No partition formed — NMI(mode × substrate) 0.052, separation ratio at its null.
+If every description can already tell the regimes apart, specialising is redundant.
+A regime distinction is a scope boundary only when it cannot be read off the
+description's inputs. This is the design constraint the labyrinth work bought.
+
+**The forward map must predict the change** [claim]
+With an absolute target and identity initialisation, 97.2 % of fitted weight sat in the
+persistence block and 2.2 % in the action block. Such a map cannot notice a regime that
+acts only on the action→effect relation: error ratio across an unannounced action
+inversion 0.84–1.14. Predicting the change raised the action share 17-fold; navigation
+competence collapsed in the same move, and that second effect is unexplained.
+
+**A single-timescale self-set resolution fails** [claim]
+Swept over its one free constant, the agent either invents descriptions in a world that
+never changes (4.5 at the low setting) or stops noticing the real change (0 switches at
+the high one). No value passes both. **Retraction:** first reported as showing a
+modulator cannot be set from operator-side experience at all — too strong. What is shown
+is that a *single-timescale* self-set resolution fails. The nested construction of
+`conflict_navigation_nested_calibration.md` is untouched by it and is adopted.
+
+**Three laws that do work** [claim]
+Resolution profile over ε (the time-index transposition of cover height), assignment over
+contiguous segments, and a gain calibrated against a stationary control condition.
+Per-sample assignment gives partition agreement 0.508; from five contiguous samples,
+1.000. That five equals the independently measured identifiability limit — the coherence
+length the partition needs and the smallest window on which two descriptions are
+distinguishable are the same quantity. A within-stream surrogate for the null does **not**
+exist: permuting segments preserves the regime structure, permuting samples destroys the
+state's autocorrelation with it. Temporal structure and regime structure are not
+separable by permuting the stream.
+
+**Persistence layer proposed, and its own falsifier fired** [claim]
+Failure is retrospective, survival prospective. The design gives each description a
+hazard estimated from its current margin (internal, enters selection) and validates it
+against a rollout horizon measured on controlled material (external), with selection
+made lexicographic so that survival-maximisation cannot collapse into describing
+nothing — a collapse already observed in the ε arm above. The document named its own
+cheapest falsifier and it was run the same day: rollout horizon 2–6 steps against an
+oracle-calibrated accumulation floor, and the hazard estimate adds essentially nothing
+over the present residual (partial correlation small, sign-inconsistent). The second
+result is **underdetermined by the first** — a horizon ranging over 1–6 steps cannot
+resolve a horizon-prediction test — and is recorded as such rather than as evidence
+against the layer. Converted into a quantified requirement on the next world (Q-SCA-10).
+
+**Open questions registered** [observation]
+Q-SCA-06a/b/c, 07, 08, 09, 10, all from
+`docs/cognitive_architecture/planning_admissible_scope_agent_design.md`.
+Collision check run against `open_questions.md` and all of `docs/` before assignment.
+
+**Open request** [observation]
+The design's lexicographic order demotes switch minimisation to a tie-break. That is a
+change to `docs/context_navigation/switch_minimization_criterion.md` and is raised for
+its owner, not adopted.
+
+---
+
+## Session 2026-07-31: MINDS generalization — facilitation as first instantiation, not the toolkit
+
+**MINDS reframed as a coordination protocol** [claim]
+The MINDS toolkit (art-of-resonance.org, v0.8) is only superficially a facilitation
+kit. Structurally it is a viability-preserving scope-navigation protocol for coupled
+systems with partial descriptions: "parties" generalize to any constraint carrier
+(models, datasets, services, goals, institutions, time horizons, artistic motifs).
+The transferable core is the seven operations Tuning / Framing / Friction diagnosis /
+Coverage / Anchor / Resolution / Synthesis, with the Synthesis Test's maximin — judge a
+solution by the worst-represented necessary component, never the average — as the
+distinguishing element. Registered as
+`docs/notes/minds_generalization_beyond_facilitation.md` with five transfer conditions,
+a negative condition (single objective + substitutable components → classical
+optimization suffices), and ten candidate instantiations. The toolkit's own
+architecture (generic core, domain companions kept outside it) already anticipates
+this reading.
+
+**Sharpest transfers named** [observation]
+Multi-agent AI meta-controller (diagnose *why* agents fail to converge, and which kind
+of cognitive work is missing, instead of voting/averaging — the four lenses read
+directly as an agent ensemble) and ontology/schema merging (the purest case: MINDS
+mediating descriptions, not social interests). Ecology/infrastructure transfers only
+modularly — Anchor, Coverage, Synthesis, Scope survive; conversational diagnostics do
+not.
+
+**Level discipline kept** [observation]
+The maximin criterion stays owned by `kht_resonance_dialectic.md`; the note only
+extends its candidate reference class, which lands in Q-RD-6 territory rather than a
+new criterion. Frozen scope-tuple semantics untouched.
+
+**Open questions registered** [observation]
+Q-MINDS-01–04 (meta-controller test; party-minimum vs. hypothesis-minimum for
+non-human parties; non-substitutable constraint vs. preference criterion; minimal
+modular kernel). Collision check run against `open_questions.md` and all of `docs/`
+before assignment — prefix was free.
+
+---
+
+## Session 2026-08-01: Total description space D(S) — fibration reading of the cover construction
+
+**One construction, four directions** [claim]
+The repository's three separately defined ε-comparison → components constructions
+(observable cover C_ε over O(X_B); ε-adjacency graph G_ε on sweep samples; cover
+geometry over the resolution axis η) are instances of one construction over three
+declared base spaces, with σ_Δ as the unnamed fourth (Δ-)direction. Registered as
+`docs/notes/total_description_space.md`, which defines a candidate scope parameter
+space P = {(B, π, Δ, ε)} with the regime structure as fiber. The Part VII V1
+graph-vs-cover precision is preserved: same construction, not same object.
+
+**Falsification categories as degeneracy types** [interpretation]
+F0/F1/F-gradient/F2/F3/F4/scope-transition/Z_shared reread as the types of
+non-smooth points of D(S) — fiber undefined / trivial along ε / Δ-unstable /
+non-reproducible / π-family-wide degenerate / sampling artifact / B-discontinuous /
+class-wide excluded region. Operational definitions untouched; completeness of the
+table is Q-DSP-03.
+
+**Limitative anchor identified** [open-question]
+The ε-direction is H₀ persistence (extends the partially resolved Q4 correspondence
+in `docs/core/observable_information.md`); any second direction makes D(S) a
+multi-filtration, for which no complete discrete invariant exists (Carlsson &
+Zomorodian, Discrete Comput. Geom. 42(1), 2009 — verified citation). If the
+correspondence holds literally (Q-DSP-02), "no unconditioned global summary of a
+system's description space exists" becomes theorem-backed rather than stance-backed.
+Origin of session: monograph introduction promises a science of description whose
+instruments the book delivers only slice-wise; the recurring cover formalism was the
+visible trace of the unnamed total object.
+
+**Registered** [observation]
+Q-DSP-01–04 (prefix collision-checked, free); DOC_INDEX row added; delimited against
+the semantic description-spaces cluster (Q_NEW_E/F, Q-RD-5/6). Promotion path: §7 of
+the note (commutativity check + consistency check on CASE-20260311-0001/-0003 data).
+
+---
+
+## Session 2026-08-01 (second entry): Scope fibration — rename, morphism types, Q-DSP-01 paper part
+
+**Rename executed after external review** [observation]
+`total_description_space.md` superseded same-day by `docs/notes/scope_fibration.md`.
+Reason: the old name over-promised (space of *all* descriptions); the object is the
+family of scope-induced cover constructions indexed by scope parameters. "Fiber
+bundle" was explicitly rejected for a substantive reason: bundles require local
+triviality, and the falsification categories are precisely the obstructions to
+local triviality — D(S) is informative *because* it is not a bundle.
+
+**Four directions sharpened to four morphism types** [interpretation]
+ε-coarsening (total, filtration), Δ-stability action (partial, obstruction = σ_Δ),
+π-observable change (base change), B-restriction (with scope transitions as
+distinguished morphisms). Consequence: a *path* in D(S) is intra-system navigation;
+cross-system transfer is a *functor* D(S_A) → D(S_B). Conflating the two is exactly
+the Session 2026-03-18 finding (Φ measures observable transfer, not system
+transfer), now visible at the level of language. Categorical vocabulary adopted as
+language only; conservativity registered as Q-DSP-05.
+
+**Q-DSP-01 partially answered on paper** [claim]
+For the ε–Δ pair: Δ always induces well-defined component maps after an ε-shift of
+2σ̄ (triangle inequality) — a 2σ̄-interleaving; strict well-definedness holds iff no
+pairwise increment lies in (ε − 2σ̄, ε + 2σ̄] (gap condition); commutativity is
+automatic once maps are well-defined (all maps descend from the identity on the
+sample index set). The gap condition is the pipeline's robust ε-plateau criterion:
+**the go_nogo plateau requirement is the local-triviality condition of the
+fibration in the (ε, Δ)-plane** — a geometric meaning the criterion was not
+designed to have. Open part: π/B composition laws. Interleaving structure counts as
+supporting evidence (not proof) for the Q-DSP-02 persistence correspondence.
+
+**Registrations** [observation]
+Q-DSP-05 registered; Q-DSP-01 → partially_answered; Q-DSP-04 reframed (composition
+laws, not filter-vs-reindex); DOC_INDEX supersession chain recorded. Next gates
+(scope_fibration.md §7): second reading of §5a, then the §5b data check on
+CASE-20260311-0001/-0003 cover-height fields.
+
+---
+
+## Session 2026-08-01 (third entry): Second review round — restraint edits on scope_fibration.md
+
+**Architectural hierarchy fixed** [observation]
+New §2c fixes the dependency order once: Level 1 cover construction (fundamental,
+the only computed level) → Level 2 D(S) as organization → Level 3 morphisms
+(all operational content) → Level 4 categorical vocabulary (language only,
+Q-DSP-05) → Level 5 persistence theory (neighboring formalism, importable only via
+Q-DSP-02). Rule added: every claim is as strong as the lowest level it uses —
+§5a uses Levels 1–3 (hence derivable), the §4 anchor uses Level 5 (hence
+conditional). Any future addition must state its level.
+
+**"Functor" demoted to target status** [observation]
+Cross-system transfer is now a *candidate* comparison functor / structure-preserving
+translation until Q-DSP-05 settles the composition laws — "functor" presupposes
+fully defined categories on both sides.
+
+**Convergence flagged** [observation]
+The reviewer independently proposed reading ARW as a theory of *description
+transformations* (objects = admissible paths between descriptions). This converges
+with the monograph's standing meta-claim (session 2026-05-29: ARW as a theory of
+description dynamics — how descriptions gain, lose, and switch stability), reached
+there from the philosophical arc, here from the mathematical side. The fibration
+supplies that meta-claim's formal object (morphisms = the transformations).
+Whether to elevate this from observation to the note's framing is Rico's call —
+not executed.
+
+---
+
+## Session 2026-08-01 (fourth entry): Q-DSP-01 first data contact — interleaving bound holds, violations localize on the singular locus
+
+**Check design** [observation]
+Seed-swap perturbation test of scope_fibration.md §5a on the Kuramoto v2 2D field
+(160×112 over κ×σ, reference seed 42, replicas {7,13,99,137}; deliberately harsher
+than the case's declared Δ). 112 checks (4 seeds × {full grid, stability mask} ×
+14 ε). Script: `Simulationen/qdsp01_interleaving_check.py`; results:
+`Simulationen/qdsp01_check_results/`. Levels 1–3 only (components + union-find +
+triangle inequality); no persistence machinery invoked.
+
+**Claim 1 confirmed: 112/112** [claim]
+Minimal descent shift c* ≤ 2σ̄ in every check; bound conservative
+(max c*/(2σ̄) = 0.313, median 0.060 — path connectivity heals most direct edge
+stretches).
+
+**Strict-descent failures are geometry, not noise** [claim]
+At ε ≈ 0.053 (near the case's working ε), 271/35,243 reference edges violate
+unshifted descent — and 100% of them lie within 0.15 of the analytic threshold
+diagonal κ = 1.485σ (all-point baseline: 9.8%); median endpoint σ_Δ on violating
+edges 6.5× global median. Local triviality of the (ε,Δ)-square fails exactly on
+the singular locus, as the fibration reading predicts.
+
+**Claim 2 only vacuously tested** [open-question]
+With global σ̄, the gap condition held in 1/112 rows (strict descent also held
+there) — no counterexample, but the sufficiency direction needs the
+pointwise/masked refinement with the declared Δ-protocol, plus a rerun on the
+registered CASE-20260311-0001 1D sweep. Both registered in scope_fibration.md
+§5b/§7 as remaining gates.
+
+**Caveat kept visible** [observation]
+Strict failure at ε_working = 0.05 under seed swap does not contradict CASE-0001's
+go_nogo: seed swap redraws oscillator frequencies (realization change), which is
+outside the case's milder declared Δ; the pipeline mask excludes the band.
+
+---
+
+## Session 2026-08-01 (fifth entry): Third review round — sober status framing; local gap test passes at scale
+
+**Status reframed** [observation]
+Adopted from external review: "analytically established, computationally
+instantiated, empirically consistent with an existing Kuramoto field; localization
+prediction supported in one harsher-than-declared perturbation test." Claim 1's
+112/112 demoted from finding to implementation validation (the bound is a triangle
+inequality consequence — the data's contribution is absence of type/discretization
+surprises and quantified conservativeness). Localization claim weakened from
+"exactly on the singular locus, nowhere else" to "strongly enriched at, and in
+this run confined to, the independently known transition band"; the analytic line
+κ = 1.485σ is the independent referent, co-location with the pipeline σ_Δ field is
+constructively related and downgraded to consistency.
+
+**Local edge-wise gap test: risky cell exactly empty** [claim]
+Replacing the vacuous global gap test (1/112 non-vacuous rows) with the per-edge
+condition d ≤ ε − s(x) − s(y) (s = pointwise displacement of the applied
+perturbation): over 1,852,996 edge checks (4 seeds × 14 ε), the cell
+(gap satisfied ∧ descent violated) contains **0** edges, with 1.25M gap-satisfied
+and 598k gap-violated edges — the exact sufficiency prediction of
+scope_fibration.md §5a held at scale in a test with real power. Quantified beyond
+the theory: P(violated | gap violated) = 0.043 — the local gap condition is a
+sound but conservative flag (necessity fails badly and was never claimed).
+Script: `Simulationen/qdsp01_local_gap_test.py`.
+
+**Next tests registered by value** [observation]
+(1) Blind reconstruction test: estimate the singularity region from descent
+violations alone, compare localization power against null models (permuted edges,
+density-weighted edges, |∇O| thresholding, direct σ_Δ thresholding) — decides
+whether D(S) is a diagnostic instrument or only a reinterpretation. (2) 1D
+CASE-20260311-0001 rerun with declared Δ — registry hygiene; external review
+judges note → hypothesis promotion justified after it.
+
+---
+
+## Session 2026-08-01 (sixth entry): Runs 3–4 — declared-Δ rerun confirms plateau identification; blind test bounds the instrumental claim; note promoted to hypothesis
+
+**Run 3: registered protocol, declared Δ** [claim]
+CASE-20260311-0001 sweep regenerated per ScopeSpec (36 pts, N=500, own ω-draw;
+δ_01 = 0.1 rad IC jitter, 20 replicas; spread calibrates as documented, mean
+0.0022). Strict descent: 20/20 on the registered N=4 plateau interior (ε = 0.09
+working, 0.134); 10/20 exactly at the plateau edge (0.066); failures below
+plateau localize near the registered regime boundaries (κ ≈ 1.0–1.4, 2.27 vs.
+Invariants 1.475/1.8/2.25). Local gap risky cell: 0 (3,621 gap-satisfied edges).
+The go_nogo-plateau = local-triviality identification now holds on the case's own
+protocol, not only under harsher seed swaps.
+
+**Run 4: blind reconstruction — works, but no diagnostic surplus** [claim]
+From 895 pooled violation edges alone, robust fit recovers κ = 1.580σ + 0.038
+(truth 1.485σ; slope within 6.4%); median distance to the line 0.067 vs ≈ 0.47
+for matched-count nulls. However, matched-count top-σ_Δ (0.011, 100% in-band) and
+top-|ΔO| (0.031) baselines localize as well or better: the fibration violation
+adds no localization power over the quantities it is constructed from, in this
+test. Verdict recorded in scope_fibration.md §5b: D(S) is a coherent unifying
+reading with verifiable consequences, not (currently) a superior diagnostic
+instrument. The instrumental claim is bounded; the architectural claim is
+untouched. Fairness note: σ_Δ baseline consumes the full δ-protocol per point,
+the violation set used 4 cheap replicas.
+
+**Promotion executed** [observation]
+scope_fibration.md note → hypothesis (front-matter + DOC_INDEX), per the external
+review's stated condition (1D rerun) now met. §7 rewritten: hypothesis →
+working-definition requires a second system (pendulum, CASE-20260311-0003 data
+exist), Q-DSP-02 made precise or weakened, Q-DSP-05 settled; the run-4 bound must
+not be used as a promotion argument. Scripts/results:
+`Simulationen/qdsp01_case0001_1d_rerun.py`, `qdsp01_blind_reconstruction.py`,
+`qdsp01_check_results/`.
+
+---
+
+## Session 2026-08-01 (seventh entry): Evidence-status audit — EWS discriminator test specified
+
+**Diagnosis accepted** [observation]
+Rico's assessment (claims plausible, not sufficiently supported) triaged into
+three claim classes: (A) mathematical results — derived and numerically verified,
+but the citation base is self-referential and unreviewed; (B) empirical-structural
+results — one system family, self-generated, unreplicated; (C) universality claims
+across organisations/ecosystems/science/cognition — carried by illustrative
+examples that demonstrate nothing. The introduction promises class C. Run 4's
+honest negative (no diagnostic surplus over σ_Δ) generalises into the question a
+reader may ask of the whole book: what can ARW do that existing tools cannot?
+
+**Test specified before data contact** [experiment-proposal]
+`docs/notes/ews_discriminator_test_protocol.md`: preregistered comparison against
+the early-warning-signals programme. Distinctive claim: EWS is observable-blind
+and reads indicator rises as system properties; ARW's F0/F-gradient taxonomy
+allows an alarm to be a property of the *description*, predicting that genuine
+transitions produce cross-observable coherent alarms while artifacts are
+observable-idiosyncratic and co-located with that observable's σ_Δ. Delimited
+against multivariate EWS (which aggregates to gain power; ARW reads the
+disagreement). Data: Cascade whole-lake experiment — Peter (manipulated,
+transition) vs Paul (reference, none), same instruments, same period; public via
+EDI. Criteria, baselines (B1–B4 incl. plain σ_Δ threshold and multivariate EWS),
+and all four outcomes' consequences for the monograph fixed in advance.
+
+**Named risk** [open-question]
+Declarability of Δ on observational data is the real obstacle — ARW's
+perturbation class is native to simulation. Choosing Δ after seeing the alarms
+would make the test circular, so it is fixed in step 1 or the protocol stops.
+First step is deliberately a feasibility check (data inventory + Δ declarability),
+not an analysis. Q-EWS-01–03 to be registered on execution.
+
+**Publication route** [observation]
+Rico is outside academia; peer review is not a practical path for the class-A
+results. Not resolved this session; noted that preprint/data-repository routes
+(Zenodo/OSF DOI, open review) remain available and do not require affiliation.
+
+---
+
+## Session 2026-08-01 (eighth entry): EWS protocol hardened — review round 4
+
+**Reframed as a discrimination study, not "ARW vs EWS"** [observation]
+Title and framing fixed: *A Preregistered Discrimination Study of
+Observable-Specific versus System-Level Early Warning Signals*. The question —
+when an indicator rises, is that a property of the system or of the observable? —
+stands independently of ARW; ARW supplies one candidate discriminator among
+competitors. Consequence: a negative result is a finding about early-warning
+methodology rather than an internal disappointment, and the study is usable by
+researchers with no stake in ARW.
+
+**Five hardening measures adopted** [observation]
+(1) *Partial time blinding*: all timestamps shifted by one common random offset,
+preserving lags/windows/alignment while removing the calendar — with the limit
+stated explicitly rather than oversold (seasonal gaps and diel cycles keep
+within-year phase inferable; what the offset removes is alignment against the
+published manipulation schedule). (2) *Structured observable admission*: family /
+variable / reason / expected mechanism / admissibility concern, the last column
+being the rule that an F0 verdict may only be invoked if its risk was named in
+advance; plus a deliberate forcing-variable negative control. (3) *Audit trail*:
+`03_prereg/` with append-only `decision_log.md`, `delta_definition.md`,
+`observable_admission.md`, `coherence_rule.md`, `baseline_parameters.md`.
+(4) *Forced prediction before unblinding*: per-series call with confidence and a
+mandatory "expected reason if wrong" cell — prevents the post-unblinding
+discussion from collapsing into indicator-value debate. (5) *Freeze*:
+`freeze_prereg.py` SHA-256 manifest (tamper-tested: single-character edit
+detected) plus git tag `cascade_prereg_v1`; neither lock sufficient alone, both
+together make silent criteria change detectable.
+
+**Δ elevated to a property of the measurement apparatus** [claim]
+`delta_definition.md` requires Δ to be derived from instrument precision,
+calibration spec and replicate structure — from the EML metadata, never from the
+values. The short-lag fallback is permitted only with its bias direction stated
+(it inflates σ_Δ, making the ARW side more conservative); observables where the
+bias could run the other way are inadmissible under it.
+
+**H2 decision rule tightened** [observation]
+The coherence rule must dominate B1, B3 *and* B4 simultaneously; matching any one
+is not domination. B2 (hindsight-tuned EWS) is reported as an upper bound only.
+
+---
+
+## Session 2026-08-04: Cascade Stage-1 stop reviewed — the metadata declares ε, not Δ
+
+**Rico executed Stage 1 and stopped correctly** [observation]
+Analyst handoff v2 contains metadata, prereg records and blinded rehearsal CSVs —
+no key, no raw sources, methods-only extract of the Batt et al. SI (the full PDF
+correctly quarantined: its role-labelled trajectories can fingerprint the blinded
+series). Two deviations self-recorded: DEV-001 (blinding staged before Stage 1
+cleared → blinded set demoted to infrastructure rehearsal), DEV-002 (SI can
+fingerprint identities → fresh mapping and fresh analyst context required for any
+confirmatory run). The protocol's stop condition fired and was obeyed rather than
+renegotiated — that is the substantive methodological result of this round.
+
+**Retrieved fact: manufacturer specs exist for the declared configuration** [claim]
+The EML names YSI 6600 V2-4 with ROX 6150 optical DO and 6025 optical Chl-a. The
+manufacturer specification sheet (E52-02) publishes: DO %sat resolution 0.1%,
+accuracy ±1% of reading or 1% air saturation (0–200%); pH resolution 0.01,
+accuracy ±0.2 unit; temperature 0.01 °C / ±0.15 °C; chlorophyll range ~0–400
+µg/L, resolution 0.1 µg/L, detection limit ~0.1 µg/L, linearity R²>0.9999 — and
+**no accuracy figure at all**. Route 1 of the Stage-1 record's three exits is
+therefore partially open.
+
+**Conceptual correction: those numbers are ε, not Δ** [claim]
+An accuracy figure states when two readings are indistinguishable — that is the
+definition of ε. Δ is the admissible perturbation class: a modelling commitment
+about which variations count as the same system state, which no datasheet can
+supply. The distinction is invisible in simulation (Δ is injected there) and
+became visible only on observational data. Consequences: ε *is* declarable for DO
+and pH; Δ is undeclarable from metadata **in principle**, not accidentally, so no
+further metadata archaeology would help. Bias direction added (absent from the
+Stage-1 record, and backwards in the earlier delta_definition draft):
+underestimating Δ shrinks σ_Δ → σ_Δ < ε holds more easily → more stability
+verdicts, fewer F-gradient calls → **anti-conservative for H1**.
+
+**Chlorophyll fails on manufacturer grounds, F0-shaped** [interpretation]
+No stated accuracy, and the 6-Series manual calls single-point-calibrated
+fluorescence "only semiquantitative with regard to chlorophyll" — valid for
+relative change, not absolute concentration. The analysis would use it for
+cross-observable agreement on absolute alarm position, i.e. outside its declared
+valid use. Admitting it with its 0.1 µg/L *resolution* as the uncertainty floor
+would set ε orders of magnitude too low, in the anti-conservative direction.
+
+**Stronger stop reason: the coherence rule loses its object** [claim]
+With chlorophyll excluded and model-derived GPP/R/NEP excluded for process error,
+the admissible response set is DO %saturation and pH — two observables, with
+temperature only as forcing-variable control. "≥ k of n agree" carries no
+information at n = 2. The Cascade dataset therefore cannot support the
+discriminator test as designed — not because Δ is undeclarable (repairable by an
+honest modelling commitment) but because the surviving observable set is too small
+for H1 to be about anything. A replacement needs ≥ 4 independently instrumented
+response observables with published accuracy specs plus a same-apparatus labelled
+negative (the Cascade design's real strength, worth preserving).
+
+**Registrations** [observation]
+Q-EWS-01 answered negative *with corrected question*; Q-EWS-02/03 open but
+untested with the power blocker recorded; Q-EWS-04 new (admissible form of a Δ
+declaration for observational data; candidate: declared Δ-family with verdict
+stability required across it). Flagged: `docs/advanced/epsilon_and_scope_resolution.md`
+and `docs/glossary/perturbation_spread.md` treat Δ only in its simulation-native
+form and need the observational case. Review doc:
+`docs/notes/ews_stage1_review_epsilon_vs_delta.md`. Blinded CSVs were not opened.
+
+---
+
+## Session 2026-08-04 (second entry): Stage-1 review corrected — ε_instr ≠ ε_operational ≠ Δ
+
+External review round 5 caught the first draft over-correcting: having separated
+ε from Δ, it then treated manufacturer specifications as *determining* ε. Five
+precisions incorporated; the note is revised, not appended to.
+
+**Three objects, not two** [claim]
+Resolution (smallest representable difference), accuracy (deviation from a
+reference value) and ε (the scope's adjacency threshold) are distinct.
+Specifications constrain the **instrument contribution** to ε; a preregistered
+mapping rule is still required, and it is not unique — pH ±0.2 admits
+ε_truth = 0.2 (reading vs true value) or ε_pair = 0.4 (two readings mutually
+compatible); DO accuracy is reading-dependent, so the instrument contribution is
+initially a function ε(x), not a scalar. Drift between weekly rotations,
+temporal aggregation and the published preprocessing add further contributions
+the datasheet does not cover. Registered as Q-EWS-05.
+
+**pH standardization circularity** [claim]
+The published analysis z-scored pH within each year. An accuracy in pH units
+therefore applies only to the *raw* series; after standardization the induced ε
+would be ±0.2 divided by a data-estimated annual SD — data-derived, hence exactly
+the circularity preregistration exists to prevent. Raw units only.
+
+**Bias direction is conditional** [interpretation]
+The anti-conservativeness of an underestimated Δ requires σ_Δ to be
+inclusion-monotone. The repo's canonical σ_Δ(x) = sup_{δ∈Δ}|O(x+δ)−O(x)| is, so
+the corollary holds here; a distributional σ_Δ variant would not inherit it and
+must re-derive it. "Err upward" is bounded — an arbitrarily wide Δ tests a
+different claim; the clean form is the declared family Δ_min ⊆ … ⊆ Δ_max with
+verdict stability required across it.
+
+**Chlorophyll: F0 is Π-relative, and the first draft forgot that** [interpretation]
+Corrected classification: F0 for **Π_abs** (absolute concentration) under the
+available calibration record; **Π_rel** (relative fluorescence change) remains
+conceptually admissible — an alarm location need not depend on absolute
+concentration — but has no external ε rule (RFU carries no accuracy figure) and
+unquantified drift. The fault is the mismatch between sensor validity and chosen
+Π, not the sensor alone. Applying the F-taxonomy to the framework's own draft is
+the lesson.
+
+**Stronger power finding: shared channels, not just small n** [claim]
+"No configuration of k carries information" overstated it — k=2 of 2 tests
+concordance but degenerates to pairwise unanimity, losing redundancy and partial
+coherence. The decisive objection is independence: DO and pH come from the same
+sondes and share logging, deployment, weekly rotation and preprocessing incl. the
+documented mean-shift correction, so common-mode instrument error propagates into
+both and apparent coherence is not system-level evidence. Replacement criteria
+revised: ≥3 response observables is the mathematical minimum for a non-trivial
+majority, ≥4 a robustness recommendation (k=3 of 4 tolerates one failure), on
+**independent measurement channels**. Role separation restored: the reference
+lake is the system-side labelled negative; temperature is a covariate control,
+not a negative response control (it varies between lakes itself).
+
+**Framework consequence** [observation]
+`docs/advanced/epsilon_and_scope_resolution.md` and
+`docs/glossary/perturbation_spread.md` treat **both** ε and Δ only in their
+simulation-native forms. The observational case needs: the specification →
+ε_operational mapping rule (Q-EWS-05) and the Δ-as-modelling-commitment form
+(Q-EWS-04). This is the largest framework gain of the whole EWS episode, and it
+came from a test that never ran.
+
+---
+
+## Session 2026-08-04 (third entry): Core-concept drift audit — the doc↔code interface is where canon rots
+
+One pass per core concept, checking canonical documents against each other, against
+the pipeline code, against the case artifacts, and against the newest journal and
+open-questions entries. Full record: `docs/notes/arw_core_concept_drift_audit_2026-08-04.md`.
+
+**The repo is healthier than its own snapshot claims** [observation]
+242 non-README docs, 100% front-matter compliance, every file registered in
+DOC_INDEX including all twelve uncommitted ones, supersession chains recorded with
+reasons, no orphans, no Q-ID collisions (the apparent Q-CNS-06 / Q-SCA-06 duplicates
+are parent/sub-question pairs). The June repair plan's repo-side packages — WP-B1,
+WP-B2 (INC-01 + σ_Δ/ε* naming), WP-A4 (SDI canon) — are genuinely executed, not just
+marked done. Drift did not accumulate where the anti-pile-up machinery looks.
+
+**It accumulated at the doc→code interface instead** [claim]
+`pipeline/stability_mask.py` does not exist and never has (planned, action E-1/E-2),
+yet `epsilon_and_scope_resolution.md` claimed the exact stability mask is computed
+"(exactly)" in it, and `perturbation_spread.md` attributed the direct σ_Δ computation
+to it while describing `epsilon_kappa_map.py` as proxy-only. Since 2026-06-02
+`epsilon_kappa_map.py::compute_sigma_delta_windowed` has computed direct σ_Δ with
+`proxy_pointwise`, `proxy_localmax` and a `pointwise_underestimates` flag. An agent
+following canon looks for a missing module and falls back on precisely the pointwise
+proxy C1 invalidated at θ* — the one-sided false-negative mode. Notably
+`cover_stability_criterion.md` was *already* correct: the divergence sat inside one
+concept cluster for two months without anything catching it, because nothing in the
+consistency machinery compares prose against `pipeline/`. Fixed in all three documents
+and in `context_map_pipeline.md`.
+
+**Second-largest locus: the machine-readable context maps** [observation]
+Still v0.1, never resynced after the 2026-06-02 transfer/σ_Δ work. The pipeline map had
+`stability_mask.py` in the DAG chain and `transfer.py` as the transfer stage, with
+`transfer_v2.py`, `sweep_behavioral.py` and `pipeline/kernels/` absent. Corrected in
+place. Version discipline across the four maps is inconsistent (0.1 / 0.1 / 0.1 / 0.3
+with an internal 0.2 block, no `last_updated` anywhere) — which is why this stayed
+invisible.
+
+**`transfer_distortion_metrics.md` contradicted itself** [claim]
+The WP-A4 amendment (SDI collinear with RCD by construction in the 1D-sweep tier,
+w₄ = 0, independent-information requirement) was executed in the SDI and Φ sections,
+but the closing "Using the Metrics Together" section still demanded all four metrics
+and asserted "RCD = 0, TBS ≈ 0, PCI ≈ 1, but SDI > 0" — a configuration the same
+document proves impossible in that tier. Reconciled. Φ v2's channel mapping to
+`transfer_v2.py` was checked against the code and matches, weights included.
+
+**Empirical position has improved and the commentary has not** [interpretation]
+The 2026-06-10 audit's finding B2 states that Dissipation, Forcing, Symmetry Breaking
+and Aggregation have zero pipeline-validated cases. On disk CASE-0005 (Dissipation,
+`pendulum_gamma`) and CASE-0007 (Aggregation, `sir_epidemic`) both carry
+`decision: "go"` with full partition output; 0007 is `status: complete`. Four of six
+classes now have an anchor. Against that: both cases hold two divergent copies of their
+YAML triple — March originals under `CASE-<id>_*.yaml` and June canon under bare names,
+111–297 diff lines apart, nothing marking which is authoritative.
+
+**Highest-traffic stale definition is in the skill layer** [observation]
+`arw-repo-context` still defines SDI as the plateau-width similarity
+1 − |w_A − w_B|/max(w_A, w_B) — the quantity WP-A4 explicitly ruled *not* to be SDI —
+and carries the superseded four-term Φ. `arw-repo-pulse` is three weeks past its own
+staleness threshold: its case table misses that 0005/0007 ran, its pipeline table
+predates the σ_Δ implementation, and its Q-prefix map lists 9 of the 22 prefixes now
+in use. Both are loaded first in every session, so their drift propagates into work
+before any document is read. Not fixed in this pass (skill layer, separate maintenance
+pass) — recorded as decision 5 in the audit.
+
+**Registrations** [observation]
+No new Q-IDs. Five decisions left open for Rico (F1 shorthand `span < 2ε` vs
+`ε ≥ ε*(O,X)` in ~10 documents and the ScopeSpec schema comment; whether to promote a
+canonical `docs/core/falsification_schema.md`, since the fullest statement of the
+F-schema currently lives in a derived context map; duplicate case YAMLs; v1 transfer
+directories; skill refresh). Theory-update queue reaffirmed with Q-EWS-04/05 at the
+top, unchanged by this pass.
+
+---
+
+## Session 2026-08-04 (fourth entry): Audit decisions executed — and one defect the repairs surfaced
+
+Rico settled all five open decisions from the drift audit the same day. Execution record
+in `docs/notes/arw_core_concept_drift_audit_2026-08-04.md` §9.
+
+**F1 shorthand: option (b)** [observation]
+Canonical layer states `ε ≥ ε*(O, X_B)`; instantiation documents keep `span(π) ≷ 2ε` and
+gain a pointer block scoping it to connected images. Seven documents patched that way,
+three corrected outright (`schemas/ScopeSpec.yaml`, `CASE_TEMPLATE_signature_first.md`,
+`observable_decomposition.md`). The reasoning behind the split: the shorthand is not
+wrong, it is *tier-local*, and rewriting it in ML/neuroscience/statistical-physics
+bridge documents would cost the accessibility those documents exist for. What was
+actually dangerous was the schema comment — it is copied into every new ScopeSpec.
+
+**`docs/core/falsification_schema.md` promoted** [claim]
+The fullest statement of F0–F4 / F1_BC / F-gradient / Z_shared had been living in
+`context_map_falsification_bc.md`, a `meta`-layer artifact whose own header declares it
+derived. Consolidating it exposed how much canon was only there: the **Part VII V3.2
+decision-order revision** (F0 → F4 → F1 → F3 → F2 → F-gradient, because F2 asks whether
+θ* is stable and that presupposes θ* is estimated reliably — false while F4 is live), the
+A6 split (an invalid A6 is F0; a valid but unresolving A6 is F1 — λ_T read as λ_∞ without
+a convergence test versus λ_T on its own terms), claim-relative F1 with total collapse as
+the special case the pipeline tests, the F-gradient **mass** criterion μ(χ=1)/μ(X_B) > τ_∂,
+and the caveat that "never lower ε" is a proxy-based pipeline convention and not a
+χ-theorem. None of that was reachable from `docs/core/` or `docs/glossary/`. The map is
+now v0.2, `derived_from` the core document, with the core document declared to win.
+
+**Archive and stamps** [observation]
+Six March-dated YAMLs moved out of CASE-0005/0007; six `SUPERSEDED_v1.md` stamps written
+into the legacy transfer directories, each naming the v1 PCI defect, the superseding v2
+run and the v1 numbers for provenance. `archive/README.md` gained a one-copy rule and a
+withdrawal notice over its own Φ table — which had been quoting v1 values without one.
+
+**The repair surfaced a new defect (D-16)** [claim]
+Stamping revealed that CASE-0007 and CASE-0004 each contained a **doubled output path**,
+`cases/<id>/cases/<id>/transfer/`, holding byte-identical copies of their v1 transfer
+output from 2026-06-02 — a run invoked with the case root already in the path argument.
+The CASE-0004 copy is the one that matters: it holds an unstamped second instance of
+**Φ = 0.9983 `highly_admissible`**, the number `framework_validation.md` was built on and
+that the v2 recomputation replaced with Φ = 0.7794 `ambiguous_requires_inspection`
+(N_CONFOUND, COMPONENT_DISAGREEMENT). Stamping the canonical directory alone would have
+left a clean-looking copy of a withdrawn result one directory deeper. Archived.
+
+**Methodological note** [interpretation]
+Three of the four repairs found something the audit had not: the schema comment as the
+real propagation vector for the F1 shorthand, the amount of canon trapped in a derived
+artifact, and the nested-path duplicates. Auditing locates drift; *executing* the repair
+is what walks the paths where drift actually lives. Worth repeating the pattern rather
+than treating an audit report as the deliverable.
+
+---
+
+## Session 2026-08-04 (third entry): Assumption cross-check against refreshed skills — five corrections
+
+Skills were refreshed (pulse regenerated 2026-08-04 after the core-concept drift
+audit; `docs/core/falsification_schema.md` promoted to canonical). This session's
+own work was re-checked against them. Five items of drift found, all corrected in
+place; the substantive conclusions survive, one negative result hardens.
+
+**C-1 (material). The pipeline's "σ_Δ" field is a finite difference, not a
+perturbation spread** [claim]
+`cover_pipeline_v2.py::compute_perturbation_spread` returns the max absolute
+difference to the four grid neighbours — a discrete gradient magnitude on the
+sweep grid, consuming no perturbation protocol. Consequences: (i) run 1's
+"co-location with σ_Δ" is even less independent than flagged — it is near-identical
+to the |ΔO| baseline; (ii) run 4's fairness note was **backwards**: it claimed the
+winning baseline consumed a full δ-protocol per grid point and was thus more
+expensive than the violation set, whereas it is strictly *cheaper* than the four
+seed replicas. The negative result therefore hardens — the fibration violation set
+was beaten on localisation by a cheaper, purely local quantity. Baseline renamed
+"top grid-neighbour spread edges" throughout.
+
+**C-2. CASE-0001 working ε is 0.09, not 0.05** [observation]
+The qdsp01 README caveat cited "the case's working ε = 0.05". 0.05 is the ε in the
+2D paper field's `metadata.json`; CASE-20260311-0001 uses ε = 0.09, revised up from
+0.05 to sit in the N=4 plateau interior. The two were conflated. Run 3 was
+unaffected — it used the ScopeSpec plateau [0.066, 0.134] and reported ε = 0.09 as
+the working value correctly.
+
+**C-3. F-gradient fires on a mass criterion, not pointwise** [claim]
+`falsification_schema.md`: F-gradient fires when μ(χ=1)/μ(X_B) > τ_∂, where χ is
+assignment instability — not at a single unstable point. `scope_fibration.md` §3
+carried the pointwise form; corrected. Related: the Δ-direction obstruction in the
+fibration reading is properly **χ**, with σ_Δ as its proxy (χ computed nowhere,
+Q_NEW_26 open). This sharpens rather than weakens the fibration story and is now
+stated in §2a.
+
+**C-4. Global sup σ̄ is the idealised, superseded form — and run 1 shows why** [interpretation]
+The canonical admissibility condition is bulk supremum plus bounded boundary layer
+(`perturbation_spread.md`, sharpened 2026-07-18), because a bare global bound would
+forbid every perturbation-sensitive transition state. §5a's derivation uses global
+σ̄ and is therefore valid but conservative. Empirical convergence worth recording:
+with global σ̄ the gap condition held in 1 of 112 rows — vacuous. That vacuity is
+the empirical face of the theoretical reason the global form was abandoned, and
+run 2's per-edge localisation is a move toward the canonical refinement rather
+than a deviation from it.
+
+**C-5. Canonical falsification source updated** [observation]
+`docs/core/falsification_schema.md` (promoted 2026-08-04) is now the operational
+source, including the decision order F0 → F4 → F1 → F3 → F2 → F-gradient and the
+severity binding (F-gradient primary: `scope_refinement`). Added to `depends_on`
+of `scope_fibration.md` and `ews_stage1_review_epsilon_vs_delta.md`, with an
+explicit "if the two diverge, the schema wins" clause on the fibration §3 table.
+
+**Checked and clean** [observation]
+σ_Δ sup-form (bias-direction argument in the ε/Δ note holds); F1 stated as
+ε ≥ ε*(O,X_B), consistent with the 2026-08-04 shorthand decision (option b);
+Q-DSP-1–5 and Q-EWS-1–5 match the regenerated prefix registry with no collision;
+no reference anywhere in this session's work to the non-existent
+`stability_mask.py`; CASE-0003 N=2 and CASE-0004 N=4 corrections do not touch any
+claim made here.
+
+---
+
+## Session 2026-08-04 (fourth entry): The description atlas — the Vollraum's form fixed, correspondence reframed as chart collection
+
+**Strategic reframing (Rico)** [observation]
+Two moves in sequence: (i) instead of testing ARW against fresh data — which kept
+failing on feasibility — take *heavily validated* theories and ask whether ARW
+reproduces their structures locally (correspondence principle, the standard every
+general framework was first held to and ARW never was); (ii) the target remains the
+Vollraum description, so correspondence work is not validation-by-borrowing but the
+route to it.
+
+**The Vollraum's form is forced** [claim]
+If the no-complete-invariant reading holds (Q-DSP-02), a global summary of D(S) is
+unavailable and the only available form is an **atlas**: charts (regions of constant
+fiber) plus transition data plus obstructions. This turns §4's caveat into a
+specification of what a completed description *is*. Registered as
+`docs/notes/description_atlas_programme.md`.
+
+**The charts already exist** [interpretation]
+A validity condition as the sciences state it — Kn < 0.01, v ≪ c, N → ∞, m_e/M ≪ 1,
+λ ≪ L, small amplitude, Ginzburg — is exactly the assertion that on that parameter
+region the assignment is stable under the admitted perturbations, i.e. a chart.
+Physics has mapped them for a century and validated them far beyond anything ARW can
+produce; nobody has collected them as charts of one object. Reproducing a chart is
+the trivial half (run-4 lesson applies without mercy); the payoff is the **transition
+data** — overlaps, failures to glue, regions belonging to no chart. Known hard regions
+read as obstructions: the Kn transition regime as a gap between charts, ensemble
+inequivalence as a failed transition function, conical intersections as monodromy.
+
+**P-ATLAS registered as a falsification condition** [claim]
+*Inside a chart, ARW adds nothing over local analytic tools; any surplus can appear
+only at chart boundaries.* The inside half follows from the definition (constant
+fiber → locally trivial → nothing for a stability diagnostic that a gradient misses)
+and **has already fired in the predicted direction**: run 4 tested a smooth
+single-transition field — a chart interior — and the finite-difference baselines won.
+The boundary half is untested, with a stated end state: no surplus there either
+closes the instrumental claim permanently, leaving the architectural claim as a
+descriptive framework with no diagnostic value. `scope_fibration.md` §5b amended
+accordingly — run 4 is now "not yet fairly tested" rather than "tested and refuted",
+with the test-design limitation (chart interior; steepness and assignment instability
+coincide there) recorded and the replacement test's failure outcome fixed in advance.
+
+**Obstruction types M / T / R** [claim]
+The schema recognises only the metric mode (M: σ_Δ ≥ ε beyond τ_∂). The atlas reading
+predicts two more: **T (topological)** — assignment not single-valued around a loop,
+χ ≠ 0 where |∇O| stays finite, textbook instance being the geometric-phase sign change
+of adiabatic states around a conical intersection; and **R (no common refinement)** —
+two charts whose observable families admit no common refinement, so the overlap
+comparison is undefined rather than negative. T matters most: it is the mode run 4
+could not test (in a smooth field steepness and assignment instability coincide), and
+a confirmed T would be the first case where the fibration **adds** a schema category
+rather than re-describing one. Related to Q_NEW_26 — a topological obstruction is
+exactly where the σ_Δ proxy for χ cannot work in principle.
+
+**Well-posedness point** [observation]
+An atlas is intra-system: paths, not functors (`scope_fibration.md` §2b). Q-REL-05
+(Φ carries no BC-class-distance signal) was found on *cross-system* comparisons;
+comparing two charts of one system on their overlap is the well-posed application of
+the same machinery, where the known defect does not bite.
+
+**Preregistered case list and guards** [observation]
+Eight chart families fixed in advance (Knudsen; Born–Oppenheimer/conical
+intersections; canonical↔microcanonical; Ginzburg; harmonic↔anharmonic; geometrical↔
+wave optics; Markovian↔non-Markovian; rigid↔elastic), first three = A1, A2, A5. All
+reported including failures. Guards: θ* derived from the ARW construction *before*
+the literature value is consulted; a mandatory surplus prediction per case (A1's:
+θ* = θ*(π, ε, Δ) predicts the *spread* of published Kn thresholds across quantities
+as structure rather than imprecision — checkable, **not yet verified**); ARW/ART level
+discipline. Q-DSP-06/07 registered; §9 lists three outcomes that would end the
+programme.

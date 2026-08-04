@@ -25,6 +25,21 @@ This is the **necessary condition for scope validity** (Felder 2026, Definition 
 Proposition 1). It answers the question ARW presupposes: *when does the descriptive
 apparatus of a scope sustain a well-defined state description at all?*
 
+> **Necessary, and not sufficient — a recorded qualification (2026-07-27).**
+> Observable information does not entail that the observable responds to B at all. An
+> observable that reads the *describing system* rather than the system under description
+> — its own last operation, its own clock — satisfies both conditions in full (the cover
+> is non-trivial; σ_Δ = 0 exactly under any Δ that perturbs the system and not the
+> record) while producing an identical image on every admissible boundary condition, and
+> therefore supports no regime partition over B. That is the F1_BC condition, which the
+> necessary condition does not exclude. The two are independent.
+>
+> This cannot arise in the physical cases, where every observable is applied to the
+> system; it arises as soon as the describing system is inside the world it describes.
+> See [`../notes/observable_information_and_bc_responsiveness.md`](../notes/observable_information_and_bc_responsiveness.md)
+> for the construction, the measured instance, and Q_NEW_G. No change to the definition
+> above.
+
 ---
 
 ## Motivation

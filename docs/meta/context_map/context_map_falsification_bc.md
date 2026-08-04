@@ -1,15 +1,26 @@
 ---
 status: working-definition
 layer: docs/meta/context_map/
-version: 0.1
+version: 0.2
+last_updated: 2026-08-04
 task: 2/4 — Falsification + BC Taxonomy
 schema: context_map_framework.md §Schema
+derived_from:
+  - docs/core/falsification_schema.md
+  - docs/bc_taxonomy/boundary_condition_classes.md
 ---
 
 # ARW Context Map — Falsification + BC Taxonomy
 
 Agent-optimised reference. Schema defined in context_map_framework.md.
 Read that file first if schema notation is unfamiliar.
+
+> **Derived artifact (since 2026-08-04).** The falsification entries below are the
+> compressed rendering of `docs/core/falsification_schema.md`, which is the source of
+> truth. Until 2026-08-04 this map *was* the fullest statement of the schema — an
+> anomaly recorded as finding D-04 of the core-concept drift audit. If this map and the
+> core document disagree, **the core document wins** and this map is regenerated.
+> Do not add new schema content here; add it there and re-render.
 
 ---
 

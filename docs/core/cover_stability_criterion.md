@@ -238,7 +238,7 @@ exists, use the `sigma_delta_windowed` field. See the C1 validation caveat in §
 | Δ-stable cover | Partition reproducible under Δ (F2 not triggered) | `docs/core/` |
 | Admissible resolution regime | I_ε = [ε_min, ε_max] | `docs/advanced/epsilon_and_scope_resolution.md` |
 | Observable information (Def 6) | Scope validity precondition | `docs/core/observable_information.md` |
-| Stability mask M_stable | B-restricted admissible region | `pipeline/stability_mask.py` |
+| Stability mask M_stable | B-restricted admissible region | `pipeline/epsilon_kappa_map.py::compute_sigma_delta_windowed` (field `sigma_delta_windowed`); standalone `stability_mask.py` planned, not implemented |
 | Descriptive crossover | F-gradient failure category | `docs/glossary/observable_range.md` |
 
 **Scope tuple alignment.**

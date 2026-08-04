@@ -99,8 +99,11 @@ epsilon:
 observable_sufficiency:
   - observable_key: ""             # must match Pi[*].observable_key
     sufficient: true               # true | false
-    reason: ""                     # e.g. "span=0.274 >> 2*epsilon=0.046"
-    #       if false: "span=0.037 < 2*epsilon — observable_insufficiency, replace pi"
+    reason: ""                     # e.g. "eps=0.023 < eps*=0.137 (span=0.274, connected image)"
+    #       if false: "eps=0.023 >= eps*=0.019 — cover trivial (|C_eps|=1),
+    #                  observable_insufficiency, replace pi"
+    #       State eps* explicitly. Report span only as supporting evidence, and only
+    #       together with the connectedness claim that licenses the span shorthand.
     #
     # F1 CRITERION NOTE (Felder 2026): span(π) < 2ε is a sufficient condition for
     # cover triviality ONLY when the observable image O(X_B) is a connected interval.

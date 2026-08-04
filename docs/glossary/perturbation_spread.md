@@ -173,18 +173,28 @@ justifying the gradient proxy in `pipeline/epsilon_kappa_map.py`.
 
 ## Pipeline Computation
 
-`pipeline/stability_mask.py` (planned, action item E-1) computes σ_Δ directly:
+`pipeline/epsilon_kappa_map.py::compute_sigma_delta_windowed` computes σ_Δ directly
+on the sweep grid:
 
 ```
-σ_Δ(b_i) = max_{δ ∈ Δ_finite} |O(b_i + δ) − O(b_i)|
+σ_Δ(b_i) = max_{ j : |b_j − b_i| ≤ r } |O(b_j) − O(b_i)|
 ```
 
-where Δ_finite is a finite sample of the perturbation class.
-The output includes the σ_Δ field, the binary stability mask {σ_Δ(b_i) < ε},
-the unstable fraction, and the gradient-bound comparison.
+where the window radius r = sup{‖δ‖ : δ ∈ Δ} discretises the perturbation class.
+The output field `sigma_delta_windowed` carries the σ_Δ field alongside
+`proxy_pointwise`, `proxy_localmax`, and a per-point `pointwise_underestimates`
+flag; the binary stability mask is {σ_Δ(b_i) < ε} over that field.
 
-The existing `pipeline/epsilon_kappa_map.py` computes |∂O/∂κ| as a gradient proxy —
-this is the leading-order Lipschitz bound, not σ_Δ directly.
+The same module also computes the pointwise gradient |∂O/∂κ| — the leading-order
+Lipschitz proxy, **not** σ_Δ. Per C1 (2026-06-02) it under-reports σ_Δ at θ*
+(one-sided false negatives), so mask construction must use the direct field or
+the local-max bound, never the pointwise proxy near transitions.
+
+A standalone `pipeline/stability_mask.py` is **planned but not implemented**
+(action item E-1).
+*(Corrected 2026-08-04, core-concept drift audit: this section previously
+attributed the direct computation to the unimplemented `stability_mask.py` and
+described `epsilon_kappa_map.py` as proxy-only.)*
 
 ---
 

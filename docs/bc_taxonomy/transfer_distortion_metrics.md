@@ -301,18 +301,27 @@ where the theoretical admissibility threshold is known analytically.
 
 ## Using the Metrics Together
 
-The four metrics measure different aspects of distortion:
+The metrics measure different aspects of distortion:
 
-| Metric | What it captures | Blind to |
-|---|---|---|
-| RCD | Class count change | Boundary shift within same count |
-| TBS | Boundary location shift | Structural changes not at boundaries |
-| PCI | Per-state classification accuracy | Topology changes that preserve class membership |
-| SDI | Transition topology change | Fine-grained boundary effects |
+| Metric | What it captures | Blind to | Tier |
+|---|---|---|---|
+| RCD | Class count change | Boundary shift within same count | in Φ |
+| TBS | Boundary location shift | Structural changes not at boundaries | in Φ |
+| PCI | Per-state classification accuracy | Topology changes that preserve class membership | in Φ |
+| SDI | Transition topology change | Fine-grained boundary effects | diagnostic only (w₄ = 0) in the 1D-sweep tier |
 
-A complete distortion analysis requires all four.
-A reduction can have RCD = 0, TBS ≈ 0, PCI ≈ 1, but SDI > 0
-(same classes, same boundaries, different transition structure).
+**Independent-information requirement (WP-A4 amendment, 2026-07-17).** A metric
+belongs in a comparison set only if it carries information independent of regime
+count, membership, and transition order; a metric that is a deterministic function
+of the others is a diagnostic, not a dimension. In the 1D-sweep tier this excludes
+SDI, which is collinear with RCD by construction — so a complete analysis in that
+tier requires the **three** Φ channels (PCI, count/topology, TBS), with SDI reported
+unnormalised alongside. The classic illustration "RCD = 0, TBS ≈ 0, PCI ≈ 1, but
+SDI > 0" presupposes the Δ-induced transition graph and is **impossible** in the
+sweep tier, where the graph is forced to a path on N nodes.
+*(Section reconciled 2026-08-04, core-concept drift audit: it previously required
+"all four" metrics and asserted the PCI/SDI dissociation without the tier caveat,
+contradicting the SDI section of this same document.)*
 
 ---
 

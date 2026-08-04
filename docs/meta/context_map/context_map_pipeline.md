@@ -15,17 +15,21 @@ Agent-optimised reference. Schema defined in context_map_framework.md.
 ## Pipeline DAG (compressed)
 
 ```
-sweep.py → stability_mask.py → epsilon_sweep.py → epsilon_kappa_map.py
+sweep.py | sweep_behavioral.py → epsilon_sweep.py → epsilon_kappa_map.py [σ_Δ direct + proxy]
                                                  → epsilon_multi_observable.py [if |Π|>1]
                                                          ↓
                                                extract_partition.py
                                                          ↓
                                                    invariants.py
                                                          ↓
-                                  transfer.py [requires Invariants.json from BOTH cases]
+                               transfer_v2.py [CANONICAL; requires Invariants.json + annotated_results from BOTH cases]
                                                          ↓
                                               validate.py + audit.py
 ```
+*(DAG corrected 2026-08-04, core-concept drift audit: `stability_mask.py` removed
+from the chain — it is not implemented and its function lives inside
+`epsilon_kappa_map.py`; `transfer.py` (v1) replaced by `transfer_v2.py` as the
+canonical transfer stage.)*
 
 **Blocking relations:**
 ```
@@ -43,11 +47,13 @@ sweep.py: module∈pipeline | in=BCManifest+ScopeSpec(observable_keys)
     out=results/sweep/sweep_data.json | computes=O(b_i)_for_all_grid_points
     blocks=ALL_downstream | —
 
-stability_mask.py: module∈pipeline [PLANNED — action_item=E-1; not_yet_implemented] | in=sweep_data+Δ(ScopeSpec)+ε
-    out=σ_Δ_field+binary_mask+stability_mask_summary.json
-    computes=σ_Δ(b_i)=sup_δ|O(b_i+δ)-O(b_i)| | also=Lipschitz_bound_comparison
+sweep_behavioral.py: module∈pipeline | in=BCManifest+ScopeSpec | out=results/sweep/sweep_data.json
+    role=behavioural/agent_kernels(cf.pipeline/kernels/labyrinth_agent.py,labyrinth_env.py) | cases=0011,0012
+
+stability_mask.py: module∉pipeline [PLANNED — action_item=E-1/E-2; NOT_IMPLEMENTED — do_not_cite_as_source_of_values]
+    intended_out=σ_Δ_field+binary_mask+stability_mask_summary.json
+    CURRENT_LOCATION_OF_THIS_FUNCTION=epsilon_kappa_map.py::compute_sigma_delta_windowed(field=sigma_delta_windowed)
     trigger: σ_Δ≥ε@any_point → run_substrate_analysis(F0_vs_F-gradient)
-    cf.epsilon_kappa_map.py(pointwise_proxy=optimistic@θ*,¬conservative[C1]—prefer_this_module's_direct_σ_Δ)
 
 epsilon_sweep.py: module∈pipeline | in=sweep_data+ε_range(auto_from_span)
     out=N(ε)_curve+plateau[ε_lo,ε_hi]+N*+ε_working_recommended
@@ -55,9 +61,10 @@ epsilon_sweep.py: module∈pipeline | in=sweep_data+ε_range(auto_from_span)
     computes=|connected_components(G_ε)|_per_ε
 
 epsilon_kappa_map.py: module∈pipeline | in=sweep_data+ε_range
-    out=gradient_field_|∂O/∂κ|_over_(κ,ε)_space
-    role=pointwise_σ_Δ_proxy(Corollary1_exact_only_for_local-max_L) | pointwise_under-reports_σ_Δ@θ*[C1_2026-06-02:one-sided_FN,optimistic]
-    trigger: high_gradient_region → candidate_F-gradient | confirm_with=stability_mask.py(direct_σ_Δ_or_local-max,¬pointwise@θ*)
+    out=gradient_field_|∂O/∂κ|_over_(κ,ε)_space + sigma_delta_windowed{sigma_delta,proxy_pointwise,proxy_localmax,pointwise_underestimates}
+    computes_BOTH: direct_σ_Δ(windowed_max_abs_difference,USE_THIS) AND pointwise_proxy(Corollary1_exact_only_for_local-max_L)
+    caveat: pointwise_under-reports_σ_Δ@θ*[C1_2026-06-02:one-sided_FN,optimistic]
+    trigger: high_gradient_region → candidate_F-gradient | confirm_with=field:sigma_delta_windowed(¬proxy_pointwise@θ*)
 
 epsilon_multi_observable.py: module∈pipeline | in=sweep_data_all_π+ε_range
     out=per_π_N(ε)_curves+agreement_rate+consensus_plateau
@@ -73,11 +80,17 @@ invariants.py: module∈pipeline | in=PartitionResult+ScopeSpec
     mandatory_fields: N*,θ*,ε_working,ε_plateau,sweep_range
     blocks=transfer.py | sweep_range_missing→TBS_norm_undefined
 
-transfer.py: module∈pipeline | in=Invariants.json(case_A)+Invariants.json(case_B)+PartitionResult(both)
+transfer_v2.py: module∈pipeline [CANONICAL_since_2026-06-02] | in=Invariants.json(both)+PartitionResult.annotated_results(both)
+    out=transfer_v2/<A>_vs_<B>/TransferMetrics_v2.json+TransferReport_v2.md
+    computes=Φ_v2(W_PCI=0.55,W_TOPO=0.25,W_TBS=0.20;weights_provisional)+PCI_real_overlap(+ARI)+RCD+TBS_band
+    guards: VOID(empty_annotated_results|missing_sweep_range|undocumented_ε_mismatch) | TRIVIAL_PARTITION(N≤1) → Φ_UNDEFINED_¬low
+    epistemic: Φ=decision_score∈partition_compatibility(necessary_¬sufficient) | ¬BC-class_evidence[Q-REL-05]
+    SDI: w₄=0_default(collinear_with_RCD_in_1D-sweep_tier)[WP-A4_amendment_2026-07-17]
+
+transfer.py: module∈pipeline [v1 — DEPRECATED_for_BC-class-distance_claims]
     out=transfer/<comparison>/TransferMetrics.json
-    computes=Φ,RCD,TBS_norm,PCI,SDI,admissibility_verdict
-    ε_mismatch: report_raw_Φ+matched_ε_Φ_both
-    requires=sweep_range_in_both_Invariants(for_TBS_norm)
+    defect_2026-06-02: PCI_never_read_per-point_labels→collinear_with_RCD/SDI(~90%_of_Φ_tracked_N)
+    disposition: v1_Φ/PCI_values_withdrawn_as_BC-class_evidence | check_producing_module_before_citing_any_Φ
 
 validate.py: module∈pipeline | in=ALL_case_artifacts
     out=validation_report | exit_nonzero_on_schema_violation

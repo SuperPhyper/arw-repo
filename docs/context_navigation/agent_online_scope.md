@@ -91,6 +91,26 @@ o(t) = [d_exit, v_sight, e_edge, c_contact, m_cost, r_resource, p_progress]
 
 ## 3 Saliency Events — Encounter Boundaries
 
+> **Superseded in implementation (noted 2026-07-27).** §3 and §4.1 below specify
+> *named* saliency triggers, a three-level strength grading, and an archetype
+> library **partitioned by saliency type** with hard-gate matching. WP1 of the
+> existence test removed all of it on purpose
+> ([`../cognitive_architecture/agent_context_navigation_project_brief_v2.md`](../cognitive_architecture/agent_context_navigation_project_brief_v2.md)
+> §2): one scalar, category-free deviation signal; a flat library; similarity
+> matching; no strength buckets; no `priority_mode` distance gate. The reason is
+> anti-circularity — a categorical salience label makes the dimensionality of the
+> resulting mode ecology an input rather than a finding, which is the door brief v2
+> §3 closes.
+>
+> Consequence for readers: do **not** implement §3.1–3.3 or §4.1 as written. They
+> are kept for the record because the reasoning that led to them is documented here.
+> §0 of
+> [`scope_constructing_agent_architecture.md`](scope_constructing_agent_architecture.md)
+> still cites these sections as canonical and "used, not redefined"; that citation is
+> stale — see
+> [`../notes/scope_constructing_agent_implementability.md`](../notes/scope_constructing_agent_implementability.md)
+> §2.
+
 A saliency event marks a suspected discontinuity in the functionally relevant
 perceptual structure. It closes the current encounter and opens a new one,
 triggering a weight update.

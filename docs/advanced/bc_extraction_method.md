@@ -12,6 +12,12 @@ derived_from: docs/notes/social_bc_extraction_method.md
 
 # BC Extraction Method
 
+> **F1 notation.** The `span(π) ≷ 2ε` form used in this document is the
+> connected-image shorthand for the general criterion `ε ≷ ε*(O, X_B)` (cover
+> collapse). Valid where the observable image is a connected interval; for
+> multi-modal or fragmented images use ε*(O,X_B) directly. Canonical schema:
+> [../core/falsification_schema.md](../core/falsification_schema.md) §F1. *(Pointer added 2026-08-04, F1-shorthand decision, option b.)*
+
 This document describes a domain-neutral method for identifying boundary conditions
 (BCs) in systems where the BC structure is not given explicitly — i.e. where no
 governing equations, no natural sweep parameter, and no pre-defined observables exist.

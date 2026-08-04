@@ -418,8 +418,15 @@ written as `max_{δ ∈ Δ} |Π(x+δ) - Π(x)| < ε` is identical to `σ_Δ(x) <
 
 The **binary stability mask** is {x : σ_Δ(x) < ε} — the set of states that
 satisfy the consistency condition pointwise. States outside the mask are
-partition boundary states. The mask is computed (approximately via gradient
-proxy) in `pipeline/epsilon_kappa_map.py` and (exactly) in `pipeline/stability_mask.py`.
+partition boundary states. Both estimators live in
+`pipeline/epsilon_kappa_map.py`: the approximate gradient proxy |∂O/∂κ|·r, and
+the **direct** windowed estimator `compute_sigma_delta_windowed` (output field
+`sigma_delta_windowed`, with `proxy_pointwise`, `proxy_localmax` and a per-point
+`pointwise_underestimates` flag). Use the direct field for the mask. A standalone
+`pipeline/stability_mask.py` is **planned but not implemented** (migration action
+E-1/E-2) — do not cite it as a source of computed values.
+*(Corrected 2026-08-04, core-concept drift audit: the earlier wording claimed the
+exact mask was computed in `stability_mask.py`, a module that does not exist.)*
 
 **Caveat (C1/C2 validation, 2026-06-02):** the pointwise gradient proxy
 |∂Π/∂κ|·r is faithful in the bulk (median ratio ≈ 1.01) but systematically

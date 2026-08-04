@@ -163,7 +163,12 @@ This block feeds directly into `ScopeSpec.yaml`. Fill one row per observable.
 | [FILL] | [FILL] | ☐ yes / ☐ no | [FILL] | ☐ yes / ☐ no |
 
 *At least one observable must be marked `primary: true`. Sufficiency requires
-`span(π) ≥ 2ε`. If insufficient, replace observable — do not reject scope.*
+`ε < ε*(O, X_B)` — the cover must not collapse to a single component at the working
+resolution. `span(π) ≥ 2ε` is the shorthand for this, valid **only** when the
+observable image O(X_B) is a connected interval; for multi-modal or fragmented
+images ε*(O,X_B) can be much smaller than span/2. If insufficient, replace the
+observable — do not reject the scope. See
+[docs/core/falsification_schema.md](../core/falsification_schema.md) §F1.*
 
 ### Perturbations Δ
 
