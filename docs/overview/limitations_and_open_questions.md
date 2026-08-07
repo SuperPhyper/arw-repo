@@ -87,7 +87,9 @@ in real-world systems.
 Key questions include:
 
 - how scopes can be detected in complex systems
-- whether scope boundaries are observer-dependent
+- whether scope boundaries are declaration-dependent (i.e. how far they move with
+  the declared Δ and ε rather than with the system) — restated 2026-08-04; the
+  earlier wording "observer-dependent" is withdrawn at ARW level
 - whether algorithmic methods can detect scope transitions
 
 ---

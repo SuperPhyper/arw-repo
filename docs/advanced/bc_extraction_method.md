@@ -116,7 +116,7 @@ not the inputs to the BC operators, and not downstream behavioral consequences.
 
 | Type | Description | Example |
 |---|---|---|
-| Input observable | Measures the BC operator's input, not its output | Observer activation (measures G, not E[·\|G]) |
+| Input observable | Measures the BC operator's input, not its output | Onlooker activation in the modelled social system (measures G, not E[·\|G]) — an ART-level actor, not a formal scope ingredient |
 | Consequence observable | Measures downstream behavioral effects | Reputation change (measures outcome, not regime) |
 | Internal-state observable | Requires direct access to unobservable beliefs or expectations | Anticipated shame (not externally measurable) |
 

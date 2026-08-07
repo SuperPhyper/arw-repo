@@ -168,7 +168,7 @@ Position B (Scope-BC):
     BC class describes the scope (system + observable).
     Different observables of the same system can induce
     different BC classes.
-    BC class is observer-dependent.
+    BC class is observable-dependent (scope-relative).
 ```
 
 Position A is the more conservative reading and consistent with current

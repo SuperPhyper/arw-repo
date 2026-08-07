@@ -1,0 +1,64 @@
+# StudyRecord.yaml — Study Outcome Envelope (validation strategy v2)
+# Version: 0.1 (draft — companion to StudySpec.yaml v0.1; Q-VAL-01)
+#
+# Written AFTER the run. Records outcome strictly against the frozen
+# preregistration. A study without a StudyRecord is not citable.
+#
+# Design rules:
+#   R8  [MC] verdict is evaluated against Preregistration.md criteria only;
+#            post-hoc criteria go to `post_hoc_observations`, clearly separated,
+#            and carry no verdict weight
+#   R9  [MC] every deviation from the frozen declarations is listed; an empty
+#            deviations list is an explicit claim, not a default
+#   R10      no Φ / TBS_norm comparison against 1D cases (validation_strategy_v2.md
+#            §4); cross-study structural comparison goes to the Σ level (WP-A3/A5)
+
+schema_version: "0.1"
+id: "STUDY-YYYYMMDD-####"           # must match StudySpec.id
+title: ""
+status: "complete"                  # complete | failed | aborted
+run_at: "YYYY-MM-DD"
+recorded_at: "YYYY-MM-DD"
+
+# ── Outcome against preregistration ─────────────────────────────────────────
+outcome:
+  verdict: ""                       # per tier:
+                                    # T1: pass | fail
+                                    # T2: artifact_produced | degenerate |
+                                    #     no_surplus_over_1d
+                                    # T3: discriminates | does_not_discriminate |
+                                    #     inconclusive
+  criteria_results:                 # one entry per preregistered criterion
+    - criterion_id: ""              # e.g. "C1" as numbered in Preregistration.md
+      prediction: ""                # what was predicted, verbatim or condensed
+      result: ""                    # what happened
+      met: null                     # true | false | indeterminate
+  # T2-specific honesty field (validation_strategy_v2.md §2 T2 failure condition):
+  surplus_over_1d: ""               # what the artifact contains that the 1D form
+                                    # cannot express — or the explicit statement
+                                    # that there is none
+
+# ── Deviations [MC] R9 ──────────────────────────────────────────────────────
+deviations: []                      # each: {declared: "", actual: "", reason: "",
+                                    #        discovered_when: "before_run|during_run|after_run"}
+
+# ── Post-hoc observations (no verdict weight) [MC] R8 ───────────────────────
+post_hoc_observations: []           # findings outside the preregistered plan;
+                                    # candidate questions for the NEXT study
+
+# ── Artifacts produced ──────────────────────────────────────────────────────
+artifacts:
+  - path: ""                        # under results/
+    kind: ""                        # boundary_set | region | joint_epsilon_region |
+                                    # partition | comparison_table | other
+    description: ""
+
+# ── Registry hooks ──────────────────────────────────────────────────────────
+registry:
+  q_ids_touched: []                 # which open questions this study bears on,
+                                    # with proposed status change per ID:
+                                    # {id: "", proposed_status: "open|partially_answered|answered"}
+  journal_entry: ""                 # research_journal.md session date of the entry
+  related_studies: []
+  related_cases: []                 # 1D cases used as regression targets (T1 only);
+                                    # NEVER via Φ/TBS comparison [R10]

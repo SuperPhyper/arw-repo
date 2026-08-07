@@ -10,7 +10,7 @@ depends_on:
 related:
   - docs/bc_taxonomy/transfer_distortion_metrics.md
 open_questions:
-  - Is η_i intrinsic to the generator or observer-dependent? (→ Q-SIG-02)
+  - Is η_i intrinsic to the generator or declaration-dependent? (→ Q-SIG-02)
   - Monotonicity assumption for persistence intervals (→ Q-SIG-03)
   - Restriction as meta-BC: does it enter the persistence measure or define its domain? (→ Q-SIG-04)
   - Projection loss: what transfer claims are lost when Σ is read only in projected space? (→ Q-SIG-05)
@@ -68,7 +68,9 @@ What transfer claims are lost at the projection boundary is an open question
 | p(σ) | Persistence of BC configuration σ = η_birth(σ) − η_death(σ) |
 | Σ | The generator signature: the persistence measure p : 2^BC → ℝ≥0 |
 
-**On η vs ε.** ε is a fixed threshold chosen by the observer to construct a scope.
+**On η vs ε.** ε is a declared parameter of the scope — fixed at instantiation,
+not in the image of φ (see the level rule in
+`docs/art_instantiations/generator_admissibility_taxonomy.md`, ARW/ART separation).
 η is a continuous axis over which BC contributions are tracked to compute
 robustness — it is a meta-level parameter used to *define* Σ, not a parameter
 that appears in any individual scope.
@@ -86,8 +88,9 @@ resolution; η is dimensionless whatever the units of ε (a bare −log ε would
 take the logarithm of a dimensioned quantity and would not be comparable
 across observables with different units). Persistence-interval lengths are
 comparable across systems only once each has declared its ε₀ — the
-declaration is part of the instantiation, and Q-SIG-02's observer-dependence
-question now includes the ε₀ choice explicitly.
+declaration is part of the instantiation, and Q-SIG-02 — read at ARW level as
+*declaration-dependence*, not observer-dependence — now includes the ε₀ choice
+explicitly.
 
 **Domain and normalisation (2026-07-17).** Σ is carried on the **observed
 configuration family** K_G ⊆ 2^BC — the configurations attaining a non-empty

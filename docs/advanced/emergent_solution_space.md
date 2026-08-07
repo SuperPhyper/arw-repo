@@ -78,7 +78,7 @@ Higher Scope
 → structured occupation of a solution manifold
 → stable global structure
 
-In this interpretation, chaos signals that the observer is describing the system at an
+In this interpretation, chaos signals that the system is being described at an
 insufficient scope.
 
 ---

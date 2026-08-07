@@ -101,10 +101,13 @@ satisfies A6 trivially because no temporal variation is assumed. This does
 not make it less admissible; it makes A6 vacuously satisfied.
 
 **More precisely:** The choice to use time as the primary ordering dimension
-reflects a constraint on the observer, not a constraint on the scope
-framework. Systems that require temporal trajectories for stable existence
-impose time-structured observables on their observers. Systems that do not
-have no such requirement.
+reflects a constraint on the *measurement arrangement*, not a constraint on the
+scope framework. Systems that require temporal trajectories for stable existence
+impose time-structured observables on any arrangement that describes them.
+Systems that do not have no such requirement. (Wording aligned 2026-08-04 with
+the level rule in `docs/art_instantiations/generator_admissibility_taxonomy.md`:
+"observer" is an ART-level term for a modelled describing system and does not
+appear in ARW-level statements.)
 
 **Consequence for multi-observable scopes:** A scope Π = {π_micro, π_meso,
 π_macro, π_κ} where π_κ is a configurational observable and the others are

@@ -961,7 +961,22 @@ check done.)*
 - **Source:** monograph Part VII V3.1; schemas/ (GUARD-2/3).
 
 **Q_NEW_25 — General regime construction beyond the 1D sweep: admissible-transition relation and attributed transition graph**
-- **Status:** open
+- **Status:** partially_answered (2026-08-04)
+- **Proposed construction (2026-08-04, `docs/notes/general_regime_construction.md`):**
+  adjacency is **Δ-reachability** (x ⌢ y iff y ∈ x + Δ); G_{ε,Δ} has an edge iff
+  x ⌢ y *and* d(O(x),O(y)) ≤ ε; regimes are its components, subject to χ_{Δ,ε}.
+  Δ thereby does double duty — it fixes both what the assignment must survive and
+  along which steps chains may run — which removes an undeclared ingredient: the
+  current operative adjacency ("consecutive in the sweep") comes from the sweep
+  design, not from the scope tuple. The 1D sweep is recovered as the special case
+  Δ = one grid step. Two further findings: on a path graph the cover degenerates
+  into increment thresholding and the sorites/transitivity justification is
+  vacuous (while `cover_stability_criterion.md` defines G_ε over *all* pairs — a
+  doc↔code divergence); and a 1D sweep is **generically blind to structure of
+  codimension ≥ 2**, so point defects (conical-intersection type) cannot be
+  reached from any 1D sweep in principle. Still open: the attributed transition
+  graph (edges carrying ε_merge, hysteresis, α, signature type, BC label) and the
+  SDI consequence.
 - **Question:** The operative regime construction (ε-adjacency graph on an
   ordered sweep) defines regimes of the observable image along the swept path
   only. The general notion — components under an *admissible-transition
@@ -1978,3 +1993,120 @@ because the atlas is the form D(S) takes, not a separate object.)*
   merely in practice).
 - **Registered:** 2026-08-04.
 - **Source:** description_atlas_programme.md §5, §8.
+
+---
+
+## ε as a Declared Family — Multiplicity, Composition and Commensurability (registered 2026-08-04)
+
+*(Source: `docs/notes/general_regime_construction.md` §2.2–§2.4. Collision check:
+Q-EPS prefix grepped against open_questions.md and all of docs/ — free.)*
+
+**Q-EPS-01 — What is the admissible form of a declared ε-family?**
+- **Status:** open
+- **Question:** The scope tuple carries one ε, but Π is a *set*, and instrument
+  accuracy can be reading-dependent. Three multiplicities must be separated: across
+  observables (ε_i), across the domain (ε_i(x)), and across resolution (the family
+  {S_ε} — already sound, this is the fibration's ε-direction). Proposed form:
+  ε = (ε_i)_{π_i ∈ Π}, each possibly a function on X_B, plus a declared
+  symmetrisation for the edge relation (`min(ε(x), ε(y))` recommended as the
+  conservative default).
+- **Why it matters:** the current ScopeSpec carries a scope-level `epsilon` *and*
+  per-observable `resolution_floor` with no stated relation (CASE-0001: 0.09 vs
+  0.01). Empirically the scalar assumption has already been abandoned once with
+  effect — run 2 of the Q-DSP-01 checks used a per-point threshold, and that is
+  what turned a vacuous test into an informative one.
+- **Registered:** 2026-08-04.
+
+**Q-EPS-02 — Which composition rule over Π is canonical?**
+- **Status:** open
+- **Question:** With ε a family, two constructions differ. **Rule A (joint graph):**
+  edge iff Δ-reachable and d_i ≤ ε_i for all i, regimes = components. **Rule B
+  (common refinement):** per-observable partitions intersected via composite label
+  tuples. They coincide on a 1D path and diverge in general, because a Rule-B class
+  need not be *connected* while a Rule-A component is connected by construction.
+  The atlas reading needs charts to be regions, which argues for Rule A — but the
+  choice must be declared, not inherited. `pipeline/epsilon_multi_observable.py`
+  currently implements Rule B implicitly.
+- **Why it matters:** determines whether multi-observable regimes are regions at
+  all, and therefore whether the atlas/chart language applies to them.
+- **Registered:** 2026-08-04.
+
+**Q-EPS-03 — What normalisation makes a cross-observable ε well-formed?**
+- **Status:** open
+- **Question:** A single numeric ε across observables with different units is
+  ill-formed, not merely imprecise. CASE-20260311-0003 carries `lambda_proxy`
+  (rate, span 0.0688) and `var_rel` (dimensionless, span 0.2974) — factor 4.3 in
+  span, with the swept ε-grid reaching 0.5, seven times `lambda_proxy`'s entire
+  span. Candidate normalisations: by span, by ε*(O, X_B), or by a declared physical
+  scale. Each is a modelling step with its own consequences.
+- **Related finding (same source, §2.4):** `epsilon_multi_observable.py` asks in its
+  own docstring whether one ε suffices and what the joint (ε₁, ε₂) region is, but
+  iterates a single scalar applied to all observables — so only the diagonal
+  ε₁ = ε₂ is explored and its question 3 is unanswered by the module that poses it.
+  The evidence for a negative answer to its question 2 is already in the output:
+  CASE-0003 records `agreement_rate = 0.367`.
+- **Registered:** 2026-08-04.
+
+---
+
+## Q-VAL series — validation strategy v2 and the study unit (2026-08-05)
+
+Source: `docs/notes/validation_strategy_v2.md`. Prefix collision-checked against
+this file and `docs/` on 2026-08-05 — free.
+
+**Q-VAL-01 — What is the schema of the study unit?**
+- **Status:** partially_answered — draft schemas exist as `schemas/StudySpec.yaml`,
+  `schemas/Preregistration_template.md`, `schemas/StudyRecord.yaml` (all v0.1,
+  2026-08-05) with design rules R1–R10 stated in their headers; machine
+  checking (`pipeline/validate_study.py`) is planned, not built; promotion
+  awaits the first study run under the schemas.
+- **Question:** What exactly must `StudySpec.yaml`, `Preregistration.md` and
+  `StudyRecord.yaml` declare, and how are the ε-family block (ε_i, optional
+  ε_i(x), normalisation, symmetrisation), the sampled-domain Δ-reachability rule
+  and the composition rule (Rule A/B) encoded so that admissibility is
+  machine-checkable rather than reviewed by hand?
+- **Why it matters:** the ε-family multiplies declared freedom (Q-EPS-01–03);
+  without a frozen, checkable declaration format the successor strategy inherits
+  a post-hoc tuning surface larger than the one it replaces.
+- **Registered:** 2026-08-05.
+
+**Q-VAL-02 — What is the acceptance criterion of the recovery check?**
+- **Status:** answered — decided by Rico 2026-08-05: boundary-tolerant form.
+  Regime count N exact; membership exact in the interior; only cut-adjacent
+  samples may shift by ≤ 1 grid step; every deviation reported per case.
+  Frozen in `docs/notes/validation_strategy_v2.md` §2 (T1) before any
+  recovery run. Rationale: strict label-identity risks false alarms from
+  floating-point tie-breaks and windowed σ_Δ in the original pipeline;
+  plateau-equivalence alone would permit silent interior relabelling.
+- **Question:** T1 requires the general construction with Δ = one grid step to
+  reproduce the registered 1D partitions. Exactly (label-identical), or within a
+  declared tolerance (boundary position within one grid step)? Floating-point
+  and windowing details of the original pipeline may make bit-exact
+  reproduction the wrong standard — but any tolerance must be declared before
+  the check runs, or the check proves nothing.
+- **Why it matters:** the recovery check is the only place where the old cases
+  still carry load; an undeclared tolerance would quietly convert a falsification
+  condition into a fit.
+- **Registered:** 2026-08-05.
+
+**Q-VAL-03 — Which codim-2 anchor system serves the distinctiveness test?**
+- **Status:** answered — decided by Rico 2026-08-05: staged. First anchor is
+  the constructed minimal model: real-symmetric two-level system
+  H(x, y) = [[x, y], [y, −x]], gap g = 2√(x² + y²) with degeneracy at the
+  origin (codim 2, von Neumann–Wigner), mixing angle θ(x, y) as the
+  monodromy-carrying observable — analytic ground truth, no external data.
+  A located physical instance (published conical-intersection data) is
+  registered as a follow-up study once type-T machinery exists; deliberately
+  not first, to keep the Δ-on-observational-data problem (Q-EWS-04) out of a
+  test of the construction itself. Recorded in
+  `docs/notes/validation_strategy_v2.md` §2 (T2 item 4).
+- **Question:** T2 item 4 needs a 2-parameter system with a known point defect
+  where the general construction detects the defect and a preregistered family
+  of 1D sweeps generically does not. Constructed minimal model (e.g.
+  real-symmetric two-level degeneracy, von Neumann–Wigner codimension 2) or a
+  located physical instance? The choice trades interpretability against
+  external force.
+- **Why it matters:** this is the prerequisite for any type-T (monodromy) work
+  (Q-DSP-07) and the strongest single test that the generalisation is necessary
+  rather than notational.
+- **Registered:** 2026-08-05.

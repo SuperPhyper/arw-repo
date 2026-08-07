@@ -1,0 +1,123 @@
+# StudySpec.yaml — Study Declaration Schema (validation strategy v2)
+# Version: 0.1 (draft — answers Q-VAL-01 at design level; promoted only after
+#               the first study runs under it)
+#
+# A study is the successor unit to the case: one declared question addressed to
+# one tier (T1 coherence | T2 distinctiveness | T3 discrimination), with frozen
+# declarations, run once. See docs/notes/validation_strategy_v2.md.
+#
+# Design rules this schema enforces (machine-checkable where marked [MC]):
+#   R1 [MC] exactly one tier; question and target Q-IDs declared
+#   R2 [MC] ε declared as a FAMILY: one entry per observable; scalar shorthand
+#           only valid when |Pi| == 1 (Q-EPS-01)
+#   R3 [MC] any cross-observable comparison requires a declared normalisation
+#           (Q-EPS-03); any per-point ε requires a declared symmetrisation
+#   R4 [MC] |Pi| > 1 requires an explicit composition rule A or B (Q-EPS-02)
+#   R5 [MC] Δ-reachability rule declared; `coincides_with_grid_neighbors: true`
+#           requires a non-empty justification deriving the coincidence from
+#           Delta (guards against reintroducing the undeclared-adjacency defect,
+#           general_regime_construction.md §1.2/§6.2)
+#   R6 [MC] preregistration hash + git tag present and study frozen before run
+#   R7      boundary objects are sets: no `theta_star: <scalar>`, no
+#           `sweep_range: [min, max]` anywhere in this schema
+#
+# Validation: `pipeline/validate_study.py` — PLANNED, does not exist yet.
+# Until it exists, the [MC] checks are performed by hand against this header.
+#
+# Usage: copy to studies/STUDY-YYYYMMDD-####/StudySpec.yaml and fill in.
+
+schema_version: "0.1"
+id: "STUDY-YYYYMMDD-####"
+title: ""
+status: "draft"                     # draft | frozen | running | complete | failed
+created_at: "YYYY-MM-DD"
+frozen_at: ""                       # set when preregistration is hashed; [MC] R6:
+                                    # must be non-empty before any results/ exist
+
+# ── Question ────────────────────────────────────────────────────────────────
+tier: ""                            # T1 | T2 | T3   (exactly one) [MC] R1
+question: ""                        # one sentence; the thing this study decides
+target_q_ids: []                    # e.g. ["Q-VAL-02", "Q_NEW_25"]
+strategy_ref: "docs/notes/validation_strategy_v2.md"
+
+# ── Scope declarations ──────────────────────────────────────────────────────
+# X and B follow ScopeSpec.yaml v0.2 conventions (reused, not redefined).
+X: {}                               # as in ScopeSpec.yaml
+B: {}                               # as in ScopeSpec.yaml, incl. BC classes
+
+# Sampled domain — replaces sweep_range. [R7]
+domain:
+  parameters:                       # one entry per swept/sampled parameter
+    - name: ""
+      role: ""                      # control | order | nuisance
+      units: ""
+  sampling:
+    type: ""                        # dense_grid | sparse | trajectory | given_data
+    specification: ""               # grid shape / sample-hull description / data ref
+    n_samples: null
+  dimension: null                   # dimension of the sampled region (integer)
+
+# ── Π: observables (ScopeSpec Pi conventions; exactly one primary) ──────────
+Pi:
+  - id: "pi_01"
+    observable_key: ""
+    primary: true
+    map: {}                         # as in ScopeSpec.yaml
+    units: ""
+
+# ── Δ and the reachability rule ─────────────────────────────────────────────
+Delta:
+  perturbations:                    # as in ScopeSpec.yaml Delta entries
+    - id: "delta_01"
+      type: ""
+      action: {}
+      bounds: {}
+  reachability:                     # [MC] R5 — the admissible-transition relation
+    rule: ""                        # explicit predicate: "x ⌢ y iff ..." on the
+                                    # SAMPLED domain (how 'one perturbation apart'
+                                    # is decided between samples)
+    coincides_with_grid_neighbors: false
+    justification: ""               # REQUIRED non-empty if the above is true:
+                                    # derivation of the coincidence from Delta
+                                    # (e.g. "Delta = one grid step in kappa by
+                                    # declaration; grid spacing = |Delta|")
+
+# ── ε-family ────────────────────────────────────────────────────────────────
+# [MC] R2: one entry per Pi entry (matched on observable_key).
+# Scalar shorthand `epsilon: <number>` at top level is INVALID when |Pi| > 1.
+epsilon_family:
+  entries:
+    - observable_key: ""
+      form: "constant"              # constant | per_point
+      value: null                   # number (constant) or null (per_point)
+      per_point:                    # required iff form: per_point
+        definition: ""              # ε_i(x) as formula or data reference
+        symmetrisation: ""          # min | mean | max  — [MC] R3; min is the
+                                    # conservative default (fewer edges)
+      units: ""
+      choice_note: ""               # why this ε_i (plateau, instrument, declared)
+  cross_observable:                 # required iff |Pi| > 1  [MC] R3
+    normalisation: ""               # span | epsilon_star | physical_scale | none_needed
+    statement: ""                   # the actual normalisation as a formula;
+                                    # "none_needed" only if no cross-observable
+                                    # comparison occurs anywhere in the study
+  composition_rule: ""              # A | B   — required iff |Pi| > 1  [MC] R4
+                                    # A = joint graph (components; regions)
+                                    # B = common refinement (label tuples; classes
+                                    #     need not be connected) — if B, state why
+  composition_note: ""
+
+# ── Preregistration binding ─────────────────────────────────────────────────
+preregistration:                    # [MC] R6
+  path: "Preregistration.md"
+  sha256: ""                        # hash of the frozen file
+  git_tag: ""                       # e.g. study_0001_prereg_v1
+  frozen_before_run: false          # must be true before results/ exist
+
+# ── Expected outputs (declared, not filled) ─────────────────────────────────
+expected_artifacts:
+  - path: "results/"
+    kind: ""                        # boundary_set | region | joint_epsilon_region |
+                                    # partition | comparison_table | other
+    note: ""                        # boundary objects are SETS (sampled curves /
+                                    # component lists with codimension), per R7

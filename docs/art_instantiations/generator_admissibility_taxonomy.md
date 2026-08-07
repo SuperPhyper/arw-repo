@@ -92,12 +92,29 @@ for the formal definition of C and its constituent criteria.
 
 - **φ determines** B_λ (the parameter domain under λ) and Π_λ (the class of
   observables the generator structurally permits)
-- **Observer determines** Δ (perturbation class) and ε (resolution threshold)
+- **Δ (perturbation class) and ε (resolution family) are not in the image of φ**:
+  they are *free parameters of the scope*, fixed by declaration at instantiation.
 
-The full scope arises only through observer completion: S_i = (φ(λ), Δ, ε).
+The full scope arises only once those parameters are declared:
+S_i = (φ(λ), Δ, ε).
 
-This preserves the core ARW principle: the observer remains sovereign over
-perturbation class and resolution. G constrains but does not determine the scope.
+G constrains but does not determine the scope. That is a statement about the
+**arity of φ**, not about a subject.
+
+> **Level rule (2026-08-04).** Earlier wording read "the Observer determines Δ
+> and ε" and "the observer remains sovereign over perturbation class and
+> resolution". This is withdrawn at ARW level. Δ and ε are declared parameters —
+> coordinates of the scope — and require a specification, not a subject. Naming a
+> subject here invites a regress: a describing system has its own generator and
+> its own scopes, which would then need their own observer, without end. The term
+> **observer** is an ART-level term for a *modelled describing system* (see
+> `docs/cognitive_architecture/`, `docs/context_navigation/`) and must not appear
+> in ARW-level constructions. Nothing formal is lost: A(G) below already
+> quantifies over (Δ, ε), which is exactly the coordinate reading.
+> Corollary: an instrument's resolution floor is **not** an observer constraint
+> either — it is a property of the composite system (target + apparatus) and
+> belongs to that composite's B/Π (see
+> `docs/notes/ews_stage1_review_epsilon_vs_delta.md` on ε_instr vs ε_operational).
 
 ARW observes G without C — asking only whether scopes are formally admissible.
 ART instantiates G with C — asking whether admissible scopes remain stable,
@@ -110,6 +127,11 @@ reproducible, and compression-viable under the operative context.
 ### Formal admissible region
 
 > **A(G)** = {λ ∈ Λ : ∃ (Δ, ε) such that S = (φ(λ), Δ, ε) is admissible}
+
+Read under the coordinate rule above: A(G) collects the λ for which *some*
+assignment of the free parameters yields an admissible scope. The existential
+quantifier is the formal content of "G does not determine the scope"; it is
+unaffected by the withdrawal of the observer wording.
 
 This is the ARW-level assessment: no context required, only formal admissibility
 conditions (cover non-trivial, Δ-stable, within I_ε).

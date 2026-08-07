@@ -2898,3 +2898,237 @@ the literature value is consulted; a mandatory surplus prediction per case (A1's
 as structure rather than imprecision — checkable, **not yet verified**); ARW/ART level
 discipline. Q-DSP-06/07 registered; §9 lists three outcomes that would end the
 programme.
+
+---
+
+## Session 2026-08-04 (fifth entry): Out of 1D — the general regime construction
+
+Rico's directive: no interest in testing only in 1D; argue openly now, test beyond
+1D later. Registered as `docs/notes/general_regime_construction.md` (hypothesis).
+
+**Two defects of the 1D operative form** [claim]
+(i) *Degeneration.* `scope.md`'s operative definition edges only **consecutive**
+samples, so G_ε is a path graph; between two nodes there is exactly one chain, and
+components are just the maximal runs with consecutive increments ≤ ε — the
+construction is increment thresholding. Consequently the argument that justified
+adopting the cover at all (transitivity-safety, sorites resolution) is **vacuous**
+in the format the pipeline uses, since it requires several distinct chains.
+`cover_stability_criterion.md` defines G_ε(O) over **all** pairs and does retain
+the content: a doc↔code divergence in the central construction, of the same class
+the 2026-08-04 drift audit found elsewhere.
+(ii) *Undeclared adjacency.* "Consecutive in the sweep" comes from the sweep
+design, not from (B, Π, Δ, ε). The construction has depended on an ingredient
+outside the tuple — structurally the same defect as the ε/Δ conflation found on
+observational data.
+
+**Proposed general construction** [claim]
+Adjacency = **Δ-reachability**: x ⌢ y iff y ∈ x + Δ; edge iff x ⌢ y and
+d(O(x),O(y)) ≤ ε; regimes = components, subject to χ_{Δ,ε}. Δ does double duty —
+fixing both what the assignment must survive and along which steps chains run —
+so nothing new is declared and the smuggled ingredient is derived instead. No
+ordering, sweep or grid enters; dimension does not appear. The 1D sweep is
+recovered exactly as the special case Δ = one grid step, so existing cases are not
+invalidated but re-derived.
+
+**Codimension argument — the reason this is necessary, not tidy** [claim]
+A 1D sweep meets a codim-1 boundary transversally but meets a codim-2 point defect
+only by coincidence: **1D is generically blind to all structure of codimension
+≥ 2**, and refining the sweep does not help. Real symmetric two-level degeneracies
+are codim 2 (von Neumann–Wigner), so conical-intersection-type defects — the
+atlas programme's candidate type-T obstruction — are unreachable from any 1D sweep
+in principle. Q-DSP-07 therefore has this construction as a prerequisite.
+
+**Schema consequences** [observation]
+θ* scalar → boundary *set* (curve/surface, with connectivity and codimension);
+`sweep_range` → swept region; **TBS_norm has no general form** and would need a
+Hausdorff-type distance between boundary sets or must be declared inapplicable —
+which, since TBS is a Φ component, means 2D cases cannot be compared to 1D cases
+under the current transfer metric. Given Q-REL-05 this is the moment to make the
+dependency explicit rather than patch it. The ε-plateau logic survives unchanged:
+N(ε) is a component count, defined for any graph.
+
+**Assets and honest limits** [observation]
+The Simulationen 2D scripts already compute grid-neighbour adjacency and cover
+height on 2-parameter fields — computational core exists, but their adjacency is
+grid-derived, not Δ-derived, so they instantiate the construction only
+approximately. CASE-20260430-0013 is registered as 2D and has never been run.
+Risks recorded: sampling cost exponential in dimension (no sparse variant
+designed); Δ-reachability must be made concrete without silently becoming "grid
+neighbours" again; extra dimensions add noise unless they carry declared scope
+content. Testing outlook (recovery check → 2D re-derivation with boundary as a set
+→ codim-2 detection vs a family of 1D sweeps), each to be preregistered before
+running.
+
+---
+
+## Session 2026-08-04 (sixth entry): ε is a family — three multiplicities, two composition rules, one unanswered module
+
+Rico caught a second silent assumption: that there is one ε per scope. There is
+not, and the repo already contradicts it in three places. Registered as
+§2.2–§2.4 of `general_regime_construction.md` plus Q-EPS-01/02/03.
+
+**Three multiplicities, only one of them sound** [claim]
+Across resolution — the family {S_ε}, I_ε, cover height, η = −log(ε/ε₀) — is fine;
+that is the fibration's ε-direction, where a scope legitimately *is* a point.
+Across observables (ε_i) and across the domain (ε_i(x)) were assumed away. Repo
+evidence: ScopeSpec carries a scope-level `epsilon` *and* a per-observable
+`resolution_floor` (CASE-0001: 0.09 vs 0.01) with the relation nowhere stated; and
+`ews_stage1_review_epsilon_vs_delta.md` §2.1 names ε(x) for reading-dependent
+accuracy and then drops it.
+
+**The scalar assumption had already been abandoned once, with effect** [observation]
+Run 2 of the Q-DSP-01 checks used the per-point condition d ≤ ε − s(x) − s(y).
+That is a non-constant threshold, and it is precisely the step that turned a
+vacuous test (gap condition satisfied in 1 of 112 rows) into an informative one
+(1.85M edge checks, risky cell empty). The non-scalar form was the one that worked
+— unnoticed at the time.
+
+**Commensurability: cross-observable ε is ill-formed without declared normalisation** [claim]
+CASE-20260311-0003 runs `lambda_proxy` (rate, span 0.0688) and `var_rel`
+(dimensionless, span 0.2974) under one ε — a 4.3× span disparity, with the swept
+grid reaching ε = 0.5, seven times `lambda_proxy`'s entire span. Candidate
+normalisations (span, ε*, declared physical scale) are each modelling steps.
+
+**Two composition rules, concealed by 1D** [claim]
+Rule A (joint graph: edge iff Δ-reachable and all d_i ≤ ε_i, then components) vs
+Rule B (common refinement of per-observable partitions). They coincide on a path
+graph and diverge in general: a Rule-B class need not be connected, a Rule-A
+component is by construction. The atlas reading needs charts to be regions, which
+argues for Rule A — but the choice must be declared. Recorded as Q-EPS-02.
+
+**Finding: `epsilon_multi_observable.py` does not answer its own question** [claim]
+The module's docstring asks "Does a single ε suffice, or does each observable need
+its own εᵢ? What is the joint admissible region in (ε₁, ε₂) space?" — but the
+implementation iterates one scalar and applies it to every observable, so only the
+diagonal ε₁ = ε₂ is explored and question 3 is never addressed. It implements Rule
+B implicitly. And the answer to its question 2 is arguably already in its own
+output: `CASE-20260311-0003/results/partition/EpsilonMultiObservable.json` records
+`agreement_rate = 0.367` — the two observables share plateau structure on barely a
+third of the ε-grid — with nothing drawn from it. Third doc↔code divergence found
+today, after the 1D consecutive-vs-all-pairs G_ε gap and the "σ_Δ" field that is a
+four-neighbour finite difference.
+
+**Risk added to the note** [observation]
+An ε-family multiplies the declaration burden (each ε_i, each profile, the
+symmetrisation, the normalisation). More declared freedom is more room for
+post-hoc tuning, so any case using a non-constant ε-family must freeze its
+declarations before the run.
+
+---
+
+## Session 2026-08-04 (seventh entry): The observer withdrawn from ARW level
+
+Rico: "Beobachter haben ihre eigenen Generatoren zur Beschreibung des Erlebten. Ich
+kann mir nicht mehr erklären, warum ein Beobachter überhaupt eine Rolle in der
+formalen Konstruktion spielen sollte." Audited, and he is right.
+
+**Where the term actually sat** [observation]
+The frozen core is clean: `docs/glossary/scope.md`, `docs/core/*` — **zero**
+occurrences. The term clustered in notes (12), context_navigation (6),
+art_instantiations (6), advanced (4), with one hit each in glossary and overview,
+both of which drew the line correctly (a constraint on the observer *vs* on the
+framework; "observer-dependence" listed as an open question). The place it tipped
+over is `generator_admissibility_taxonomy.md` — an **art_instantiations** document
+asserting "This preserves the core **ARW principle**: the observer remains
+sovereign over perturbation class and resolution." Same defect class as the other
+three found today: a document at one layer legislating for another.
+
+**Why the observer does no formal work** [claim]
+Everything attributed to it is a declaration: Δ (which variations count as the
+same state) and ε (which differences do not count). Those are parameters of the
+description, not properties of a subject. A description at resolution ε with
+tolerance Δ is an object with coordinates; it needs a specification, not a
+spectator. Naming a subject opens a regress — a describing system has its own
+generator and scopes, which would need their own observer, without end.
+
+**The replacement loses nothing** [claim]
+"Observer sovereignty" states only that φ: Λ → (B, Π), i.e. Δ and ε are not in the
+image of φ. That is a statement about the **arity of φ**, not about subjects.
+Restated: Δ and ε are free parameters of the scope — coordinates of D(S). A(G) is
+untouched; its existential quantifier over (Δ, ε) *is* the coordinate reading, and
+this is now said explicitly in the doc.
+
+**Edits executed** [observation]
+`generator_admissibility_taxonomy.md`: observer sentences replaced by the arity
+statement plus a boxed **level rule** (observer = ART-level term for a modelled
+describing system; not admissible in ARW-level constructions; corollary: an
+instrument's resolution floor is a property of the composite system target +
+apparatus, belonging to that composite's B/Π — not an observer constraint, which
+corrects a claim made earlier the same day). `bc_signature_persistence_and_dominance.md`:
+"ε … chosen by the observer" → declared parameter; Q-SIG-02 re-read as
+*declaration-dependence*. `observable_consequences.md`: "BC class is
+observer-dependent" → observable-dependent (scope-relative).
+`emergent_solution_space.md`, `scope_extended_definition.md`,
+`limitations_and_open_questions.md`: wording aligned. `bc_extraction_method.md`:
+the "Observer activation" example marked as an ART-level actor in the modelled
+social system, not a formal ingredient. ARW-level layers (glossary, core,
+overview, advanced) now contain no formal use of the term.
+
+**Where the observer legitimately belongs** [observation]
+As a *modelled system* in ART: `docs/cognitive_architecture/`,
+`docs/context_navigation/`, the scope-constructing-agent cluster. There a
+describing system has its own G and its own scopes, and which (Δ, ε) it in fact
+selects is an empirical question about that system — never an ingredient of the
+general construction.
+
+---
+
+## Session 2026-08-05: Validation strategy v2 — the 1D cases retired as focus, the study as the new unit
+
+Source: `docs/notes/validation_strategy_v2.md` (experiment-proposal). Decided
+with Rico in-session; grew out of the question where the pipeline conceptually
+falls short of the theory's frame.
+
+**The 1D case programme was scaffolding, not strategy** [interpretation]
+The case/1D-sweep/go_nogo/Φ practice of the early phase was never declared as a
+validation strategy; it accreted. With `general_regime_construction.md` its
+limits are explicit: the cases validate the codimension-0 slice only, the sweep
+carries an undeclared adjacency, and Φ/TBS_norm do not survive the break. Rico's
+framing: the cases are relics of the ARW founding phase — an attempt to generate
+validation — and are no longer the focus of the validation strategy.
+
+**Role change, not discard** [claim]
+The 1D cases become a frozen regression suite: the general construction with
+Δ = one grid step must reproduce their registered partitions (failure falsifies
+the construction, not the cases — acceptance criterion open, Q-VAL-02). No new
+1D cases are opened for validation purposes.
+
+**Three tiers, distinctiveness first** [claim]
+T1 coherence (recovery, ε-family well-formedness, concrete Δ-reachability rule)
+is a prerequisite, not a deliverable. T2 distinctiveness produces artifacts the
+1D schema cannot hold in principle — (ε₁,ε₂) joint region for CASE-20260311-0003
+(the 0.367 agreement_rate finally drawn as a conclusion), Rule A/B divergence,
+θ* as a boundary set, codim-2 detection (anchor system open, Q-VAL-03). T3
+discrimination (Cascade EWS, P-ATLAS outer half) stays external and preregistered.
+Ordering decided: T2 first — T3 would spend blinded external data on untested
+instrumentation. Explicit failure condition: if T2 yields nothing beyond the 1D
+form, the generalisation is bookkeeping and must be reported as such.
+
+**The study replaces the case** [claim]
+Unit = declared question at one tier, frozen declarations (Preregistration as
+first-class artifact), boundary sets instead of scalars, no Φ across the break —
+cross-study comparison goes to Σ (WP-A3; revives the unbuilt WP-A5). Schema
+design open (Q-VAL-01).
+
+**Honest cost stated** [observation]
+Until T2 delivers, the validation column is empty: the general construction is
+untested and the old evidence is demoted to consistency constraints. The
+strategy note says this rather than bridging it. Monograph consequence
+(deferred by Rico): the formal chapters will be adapted later; no monograph
+edits this session.
+
+**Q-VAL-01–03 worked through in sequence, same session** [observation]
+Q-VAL-01: study schemas drafted as `schemas/StudySpec.yaml`,
+`schemas/Preregistration_template.md`, `schemas/StudyRecord.yaml` (v0.1),
+design rules R1–R10 in the headers (ε-family enforced; grid-neighbor adjacency
+only with a Δ-derivation; verdict against preregistered criteria only;
+surplus-over-1D honesty field; no Φ across the break). `validate_study.py`
+planned, not built — [MC] checks by hand until then. Status
+partially_answered; promotion after the first study runs.
+Q-VAL-02 [decided, Rico]: boundary-tolerant recovery criterion — N exact,
+interior membership exact, cut-adjacent samples ≤ 1 grid step, deviations
+reported; frozen in the strategy note before any recovery run.
+Q-VAL-03 [decided, Rico]: staged codim-2 anchor — constructed two-level
+minimal model H(x, y) = [[x, y], [y, −x]] first (gap zero at origin, mixing
+angle carries monodromy), physical conical-intersection instance as
+registered follow-up once type-T machinery exists.
