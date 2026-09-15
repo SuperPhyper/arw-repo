@@ -2244,4 +2244,90 @@ collision-checked against this file and `docs/` on 2026-08-08 — free.
   of evidence that the construction is derived rather than fitted.
 - **Registered:** 2026-08-08.
 
+---
+
+## Q-CDIM series — scope-relative class dimensionality (2026-09-16)
+
+Source: `docs/notes/scope_relative_class_dimensionality.md`. Prefix
+collision-checked against this file and `docs/` on 2026-09-16 — free.
+
+**Q-CDIM-01 — Is a declared class structure admissible in ARW?**
+- **Status:** open
+- **Question:** Is C_S(D) under the "declared" reading (b) of §2 admissible, or
+  must every class structure be exhibited as induced by some (B, Π, Δ, ε)?
+- **Why it matters:** blocks promotion of the note above `note`, and decides
+  whether the non-metric applications are ARW statements or only ART-level
+  modelling conveniences.
+- **Registered:** 2026-09-16.
+
+**Q-CDIM-02 — Relation of C_eff to R_S.**
+- **Status:** open
+- **Question:** Under the "induced" reading (a), is C_eff = R_S, or does the
+  effective-classification operation 𝔠 admit constructions that are not covers?
+- **Why it matters:** bears on Q-EPS-02 (composition rule).
+- **Registered:** 2026-09-16.
+
+**Q-CDIM-03 — Does the non-metric setting force χ?**
+- **Status:** open
+- **Question:** If class-label preservation rather than a metric spread is the
+  operative criterion, is σ_Δ available at all, or must χ_{Δ,ε} be constructed
+  directly?
+- **Why it matters:** bears on Q_NEW_26 (χ is computed nowhere in the repo); the
+  non-metric case may be a setting where this implementation gap can no longer
+  be deferred.
+- **Registered:** 2026-09-16.
+
+**Q-CDIM-04 — Is I_ε defined on a non-numeric E?**
+- **Status:** open
+- **Question:** Under ⪯_E with E only partially ordered, is the ε-plateau
+  I_ε = [ε_min, ε_max] still well-defined, or does it become an interval in a
+  partial order — and then possibly non-convex?
+- **Why it matters:** bears on Q-EPS-01.
+- **Registered:** 2026-09-16.
+
+---
+
+## Q-CMP series — compromise as scope minimisation (2026-09-16)
+
+Source: `docs/notes/compromise_as_scope_minimization.md`. Prefix
+collision-checked against this file and `docs/` on 2026-09-16 — free.
+
+**Q-CMP-01 — Do the two non-substitutability criteria coincide?**
+- **Status:** open
+- **Question:** Q-MINDS-03 proposes: non-substitutable iff violation moves the
+  system out of X_B. `compromise_as_scope_minimization.md` §I.2 proposes:
+  necessary iff removal moves an outcome across ∂A_i. Do these agree, and if
+  not, which is operative?
+- **Why it matters:** routed through Q-MINDS-03 rather than registered as a
+  duplicate; resolving it decides which necessity criterion MINDS-style
+  protocols should use.
+- **Registered:** 2026-09-16.
+
+**Q-CMP-02 — Is there a principled selection rule on the antichain?**
+- **Status:** open
+- **Question:** Under what conditions is the set of irreducible joint scopes
+  finite, and is selection among them necessarily exogenous to the formalism?
+- **Why it matters:** if exogenous, every MINDS-style procedure must expose the
+  selection as a decision with an owner, or it launders a choice as a result.
+- **Registered:** 2026-09-16.
+
+**Q-CMP-03 — Is d_red stable under change of the declared translation?**
+- **Status:** open
+- **Question:** Is the reducible-complexity quantity
+  d_red = |Π_conflict| − |Π_J*| stable under change of the declared
+  translation between actors' descriptive spaces?
+- **Why it matters:** if not, it reports the translation as much as the
+  conflict, and must never appear in external material. Bears on Q-REL-05
+  (Φ is not evidence of class distance).
+- **Registered:** 2026-09-16.
+
+**Q-CMP-04 — Does the participation incentive admit the §I.5 reading?**
+- **Status:** open
+- **Question:** Is "stable position that is also negotiable" adequately
+  captured by (A_i preserved under Δ_J) ∧ (joint scope not collapsed onto
+  ∂A_i)?
+- **Why it matters:** bears on Q-RD-6 and Q-MINDS-02; a positive answer would
+  formalise the toolkit's participation-incentive criterion.
+- **Registered:** 2026-09-16.
+
 
