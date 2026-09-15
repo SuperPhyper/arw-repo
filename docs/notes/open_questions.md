@@ -2110,3 +2110,138 @@ this file and `docs/` on 2026-08-05 — free.
   (Q-DSP-07) and the strongest single test that the generalisation is necessary
   rather than notational.
 - **Registered:** 2026-08-05.
+
+---
+
+## Q-CFL series — conflict descriptions as scopes (2026-08-08)
+
+Source: `docs/art_instantiations/conflict_descriptions_as_scopes.md`. Prefix
+collision-checked against this file and `docs/` on 2026-08-08 — free.
+
+**Q-CFL-01 — Is the F1_BC verdict for the Clausewitzian scope robust to enlarging Π_CW?**
+- **Status:** open
+- **Question:** §3.1 reaches `scope_rejection` for S_CW on X_asym by exhausting
+  Π_CW: F0 removes the referent of `center_of_gravity_status` and
+  `political_objective_alignment`, and every remaining observable returns a
+  claim-relative F1. The verdict is decidable only because Π_CW is a closed
+  declared list. Does any observable a Clausewitzian reading would admit —
+  without importing B_ASYM — rescue the scope?
+- **Why it matters:** F1_BC is the only route from observable insufficiency to
+  scope rejection (`falsification_schema.md`). If Π_CW is in fact open, the
+  document's central verdict downgrades to a repair loop with no termination
+  proof, and the "forced scope change" claim weakens to "no repair found yet".
+- **Registered:** 2026-08-08.
+
+**Q-CFL-02 — Is I_ε empty for Π_GA at action resolution, or merely narrow?**
+- **Status:** open
+- **Question:** §3.3 argues S_GA is descriptively sound on X_asym but fails at
+  action resolution: N(ε_GA) = 1 over a decision-length window (F1), and
+  lowering ε may violate the lower bound sup_x σ_Δ(x) < ε because
+  structural-violence and legitimation observables move discontinuously under
+  events that Δ_GA declares admissible. Is sup_x σ_Δ(x) ≥ ε*(O, X_B) for
+  Π_GA, i.e. F3, or is the window narrow but non-empty, i.e. a recoverable F1?
+- **Why it matters:** F3 is `scope_rejection`; F1 is `observable_replacement`.
+  The document currently states the F3 branch conditionally and the condition is
+  checkable. This is also the cleanest available test of the §4.2 claim that
+  the four scopes differ in *where* they put the weak party's action channel
+  rather than in whether they put it inside Δ.
+- **Registered:** 2026-08-08.
+
+**Q-CFL-03 — Are m and ρ estimable within their declared ε?**
+- **Status:** open
+- **Question:** S_ASYM declares `m` (cost_tolerance_margin, a boundary distance
+  in accumulated-cost units) and `ρ` (reconstitution_rate, dimensionless) as its
+  two partition-carrying observables. Both have definitions; neither has an
+  operationalisation. Is sup_x σ_Δ(x) < ε*(O, X_B) attainable for either on any
+  real case?
+- **Why it matters:** if not, S_ASYM fails as F3 by its own §6 criterion, and
+  the synthesis is a well-formed description with no admissible resolution
+  window — the same failure it diagnoses in S_GA (§3.3), which would be a
+  reflexive defeat rather than an inconvenience.
+- **Registered:** 2026-08-08.
+
+**Q-CFL-04 — Are KHT attractor deepening and pressure-induced regime compression the same phenomenon?**
+- **Status:** open
+- **Question:** `kht_group_dynamics.md` §4.3 (institutional rigidity as attractor
+  deepening) and `art_geopolitical_scope_example.md` §7 (pressure-induced regime
+  compression: narrowing B coarsens the partition, producing apparent stability
+  with reduced structural capacity) have the same shape at different aggregation
+  levels. Same phenomenon under an aggregation map, or structural analogy only?
+- **Why it matters:** if the same, σ_Δ(m) becomes predictable from KHT
+  collective-regime state rather than merely estimable, which converts the
+  F-gradient risk at m = 0 (§5.4(2)) from a hazard into a diagnostic. Bears on
+  Q-AGG and the aggregation-limits treatment.
+- **Registered:** 2026-08-08.
+
+**Q-CFL-05 — Does the scope-action operator T_ij need its own ARW-level formalisation?**
+- **Status:** open
+- **Question:** §5.1 introduces C = (X, {S_1, S_2}, T_12, T_21), where T_ij is the
+  set of admissible actions by party i that modify components of S_j. Is T_ij a
+  new ARW-level object, or is it expressible as a party-indexed section of the
+  existing scope fibration (total description space D(S), registered 2026-08-01)?
+- **Why it matters:** the document is ART-level and introduced T_ij as a declared
+  ART construct on purpose. If it needs ARW-level status it belongs in
+  `docs/core/` and must be stated without reference to parties — a level
+  migration, not an extension. Guard against the level violation flagged in
+  `generator_admissibility_taxonomy.md`.
+- **Registered:** 2026-08-08.
+
+**Q-CFL-06 — Does the codimension argument apply reflexively to S_ASYM?**
+- **Status:** open
+- **Question:** §4.3 rejects the four classical scopes partly because each is a
+  1D sweep and the structure of X_asym is codimension 2. R_ASYM is a 2D partition
+  in (m, ρ). Are there conflict regions whose regime structure is codimension 3,
+  making R_ASYM itself a projection blind in the same way?
+- **Why it matters:** the §4.3 argument is not self-limiting. Without a stated
+  reason why 2 is the right codimension, S_ASYM's advantage over S_CW is one of
+  degree and the document's structural framing is overclaimed. Relates to
+  Q-VAL-03 and to the general-construction note's codim ≥ 2 blindness result.
+- **Registered:** 2026-08-08.
+
+**Q-CFL-07 — Is the Δ-stability reading of positive vs. negative peace faithful?**
+- **Status:** open
+- **Question:** §5.5 corrects an over-claim by re-reading Galtung's positive/negative
+  peace distinction as a *verdict-stability statement over a declared Δ-family*
+  (both states can be identical under every short-horizon observable; they differ in
+  the response to a perturbation not yet applied), with "transformation" separately
+  expressible as a change in B, i.e. a scope transition. Does this reading preserve
+  what the transformation literature means, or does it drop a component that is
+  genuinely neither a stability statement nor a B-move?
+- **Why it matters:** the §5.5 correction — that S_GA and S_ASYM are *not* mutually
+  irreducible — rests entirely on it. If the reading is lossy, the earlier
+  non-reduction verdict is partially reinstated and §5.6's fibration covers less than
+  claimed.
+- **Registered:** 2026-08-08.
+
+**Q-CFL-08 — Is there a general form for the compatibility structure between resolution levels?**
+- **Status:** open
+- **Question:** §5.6 constructs the unified object as a scope family S(η) along the
+  ε-axis of the fibration, with Δ(η) coupled to ε(η) through the admissible window
+  sup_x σ_Δ < ε < ε*, and asserts that the unification *content* sits in the
+  compatibility conditions between levels rather than in any level. Is there a general
+  form for that inter-level structure — which distinctions survive coarsening, which
+  are created by refining, where a class at one η spans a boundary at another — or is
+  it case-by-case?
+- **Why it matters:** without a general form the §5.6 claim is a promissory note: it
+  names the right object but supplies no machinery. Bears directly on Q-REL-08 (no
+  general form for Φ/TBS across the 1D/general break) and on the description-atlas
+  obstruction typology — this may be the same question in a different domain, in which
+  case it should be answered there and cited here rather than answered twice.
+- **Registered:** 2026-08-08.
+
+**Q-CFL-09 — Is R_C (mutual protraction) non-empty, and is the per-party treatment of ρ necessary?**
+- **Status:** open
+- **Question:** §5.4 partitions over (m_1, ρ_1, m_2, ρ_2) and thereby produces a cell
+  R_C where **both** parties are self-reconstituting (ρ_i ≥ 1) and neither can attrit
+  the other — a regime named by none of the four classical scopes and by neither
+  earlier version of this document. Is R_C actually occupied (protracted communal and
+  multi-party internal conflicts are the candidates), and does its occupancy justify
+  carrying ρ per party rather than as a single relational quantity?
+- **Why it matters:** R_C is the only structure S_CONF claims that no predecessor
+  claims. If empty, the per-party parameterisation is unmotivated, the observable space
+  halves, and the resolution-window exposure of §5.6 cost 2 — the construction's
+  leading failure risk — halves with it. If occupied, it is the strongest single piece
+  of evidence that the construction is derived rather than fitted.
+- **Registered:** 2026-08-08.
+
+
